@@ -62,6 +62,16 @@ public sealed class HttpJsonResult
     }
 
     /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象。
+    /// 返回一个Code为0，Message为空的基本成功响应。
+    /// </summary>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string SuccessString()
+    {
+        return Success().ToString();
+    }
+
+    /// <summary>
     /// 创建一个表示失败的HttpJsonResult对象，并包含错误消息。
     /// 使用默认错误码-1表示一般性失败。
     /// </summary>
