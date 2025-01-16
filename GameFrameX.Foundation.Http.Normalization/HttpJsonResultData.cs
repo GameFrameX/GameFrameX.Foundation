@@ -11,7 +11,7 @@ public sealed class HttpJsonResultData<T>
     /// 是否成功
     /// 表示请求是否成功执行，成功为true，失败为false。
     /// </summary>
-    public bool IsSuccess { get; set; }
+    public bool IsSuccess { get; set; } = false;
 
     /// <summary>
     /// 数据对象
