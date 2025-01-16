@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Http.Normalization", "GameFrameX.Foundation.Http.Normalization\GameFrameX.Foundation.Http.Normalization.csproj", "{1EE5D9F2-03DE-4238-A943-3A47C5CC2B23}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Encryption", "GameFrameX.Foundation.Encryption\GameFrameX.Foundation.Encryption.csproj", "{4CBCB4AA-4A8F-4ADF-8A26-5FEF67F4214A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{1EE5D9F2-03DE-4238-A943-3A47C5CC2B23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE5D9F2-03DE-4238-A943-3A47C5CC2B23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE5D9F2-03DE-4238-A943-3A47C5CC2B23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CBCB4AA-4A8F-4ADF-8A26-5FEF67F4214A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CBCB4AA-4A8F-4ADF-8A26-5FEF67F4214A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CBCB4AA-4A8F-4ADF-8A26-5FEF67F4214A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CBCB4AA-4A8F-4ADF-8A26-5FEF67F4214A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
