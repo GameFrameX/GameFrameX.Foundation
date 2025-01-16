@@ -14,8 +14,15 @@ public sealed class HttpJsonResultData<T>
     public bool IsSuccess { get; set; } = false;
 
     /// <summary>
+    /// 响应码
+    /// 表示请求的处理结果，为0表示成功，其他值表示不同的错误类型。
+    /// </summary>
+    public int Code { get; set; }
+
+    /// <summary>
     /// 数据对象
     /// 包含请求成功时返回的数据，类型为T。
+    /// 如果请求失败，可能为默认值或null。
     /// </summary>
     public T Data { get; set; }
 }

@@ -28,6 +28,7 @@ public static class HttpJsonResultHelper
             // 检查响应码是否表示成功
             if (httpJsonResult.Code != 0)
             {
+                resultData.Code = httpJsonResult.Code;
                 return resultData; // 返回默认的失败结果
             }
 
