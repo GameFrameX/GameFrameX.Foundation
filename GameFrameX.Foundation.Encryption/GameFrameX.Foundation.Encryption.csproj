@@ -14,7 +14,7 @@
         <RepositoryUrl>https://github.com/GameFrameX/GameFrameX</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <Description>GameFrameX.Foundation.Encryption</Description>
+        <Description>GameFrameX.Foundation.Encryption,GameFrameX 框架的基础设施框架库,提供基础的加密算法.框架文档主页: https://gameframex.doc.alianblank.com</Description>
         <PackageTags>GameFrameX,Lib,Foundation,Foundation.Encryption,Server,GameServer</PackageTags>
         <PackageReleaseNotes>https://gameframex.doc.alianblank.com/</PackageReleaseNotes>
         <PackageIcon>logo.png</PackageIcon>

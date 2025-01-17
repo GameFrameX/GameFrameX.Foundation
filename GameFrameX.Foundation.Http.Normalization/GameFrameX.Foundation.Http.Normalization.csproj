@@ -14,7 +14,7 @@
         <RepositoryUrl>https://github.com/GameFrameX/GameFrameX</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <Description>GameFrameX.Foundation.HTTP</Description>
+        <Description>GameFrameX.Foundation.HTTP,GameFrameX 框架的基础设施框架库,提供整套框架的HTTP响应结构统一性.框架文档主页: https://gameframex.doc.alianblank.com</Description>
         <PackageTags>GameFrameX,Lib,Foundation.HTTP,Server,GameServer</PackageTags>
         <PackageReleaseNotes>https://gameframex.doc.alianblank.com/</PackageReleaseNotes>
         <PackageIcon>logo.png</PackageIcon>
