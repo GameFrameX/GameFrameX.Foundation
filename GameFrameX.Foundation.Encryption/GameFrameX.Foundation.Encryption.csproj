@@ -14,8 +14,8 @@
         <RepositoryUrl>https://github.com/GameFrameX/GameFrameX</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <Description>GameFrameX.Foundation.HTTP</Description>
-        <PackageTags>GameFrameX,Lib,Foundation.HTTP,Server,GameServer</PackageTags>
+        <Description>GameFrameX.Foundation.Encryption</Description>
+        <PackageTags>GameFrameX,Lib,Foundation,Foundation.Encryption,Server,GameServer</PackageTags>
         <PackageReleaseNotes>https://gameframex.doc.alianblank.com/</PackageReleaseNotes>
         <PackageIcon>logo.png</PackageIcon>
         <Authors>AlianBlank;Blank</Authors>
