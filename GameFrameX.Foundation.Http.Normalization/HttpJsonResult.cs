@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GameFrameX.Foundation.Http.Normalization;
 
@@ -20,21 +21,21 @@ public sealed class HttpJsonResult
     /// 404: 资源未找到
     /// 500: 服务器内部错误
     /// </summary>
-    [JsonProperty(PropertyName = "code")]
+    [JsonPropertyName("code")]
     public int Code { get; set; }
 
     /// <summary>
     /// 响应消息，提供关于请求结果的详细信息。
     /// 成功时通常为空字符串，失败时包含具体的错误信息。
     /// </summary>
-    [JsonProperty(PropertyName = "message")]
+    [JsonPropertyName("message")]
     public string Message { get; set; }
 
     /// <summary>
     /// 响应数据，包含请求成功时返回的具体数据内容。
     /// 数据以JSON字符串的形式存储，可以包含任意类型的序列化数据。
     /// </summary>
-    [JsonProperty(PropertyName = "data")]
+    [JsonPropertyName("data")]
     public string Data { get; set; }
 
     /// <summary>
@@ -44,7 +45,7 @@ public sealed class HttpJsonResult
     /// <returns>JSON格式的字符串表示。</returns>
     public override string ToString()
     {
-        return JsonConvert.SerializeObject(this);
+        return JsonSerializer.Serialize(this);
     }
 
     /// <summary>
@@ -163,7 +164,7 @@ public sealed class HttpJsonResult
         {
             Code = 0,
             Message = string.Empty,
-            Data = JsonConvert.SerializeObject(data),
+            Data = JsonSerializer.Serialize(data),
         };
     }
 

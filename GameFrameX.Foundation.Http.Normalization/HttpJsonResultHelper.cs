@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;
 
@@ -24,7 +24,7 @@ public static class HttpJsonResultHelper
         try
         {
             // 反序列化JSON字符串为HttpJsonResult对象
-            var httpJsonResult = JsonConvert.DeserializeObject<HttpJsonResult>(jsonResult);
+            var httpJsonResult = JsonSerializer.Deserialize<HttpJsonResult>(jsonResult);
             // 检查响应码是否表示成功
             if (httpJsonResult.Code != 0)
             {
@@ -34,7 +34,7 @@ public static class HttpJsonResultHelper
 
             resultData.IsSuccess = true; // 设置成功标志
             // 反序列化数据部分，如果数据为空则返回类型T的默认实例
-            resultData.Data = string.IsNullOrEmpty(httpJsonResult.Data) ? new T() : JsonConvert.DeserializeObject<T>(httpJsonResult.Data);
+            resultData.Data = string.IsNullOrEmpty(httpJsonResult.Data) ? new T() : JsonSerializer.Deserialize<T>(httpJsonResult.Data);
         }
         catch (Exception e)
         {
