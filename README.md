@@ -136,3 +136,43 @@ uint murmurHash = MurmurHash3Helper.Hash("Hello World");
 // xxHash示例
 ulong xxHash = XxHashHelper.Hash64("Hello World");
 ```
+
+## JSON 序列化/反序列化 (GameFrameX.Foundation.Json)
+
+- 基于 System.Text.Json 的高性能序列化工具
+- 提供默认和格式化两种序列化配置:
+    - DefaultOptions: 紧凑输出,适合传输
+    - FormatOptions: 格式化输出,适合调试
+- 特性支持:
+    - 枚举序列化为字符串
+    - 忽略 null 值属性
+    - 忽略循环引用
+    - 属性名称大小写不敏感
+- 丰富的序列化/反序列化方法:
+    - 字符串序列化/反序列化
+    - UTF8字节数组序列化/反序列化
+    - 安全的Try方法
+    - 支持泛型和非泛型API
+
+### 使用示例
+
+```csharp
+// 序列化示例
+string json = JsonHelper.Serialize(myObject);
+// 反序列化示例
+MyClass deserializedObject = JsonHelper.Deserialize<MyClass>(json);
+```
+
+## HttpClient 扩展 (GameFrameX.Foundation.Http.Extension)
+
+- 提供 HttpClient 的扩展方法，用于发送JSON请求和处理JSON响应
+- 支持POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串
+- 支持自定义请求头和超时时间
+- 支持泛型和非泛型API
+
+### 使用示例
+
+```csharp
+// POST请求示例
+string response = await httpClient.PostJsonToStringAsync<MyClass>(url, myObject);
+```
