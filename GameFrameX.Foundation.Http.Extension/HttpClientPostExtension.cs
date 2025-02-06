@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json;
+using GameFrameX.Foundation.Json;
 
 namespace GameFrameX.Foundation.Http.Extension;
 
@@ -8,11 +9,6 @@ namespace GameFrameX.Foundation.Http.Extension;
 /// </summary>
 public static class HttpClientPostExtension
 {
-    /// <summary>
-    /// JSON序列化选项，不区分大小写，使用驼峰命名
-    /// </summary>
-    private static readonly JsonSerializerOptions Options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
     /// <summary>
     /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串
     /// </summary>
@@ -27,7 +23,7 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentNullException.ThrowIfNull(url, nameof(url));
-        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, Options, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, JsonHelper.DefaultOptions, cancellationToken);
         return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 
@@ -61,7 +57,7 @@ public static class HttpClientPostExtension
             }
         }
 
-        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, Options, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, JsonHelper.DefaultOptions, cancellationToken);
         return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 
@@ -79,7 +75,7 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentNullException.ThrowIfNull(url, nameof(url));
-        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, Options, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, JsonHelper.DefaultOptions, cancellationToken);
         return await response.Content.ReadAsByteArrayAsync(cancellationToken);
     }
 
@@ -113,7 +109,7 @@ public static class HttpClientPostExtension
             }
         }
 
-        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, Options, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, JsonHelper.DefaultOptions, cancellationToken);
         return await response.Content.ReadAsByteArrayAsync(cancellationToken);
     }
 
@@ -131,7 +127,7 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentNullException.ThrowIfNull(url, nameof(url));
-        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, Options, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, JsonHelper.DefaultOptions, cancellationToken);
         return await response.Content.ReadAsStreamAsync(cancellationToken);
     }
 
@@ -165,7 +161,7 @@ public static class HttpClientPostExtension
             }
         }
 
-        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, Options, cancellationToken);
+        var response = await httpClient.PostAsJsonAsync<TValue>(url, data, JsonHelper.DefaultOptions, cancellationToken);
         return await response.Content.ReadAsStreamAsync(cancellationToken);
     }
 }
