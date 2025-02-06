@@ -1,7 +1,4 @@
-﻿using System.Net.Http.Json;
-using System.Text.Json;
-
-namespace GameFrameX.Foundation.Http.Extension;
+﻿namespace GameFrameX.Foundation.Http.Extension;
 
 /// <summary>
 /// HttpClient的GET请求扩展方法
