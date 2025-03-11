@@ -20,7 +20,6 @@ public static class JsonHelper
     /// <item><description>属性名称大小写不敏感 - 反序列化时属性名称匹配不区分大小写</description></item>
     /// <item><description>枚举值序列化为字符串 - 枚举值输出为其名称字符串而非数字</description></item>
     /// <item><description>允许从字符串读取数字 - 支持将字符串形式的数字反序列化为数值类型</description></item>
-    /// <item><description>数字写入为字符串 - 序列化时将数值类型写入为字符串</description></item>
     /// <item><description>支持特殊浮点数值 - 可处理NaN、Infinity等特殊浮点数</description></item>
     /// <item><description>允许JSON注释 - 可以包含并跳过注释内容</description></item>
     /// <item><description>允许尾随逗号 - JSON对象或数组的最后一项后可以有逗号</description></item>
@@ -46,9 +45,8 @@ public static class JsonHelper
         UnknownTypeHandling = JsonUnknownTypeHandling.JsonElement,
         // 数字处理选项:
         // - AllowReadingFromString: 允许从字符串中读取数字
-        // - WriteAsString: 将数字写入为字符串
         // - AllowNamedFloatingPointLiterals: 允许特殊浮点数值(如 NaN, Infinity)
-        NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
         // 添加自定义转换器，类似于 StringEnumConverter
         Converters =
         {
@@ -67,7 +65,6 @@ public static class JsonHelper
     /// <item><description>枚举值序列化为字符串 - 枚举值输出为其名称字符串而非数字</description></item>
     /// <item><description>输出格式化的JSON文本 - 包含适当的缩进和换行，提高可读性</description></item>
     /// <item><description>允许从字符串读取数字 - 支持将字符串形式的数字反序列化为数值类型</description></item>
-    /// <item><description>数字写入为字符串 - 序列化时将数值类型写入为字符串</description></item>
     /// <item><description>支持特殊浮点数值 - 可处理NaN、Infinity等特殊浮点数</description></item>
     /// <item><description>允许JSON注释 - 可以包含并跳过注释内容</description></item>
     /// <item><description>允许尾随逗号 - JSON对象或数组的最后一项后可以有逗号</description></item>
@@ -93,9 +90,8 @@ public static class JsonHelper
         UnknownTypeHandling = JsonUnknownTypeHandling.JsonElement,
         // 数字处理选项:
         // - AllowReadingFromString: 允许从字符串中读取数字
-        // - WriteAsString: 将数字写入为字符串
         // - AllowNamedFloatingPointLiterals: 允许特殊浮点数值(如 NaN, Infinity)
-        NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
+        NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
         // 格式化 JSON
         WriteIndented = true,
         // 添加自定义转换器，类似于 StringEnumConverter
