@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Http.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Json", "GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj", "{863F744B-EF72-40A2-89E9-4EC6845C3975}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Logger", "GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj", "{B807BE41-5C1A-4F01-9C46-6FFBBF3C0567}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{863F744B-EF72-40A2-89E9-4EC6845C3975}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{863F744B-EF72-40A2-89E9-4EC6845C3975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{863F744B-EF72-40A2-89E9-4EC6845C3975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B807BE41-5C1A-4F01-9C46-6FFBBF3C0567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B807BE41-5C1A-4F01-9C46-6FFBBF3C0567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B807BE41-5C1A-4F01-9C46-6FFBBF3C0567}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B807BE41-5C1A-4F01-9C46-6FFBBF3C0567}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
