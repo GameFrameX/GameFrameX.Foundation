@@ -458,7 +458,7 @@ public static class HttpClientPostExtension
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>响应内容的字符串形式</returns>
     /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    public static async Task<string> PostMultipartFileToStringAsync(this HttpClient httpClient, string url, string fileFieldName, string filePath, Dictionary<string, string>? formData = null, CancellationToken cancellationToken = default)
+    public static async Task<string> PostMultipartFileToStringAsync(this HttpClient httpClient, string url, string fileFieldName, string filePath, Dictionary<string, string> formData = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentNullException.ThrowIfNull(url, nameof(url));
