@@ -88,6 +88,7 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有格式参数的详细级别日志消息，并同时输出到控制台。
     /// </summary>
+    /// <param name="logger">用于记录日志的ILogger实例。</param>
     /// <param name="msg">要记录的详细消息。</param>
     /// <param name="args">消息的格式参数。</param>
     /// <remarks>
