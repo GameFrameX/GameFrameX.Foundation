@@ -19,9 +19,10 @@ public static class LogHandler
     /// </summary>
     /// <param name="logOptions">日志配置选项，包含日志级别、存储路径等配置信息</param>
     /// <param name="isDefault">是否设置为默认配置</param>
+    /// <param name="configurationAction">自定义日志配置回调</param>
     /// <exception cref="ArgumentNullException">当logOptions参数为null时抛出</exception>
     /// <exception cref="Exception">初始化日志系统过程中发生的其他异常</exception>
-    public static ILogger Create(LogOptions logOptions, bool isDefault = true)
+    public static ILogger Create(LogOptions logOptions, bool isDefault = true, Action<LoggerConfiguration> configurationAction = null)
     {
         ArgumentNullException.ThrowIfNull(logOptions);
         try
@@ -45,7 +46,7 @@ public static class LogHandler
                          .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                          .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                          .WriteTo.File(logPath, rollingInterval: logOptions.RollingInterval, rollOnFileSizeLimit: logOptions.IsFileSizeLimit, fileSizeLimitBytes: logOptions.FileSizeLimitBytes, retainedFileCountLimit: logOptions.RetainedFileCountLimit);
-
+            configurationAction?.Invoke(logger);
             switch (logOptions.LogEventLevel)
             {
                 case LogEventLevel.Verbose:
