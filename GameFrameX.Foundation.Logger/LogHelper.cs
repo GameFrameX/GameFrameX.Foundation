@@ -31,6 +31,17 @@ public static partial class LogHelper
     }
 
     /// <summary>
+    /// 异步将日志持久化。
+    /// </summary>
+    /// <remarks>
+    /// 关闭日志记录器并将所有待处理的日志条目刷新到持久化存储中。
+    /// </remarks>
+    public static async void CloseAndFlushAsync()
+    {
+        await Serilog.Log.CloseAndFlushAsync();
+    }
+
+    /// <summary>
     /// 内部日志记录器实例
     /// </summary>
     private static ILogger _logger;
