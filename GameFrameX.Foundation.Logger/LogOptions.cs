@@ -3,6 +3,7 @@ using Serilog;
 using Serilog.Events;
 
 namespace GameFrameX.Foundation.Logger;
+
 /// <summary>
 /// 日志配置类，用于配置日志的相关选项。
 /// </summary>
@@ -12,6 +13,19 @@ namespace GameFrameX.Foundation.Logger;
 /// </remarks>
 public sealed class LogOptions
 {
+    /// <summary>
+    /// 默认构造函数，初始化日志配置对象。
+    /// </summary>
+    public LogOptions(string logPathName = "logs")
+    {
+        if (string.IsNullOrEmpty(logPathName.Trim()))
+        {
+            logPathName = "logs";
+        }
+
+        LogSavePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logPathName);
+    }
+
     /// <summary>
     /// 默认配置对象，提供一个默认的日志配置实例。
     /// </summary>
@@ -29,12 +43,12 @@ public sealed class LogOptions
     public string LogType { get; set; }
 
     /// <summary>
-    /// 日志存储路径，默认为 ./logs。
+    /// 日志存储路径，为 应用程序运行目录下的子目录/logs。
     /// </summary>
     /// <remarks>
-    /// 指定日志文件的存储位置，可以是相对路径或绝对路径。
+    /// 日志文件的存储位置，是绝对路径。
     /// </remarks>
-    public string LogSavePath { get; set; } = "./logs/";
+    public string LogSavePath { get; private set; }
 
     /// <summary>
     /// 是否输出到控制台，默认为 true。
