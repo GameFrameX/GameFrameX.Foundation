@@ -45,7 +45,7 @@ public static class LogHandler
         try
         {
             // 日志文件存储的路径
-            var logFileName = $"{logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName}_.log";
+            var logFileName = $"{(logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName).ToLower()}_.log";
             var logSavePath = logOptions.LogSavePath ?? "./logs/";
             if (!Directory.Exists(logSavePath))
             {
