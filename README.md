@@ -176,3 +176,21 @@ MyClass deserializedObject = JsonHelper.Deserialize<MyClass>(json);
 // POST请求示例
 string response = await httpClient.PostJsonToStringAsync<MyClass>(url, myObject);
 ```
+
+## Serilog 日志配置 (GameFrameX.Foundation.Logger)
+
+- 提供 Serilog 的扩展方法，用于配置日志输出
+- 支持常用参数配置，如日志级别、输出路径、序列化格式等
+- 支持自定义外部日志提供程序
+- 提供常用的日志记录函数，如 Debug、Information、Warning、Error
+- 提供日志的自我诊断输出
+
+### 使用示例
+
+```csharp
+// 默认配置
+LogHandler.Create(LogOptions.Default);
+// 日志打印
+LogHelper.Info("Hello World");
+```
+
