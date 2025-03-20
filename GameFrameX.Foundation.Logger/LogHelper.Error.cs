@@ -10,13 +10,6 @@ using Serilog;
 
 namespace GameFrameX.Foundation.Logger;
 
-/// <summary>
-/// 日志帮助类
-/// </summary>
-/// <remarks>
-/// 提供了一系列静态方法用于记录不同级别的日志信息，包括调试信息、普通信息、警告和错误等。
-/// 支持将日志输出到文件系统和控制台。
-/// </remarks>
 public static partial class LogHelper
 {
     /// <summary>
