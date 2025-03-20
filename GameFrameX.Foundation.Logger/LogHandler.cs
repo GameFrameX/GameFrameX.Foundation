@@ -14,6 +14,22 @@ namespace GameFrameX.Foundation.Logger;
 /// </summary>
 public static class LogHandler
 {
+    private static bool _isInitSerilogDiagnosis = false;
+
+    /// <summary>
+    /// 启用 Serilog 的自动诊断
+    /// </summary>
+    private static void SerilogDiagnosis()
+    {
+        if (_isInitSerilogDiagnosis)
+        {
+            return;
+        }
+
+        Serilog.Debugging.SelfLog.Enable((message) => { Console.WriteLine($"Serilog:SelfLog:{message}"); });
+        _isInitSerilogDiagnosis = true;
+    }
+
     /// <summary>
     /// 启动并配置日志系统
     /// </summary>
@@ -25,6 +41,7 @@ public static class LogHandler
     public static ILogger Create(LogOptions logOptions, bool isDefault = true, Action<LoggerConfiguration> configurationAction = null)
     {
         ArgumentNullException.ThrowIfNull(logOptions);
+        SerilogDiagnosis();
         try
         {
             // 日志文件存储的路径
