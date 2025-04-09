@@ -50,7 +50,7 @@ public static class JsonHelper
         // 添加自定义转换器，类似于 StringEnumConverter
         Converters =
         {
-            new JsonStringEnumConverter() // 处理枚举为字符串
+            new JsonStringEnumConverter(), // 处理枚举为字符串
         },
     };
 
@@ -97,7 +97,7 @@ public static class JsonHelper
         // 添加自定义转换器，类似于 StringEnumConverter
         Converters =
         {
-            new JsonStringEnumConverter() // 处理枚举为字符串
+            new JsonStringEnumConverter(), // 处理枚举为字符串
         },
     };
 
