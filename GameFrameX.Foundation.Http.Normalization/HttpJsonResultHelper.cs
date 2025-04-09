@@ -1,4 +1,5 @@
 using System.Text.Json;
+using GameFrameX.Foundation.Logger;
 
 namespace GameFrameX.Foundation.Http.Normalization;
 
@@ -29,6 +30,7 @@ public static class HttpJsonResultHelper
             if (httpJsonResult.Code != 0)
             {
                 resultData.Code = httpJsonResult.Code;
+                resultData.Message = httpJsonResult.Message;
                 return resultData; // 返回默认的失败结果
             }
 
@@ -39,7 +41,7 @@ public static class HttpJsonResultHelper
         catch (Exception e)
         {
             // 捕获并输出异常信息
-            Console.WriteLine(e);
+            LogHelper.Fatal(e);
         }
 
         return resultData; // 返回结果数据

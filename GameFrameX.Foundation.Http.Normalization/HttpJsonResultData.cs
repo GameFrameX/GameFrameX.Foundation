@@ -20,6 +20,12 @@ public sealed class HttpJsonResultData<T>
     public int Code { get; set; }
 
     /// <summary>
+    /// 错误消息,
+    /// 表示请求的处理结果，为null表示成功，其他值表示不同的错误类型结果。
+    /// </summary>
+    public string Message { get; set; }
+
+    /// <summary>
     /// 数据对象
     /// 包含请求成功时返回的数据，类型为T。
     /// 如果请求失败，可能为默认值或null。
