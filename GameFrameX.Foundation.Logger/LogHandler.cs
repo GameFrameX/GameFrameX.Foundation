@@ -6,6 +6,7 @@
 
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.Grafana.Loki;
 
 namespace GameFrameX.Foundation.Logger;
 
@@ -63,6 +64,32 @@ public static class LogHandler
                          .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                          .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                          .WriteTo.File(logPath, rollingInterval: logOptions.RollingInterval, rollOnFileSizeLimit: logOptions.IsFileSizeLimit, fileSizeLimitBytes: logOptions.FileSizeLimitBytes, retainedFileCountLimit: logOptions.RetainedFileCountLimit);
+            if (logOptions.IsGrafanaLoki)
+            {
+                var grafanaLokiLabels = new List<LokiLabel>();
+                foreach (var kv in logOptions.GrafanaLokiLabels)
+                {
+                    var lokiLabel = new LokiLabel
+                    {
+                        Key = kv.Key,
+                        Value = kv.Value,
+                    };
+                    grafanaLokiLabels.Add(lokiLabel);
+                }
+
+                LokiCredentials lokiCredentials = null;
+                if (!string.IsNullOrWhiteSpace(logOptions.GrafanaLokiUsername) && !string.IsNullOrWhiteSpace(logOptions.GrafanaLokiPassword))
+                {
+                    lokiCredentials = new LokiCredentials
+                    {
+                        Login = logOptions.GrafanaLokiUsername,
+                        Password = logOptions.GrafanaLokiPassword,
+                    };
+                }
+
+                logger.WriteTo.GrafanaLoki(logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials);
+            }
+
             configurationAction?.Invoke(logger);
             switch (logOptions.LogEventLevel)
             {
