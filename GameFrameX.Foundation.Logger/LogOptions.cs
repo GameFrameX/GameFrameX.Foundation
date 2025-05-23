@@ -59,6 +59,31 @@ public sealed class LogOptions
     public bool IsConsole { get; set; } = true;
 
     /// <summary>
+    /// 是否输出到 GrafanaLoki，默认为 false。
+    /// </summary>
+    public bool IsGrafanaLoki { get; set; } = false;
+
+    /// <summary>
+    /// GrafanaLoki 服务地址，默认为 http://localhost:3100。
+    /// </summary>
+    public string GrafanaLokiUrl { get; set; } = "http://localhost:3100";
+
+    /// <summary>
+    /// GrafanaLoki 标签
+    /// </summary>
+    public Dictionary<string, string> GrafanaLokiLabels { get; set; } = new Dictionary<string, string>();
+
+    /// <summary>
+    /// GrafanaLoki 用户名
+    /// </summary>
+    public string GrafanaLokiUsername { get; set; }
+
+    /// <summary>
+    /// GrafanaLoki 密码
+    /// </summary>
+    public string GrafanaLokiPassword { get; set; }
+
+    /// <summary>
     /// 日志滚动间隔，默认为每天（Day）。
     /// </summary>
     /// <remarks>
