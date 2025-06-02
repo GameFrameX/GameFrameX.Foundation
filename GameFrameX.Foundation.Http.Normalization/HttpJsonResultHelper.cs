@@ -9,13 +9,18 @@ namespace GameFrameX.Foundation.Http.Normalization;
 public static class HttpJsonResultHelper
 {
     /// <summary>
-    /// 将JSON字符串转换为HttpJsonResultData<T>对象。
-    /// 该方法尝试反序列化给定的JSON字符串，并根据HTTP响应的状态码设置IsSuccess属性。
-    /// 如果响应成功，Data属性将包含反序列化后的数据对象；否则，Data将为默认值。
+    /// 将JSON字符串转换为HttpJsonResultData对象
     /// </summary>
-    /// <typeparam name="T">要反序列化为的对象类型，必须是类并具有无参数构造函数。</typeparam>
-    /// <param name="jsonResult">包含HTTP响应的JSON字符串。</param>
-    /// <returns>HttpJsonResultData<T>对象，表示反序列化的结果。</returns>
+    /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型，必须是引用类型且包含无参构造函数</typeparam>
+    /// <param name="jsonResult">需要转换的JSON字符串</param>
+    /// <returns>返回转换后的HttpJsonResultData对象，包含反序列化结果和状态信息</returns>
+    /// <remarks>
+    /// 该方法会:
+    /// 1. 尝试将JSON字符串反序列化为HttpJsonResult对象
+    /// 2. 根据响应码(Code)判断请求是否成功
+    /// 3. 如果成功(Code=0)，则将Data字段反序列化为泛型类型T
+    /// 4. 如果失败，则保留错误信息，Data字段为默认值
+    /// </remarks>
     public static HttpJsonResultData<T> ToHttpJsonResultData<T>(this string jsonResult) where T : class, new()
     {
         HttpJsonResultData<T> resultData = new HttpJsonResultData<T>
