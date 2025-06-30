@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,12 +17,15 @@ public static class Sha1Helper
     /// 计算字符串的 SHA-1 哈希值。
     /// 使用指定的编码(默认UTF-8)将字符串转换为字节数组后计算哈希值。
     /// </summary>
-    /// <param name="input">要计算哈希值的字符串</param>
+    /// <param name="input">要计算哈希值的字符串，不能为null</param>
     /// <param name="encoding">字符串编码方式，默认为 UTF8</param>
-    /// <returns>40个字符的十六进制字符串形式的哈希值。如果输入为空则返回空字符串。</returns>
+    /// <returns>40个字符的十六进制字符串形式的哈希值。如果输入为空字符串则返回空字符串的哈希值。</returns>
+    /// <exception cref="ArgumentNullException">当input为null时抛出</exception>
     public static string ComputeHash(string input, Encoding encoding = null)
     {
-        if (string.IsNullOrEmpty(input))
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        
+        if (input.Length == 0)
         {
             return string.Empty;
         }
@@ -33,11 +38,14 @@ public static class Sha1Helper
     /// 计算字节数组的 SHA-1 哈希值。
     /// 直接对字节数组进行哈希计算。
     /// </summary>
-    /// <param name="buffer">要计算哈希值的字节数组</param>
-    /// <returns>40个字符的十六进制字符串形式的哈希值。如果输入为null或空数组则返回空字符串。</returns>
+    /// <param name="buffer">要计算哈希值的字节数组，不能为null</param>
+    /// <returns>40个字符的十六进制字符串形式的哈希值。如果输入为空数组则返回空数组的哈希值。</returns>
+    /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
     public static string ComputeHash(byte[] buffer)
     {
-        if (buffer == null || buffer.Length == 0)
+        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        
+        if (buffer.Length == 0)
         {
             return string.Empty;
         }
@@ -51,10 +59,13 @@ public static class Sha1Helper
     /// 计算文件的 SHA-1 哈希值。
     /// 通过文件流读取文件内容并计算其哈希值。
     /// </summary>
-    /// <param name="filePath">要计算哈希值的文件的完整路径</param>
+    /// <param name="filePath">要计算哈希值的文件的完整路径，不能为null或空字符串</param>
     /// <returns>40个字符的十六进制字符串形式的哈希值。如果文件不存在则返回空字符串。</returns>
+    /// <exception cref="ArgumentException">当filePath为null或空字符串时抛出</exception>
     public static string ComputeFileHash(string filePath)
     {
+        ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+        
         if (!File.Exists(filePath))
         {
             return string.Empty;
@@ -70,16 +81,16 @@ public static class Sha1Helper
     /// 验证字符串的 SHA-1 哈希值是否匹配。
     /// 将输入字符串按指定编码计算哈希值,并与给定的哈希值比较。
     /// </summary>
-    /// <param name="input">要验证的原始字符串</param>
-    /// <param name="hash">预期的哈希值(40个十六进制字符)</param>
+    /// <param name="input">要验证的原始字符串，不能为null</param>
+    /// <param name="hash">预期的哈希值(40个十六进制字符)，不能为null或空字符串</param>
     /// <param name="encoding">字符串编码方式，默认为 UTF8</param>
     /// <returns>如果计算得到的哈希值与给定的哈希值匹配(忽略大小写)则返回true，否则返回false</returns>
+    /// <exception cref="ArgumentNullException">当input为null时抛出</exception>
+    /// <exception cref="ArgumentException">当hash为null或空字符串时抛出</exception>
     public static bool VerifyHash(string input, string hash, Encoding encoding = null)
     {
-        if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(hash))
-        {
-            return false;
-        }
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        ArgumentException.ThrowIfNullOrEmpty(hash, nameof(hash));
 
         var computedHash = ComputeHash(input, encoding);
         return string.Equals(computedHash, hash, StringComparison.OrdinalIgnoreCase);
@@ -89,15 +100,15 @@ public static class Sha1Helper
     /// 验证字节数组的 SHA-1 哈希值是否匹配。
     /// 计算字节数组的哈希值并与给定的哈希值比较。
     /// </summary>
-    /// <param name="buffer">要验证的原始字节数组</param>
-    /// <param name="hash">预期的哈希值(40个十六进制字符)</param>
+    /// <param name="buffer">要验证的原始字节数组，不能为null</param>
+    /// <param name="hash">预期的哈希值(40个十六进制字符)，不能为null或空字符串</param>
     /// <returns>如果计算得到的哈希值与给定的哈希值匹配(忽略大小写)则返回true，否则返回false</returns>
+    /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
+    /// <exception cref="ArgumentException">当hash为null或空字符串时抛出</exception>
     public static bool VerifyHash(byte[] buffer, string hash)
     {
-        if (buffer == null || buffer.Length == 0 || string.IsNullOrEmpty(hash))
-        {
-            return false;
-        }
+        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentException.ThrowIfNullOrEmpty(hash, nameof(hash));
 
         var computedHash = ComputeHash(buffer);
         return string.Equals(computedHash, hash, StringComparison.OrdinalIgnoreCase);
@@ -107,12 +118,16 @@ public static class Sha1Helper
     /// 验证文件的 SHA-1 哈希值是否匹配。
     /// 计算文件的哈希值并与给定的哈希值比较。
     /// </summary>
-    /// <param name="filePath">要验证的文件的完整路径</param>
-    /// <param name="hash">预期的哈希值(40个十六进制字符)</param>
+    /// <param name="filePath">要验证的文件的完整路径，不能为null或空字符串</param>
+    /// <param name="hash">预期的哈希值(40个十六进制字符)，不能为null或空字符串</param>
     /// <returns>如果文件的哈希值与给定的哈希值匹配(忽略大小写)则返回true，否则返回false。文件不存在时返回false。</returns>
+    /// <exception cref="ArgumentException">当filePath或hash为null或空字符串时抛出</exception>
     public static bool VerifyFileHash(string filePath, string hash)
     {
-        if (!File.Exists(filePath) || string.IsNullOrEmpty(hash))
+        ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
+        ArgumentException.ThrowIfNullOrEmpty(hash, nameof(hash));
+        
+        if (!File.Exists(filePath))
         {
             return false;
         }
@@ -120,4 +135,4 @@ public static class Sha1Helper
         var computedHash = ComputeFileHash(filePath);
         return string.Equals(computedHash, hash, StringComparison.OrdinalIgnoreCase);
     }
-} 
+}

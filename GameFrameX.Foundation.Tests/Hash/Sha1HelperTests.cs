@@ -46,16 +46,13 @@ public class Sha1HelperTests
     }
 
     [Fact]
-    public void ComputeHash_NullString_ShouldReturnEmptyString()
+    public void ComputeHash_NullString_ShouldThrowArgumentNullException()
     {
         // Arrange
         string input = null;
 
-        // Act
-        var hash = Sha1Helper.ComputeHash(input);
-
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha1Helper.ComputeHash(input));
     }
 
     [Fact]
@@ -119,16 +116,13 @@ public class Sha1HelperTests
     }
 
     [Fact]
-    public void ComputeHash_NullByteArray_ShouldReturnEmptyString()
+    public void ComputeHash_NullByteArray_ShouldThrowArgumentNullException()
     {
         // Arrange
-        byte[] input = null;
+        byte[] buffer = null;
 
-        // Act
-        var hash = Sha1Helper.ComputeHash(input);
-
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha1Helper.ComputeHash(buffer));
     }
 
     [Fact]
@@ -236,31 +230,25 @@ public class Sha1HelperTests
     }
 
     [Fact]
-    public void VerifyHash_NullInput_ShouldReturnFalse()
+    public void VerifyHash_NullInput_ShouldThrowArgumentNullException()
     {
         // Arrange
         string input = null;
-        var hash = "some_hash";
+        string hash = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 
-        // Act
-        var result = Sha1Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha1Helper.VerifyHash(input, hash));
     }
 
     [Fact]
-    public void VerifyHash_NullHash_ShouldReturnFalse()
+    public void VerifyHash_NullHash_ShouldThrowArgumentNullException()
     {
         // Arrange
-        var input = TestString;
+        string input = "test";
         string hash = null;
 
-        // Act
-        var result = Sha1Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha1Helper.VerifyHash(input, hash));
     }
 
     [Fact]
@@ -278,17 +266,14 @@ public class Sha1HelperTests
     }
 
     [Fact]
-    public void VerifyHash_EmptyHash_ShouldReturnFalse()
+    public void VerifyHash_EmptyHash_ShouldThrowArgumentException()
     {
         // Arrange
         var input = TestString;
         var hash = string.Empty;
 
-        // Act
-        var result = Sha1Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha1Helper.VerifyHash(input, hash));
     }
 
     [Fact]
@@ -334,17 +319,14 @@ public class Sha1HelperTests
     }
 
     [Fact]
-    public void VerifyHash_NullByteArray_ShouldReturnFalse()
+    public void VerifyHash_NullByteArray_ShouldThrowArgumentNullException()
     {
         // Arrange
-        byte[] input = null;
-        var hash = "some_hash";
+        byte[] buffer = null;
+        string hash = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 
-        // Act
-        var result = Sha1Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha1Helper.VerifyHash(buffer, hash));
     }
 
     [Fact]
@@ -376,31 +358,36 @@ public class Sha1HelperTests
     }
 
     [Fact]
-    public void VerifyFileHash_NullHash_ShouldReturnFalse()
+    public void VerifyFileHash_NullHash_ShouldThrowArgumentNullException()
     {
         // Arrange
-        var filePath = "some_file.txt";
+        string filePath = "nonexistent.txt";
         string hash = null;
 
-        // Act
-        var result = Sha1Helper.VerifyFileHash(filePath, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha1Helper.VerifyFileHash(filePath, hash));
     }
 
     [Fact]
-    public void VerifyFileHash_EmptyHash_ShouldReturnFalse()
+    public void VerifyFileHash_NullFilePath_ShouldThrowArgumentNullException()
     {
         // Arrange
-        var filePath = "some_file.txt";
-        var hash = string.Empty;
+        string filePath = null;
+        string hash = "da39a3ee5e6b4b0d3255bfef95601890afd80709";
 
-        // Act
-        var result = Sha1Helper.VerifyFileHash(filePath, hash);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha1Helper.VerifyFileHash(filePath, hash));
+    }
 
-        // Assert
-        Assert.False(result);
+    [Fact]
+    public void VerifyFileHash_EmptyHash_ShouldThrowArgumentException()
+    {
+        // Arrange
+        string filePath = "nonexistent.txt";
+        string hash = string.Empty;
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha1Helper.VerifyFileHash(filePath, hash));
     }
 
     [Fact]
