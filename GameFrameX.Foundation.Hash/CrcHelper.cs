@@ -1,4 +1,4 @@
-﻿namespace GameFrameX.Foundation.Hash;
+namespace GameFrameX.Foundation.Hash;
 
 /// <summary>
 /// CRC校验相关的实用函数。
@@ -31,8 +31,11 @@ public static partial class CrcHelper
     /// </summary>
     /// <param name="bytes">要计算的二进制字节数组</param>
     /// <returns>计算得到的CRC64校验值</returns>
+    /// <exception cref="ArgumentNullException">当bytes参数为null时抛出</exception>
     public static ulong GetCrc64(byte[] bytes)
     {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
+        
         SAlgorithm64.Reset();
         SAlgorithm64.Append(bytes);
         return SAlgorithm64.GetCurrentHashAsUInt64();
@@ -43,8 +46,11 @@ public static partial class CrcHelper
     /// </summary>
     /// <param name="stream">要计算的数据流</param>
     /// <returns>计算得到的CRC64校验值</returns>
+    /// <exception cref="ArgumentNullException">当stream参数为null时抛出</exception>
     public static ulong GetCrc64(Stream stream)
     {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+        
         SAlgorithm64.Reset();
         SAlgorithm64.Append(stream);
         return SAlgorithm64.GetCurrentHashAsUInt64();
