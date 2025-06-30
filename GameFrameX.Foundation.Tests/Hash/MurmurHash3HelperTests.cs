@@ -233,7 +233,7 @@ public class MurmurHash3HelperTests
         var seed = 27u;
 
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => MurmurHash3Helper.Hash(input, invalidLength, seed));
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => MurmurHash3Helper.Hash(input, invalidLength, seed));
         Assert.Equal("length", exception.ParamName);
     }
 

@@ -1,5 +1,8 @@
 using System.Text;
 
+using System;
+using System.Text;
+
 namespace GameFrameX.Foundation.Hash;
 
 /// <summary>
@@ -34,15 +37,12 @@ public static class MurmurHash3Helper
     /// <param name="seed">哈希算法的种子值，用于初始化哈希计算</param>
     /// <returns>32位无符号整数形式的哈希值</returns>
     /// <exception cref="ArgumentNullException">当data为null时抛出</exception>
-    /// <exception cref="ArgumentException">当length超过数组长度时抛出</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当length超过数组长度时抛出</exception>
     public static uint Hash(byte[] data, uint length, uint seed)
     {
         ArgumentNullException.ThrowIfNull(data, nameof(data));
         
-        if (length > data.Length)
-        {
-            throw new ArgumentException("Length cannot be greater than the array length.", nameof(length));
-        }
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(length, (uint)data.Length, nameof(length));
         // 计算4字节对齐的块数
         var nblocks = length >> 2;
 
