@@ -1,4 +1,4 @@
-﻿namespace GameFrameX.Foundation.Encryption.Sm;
+namespace GameFrameX.Foundation.Encryption.Sm;
 
 /// <summary>
 /// SM4 对称加密算法实现类
@@ -389,10 +389,10 @@ internal sealed class Sm4
                 byte[] outBytes = new byte[16];
                 byte[] out1 = new byte[16];
 
-                Array.Copy(bins, i * 16, inBytes, 0, length > 16 ? 16 : length);
-                for (i = 0; i < 16; i++)
+                Array.Copy(bins, j * 16, inBytes, 0, length > 16 ? 16 : length);
+                for (int m = 0; m < 16; m++)
                 {
-                    outBytes[i] = ((byte)(inBytes[i] ^ iv[i]));
+                    outBytes[m] = ((byte)(inBytes[m] ^ iv[m]));
                 }
 
                 Sm4_one_round(ctx.Sk, outBytes, out1);
@@ -412,12 +412,12 @@ internal sealed class Sm4
                 byte[] outBytes = new byte[16];
                 byte[] out1 = new byte[16];
 
-                Array.Copy(bins, i * 16, inBytes, 0, length > 16 ? 16 : length);
+                Array.Copy(bins, j * 16, inBytes, 0, length > 16 ? 16 : length);
                 Array.Copy(inBytes, 0, temp, 0, 16);
                 Sm4_one_round(ctx.Sk, inBytes, outBytes);
-                for (i = 0; i < 16; i++)
+                for (int m = 0; m < 16; m++)
                 {
-                    out1[i] = ((byte)(outBytes[i] ^ iv[i]));
+                    out1[m] = ((byte)(outBytes[m] ^ iv[m]));
                 }
 
                 Array.Copy(temp, 0, iv, 0, 16);

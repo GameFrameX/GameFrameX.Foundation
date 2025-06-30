@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using Org.BouncyCastle.Utilities.Encoders;
 
 namespace GameFrameX.Foundation.Encryption.Sm;
@@ -33,8 +33,27 @@ internal sealed class Sm4Util
     /// </summary>
     /// <param name="plainText">待加密的明文字符串</param>
     /// <returns>加密后的密文字符串</returns>
+    /// <exception cref="ArgumentNullException">当plainText为null时抛出</exception>
+    /// <exception cref="ArgumentException">当密钥长度不正确时抛出</exception>
     public string Encrypt_ECB(string plainText)
     {
+        ArgumentNullException.ThrowIfNull(plainText);
+        
+        // Validate key length
+        if (hexString)
+        {
+            if (secretKey?.Length != 32)
+            {
+                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+            }
+        }
+        else
+        {
+            if (secretKey?.Length != 16)
+            {
+                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+            }
+        }
         var ctx = new Sm4Context()
         {
             IsPadding = true,
@@ -57,7 +76,7 @@ internal sealed class Sm4Util
         };
 
         sm4.Sm4SetKeyEnc(ctx, keyBytes);
-        byte[] encrypted = sm4.Sm4_crypt_ecb(ctx, Encoding.ASCII.GetBytes(plainText));
+        byte[] encrypted = sm4.Sm4_crypt_ecb(ctx, Encoding.UTF8.GetBytes(plainText));
 
         string cipherText = Encoding.ASCII.GetString(Hex.Encode(encrypted));
         return cipherText;
@@ -94,8 +113,27 @@ internal sealed class Sm4Util
     /// </summary>
     /// <param name="cipherText">待解密的密文字符串</param>
     /// <returns>解密后的明文字符串</returns>
+    /// <exception cref="ArgumentNullException">当cipherText为null时抛出</exception>
+    /// <exception cref="ArgumentException">当密钥长度不正确时抛出</exception>
     public string Decrypt_ECB(string cipherText)
     {
+        ArgumentNullException.ThrowIfNull(cipherText);
+        
+        // Validate key length
+        if (hexString)
+        {
+            if (secretKey?.Length != 32)
+            {
+                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+            }
+        }
+        else
+        {
+            if (secretKey?.Length != 16)
+            {
+                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+            }
+        }
         var ctx = new Sm4Context()
         {
             IsPadding = true,
@@ -119,7 +157,9 @@ internal sealed class Sm4Util
 
         sm4.Sm4SetKeyDec(ctx, keyBytes);
         byte[] decrypted = sm4.Sm4_crypt_ecb(ctx, Hex.Decode(cipherText));
-        return Encoding.ASCII.GetString(decrypted);
+
+        string plainText = Encoding.UTF8.GetString(decrypted);
+        return plainText;
     }
 
     /// <summary>
@@ -127,8 +167,35 @@ internal sealed class Sm4Util
     /// </summary>
     /// <param name="plainText">待加密的明文字符串</param>
     /// <returns>加密后的密文字符串</returns>
+    /// <exception cref="ArgumentNullException">当plainText为null时抛出</exception>
+    /// <exception cref="ArgumentException">当密钥或IV长度不正确时抛出</exception>
     public string Encrypt_CBC(string plainText)
     {
+        ArgumentNullException.ThrowIfNull(plainText);
+        
+        // Validate key and IV lengths
+        if (hexString)
+        {
+            if (secretKey?.Length != 32)
+            {
+                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+            }
+            if (iv?.Length != 32)
+            {
+                throw new ArgumentException("IV must be 32 characters long when hexString is true (16 bytes in hex)", nameof(iv));
+            }
+        }
+        else
+        {
+            if (secretKey?.Length != 16)
+            {
+                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+            }
+            if (iv?.Length != 16)
+            {
+                throw new ArgumentException("IV must be 16 characters long when hexString is false", nameof(iv));
+            }
+        }
         var ctx = new Sm4Context()
         {
             IsPadding = true,
@@ -153,7 +220,7 @@ internal sealed class Sm4Util
             ForJavascript = forJavascript,
         };
         sm4.Sm4SetKeyEnc(ctx, keyBytes);
-        byte[] encrypted = sm4.Sm4_crypt_cbc(ctx, ivBytes, Encoding.ASCII.GetBytes(plainText));
+        byte[] encrypted = sm4.Sm4_crypt_cbc(ctx, ivBytes, Encoding.UTF8.GetBytes(plainText));
 
         string cipherText = Encoding.ASCII.GetString(Hex.Encode(encrypted));
         return cipherText;
@@ -164,8 +231,35 @@ internal sealed class Sm4Util
     /// </summary>
     /// <param name="cipherText">待解密的密文字符串</param>
     /// <returns>解密后的明文字符串</returns>
+    /// <exception cref="ArgumentNullException">当cipherText为null时抛出</exception>
+    /// <exception cref="ArgumentException">当密钥或IV长度不正确时抛出</exception>
     public string Decrypt_CBC(string cipherText)
     {
+        ArgumentNullException.ThrowIfNull(cipherText);
+        
+        // Validate key and IV lengths
+        if (hexString)
+        {
+            if (secretKey?.Length != 32)
+            {
+                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+            }
+            if (iv?.Length != 32)
+            {
+                throw new ArgumentException("IV must be 32 characters long when hexString is true (16 bytes in hex)", nameof(iv));
+            }
+        }
+        else
+        {
+            if (secretKey?.Length != 16)
+            {
+                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+            }
+            if (iv?.Length != 16)
+            {
+                throw new ArgumentException("IV must be 16 characters long when hexString is false", nameof(iv));
+            }
+        }
         var ctx = new Sm4Context()
         {
             IsPadding = true,
@@ -191,6 +285,8 @@ internal sealed class Sm4Util
         };
         sm4.Sm4SetKeyDec(ctx, keyBytes);
         byte[] decrypted = sm4.Sm4_crypt_cbc(ctx, ivBytes, Hex.Decode(cipherText));
-        return Encoding.ASCII.GetString(decrypted);
+
+        string plainText = Encoding.UTF8.GetString(decrypted);
+        return plainText;
     }
 }

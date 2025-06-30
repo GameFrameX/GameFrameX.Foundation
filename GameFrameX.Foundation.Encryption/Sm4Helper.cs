@@ -16,8 +16,24 @@ public static class Sm4Helper
     /// <param name="forJavascript">是否为JavaScript兼容模式</param>
     /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
     /// <returns>加密后的密文字符串</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
     public static string EncryptCbc(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
+        ArgumentNullException.ThrowIfNull(keyString);
+        ArgumentNullException.ThrowIfNull(dataString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
+        
+        // Validate key length based on hexString flag
+        if (hexString && keyString.Length != 32)
+        {
+            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+        }
+        else if (!hexString && keyString.Length != 16)
+        {
+        throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+        }
+        
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,
@@ -28,7 +44,11 @@ public static class Sm4Helper
         {
             sm4Util.iv = iv;
         }
-
+        else if (hexString)
+        {
+            // Set default IV for hex string mode (16 bytes = 32 hex characters)
+            sm4Util.iv = "00000000000000000000000000000000";
+        }
 
         return sm4Util.Encrypt_CBC(dataString);
     }
@@ -42,8 +62,24 @@ public static class Sm4Helper
     /// <param name="forJavascript">是否为JavaScript兼容模式</param>
     /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
     /// <returns>解密后的原文字符串</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
     public static string DecryptCbc(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
+        ArgumentNullException.ThrowIfNull(keyString);
+        ArgumentNullException.ThrowIfNull(dataString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
+        
+        // Validate key length based on hexString flag
+        if (hexString && keyString.Length != 32)
+        {
+            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+        }
+        else if (!hexString && keyString.Length != 16)
+        {
+            throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+        }
+        
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,
@@ -53,6 +89,11 @@ public static class Sm4Helper
         if (iv != null)
         {
             sm4Util.iv = iv;
+        }
+        else if (hexString)
+        {
+            // Set default IV for hex string mode (16 bytes = 32 hex characters)
+            sm4Util.iv = "00000000000000000000000000000000";
         }
 
         return sm4Util.Decrypt_CBC(dataString);
@@ -67,8 +108,24 @@ public static class Sm4Helper
     /// <param name="forJavascript">是否为JavaScript兼容模式</param>
     /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
     /// <returns>加密后的密文字符串</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
     public static string EncryptEcb(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
+        ArgumentNullException.ThrowIfNull(keyString);
+        ArgumentNullException.ThrowIfNull(dataString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
+        
+        // Validate key length based on hexString flag
+        if (hexString && keyString.Length != 32)
+        {
+            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+        }
+        else if (!hexString && keyString.Length != 16)
+        {
+            throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+        }
+        
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,
@@ -92,8 +149,24 @@ public static class Sm4Helper
     /// <param name="forJavascript">是否为JavaScript兼容模式</param>
     /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
     /// <returns>解密后的原文字符串</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
     public static string DecryptEcb(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
+        ArgumentNullException.ThrowIfNull(keyString);
+        ArgumentNullException.ThrowIfNull(dataString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
+        
+        // Validate key length based on hexString flag
+        if (hexString && keyString.Length != 32)
+        {
+            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+        }
+        else if (!hexString && keyString.Length != 16)
+        {
+            throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+        }
+        
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,
