@@ -57,7 +57,8 @@ public static class LogHandler
 
             Console.WriteLine("以下为日志配置信息");
             Console.WriteLine(logOptions);
-            Console.WriteLine("日志配置信息结束");
+            Console.WriteLine();
+            Console.WriteLine("日志系统配置 开始");
             Console.WriteLine();
             var logger = new LoggerConfiguration()
                          .Enrich.FromLogContext()
