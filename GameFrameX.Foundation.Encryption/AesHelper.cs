@@ -48,15 +48,15 @@ public static class AesHelper
         }
 
         byte[] encryptedBytes = null;
-        var iv = new byte[16] { 224, 131, 122, 101, 37, 254, 33, 17, 19, 28, 212, 130, 45, 65, 43, 32, };
-        var salt = new byte[16] { 234, 231, 123, 100, 87, 254, 123, 17, 89, 18, 230, 13, 45, 65, 43, 32, };
-        using (var aesProvider = Rijndael.Create())
+        var iv = new byte[] { 224, 131, 122, 101, 37, 254, 33, 17, 19, 28, 212, 130, 45, 65, 43, 32, };
+        var salt = new byte[] { 234, 231, 123, 100, 87, 254, 123, 17, 89, 18, 230, 13, 45, 65, 43, 32, };
+        using (var aesProvider = Aes.Create())
         {
             try
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    using (var pdb = new PasswordDeriveBytes(encryptKey, salt))
+                    using (var pdb = new Rfc2898DeriveBytes(encryptKey, salt, 1000, HashAlgorithmName.SHA256))
                     {
                         var transform = aesProvider.CreateEncryptor(pdb.GetBytes(32), iv);
                         using (var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write))
@@ -121,15 +121,15 @@ public static class AesHelper
         }
 
         byte[] decryptedBytes = null;
-        var iv = new byte[16] { 224, 131, 122, 101, 37, 254, 33, 17, 19, 28, 212, 130, 45, 65, 43, 32, };
-        var salt = new byte[16] { 234, 231, 123, 100, 87, 254, 123, 17, 89, 18, 230, 13, 45, 65, 43, 32, };
-        using (var aesProvider = Rijndael.Create())
+        var iv = new byte[] { 224, 131, 122, 101, 37, 254, 33, 17, 19, 28, 212, 130, 45, 65, 43, 32, };
+        var salt = new byte[] { 234, 231, 123, 100, 87, 254, 123, 17, 89, 18, 230, 13, 45, 65, 43, 32, };
+        using (var aesProvider = Aes.Create())
         {
             try
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    using (var pdb = new PasswordDeriveBytes(decryptKey, salt))
+                    using (var pdb = new Rfc2898DeriveBytes(decryptKey, salt, 1000, HashAlgorithmName.SHA256))
                     {
                         var transform = aesProvider.CreateDecryptor(pdb.GetBytes(32), iv);
                         using (var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write))
