@@ -30,7 +30,10 @@ public static class XorHelper
             throw new ArgumentException("Code array cannot be empty", nameof(code));
         }
         
-        return GetXorBytes(bytes, 0, QuickEncryptLength, code);
+        // 取最小值以防止数组越界：当输入数据长度小于QuickEncryptLength时使用实际长度，
+        // 当输入数据长度大于等于QuickEncryptLength时使用QuickEncryptLength以保持快速加密的性能优势
+        var length = Math.Min(bytes.Length, QuickEncryptLength);
+        return GetXorBytes(bytes, 0, length, code);
     }
 
     /// <summary>
@@ -51,7 +54,10 @@ public static class XorHelper
             throw new ArgumentException("Code array cannot be empty", nameof(code));
         }
         
-        GetSelfXorBytes(bytes, 0, QuickEncryptLength, code);
+        // 取最小值以防止数组越界：当输入数据长度小于QuickEncryptLength时使用实际长度，
+        // 当输入数据长度大于等于QuickEncryptLength时使用QuickEncryptLength以保持快速加密的性能优势
+        var length = Math.Min(bytes.Length, QuickEncryptLength);
+        GetSelfXorBytes(bytes, 0, length, code);
     }
 
     /// <summary>
