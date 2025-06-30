@@ -83,7 +83,7 @@ public sealed class DsaHelper
     /// <exception cref="ArgumentNullException">当参数为null时抛出</exception>
     public static string SignData(string dataToSign, string privateKey)
     {
-        ArgumentException.ThrowIfNullOrEmpty(dataToSign, nameof(dataToSign));
+        ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
 
         var res = SignData(Encoding.UTF8.GetBytes(dataToSign), privateKey);
         return res != null ? Convert.ToBase64String(res) : null;
@@ -116,7 +116,7 @@ public sealed class DsaHelper
     /// <exception cref="ArgumentNullException">当dataToSign为null或空时抛出</exception>
     public string SignData(string dataToSign)
     {
-        ArgumentException.ThrowIfNullOrEmpty(dataToSign, nameof(dataToSign));
+        ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
         var res = SignData(Encoding.UTF8.GetBytes(dataToSign));
         return res != null ? Convert.ToBase64String(res) : null;
     }
@@ -156,7 +156,7 @@ public sealed class DsaHelper
     /// <exception cref="ArgumentNullException">当任意参数为null或空时抛出</exception>
     public static bool VerifyData(string dataToVerify, string signedData, string publicKey)
     {
-        ArgumentException.ThrowIfNullOrEmpty(dataToVerify, nameof(dataToVerify));
+        ArgumentNullException.ThrowIfNull(dataToVerify, nameof(dataToVerify));
         ArgumentException.ThrowIfNullOrEmpty(signedData, nameof(signedData));
         return VerifyData(Encoding.UTF8.GetBytes(dataToVerify), Convert.FromBase64String(signedData), publicKey);
     }
@@ -193,7 +193,7 @@ public sealed class DsaHelper
     {
         try
         {
-            ArgumentException.ThrowIfNullOrEmpty(dataToVerify, nameof(dataToVerify));
+            ArgumentNullException.ThrowIfNull(dataToVerify, nameof(dataToVerify));
             ArgumentException.ThrowIfNullOrEmpty(signedData, nameof(signedData));
             return VerifyData(Encoding.UTF8.GetBytes(dataToVerify), Convert.FromBase64String(signedData));
         }
