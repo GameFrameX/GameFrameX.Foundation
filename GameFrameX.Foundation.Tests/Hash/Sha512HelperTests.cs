@@ -33,7 +33,7 @@ public class Sha512HelperTests
     }
 
     [Fact]
-    public void ComputeHash_EmptyString_ShouldReturnEmptyString()
+    public void ComputeHash_EmptyString_ShouldReturnValidHash()
     {
         // Arrange
         var input = EmptyString;
@@ -42,20 +42,20 @@ public class Sha512HelperTests
         var hash = Sha512Helper.ComputeHash(input);
 
         // Assert
-        Assert.Equal(string.Empty, hash);
+        Assert.NotNull(hash);
+        Assert.NotEmpty(hash);
+        Assert.Equal(128, hash.Length);
+        Assert.Equal("cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e", hash);
     }
 
     [Fact]
-    public void ComputeHash_NullString_ShouldReturnEmptyString()
+    public void ComputeHash_NullString_ShouldThrowArgumentNullException()
     {
         // Arrange
         string input = null;
 
-        // Act
-        var hash = Sha512Helper.ComputeHash(input);
-
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha512Helper.ComputeHash(input));
     }
 
     [Fact]
@@ -119,20 +119,17 @@ public class Sha512HelperTests
     }
 
     [Fact]
-    public void ComputeHash_NullByteArray_ShouldReturnEmptyString()
+    public void ComputeHash_NullByteArray_ShouldThrowArgumentNullException()
     {
         // Arrange
         byte[] input = null;
 
-        // Act
-        var hash = Sha512Helper.ComputeHash(input);
-
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha512Helper.ComputeHash(input));
     }
 
     [Fact]
-    public void ComputeHash_EmptyByteArray_ShouldReturnEmptyString()
+    public void ComputeHash_EmptyByteArray_ShouldReturnValidResult()
     {
         // Arrange
         var input = new byte[0];
@@ -141,7 +138,10 @@ public class Sha512HelperTests
         var hash = Sha512Helper.ComputeHash(input);
 
         // Assert
-        Assert.Equal(string.Empty, hash);
+        Assert.NotNull(hash);
+        Assert.NotEmpty(hash);
+        Assert.Equal(128, hash.Length);
+        Assert.Equal("cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e", hash);
     }
 
     [Fact]
@@ -236,59 +236,50 @@ public class Sha512HelperTests
     }
 
     [Fact]
-    public void VerifyHash_NullInput_ShouldReturnFalse()
+    public void VerifyHash_NullInput_ShouldThrowArgumentNullException()
     {
         // Arrange
         string input = null;
         var hash = "some_hash";
 
-        // Act
-        var result = Sha512Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha512Helper.VerifyHash(input, hash));
     }
 
     [Fact]
-    public void VerifyHash_NullHash_ShouldReturnFalse()
+    public void VerifyHash_NullHash_ShouldThrowArgumentNullException()
     {
         // Arrange
         var input = TestString;
         string hash = null;
 
-        // Act
-        var result = Sha512Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha512Helper.VerifyHash(input, hash));
     }
 
     [Fact]
-    public void VerifyHash_EmptyInput_ShouldReturnFalse()
+    public void VerifyHash_EmptyInput_ShouldReturnValidResult()
     {
         // Arrange
         var input = string.Empty;
-        var hash = "some_hash";
+        var expectedHash = Sha512Helper.ComputeHash(input);
 
         // Act
-        var result = Sha512Helper.VerifyHash(input, hash);
+        var result = Sha512Helper.VerifyHash(input, expectedHash);
 
         // Assert
-        Assert.False(result);
+        Assert.True(result);
     }
 
     [Fact]
-    public void VerifyHash_EmptyHash_ShouldReturnFalse()
+    public void VerifyHash_EmptyHash_ShouldThrowArgumentException()
     {
         // Arrange
         var input = TestString;
         var hash = string.Empty;
 
-        // Act
-        var result = Sha512Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha512Helper.VerifyHash(input, hash));
     }
 
     [Fact]
@@ -334,31 +325,28 @@ public class Sha512HelperTests
     }
 
     [Fact]
-    public void VerifyHash_NullByteArray_ShouldReturnFalse()
+    public void VerifyHash_NullByteArray_ShouldThrowArgumentNullException()
     {
         // Arrange
         byte[] input = null;
         var hash = "some_hash";
 
-        // Act
-        var result = Sha512Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha512Helper.VerifyHash(input, hash));
     }
 
     [Fact]
-    public void VerifyHash_EmptyByteArray_ShouldReturnFalse()
+    public void VerifyHash_EmptyByteArray_ShouldReturnValidResult()
     {
         // Arrange
         var input = new byte[0];
-        var hash = "some_hash";
+        var expectedHash = Sha512Helper.ComputeHash(input);
 
         // Act
-        var result = Sha512Helper.VerifyHash(input, hash);
+        var result = Sha512Helper.VerifyHash(input, expectedHash);
 
         // Assert
-        Assert.False(result);
+        Assert.True(result);
     }
 
     [Fact]
@@ -376,31 +364,25 @@ public class Sha512HelperTests
     }
 
     [Fact]
-    public void VerifyFileHash_NullHash_ShouldReturnFalse()
+    public void VerifyFileHash_NullHash_ShouldThrowArgumentException()
     {
         // Arrange
         var filePath = "some_file.txt";
         string hash = null;
 
-        // Act
-        var result = Sha512Helper.VerifyFileHash(filePath, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.ThrowsAny<ArgumentException>(() => Sha512Helper.VerifyFileHash(filePath, hash));
     }
 
     [Fact]
-    public void VerifyFileHash_EmptyHash_ShouldReturnFalse()
+    public void VerifyFileHash_EmptyHash_ShouldThrowArgumentException()
     {
         // Arrange
         var filePath = "some_file.txt";
         var hash = string.Empty;
 
-        // Act
-        var result = Sha512Helper.VerifyFileHash(filePath, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha512Helper.VerifyFileHash(filePath, hash));
     }
 
     [Fact]
@@ -433,17 +415,19 @@ public class Sha512HelperTests
     }
 
     [Fact]
-    public void ComputeHash_EmptyStringTestVector_ShouldReturnEmptyString()
+    public void ComputeHash_EmptyStringTestVector_ShouldReturnValidHash()
     {
         // Arrange
         var input = "";
-        var expectedResult = ""; // Sha512Helper returns empty string for empty input
+        var expectedResult = "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e"; // Known SHA-512 hash for empty string
 
         // Act
         var actualHash = Sha512Helper.ComputeHash(input);
 
         // Assert
         Assert.Equal(expectedResult, actualHash);
+        Assert.Equal(128, actualHash.Length);
+        Assert.NotEmpty(actualHash);
     }
 
     [Fact]
@@ -521,5 +505,47 @@ public class Sha512HelperTests
         // Assert
         Assert.True(hashes.All(h => h == hashes[0]), "所有哈希值应该相同");
         Assert.All(hashes, h => Assert.Equal(128, h.Length));
+    }
+
+    [Fact]
+    public void ComputeFileHash_NullFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        string filePath = null;
+
+        // Act & Assert
+        Assert.ThrowsAny<ArgumentException>(() => Sha512Helper.ComputeFileHash(filePath));
+    }
+
+    [Fact]
+    public void ComputeFileHash_EmptyFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var filePath = string.Empty;
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha512Helper.ComputeFileHash(filePath));
+    }
+
+    [Fact]
+    public void VerifyFileHash_NullFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        string filePath = null;
+        var hash = "some_hash";
+
+        // Act & Assert
+        Assert.ThrowsAny<ArgumentException>(() => Sha512Helper.VerifyFileHash(filePath, hash));
+    }
+
+    [Fact]
+    public void VerifyFileHash_EmptyFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var filePath = string.Empty;
+        var hash = "some_hash";
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha512Helper.VerifyFileHash(filePath, hash));
     }
 }
