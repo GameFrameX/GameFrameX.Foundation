@@ -1,4 +1,5 @@
 using System.Text;
+using System;
 using Xunit;
 using GameFrameX.Foundation.Encryption;
 
@@ -93,7 +94,7 @@ public class AesHelperTests
         var key = TestKey;
 
         // Act & Assert
-        Assert.Throws<Exception>(() => AesHelper.Encrypt(plainText, key));
+        Assert.Throws<ArgumentException>(() => AesHelper.Encrypt(plainText, key));
     }
 
     [Fact]
@@ -104,7 +105,7 @@ public class AesHelperTests
         var key = EmptyString;
 
         // Act & Assert
-        Assert.Throws<Exception>(() => AesHelper.Encrypt(plainText, key));
+        Assert.Throws<ArgumentException>(() => AesHelper.Encrypt(plainText, key));
     }
 
     [Fact]
@@ -115,7 +116,7 @@ public class AesHelperTests
         string? key = null;
 
         // Act & Assert
-        Assert.Throws<Exception>(() => AesHelper.Encrypt(plainText, key!));
+        Assert.Throws<ArgumentException>(() => AesHelper.Encrypt(plainText, key!));
     }
 
     [Fact]
