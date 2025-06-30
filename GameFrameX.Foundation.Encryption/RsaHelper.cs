@@ -236,11 +236,12 @@ public sealed class RsaHelper
     /// <param name="dataToSign">待签名的字符串数据。</param>
     /// <param name="privateKey">RSA私钥,XML格式。</param>
     /// <returns>签名后的数据，以 Base64 编码的字符串形式返回。</returns>
-    /// <exception cref="ArgumentException">当<paramref name="dataToSign"/>或<paramref name="privateKey"/>为null或空字符串时抛出。</exception>
+    /// <exception cref="ArgumentNullException">当<paramref name="dataToSign"/>为null时抛出。</exception>
+    /// <exception cref="ArgumentException">当<paramref name="privateKey"/>为null或空字符串时抛出。</exception>
     /// <exception cref="CryptographicException">当签名操作失败或私钥格式无效时抛出。</exception>
     public static string SignData(string dataToSign, string privateKey)
     {
-        ArgumentException.ThrowIfNullOrEmpty(dataToSign, nameof(dataToSign));
+        ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
         ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
 
         var res = SignData(Encoding.UTF8.GetBytes(dataToSign), privateKey);
@@ -275,11 +276,11 @@ public sealed class RsaHelper
     /// </summary>
     /// <param name="dataToSign">待签名的字符串数据。</param>
     /// <returns>签名后的数据，以 Base64 编码的字符串形式返回。</returns>
-    /// <exception cref="ArgumentException">当<paramref name="dataToSign"/>为null或空字符串时抛出。</exception>
+    /// <exception cref="ArgumentNullException">当<paramref name="dataToSign"/>为null时抛出。</exception>
     /// <exception cref="CryptographicException">当签名操作失败时抛出。</exception>
     public string SignData(string dataToSign)
     {
-        ArgumentException.ThrowIfNullOrEmpty(dataToSign, nameof(dataToSign));
+        ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
 
         var res = SignData(Encoding.UTF8.GetBytes(dataToSign));
         return Convert.ToBase64String(res);
@@ -322,12 +323,13 @@ public sealed class RsaHelper
     /// <param name="signedData">Base64编码的签名数据。</param>
     /// <param name="publicKey">RSA公钥,XML格式。</param>
     /// <returns>如果签名有效则返回 true，否则返回 false。</returns>
-    /// <exception cref="ArgumentException">当任何参数为null或空字符串时抛出。</exception>
+    /// <exception cref="ArgumentNullException">当<paramref name="dataToVerify"/>为null时抛出。</exception>
+    /// <exception cref="ArgumentException">当<paramref name="signedData"/>或<paramref name="publicKey"/>为null或空字符串时抛出。</exception>
     /// <exception cref="FormatException">当Base64字符串格式无效时抛出。</exception>
     /// <exception cref="CryptographicException">当验证操作失败或公钥格式无效时抛出。</exception>
     public static bool RsaVerifyData(string dataToVerify, string signedData, string publicKey)
     {
-        ArgumentException.ThrowIfNullOrEmpty(dataToVerify, nameof(dataToVerify));
+        ArgumentNullException.ThrowIfNull(dataToVerify, nameof(dataToVerify));
         ArgumentException.ThrowIfNullOrEmpty(signedData, nameof(signedData));
         ArgumentException.ThrowIfNullOrEmpty(publicKey, nameof(publicKey));
 
@@ -365,12 +367,13 @@ public sealed class RsaHelper
     /// <param name="dataToVerify">原始字符串数据。</param>
     /// <param name="signedData">Base64编码的签名数据。</param>
     /// <returns>如果签名有效则返回 true，否则返回 false。验证过程出现异常也返回false。</returns>
-    /// <exception cref="ArgumentException">当<paramref name="dataToVerify"/>或<paramref name="signedData"/>为null或空字符串时抛出。</exception>
+    /// <exception cref="ArgumentNullException">当<paramref name="dataToVerify"/>为null时抛出。</exception>
+    /// <exception cref="ArgumentException">当<paramref name="signedData"/>为null或空字符串时抛出。</exception>
     /// <exception cref="FormatException">当Base64字符串格式无效时抛出。</exception>
     /// <exception cref="CryptographicException">当验证操作失败时抛出。</exception>
     public bool VerifyData(string dataToVerify, string signedData)
     {
-        ArgumentException.ThrowIfNullOrEmpty(dataToVerify, nameof(dataToVerify));
+        ArgumentNullException.ThrowIfNull(dataToVerify, nameof(dataToVerify));
         ArgumentException.ThrowIfNullOrEmpty(signedData, nameof(signedData));
 
         try
