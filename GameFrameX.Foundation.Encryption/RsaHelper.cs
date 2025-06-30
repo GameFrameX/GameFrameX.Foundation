@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Collections.Generic;
 
 namespace GameFrameX.Foundation.Encryption;
 
@@ -8,13 +9,13 @@ namespace GameFrameX.Foundation.Encryption;
 /// </summary>
 public sealed class RsaHelper
 {
-    private readonly RSACryptoServiceProvider _rsa;
+    private readonly RSA _rsa;
 
     /// <summary>
     /// 使用指定的 RSA 对象初始化 RSA 加密解密对象。
     /// </summary>
     /// <param name="rsa">RSA 对象。</param>
-    public RsaHelper(RSACryptoServiceProvider rsa)
+    public RsaHelper(RSA rsa)
     {
         _rsa = rsa;
     }
@@ -25,7 +26,7 @@ public sealed class RsaHelper
     /// <param name="key">XML 格式的密钥。</param>
     public RsaHelper(string key)
     {
-        var rsa = new RSACryptoServiceProvider();
+        var rsa = RSA.Create();
         rsa.FromXmlString(key);
         _rsa = rsa;
     }
@@ -37,7 +38,7 @@ public sealed class RsaHelper
     public static Dictionary<string, string> Make()
     {
         var dic = new Dictionary<string, string>();
-        var rsa = new RSACryptoServiceProvider();
+        var rsa = RSA.Create();
         dic["privateKey"] = rsa.ToXmlString(true);
         dic["publicKey"] = rsa.ToXmlString(false);
         return dic;
@@ -74,9 +75,9 @@ public sealed class RsaHelper
     /// <returns>加密后的内容，以字节数组形式返回。</returns>
     public static byte[] Encrypt(string publicKey, byte[] content)
     {
-        var rsa = new RSACryptoServiceProvider();
+        var rsa = RSA.Create();
         rsa.FromXmlString(publicKey);
-        var cipherBytes = rsa.Encrypt(content, false);
+        var cipherBytes = rsa.Encrypt(content, RSAEncryptionPadding.Pkcs1);
         return cipherBytes;
     }
 
@@ -87,7 +88,7 @@ public sealed class RsaHelper
     /// <returns>加密后的内容，以字节数组形式返回。</returns>
     public byte[] Encrypt(byte[] content)
     {
-        var cipherBytes = _rsa.Encrypt(content, false);
+        var cipherBytes = _rsa.Encrypt(content, RSAEncryptionPadding.Pkcs1);
         return cipherBytes;
     }
 
@@ -111,9 +112,9 @@ public sealed class RsaHelper
     /// <returns>解密后的内容，以字节数组形式返回。</returns>
     public static byte[] Decrypt(string privateKey, byte[] content)
     {
-        var rsa = new RSACryptoServiceProvider();
+        var rsa = RSA.Create();
         rsa.FromXmlString(privateKey);
-        var cipherBytes = rsa.Decrypt(content, false);
+        var cipherBytes = rsa.Decrypt(content, RSAEncryptionPadding.Pkcs1);
         return cipherBytes;
     }
 
@@ -135,7 +136,7 @@ public sealed class RsaHelper
     /// <returns>解密后的内容，以字节数组形式返回。</returns>
     public byte[] Decrypt(byte[] content)
     {
-        var bytes = _rsa.Decrypt(content, false);
+        var bytes = _rsa.Decrypt(content, RSAEncryptionPadding.Pkcs1);
         return bytes;
     }
 
@@ -149,9 +150,9 @@ public sealed class RsaHelper
     {
         try
         {
-            var rsa = new RSACryptoServiceProvider();
+            var rsa = RSA.Create();
             rsa.FromXmlString(privateKey);
-            return rsa.SignData(dataToSign, new SHA1CryptoServiceProvider());
+            return rsa.SignData(dataToSign, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
         }
         catch
         {
@@ -180,7 +181,7 @@ public sealed class RsaHelper
     {
         try
         {
-            return _rsa.SignData(dataToSign, new SHA1CryptoServiceProvider());
+            return _rsa.SignData(dataToSign, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
         }
         catch
         {
@@ -210,9 +211,9 @@ public sealed class RsaHelper
     {
         try
         {
-            var rsa = new RSACryptoServiceProvider();
+            var rsa = RSA.Create();
             rsa.FromXmlString(publicKey);
-            return rsa.VerifyData(dataToVerify, new SHA1CryptoServiceProvider(), signedData);
+            return rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
         }
         catch
         {
@@ -242,7 +243,7 @@ public sealed class RsaHelper
     {
         try
         {
-            return _rsa.VerifyData(dataToVerify, new SHA1CryptoServiceProvider(), signedData);
+            return _rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
         }
         catch
         {
