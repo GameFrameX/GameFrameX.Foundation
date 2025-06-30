@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace GameFrameX.Foundation.Hash;
 
@@ -13,11 +13,14 @@ public static class MurmurHash3Helper
     /// 使用 MurmurHash3 算法计算字符串的哈希值。
     /// 将字符串按UTF-8编码转换为字节数组后进行哈希计算。
     /// </summary>
-    /// <param name="str">要计算哈希值的字符串</param>
+    /// <param name="str">要计算哈希值的字符串，不能为null</param>
     /// <param name="seed">哈希算法的种子值，默认为27。不同的种子值会产生不同的哈希结果。</param>
     /// <returns>32位无符号整数形式的哈希值</returns>
+    /// <exception cref="ArgumentNullException">当str为null时抛出</exception>
     public static uint Hash(string str, uint seed = 27)
     {
+        ArgumentNullException.ThrowIfNull(str, nameof(str));
+        
         var data = Encoding.UTF8.GetBytes(str);
         return Hash(data, (uint)data.Length, seed);
     }
@@ -26,12 +29,20 @@ public static class MurmurHash3Helper
     /// 使用 MurmurHash3 算法计算字节数组的哈希值。
     /// 此方法实现了MurmurHash3的核心算法逻辑。
     /// </summary>
-    /// <param name="data">要计算哈希值的字节数组</param>
-    /// <param name="length">字节数组的有效长度</param>
+    /// <param name="data">要计算哈希值的字节数组，不能为null</param>
+    /// <param name="length">字节数组的有效长度，不能超过数组实际长度</param>
     /// <param name="seed">哈希算法的种子值，用于初始化哈希计算</param>
     /// <returns>32位无符号整数形式的哈希值</returns>
+    /// <exception cref="ArgumentNullException">当data为null时抛出</exception>
+    /// <exception cref="ArgumentException">当length超过数组长度时抛出</exception>
     public static uint Hash(byte[] data, uint length, uint seed)
     {
+        ArgumentNullException.ThrowIfNull(data, nameof(data));
+        
+        if (length > data.Length)
+        {
+            throw new ArgumentException("Length cannot be greater than the array length.", nameof(length));
+        }
         // 计算4字节对齐的块数
         var nblocks = length >> 2;
 
