@@ -773,4 +773,120 @@ public class XxHashHelperTests
     }
 
     #endregion
+
+    #region Null Parameter Tests
+
+    [Fact]
+    public void Hash32_NullByteArray_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] nullBuffer = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash32(nullBuffer));
+    }
+
+    [Fact]
+    public void Hash32_NullString_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        string nullText = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash32(nullText));
+    }
+
+    [Fact]
+    public void Hash32_NullType_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        Type nullType = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash32(nullType));
+    }
+
+    [Fact]
+    public void Hash64_NullByteArray_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] nullBuffer = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash64(nullBuffer));
+    }
+
+    [Fact]
+    public void Hash64_NullString_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        string nullText = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash64(nullText));
+    }
+
+    [Fact]
+    public void Hash64_NullType_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        Type nullType = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash64(nullType));
+    }
+
+    [Fact]
+    public void Hash128_NullByteArray_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] nullBuffer = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash128(nullBuffer));
+    }
+
+    [Fact]
+    public void Hash128_NullByteArrayWithLength_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] nullBuffer = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash128(nullBuffer, 0));
+    }
+
+    [Fact]
+    public void Hash128_NullString_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        string nullText = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => XxHashHelper.Hash128(nullText));
+    }
+
+    [Fact]
+    public void Hash128_NegativeLength_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        var buffer = TestBytes;
+        var negativeLength = -1;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => XxHashHelper.Hash128(buffer, negativeLength));
+    }
+
+    [Fact]
+    public void Hash128_LengthGreaterThanBufferSize_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        var buffer = TestBytes;
+        var invalidLength = buffer.Length + 1;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => XxHashHelper.Hash128(buffer, invalidLength));
+    }
+
+    #endregion
 }
