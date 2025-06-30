@@ -43,6 +43,14 @@ public sealed class LogOptions
     public string LogType { get; set; }
 
     /// <summary>
+    /// 日志标签名，用于标识日志的名称或描述。
+    /// </summary>
+    /// <remarks>
+    /// 可以用来区分不同服务器产生的日志，便于日志的分类和管理。
+    /// </remarks>
+    public string LogTagName { get; set; } = "";
+
+    /// <summary>
     /// 日志存储路径，为 应用程序运行目录下的子目录/logs。
     /// </summary>
     /// <remarks>
