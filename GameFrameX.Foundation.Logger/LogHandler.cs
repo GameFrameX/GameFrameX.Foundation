@@ -63,7 +63,7 @@ public static class LogHandler
                          .Enrich.FromLogContext()
                          .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                          .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-                         .Enrich.WithProperty("app", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName)
+                         .Enrich.WithProperty("AppType", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName)
                          .Enrich.WithProperty("TagName", logOptions.LogTagName ?? "")
                          .WriteTo.File(logPath, rollingInterval: logOptions.RollingInterval, rollOnFileSizeLimit: logOptions.IsFileSizeLimit, fileSizeLimitBytes: logOptions.FileSizeLimitBytes, retainedFileCountLimit: logOptions.RetainedFileCountLimit);
             if (logOptions.IsGrafanaLoki)
