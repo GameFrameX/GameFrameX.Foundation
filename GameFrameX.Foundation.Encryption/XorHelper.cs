@@ -18,8 +18,18 @@ public static class XorHelper
     /// <param name="bytes">原始二进制流。</param>
     /// <param name="code">异或二进制流(密钥)。</param>
     /// <returns>异或后的二进制流。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
     public static byte[] GetQuickXorBytes(byte[] bytes, byte[] code)
     {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
+        ArgumentNullException.ThrowIfNull(code, nameof(code));
+        
+        if (code.Length == 0)
+        {
+            throw new ArgumentException("Code array cannot be empty", nameof(code));
+        }
+        
         return GetXorBytes(bytes, 0, QuickEncryptLength, code);
     }
 
@@ -29,8 +39,18 @@ public static class XorHelper
     /// </summary>
     /// <param name="bytes">原始及异或后的二进制流。</param>
     /// <param name="code">异或二进制流(密钥)。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
     public static void GetQuickSelfXorBytes(byte[] bytes, byte[] code)
     {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
+        ArgumentNullException.ThrowIfNull(code, nameof(code));
+        
+        if (code.Length == 0)
+        {
+            throw new ArgumentException("Code array cannot be empty", nameof(code));
+        }
+        
         GetSelfXorBytes(bytes, 0, QuickEncryptLength, code);
     }
 
@@ -41,11 +61,20 @@ public static class XorHelper
     /// <param name="bytes">原始二进制流。</param>
     /// <param name="code">异或二进制流(密钥)。</param>
     /// <returns>异或后的二进制流。如果输入为null则返回null。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
     public static byte[] GetXorBytes(byte[] bytes, byte[] code)
     {
         if (bytes == null)
         {
             return null;
+        }
+        
+        ArgumentNullException.ThrowIfNull(code, nameof(code));
+        
+        if (code.Length == 0)
+        {
+            throw new ArgumentException("Code array cannot be empty", nameof(code));
         }
 
         return GetXorBytes(bytes, 0, bytes.Length, code);
@@ -57,11 +86,20 @@ public static class XorHelper
     /// </summary>
     /// <param name="bytes">原始及异或后的二进制流。</param>
     /// <param name="code">异或二进制流(密钥)。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
     public static void GetSelfXorBytes(byte[] bytes, byte[] code)
     {
         if (bytes == null)
         {
             return;
+        }
+        
+        ArgumentNullException.ThrowIfNull(code, nameof(code));
+        
+        if (code.Length == 0)
+        {
+            throw new ArgumentException("Code array cannot be empty", nameof(code));
         }
 
         GetSelfXorBytes(bytes, 0, bytes.Length, code);
@@ -76,11 +114,29 @@ public static class XorHelper
     /// <param name="length">异或计算长度。</param>
     /// <param name="code">异或二进制流(密钥)。</param>
     /// <returns>异或后的二进制流。如果输入为null则返回null。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出。</exception>
     public static byte[] GetXorBytes(byte[] bytes, int startIndex, int length, byte[] code)
     {
         if (bytes == null)
         {
             return null;
+        }
+        
+        ArgumentNullException.ThrowIfNull(code, nameof(code));
+        
+        if (code.Length == 0)
+        {
+            throw new ArgumentException("Code array cannot be empty", nameof(code));
+        }
+        
+        ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
+        ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
+        
+        if (startIndex + length > bytes.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), "Start index and length exceed array bounds");
         }
 
         var bytesLength = bytes.Length;
@@ -98,7 +154,9 @@ public static class XorHelper
     /// <param name="startIndex">异或计算的开始位置。</param>
     /// <param name="length">异或计算长度。</param>
     /// <param name="code">异或二进制流(密钥)。</param>
-    /// <exception cref="Exception">当code为null、长度为0或参数无效时抛出异常。</exception>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出。</exception>
     public static void GetSelfXorBytes(byte[] bytes, int startIndex, int length, byte[] code)
     {
         if (bytes == null)
@@ -106,24 +164,24 @@ public static class XorHelper
             return;
         }
 
-        if (code == null)
+        ArgumentNullException.ThrowIfNull(code, nameof(code));
+
+        if (code.Length == 0)
         {
-            throw new Exception("Code is invalid.");
+            throw new ArgumentException("Code array cannot be empty", nameof(code));
+        }
+
+        ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
+        ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
+        
+        if (startIndex + length > bytes.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(length), "Start index and length exceed array bounds");
         }
 
         var codeLength = code.Length;
-        if (codeLength <= 0)
-        {
-            throw new Exception("Code length is invalid.");
-        }
-
-        if (startIndex < 0 || length < 0 || startIndex + length > bytes.Length)
-        {
-            throw new Exception("Start index or length is invalid.");
-        }
-
         var codeIndex = startIndex % codeLength;
-        for (var i = startIndex; i < length; i++)
+        for (var i = startIndex; i < startIndex + length; i++)
         {
             bytes[i] ^= code[codeIndex++];
             codeIndex %= codeLength;
