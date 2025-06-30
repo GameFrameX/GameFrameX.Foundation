@@ -33,7 +33,7 @@ public class Sha256HelperTests
     }
 
     [Fact]
-    public void ComputeHash_EmptyString_ShouldReturnEmptyString()
+    public void ComputeHash_EmptyString_ShouldReturnValidHash()
     {
         // Arrange
         var input = EmptyString;
@@ -42,20 +42,20 @@ public class Sha256HelperTests
         var hash = Sha256Helper.ComputeHash(input);
 
         // Assert
-        Assert.Equal(string.Empty, hash);
+        Assert.NotNull(hash);
+        Assert.NotEmpty(hash);
+        Assert.Equal(64, hash.Length); // SHA-256 哈希长度应为64个字符
+        Assert.Equal("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", hash);
     }
 
     [Fact]
-    public void ComputeHash_NullString_ShouldReturnEmptyString()
+    public void ComputeHash_NullString_ShouldThrowArgumentNullException()
     {
         // Arrange
         string input = null;
 
-        // Act
-        var hash = Sha256Helper.ComputeHash(input);
-
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.ComputeHash(input));
     }
 
     [Fact]
@@ -119,20 +119,17 @@ public class Sha256HelperTests
     }
 
     [Fact]
-    public void ComputeHash_NullByteArray_ShouldReturnEmptyString()
+    public void ComputeHash_NullByteArray_ShouldThrowArgumentNullException()
     {
         // Arrange
         byte[] input = null;
 
-        // Act
-        var hash = Sha256Helper.ComputeHash(input);
-
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.ComputeHash(input));
     }
 
     [Fact]
-    public void ComputeHash_EmptyByteArray_ShouldReturnEmptyString()
+    public void ComputeHash_EmptyByteArray_ShouldReturnValidHash()
     {
         // Arrange
         var input = new byte[0];
@@ -141,7 +138,10 @@ public class Sha256HelperTests
         var hash = Sha256Helper.ComputeHash(input);
 
         // Assert
-        Assert.Equal(string.Empty, hash);
+        Assert.NotNull(hash);
+        Assert.NotEmpty(hash);
+        Assert.Equal(64, hash.Length); // SHA-256 哈希长度应为64个字符
+        Assert.Equal("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855", hash);
     }
 
     [Fact]
@@ -208,6 +208,26 @@ public class Sha256HelperTests
     }
 
     [Fact]
+    public void ComputeFileHash_NullFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        string filePath = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.ComputeFileHash(filePath));
+    }
+
+    [Fact]
+    public void ComputeFileHash_EmptyFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var filePath = string.Empty;
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha256Helper.ComputeFileHash(filePath));
+    }
+
+    [Fact]
     public void VerifyHash_ValidStringAndHash_ShouldReturnTrue()
     {
         // Arrange
@@ -236,59 +256,50 @@ public class Sha256HelperTests
     }
 
     [Fact]
-    public void VerifyHash_NullInput_ShouldReturnFalse()
+    public void VerifyHash_NullInput_ShouldThrowArgumentNullException()
     {
         // Arrange
         string input = null;
         var hash = "some_hash";
 
-        // Act
-        var result = Sha256Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.VerifyHash(input, hash));
     }
 
     [Fact]
-    public void VerifyHash_NullHash_ShouldReturnFalse()
+    public void VerifyHash_NullHash_ShouldThrowArgumentNullException()
     {
         // Arrange
         var input = TestString;
         string hash = null;
 
-        // Act
-        var result = Sha256Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.VerifyHash(input, hash));
     }
 
     [Fact]
-    public void VerifyHash_EmptyInput_ShouldReturnFalse()
+    public void VerifyHash_EmptyInput_ShouldReturnValidResult()
     {
         // Arrange
         var input = string.Empty;
-        var hash = "some_hash";
+        var expectedHash = Sha256Helper.ComputeHash(input);
 
         // Act
-        var result = Sha256Helper.VerifyHash(input, hash);
+        var result = Sha256Helper.VerifyHash(input, expectedHash);
 
         // Assert
-        Assert.False(result);
+        Assert.True(result);
     }
 
     [Fact]
-    public void VerifyHash_EmptyHash_ShouldReturnFalse()
+    public void VerifyHash_EmptyHash_ShouldThrowArgumentException()
     {
         // Arrange
         var input = TestString;
         var hash = string.Empty;
 
-        // Act
-        var result = Sha256Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha256Helper.VerifyHash(input, hash));
     }
 
     [Fact]
@@ -334,31 +345,28 @@ public class Sha256HelperTests
     }
 
     [Fact]
-    public void VerifyHash_NullByteArray_ShouldReturnFalse()
+    public void VerifyHash_NullByteArray_ShouldThrowArgumentNullException()
     {
         // Arrange
         byte[] input = null;
         var hash = "some_hash";
 
-        // Act
-        var result = Sha256Helper.VerifyHash(input, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.VerifyHash(input, hash));
     }
 
     [Fact]
-    public void VerifyHash_EmptyByteArray_ShouldReturnFalse()
+    public void VerifyHash_EmptyByteArray_ShouldReturnValidResult()
     {
         // Arrange
         var input = new byte[0];
-        var hash = "some_hash";
+        var expectedHash = Sha256Helper.ComputeHash(input);
 
         // Act
-        var result = Sha256Helper.VerifyHash(input, hash);
+        var result = Sha256Helper.VerifyHash(input, expectedHash);
 
         // Assert
-        Assert.False(result);
+        Assert.True(result);
     }
 
     [Fact]
@@ -376,31 +384,47 @@ public class Sha256HelperTests
     }
 
     [Fact]
-    public void VerifyFileHash_NullHash_ShouldReturnFalse()
+    public void VerifyFileHash_NullFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        string filePath = null;
+        var hash = "some_hash";
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.VerifyFileHash(filePath, hash));
+    }
+
+    [Fact]
+    public void VerifyFileHash_EmptyFilePath_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var filePath = string.Empty;
+        var hash = "some_hash";
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha256Helper.VerifyFileHash(filePath, hash));
+    }
+
+    [Fact]
+    public void VerifyFileHash_NullHash_ShouldThrowArgumentException()
     {
         // Arrange
         var filePath = "some_file.txt";
         string hash = null;
 
-        // Act
-        var result = Sha256Helper.VerifyFileHash(filePath, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => Sha256Helper.VerifyFileHash(filePath, hash));
     }
 
     [Fact]
-    public void VerifyFileHash_EmptyHash_ShouldReturnFalse()
+    public void VerifyFileHash_EmptyHash_ShouldThrowArgumentException()
     {
         // Arrange
         var filePath = "some_file.txt";
         var hash = string.Empty;
 
-        // Act
-        var result = Sha256Helper.VerifyFileHash(filePath, hash);
-
-        // Assert
-        Assert.False(result);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sha256Helper.VerifyFileHash(filePath, hash));
     }
 
     [Fact]
@@ -433,17 +457,19 @@ public class Sha256HelperTests
     }
 
     [Fact]
-    public void ComputeHash_EmptyStringTestVector_ShouldReturnEmptyString()
+    public void ComputeHash_EmptyStringTestVector_ShouldReturnValidHash()
     {
         // Arrange
         var input = "";
-        var expectedResult = ""; // Sha256Helper returns empty string for empty input
+        var expectedResult = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"; // Known SHA-256 hash for empty string
 
         // Act
         var actualHash = Sha256Helper.ComputeHash(input);
 
         // Assert
         Assert.Equal(expectedResult, actualHash);
+        Assert.Equal(64, actualHash.Length);
+        Assert.NotEmpty(actualHash);
     }
 
     [Fact]
