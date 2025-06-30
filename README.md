@@ -1,196 +1,256 @@
 # GameFrameX.Foundation
 
-GameFrameX 的基建库, 提供了一些基础的扩展方法和工具类.
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![.NET](https://img.shields.io/badge/.NET-6.0%2B-purple.svg)](https://dotnet.microsoft.com/)
 
-## HTTP 消息结构标准化组件 (GameFrameX.Foundation.Http.Normalization)
+### 📊 NuGet 包状态
 
-该组件提供了 HTTP 消息结构标准化的功能, 让消息的格式更加统一.
+| 包名 | 版本 | 下载次数 |
+|------|------|----------|
+| GameFrameX.Foundation.Encryption | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) |
+| GameFrameX.Foundation.Hash | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) |
+| GameFrameX.Foundation.Http.Extension | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) |
+| GameFrameX.Foundation.Http.Normalization | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
+| GameFrameX.Foundation.Json | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) |
+| GameFrameX.Foundation.Logger | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) |
 
-服务器返回的消息包含 `code` 和 `message` 和 `data`, 但是客户端需要统一的返回格式, 需要进行格式化.所以这个组件提供了格式化的功能. 适用于GameFrameX 的整个生态标准
+GameFrameX 的基础工具库，提供了一系列高性能、易用的基础组件和工具类，涵盖加密、哈希、HTTP、JSON、日志等常用功能。
 
-## 加密工具库 (GameFrameX.Foundation.Encryption)
+## 📦 程序集概览
 
-该库提供了多种加密算法的实现，包括：
+| 程序集 | 功能描述 | NuGet 包名 |
+|--------|----------|------------|
+| GameFrameX.Foundation.Encryption | 加密工具库 | `GameFrameX.Foundation.Encryption` |
+| GameFrameX.Foundation.Hash | 哈希工具库 | `GameFrameX.Foundation.Hash` |
+| GameFrameX.Foundation.Http.Extension | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension` |
+| GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化 | `GameFrameX.Foundation.Http.Normalization` |
+| GameFrameX.Foundation.Json | JSON 序列化工具 | `GameFrameX.Foundation.Json` |
+| GameFrameX.Foundation.Logger | Serilog 日志配置 | `GameFrameX.Foundation.Logger` |
 
-### AES 加密 (AesHelper)
+## 🚀 快速开始
 
-提供 AES 对称加密算法的实现：
+### 安装
 
-- 支持字符串和字节数组的加密/解密
-- 使用 Rijndael 算法作为 AES 标准的实现
-- 提供高安全级别的加密方案
+通过 NuGet 包管理器安装所需的组件：
 
-### RSA 加密 (RsaHelper)
+```bash
+# 安装加密工具库
+dotnet add package GameFrameX.Foundation.Encryption
 
-提供 RSA 非对称加密算法的实现：
+# 安装哈希工具库
+dotnet add package GameFrameX.Foundation.Hash
 
-- 支持密钥对生成
-- 支持公钥加密/私钥解密
-- 支持数字签名和验证
-- 支持字符串和字节数组操作
+# 安装 JSON 工具库
+dotnet add package GameFrameX.Foundation.Json
 
-### DSA 签名 (DsaHelper)
+# 安装日志工具库
+dotnet add package GameFrameX.Foundation.Logger
 
-提供 DSA 数字签名算法的实现：
+# 安装 HTTP 扩展
+dotnet add package GameFrameX.Foundation.Http.Extension
 
-- 支持密钥对生成
-- 支持数字签名和验证
-- 支持字符串和字节数组操作
+# 安装 HTTP 消息标准化
+dotnet add package GameFrameX.Foundation.Http.Normalization
+```
 
-### SM2/SM4 加密 (Sm2Helper/Sm4Helper)
-
-提供国密 SM2/SM4 算法的实现：
-
-- SM2: 非对称加密算法
-    - 支持密钥对生成
-    - 支持加密/解密操作
-- SM4: 对称加密算法
-    - 支持 ECB/CBC 加密模式
-    - 支持 JavaScript 兼容模式
-    - 支持十六进制密钥
-
-### XOR 加密 (XorHelper)
-
-提供异或加密算法的实现：
-
-- 支持快速加密模式（仅加密前220字节）
-- 支持完整加密模式
-- 支持指定范围加密
-- 内存优化设计，支持原地加密
-
-### 使用示例
+### 基本使用
 
 ```csharp
-// AES 加密示例
+using GameFrameX.Foundation.Encryption;
+using GameFrameX.Foundation.Hash;
+using GameFrameX.Foundation.Json;
+using GameFrameX.Foundation.Logger;
+
+// AES 加密
 string encrypted = AesHelper.Encrypt("Hello World", "your-key");
 string decrypted = AesHelper.Decrypt(encrypted, "your-key");
-// RSA 加密示例
+
+// SHA-256 哈希
+string hash = Sha256Helper.ComputeHash("Hello World");
+
+// JSON 序列化
+string json = JsonHelper.Serialize(myObject);
+MyClass obj = JsonHelper.Deserialize<MyClass>(json);
+
+// 日志记录
+LogHandler.Create(LogOptions.Default);
+LogHelper.Info("应用程序启动");
+```
+
+## 📚 详细文档
+
+### 🔐 加密工具库 (GameFrameX.Foundation.Encryption)
+
+提供多种加密算法的实现，确保数据安全传输和存储。
+
+#### 支持的算法
+
+- **AES 加密** (`AesHelper`): 对称加密算法，支持字符串和字节数组
+- **RSA 加密** (`RsaHelper`): 非对称加密算法，支持密钥对生成、加密解密、数字签名
+- **DSA 签名** (`DsaHelper`): 数字签名算法，支持签名和验证
+- **SM2/SM4 加密** (`Sm2Helper`/`Sm4Helper`): 国密算法实现
+  - SM2: 非对称加密算法
+  - SM4: 对称加密算法，支持 ECB/CBC 模式
+- **XOR 加密** (`XorHelper`): 异或加密，支持快速加密和完整加密模式
+
+#### 使用示例
+
+```csharp
+// AES 加密
+string encrypted = AesHelper.Encrypt("敏感数据", "your-secret-key");
+string decrypted = AesHelper.Decrypt(encrypted, "your-secret-key");
+
+// RSA 加密
 var keys = RsaHelper.Make();
 string encrypted = RsaHelper.Encrypt(keys["publicKey"], "Hello World");
 string decrypted = RsaHelper.Decrypt(keys["privateKey"], encrypted);
-// SM4 加密示例
+
+// SM4 加密
 string encrypted = Sm4Helper.EncryptCbc("your-key", "Hello World");
 string decrypted = Sm4Helper.DecryptCbc("your-key", encrypted);
 ```
 
-## 哈希工具库 (GameFrameX.Foundation.Hash)
+### 🔗 哈希工具库 (GameFrameX.Foundation.Hash)
 
-该库提供了多种哈希算法的实现，包括：
+提供多种哈希算法实现，适用于数据完整性校验、快速查找等场景。
 
-### MD5 哈希 (Md5Helper)
+#### 支持的算法
 
-- 提供字符串、流、文件和字节数组的MD5哈希计算
-- 支持加盐哈希
-- 支持哈希值验证
-- 注：MD5已不再被认为是加密安全的，建议在安全要求较高的场景使用SHA-256或更高强度的算法
+- **MD5** (`Md5Helper`): 128位哈希值，支持加盐
+- **SHA 系列**:
+  - SHA-1 (`Sha1Helper`): 160位哈希值
+  - SHA-256 (`Sha256Helper`): 256位哈希值
+  - SHA-512 (`Sha512Helper`): 512位哈希值
+- **HMAC-SHA256** (`HmacSha256Helper`): 基于密钥的消息认证码
+- **CRC 校验** (`CrcHelper`): CRC32/CRC64 循环冗余校验
+- **MurmurHash3** (`MurmurHash3Helper`): 高性能非加密哈希
+- **xxHash** (`XxHashHelper`): 超高性能哈希算法，支持32/64/128位
 
-### SHA 系列哈希
-
-- SHA-1 (Sha1Helper): 生成160位(20字节)哈希值
-- SHA-256 (Sha256Helper): 生成256位(32字节)哈希值
-- SHA-512 (Sha512Helper): 生成512位(64字节)哈希值
-- 支持字符串、字节数组和文件的哈希计算与验证
-- 支持自定义编码
-
-### HMAC-SHA256 (HmacSha256Helper)
-
-- 基于密钥的哈希消息认证码
-- 结合SHA-256哈希函数和密钥
-- 返回Base64编码的哈希值
-
-### CRC 校验 (CrcHelper)
-
-- CRC32: 32位循环冗余校验
-- CRC64: 64位循环冗余校验，基于ECMA-182标准
-- 支持流式处理
-- 支持字节数组和文件处理
-
-### MurmurHash3 (MurmurHash3Helper)
-
-- 非加密型高性能哈希算法
-- 32位版本实现
-- 支持自定义种子值
-- 适用于哈希表等场景
-
-### xxHash (XxHashHelper)
-
-- 提供32位、64位和128位哈希值计算
-- 高性能非加密型哈希算法
-- 支持字符串、字节数组和类型哈希
-- 适用于需要快速哈希计算的场景
-
-### 使用示例
+#### 使用示例
 
 ```csharp
-// MD5哈希示例
+// MD5 哈希
 string md5Hash = Md5Helper.Hash("Hello World");
 string saltedHash = Md5Helper.HashWithSalt("Hello World", "salt");
-// SHA-256哈希示例
+
+// SHA-256 哈希
 string sha256Hash = Sha256Helper.ComputeHash("Hello World");
-// HMAC-SHA256示例
-string hmacHash = HmacSha256Helper.Hash("message", "key");
-// CRC32校验示例
-int crc32 = CrcHelper.GetCrc32("Hello World"u8.ToArray());
-// MurmurHash3示例
-uint murmurHash = MurmurHash3Helper.Hash("Hello World");
-// xxHash示例
+
+// HMAC-SHA256
+string hmacHash = HmacSha256Helper.Hash("message", "secret-key");
+
+// xxHash (高性能)
 ulong xxHash = XxHashHelper.Hash64("Hello World");
 ```
 
-## JSON 序列化/反序列化 (GameFrameX.Foundation.Json)
+### 🌐 HTTP 工具库
 
-- 基于 System.Text.Json 的高性能序列化工具
-- 提供默认和格式化两种序列化配置:
-    - DefaultOptions: 紧凑输出,适合传输
-    - FormatOptions: 格式化输出,适合调试
-- 特性支持:
-    - 枚举序列化为字符串
-    - 忽略 null 值属性
-    - 忽略循环引用
-    - 属性名称大小写不敏感
-- 丰富的序列化/反序列化方法:
-    - 字符串序列化/反序列化
-    - UTF8字节数组序列化/反序列化
-    - 安全的Try方法
-    - 支持泛型和非泛型API
+#### HTTP 扩展 (GameFrameX.Foundation.Http.Extension)
 
-### 使用示例
+为 HttpClient 提供便捷的扩展方法，简化 JSON 数据的发送和接收。
 
 ```csharp
-// 序列化示例
-string json = JsonHelper.Serialize(myObject);
-// 反序列化示例
-MyClass deserializedObject = JsonHelper.Deserialize<MyClass>(json);
-```
-
-## HttpClient 扩展 (GameFrameX.Foundation.Http.Extension)
-
-- 提供 HttpClient 的扩展方法，用于发送JSON请求和处理JSON响应
-- 支持POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串
-- 支持自定义请求头和超时时间
-- 支持泛型和非泛型API
-
-### 使用示例
-
-```csharp
-// POST请求示例
+// POST JSON 请求
 string response = await httpClient.PostJsonToStringAsync<MyClass>(url, myObject);
 ```
 
-## Serilog 日志配置 (GameFrameX.Foundation.Logger)
+#### HTTP 消息标准化 (GameFrameX.Foundation.Http.Normalization)
 
-- 提供 Serilog 的扩展方法，用于配置日志输出
-- 支持常用参数配置，如日志级别、输出路径、序列化格式等
-- 支持自定义外部日志提供程序
-- 提供常用的日志记录函数，如 Debug、Information、Warning、Error
-- 提供日志的自我诊断输出
+提供统一的 HTTP 响应格式，包含 `code`、`message` 和 `data` 字段，适用于 GameFrameX 生态系统。
 
-### 使用示例
+### 📄 JSON 序列化 (GameFrameX.Foundation.Json)
+
+基于 `System.Text.Json` 的高性能序列化工具，提供优化的默认配置。
+
+#### 特性
+
+- 高性能序列化/反序列化
+- 枚举序列化为字符串
+- 忽略 null 值属性
+- 忽略循环引用
+- 属性名称大小写不敏感
+- 提供格式化和紧凑两种输出模式
+
+#### 使用示例
 
 ```csharp
-// 默认配置
-LogHandler.Create(LogOptions.Default);
-// 日志打印
-LogHelper.Info("Hello World");
+// 序列化
+string json = JsonHelper.Serialize(myObject);
+string formattedJson = JsonHelper.Serialize(myObject, JsonHelper.FormatOptions);
+
+// 反序列化
+MyClass obj = JsonHelper.Deserialize<MyClass>(json);
+
+// 安全的反序列化
+if (JsonHelper.TryDeserialize<MyClass>(json, out var result))
+{
+    // 处理结果
+}
 ```
+
+### 📝 日志工具库 (GameFrameX.Foundation.Logger)
+
+基于 Serilog 的日志配置工具，提供简单易用的日志记录功能。
+
+#### 特性
+
+- 支持多种日志级别 (Debug, Info, Warning, Error, Fatal)
+- 灵活的输出配置
+- 支持自定义日志提供程序
+- 提供日志自我诊断
+
+#### 使用示例
+
+```csharp
+// 初始化日志
+LogHandler.Create(LogOptions.Default);
+
+// 记录日志
+LogHelper.Debug("调试信息");
+LogHelper.Info("普通信息");
+LogHelper.Warning("警告信息");
+LogHelper.Error("错误信息");
+LogHelper.Fatal("致命错误");
+```
+
+## 🧪 测试
+
+项目包含完整的单元测试，确保代码质量和功能正确性。
+
+```bash
+# 运行所有测试
+dotnet test
+
+# 运行特定测试
+dotnet test --filter "ClassName=XxHashHelperTests"
+```
+
+## 📋 系统要求
+
+- .NET 6.0 或更高版本
+- 支持 Windows、Linux、macOS
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request 来改进项目。
+
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开 Pull Request
+
+## 📄 许可证
+
+本项目采用 [MIT License](LICENSE) 许可证。
+
+## 🔗 相关链接
+
+- [GameFrameX 官网](https://gameframex.com)
+- [文档中心](https://docs.gameframex.com)
+- [问题反馈](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
+
+---
+
+**GameFrameX.Foundation** - 让开发更简单，让代码更优雅！
 
