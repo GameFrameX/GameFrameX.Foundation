@@ -23,7 +23,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static uint ReadUInt(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.UIntSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.UIntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -42,7 +44,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static int ReadInt(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.IntSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.IntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -61,7 +65,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static ulong ReadULong(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.ULongSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.ULongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -80,7 +86,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static long ReadLong(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.LongSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.LongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -99,7 +107,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static ushort ReadUShort(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.UShortSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.UShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -118,7 +128,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static short ReadShort(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.ShortSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.ShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -137,7 +149,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static float ReadFloat(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.FloatSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.FloatSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -156,7 +170,9 @@ public static class ReadOnlySpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static double ReadDouble(this ReadOnlySpan<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.DoubleSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.DoubleSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
