@@ -39,19 +39,37 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// </summary>
     /// <param name="value">要比较的对象。</param>
     /// <returns>一个整数，指示当前对象与 <paramref name="value" /> 的相对顺序。</returns>
-    public int CompareTo(object value)
+    /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出。</exception>
+    public int CompareTo(object? value)
     {
+        if (value is null)
+        {
+            return Item is null ? 0 : 1;
+        }
+
         if (value is NullObject<T> nullObject)
         {
-            if (nullObject.Item is IComparable c)
+            if (Item is null && nullObject.Item is null)
+                return 0;
+            if (Item is null)
+                return -1;
+            if (nullObject.Item is null)
+                return 1;
+
+            if (Item is IComparable comparable)
             {
-                return ((IComparable)Item).CompareTo(c);
+                return comparable.CompareTo(nullObject.Item);
             }
 
             return string.Compare(Item.ToString(), nullObject.Item.ToString(), StringComparison.Ordinal);
         }
 
-        return 1;
+        if (value is T directValue)
+        {
+            return CompareTo(directValue);
+        }
+
+        throw new ArgumentException("Object must be of type NullObject<T> or T.", nameof(value));
     }
 
     /// <summary>
@@ -59,14 +77,22 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// </summary>
     /// <param name="other">要比较的对象。</param>
     /// <returns>一个整数，指示当前对象与 <paramref name="other" /> 的相对顺序。</returns>
-    public int CompareTo(T other)
+    /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出。</exception>
+    public int CompareTo(T? other)
     {
-        if (other is IComparable c)
+        if (Item is null && other is null)
+            return 0;
+        if (Item is null)
+            return -1;
+        if (other is null)
+            return 1;
+
+        if (Item is IComparable comparable)
         {
-            return ((IComparable)Item).CompareTo(c);
+            return comparable.CompareTo(other);
         }
 
-        return Item.ToString().CompareTo(other.ToString());
+        return string.Compare(Item.ToString(), other.ToString(), StringComparison.Ordinal);
     }
 
     /// <summary>
