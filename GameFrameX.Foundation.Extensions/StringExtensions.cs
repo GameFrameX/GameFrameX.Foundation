@@ -12,16 +12,44 @@ namespace GameFrameX.Foundation.Extensions;
 public static class StringExtensions
 {
     /// <summary>
-    /// 将Base64字符串中的+和/替换为-和_
+    /// 将Base64字符串转换为URL安全格式。
     /// </summary>
-    /// <param name="value">要处理的Base64字符串</param>
-    /// <returns>替换特殊字符后的Base64字符串</returns>
+    /// <param name="value">要处理的Base64字符串。</param>
+    /// <returns>URL安全的Base64字符串。</returns>
+    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
     /// <remarks>
-    /// 此方法通常用于URL安全的Base64编码,将不安全的字符替换为URL友好的字符
+    /// 此方法将Base64字符串中的+和/字符分别替换为-和_字符，并移除填充字符=，使其适用于URL传输。
+    /// 符合RFC 4648标准的Base64URL编码规范。
     /// </remarks>
-    public static string NormalizeBase64(this string value)
+    public static string ToUrlSafeBase64(this string value)
     {
-        return value.Replace("+", "-").Replace("/", "_");
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        return value.Replace("+", "-").Replace("/", "_").TrimEnd('=');
+    }
+
+    /// <summary>
+    /// 将URL安全的Base64字符串转换回标准Base64格式。
+    /// </summary>
+    /// <param name="value">要处理的URL安全Base64字符串。</param>
+    /// <returns>标准格式的Base64字符串。</returns>
+    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
+    /// <remarks>
+    /// 此方法是ToUrlSafeBase64的反向操作，将-和_字符分别替换回+和/字符，并根据需要添加填充字符=。
+    /// 用于将URL安全的Base64字符串还原为标准Base64格式。
+    /// </remarks>
+    public static string FromUrlSafeBase64(this string value)
+    {
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        var result = value.Replace("-", "+").Replace("_", "/");
+        
+        // 添加必要的填充字符
+        var padding = 4 - (result.Length % 4);
+        if (padding < 4)
+        {
+            result = result.PadRight(result.Length + padding, '=');
+        }
+        
+        return result;
     }
 
     /// <summary>
@@ -38,12 +66,15 @@ public static class StringExtensions
     /// <param name="c">要重复的字符。</param>
     /// <param name="count">重复次数。</param>
     /// <returns>由指定字符重复指定次数组成的新字符串。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当count为负数时抛出。</exception>
     /// <remarks>
     /// 使用StringBuilder来提高字符串拼接性能
-    /// 当count为0或负数时,返回空字符串
+    /// 当count为0时,返回空字符串
     /// </remarks>
     public static string RepeatChar(this char c, int count)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
+        
         var stringBuilder = new StringBuilder();
         stringBuilder.Clear();
         for (var i = 0; i < count; i++)
@@ -59,21 +90,26 @@ public static class StringExtensions
     /// </summary>
     /// <param name="text">要居中对齐的文本。</param>
     /// <param name="width">总宽度。</param>
-    /// <returns>居中对齐后的文本，两侧填充空格。</returns>
+    /// <returns>两侧填充空格的居中对齐文本。</returns>
+    /// <exception cref="ArgumentNullException">当text为null时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当width为负数时抛出。</exception>
     /// <remarks>
-    /// 如果指定宽度小于文本长度，将使用文本长度作为宽度。
-    /// 当文本长度为奇数且总宽度为偶数时,右侧空格会比左侧少一个
+    /// 如果指定的宽度小于文本长度，将使用文本长度作为宽度。
+    /// 当文本长度为奇数且总宽度为偶数时，右侧的空格数会比左侧少一个。
     /// </remarks>
     public static string CenterAlignedText(this string text, int width)
     {
+        ArgumentNullException.ThrowIfNull(text, nameof(text));
+        ArgumentOutOfRangeException.ThrowIfNegative(width, nameof(width));
+        
         if (width < text.Length)
         {
             width = text.Length;
-            // throw new IndexOutOfRangeException(nameof(width));
         }
 
-        var spaces = (width - text.Length) / 2;
-        var paddedText = new string(' ', spaces) + text + new string(' ', spaces);
+        var leftSpaces = (width - text.Length) / 2;
+        var rightSpaces = width - text.Length - leftSpaces; // 确保左右空格总数等于width-text.Length
+        var paddedText = new string(' ', leftSpaces) + text + new string(' ', rightSpaces);
         return paddedText;
     }
 
@@ -105,7 +141,12 @@ public static class StringExtensions
     /// </remarks>
     public static string RemoveSuffix(this string self, string toRemove)
     {
-        return self.IsNullOrEmpty() ? self : self.EndsWith(toRemove) ? self.Substring(0, self.Length - toRemove.Length) : self;
+        if (self.IsNullOrEmpty() || toRemove.IsNullOrEmpty())
+        {
+            return self;
+        }
+        
+        return self.EndsWith(toRemove) ? self.Substring(0, self.Length - toRemove.Length) : self;
     }
 
     /// <summary>
@@ -208,41 +249,35 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// 验证字符串不为 null 或空字符串，否则抛出异常。
+    /// 验证字符串不为null或空，否则抛出异常。
     /// </summary>
     /// <param name="value">要验证的字符串。</param>
-    /// <param name="name">参数名称，用于异常消息。</param>
-    /// <exception cref="ArgumentNullException">当字符串为 null 或空字符串时抛出。</exception>
+    /// <param name="name">异常消息中的参数名称。</param>
+    /// <exception cref="ArgumentException">当字符串为null或空时抛出。</exception>
     /// <remarks>
-    /// 常用于方法参数验证
-    /// 抛出的异常包含参数名称，便于定位问题
-    /// 验证失败时抛出的异常消息为中文
+    /// 常用于方法参数验证。
+    /// 抛出的异常包含参数名称，便于问题定位。
+    /// 异常消息使用英文以保持一致性。
     /// </remarks>
     public static void CheckNotNullOrEmpty(this string value, string name)
     {
-        if (value.IsNullOrEmpty())
-        {
-            throw new ArgumentNullException(name, "不能为 null。");
-        }
+        ArgumentException.ThrowIfNullOrEmpty(value, name);
     }
 
     /// <summary>
-    /// 验证字符串不为 null、空字符串或仅包含空白字符，否则抛出异常。
+    /// 验证字符串不为null、空或仅包含空白字符，否则抛出异常。
     /// </summary>
     /// <param name="value">要验证的字符串。</param>
-    /// <param name="name">参数名称，用于异常消息。</param>
-    /// <exception cref="ArgumentNullException">当字符串为 null、空字符串或仅包含空白字符时抛出。</exception>
+    /// <param name="name">异常消息中的参数名称。</param>
+    /// <exception cref="ArgumentException">当字符串为null、空或仅包含空白字符时抛出。</exception>
     /// <remarks>
-    /// 比CheckNotNullOrEmpty更严格的验证
-    /// 确保字符串包含至少一个非空白字符
-    /// 常用于需要确保输入内容有效的场景
+    /// 比CheckNotNullOrEmpty更严格的验证。
+    /// 确保字符串包含至少一个非空白字符。
+    /// 常用于需要确保有效输入内容的场景。
     /// </remarks>
     public static void CheckNotNullOrEmptyOrWhiteSpace(this string value, string name)
     {
-        if (value.IsNullOrEmptyOrWhiteSpace())
-        {
-            throw new ArgumentNullException(name, "不能为 null 或空白字符串。");
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(value, name);
     }
 
     /// <summary>
@@ -318,6 +353,7 @@ public static class StringExtensions
     /// </summary>
     /// <param name="path">目录路径。</param>
     /// <param name="isFile">是否为文件路径，如果为true，则创建文件所在的目录。默认为false。</param>
+    /// <exception cref="ArgumentNullException">当path为null时抛出。</exception>
     /// <remarks>
     /// 如果路径不存在，会递归创建所有必需的父目录
     /// 当isFile为true时，会自动获取文件所在目录路径
@@ -326,6 +362,8 @@ public static class StringExtensions
     /// </remarks>
     public static void CreateAsDirectory(this string path, bool isFile = false)
     {
+        ArgumentNullException.ThrowIfNull(path, nameof(path));
+        
         if (isFile)
         {
             path = Path.GetDirectoryName(path);
@@ -339,15 +377,15 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// 将驼峰命名的字符串转换为下划线分隔的小写形式（蛇形命名）。
+    /// 将驼峰命名法字符串转换为蛇形命名法（下划线分隔的小写形式）。
     /// </summary>
     /// <param name="input">要转换的字符串。</param>
-    /// <returns>转换后的蛇形命名字符串。如果输入为null或空，则返回原字符串。</returns>
+    /// <returns>转换后的蛇形命名法字符串。如果输入为null或空，则返回原字符串。</returns>
     /// <remarks>
-    /// 保留字符串开头的下划线
-    /// 在小写字母或数字后跟大写字母的位置插入下划线
-    /// 最终转换为全小写形式
-    /// 适用于数据库字段命名规范转换
+    /// 保留字符串中的前导下划线。
+    /// 在小写字母或数字后跟大写字母的位置插入下划线。
+    /// 最后转换为全小写形式。
+    /// 适用于数据库字段命名约定转换。
     /// </remarks>
     public static string ConvertToSnakeCase(this string input)
     {
@@ -356,25 +394,26 @@ public static class StringExtensions
             return input;
         }
 
-        var startUnderscores = Regex.Match(input, @"^_+");
-        return startUnderscores + Regex.Replace(input, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
+        var startUnderscores = Regex.Match(input, @"^_+").Value;
+        return startUnderscores + Regex.Replace(input.TrimStart('_'), @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
     }
 
     /// <summary>
-    /// 移除字符串中的所有中文字符。
+    /// 从字符串中移除所有中文字符。
     /// </summary>
     /// <param name="self">要处理的字符串。</param>
     /// <returns>移除所有中文字符后的字符串。</returns>
+    /// <exception cref="ArgumentNullException">当self为null时抛出。</exception>
     /// <remarks>
-    /// 使用预编译的正则表达式提高性能
-    /// 仅移除基本汉字字符(0x4e00-0x9fa5)
-    /// 不会移除中文标点符号
-    /// 如果字符串中没有中文字符，将返回原字符串
+    /// 使用预编译的正则表达式以获得更好的性能。
+    /// 仅移除基本中文字符（0x4e00-0x9fa5）。
+    /// 不移除中文标点符号。
+    /// 如果字符串不包含中文字符，将返回原字符串。
     /// </remarks>
     public static string TrimZhCn(this string self)
     {
-        self = CnReg.Replace(self, string.Empty);
-        return self;
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        return CnReg.Replace(self, string.Empty);
     }
 
     /// <summary>
@@ -383,24 +422,16 @@ public static class StringExtensions
     /// <param name="self">当前字符串。</param>
     /// <param name="target">要比较的目标字符串。</param>
     /// <returns>如果两个字符串相等则返回true，否则返回false。</returns>
-    /// <exception cref="ArgumentNullException">当前字符串为null时抛出。</exception>
+    /// <exception cref="ArgumentNullException">当self或target为null时抛出。</exception>
     /// <remarks>
     /// 从字符串末尾开始比较，可能在某些场景下更快
-    /// 处理了null值的特殊情况
     /// 先比较长度可以快速判断不相等的情况
     /// 区分大小写比较
     /// </remarks>
     public static bool EqualsFast(this string self, string target)
     {
-        if (self == null)
-        {
-            return target == null;
-        }
-
-        if (target == null)
-        {
-            return false;
-        }
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(target, nameof(target));
 
         if (self.Length != target.Length)
         {
@@ -425,14 +456,17 @@ public static class StringExtensions
     /// <param name="self">当前字符串。</param>
     /// <param name="target">要检查的结尾字符串。</param>
     /// <returns>如果字符串以指定字符串结尾则返回true，否则返回false。</returns>
+    /// <exception cref="ArgumentNullException">当self或target为null时抛出。</exception>
     /// <remarks>
-    /// 不进行null检查，调用前需确保参数有效
     /// 从末尾开始比较可以更快发现不匹配
     /// 区分大小写比较
     /// 适用于大量字符串后缀检查的场景
     /// </remarks>
     public static bool EndsWithFast(this string self, string target)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(target, nameof(target));
+        
         int ap = self.Length - 1;
         int bp = target.Length - 1;
 
@@ -451,14 +485,17 @@ public static class StringExtensions
     /// <param name="self">当前字符串。</param>
     /// <param name="target">要检查的开头字符串。</param>
     /// <returns>如果字符串以指定字符串开头则返回true，否则返回false。</returns>
+    /// <exception cref="ArgumentNullException">当self或target为null时抛出。</exception>
     /// <remarks>
-    /// 不进行null检查，调用前需确保参数有效
     /// 从开头逐字符比较直到发现不匹配
     /// 区分大小写比较
     /// 适用于大量字符串前缀检查的场景
     /// </remarks>
     public static bool StartsWithFast(this string self, string target)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(target, nameof(target));
+        
         int aLen = self.Length;
         int bLen = target.Length;
 
