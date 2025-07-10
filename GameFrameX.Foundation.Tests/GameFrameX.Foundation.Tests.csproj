@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameFrameX.Foundation.Encryption\GameFrameX.Foundation.Encryption.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Extensions\GameFrameX.Foundation.Extensions.csproj"/>
     <ProjectReference Include="..\GameFrameX.Foundation.Hash\GameFrameX.Foundation.Hash.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Http.Extension\GameFrameX.Foundation.Http.Extension.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Http.Normalization\GameFrameX.Foundation.Http.Normalization.csproj" />
@@ -32,10 +33,9 @@
 
   <ItemGroup>
     <Folder Include="Encryption\" />
+    <Folder Include="Extensions\"/>
     <Folder Include="Hash\" />
     <Folder Include="Http.Extension\" />
-    <Folder Include="Http.Normalization\" />
-    <Folder Include="Json\" />
     <Folder Include="Logger\" />
   </ItemGroup>
 

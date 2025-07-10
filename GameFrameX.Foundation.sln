@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Logge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Tests", "GameFrameX.Foundation.Tests\GameFrameX.Foundation.Tests.csproj", "{9FD3DB43-B0EA-4288-9158-2F99B781C1D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Extensions", "GameFrameX.Foundation.Extensions\GameFrameX.Foundation.Extensions.csproj", "{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,18 @@ Global
 		{9FD3DB43-B0EA-4288-9158-2F99B781C1D1}.Release|x64.Build.0 = Release|Any CPU
 		{9FD3DB43-B0EA-4288-9158-2F99B781C1D1}.Release|x86.ActiveCfg = Release|Any CPU
 		{9FD3DB43-B0EA-4288-9158-2F99B781C1D1}.Release|x86.Build.0 = Release|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Debug|x64.Build.0 = Debug|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Debug|x86.Build.0 = Debug|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Release|x64.ActiveCfg = Release|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Release|x64.Build.0 = Release|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Release|x86.ActiveCfg = Release|Any CPU
+		{F5F4954F-1893-43CD-948E-F84E5EFA3E4B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
