@@ -26,6 +26,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static void WriteUInt(this Span<byte> buffer, uint value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.UIntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.UIntSize}, Available: {buffer.Length}");
@@ -44,6 +46,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static void WriteUShort(this Span<byte> buffer, ushort value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.UShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.UShortSize}, Available: {buffer.Length}");
@@ -62,6 +66,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static void WriteShort(this Span<byte> buffer, short value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.ShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.ShortSize}, Available: {buffer.Length}");
@@ -81,6 +87,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static unsafe void WriteInt(this Span<byte> buffer, int value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.IntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.IntSize}, Available: {buffer.Length}");
@@ -103,6 +111,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static unsafe void WriteLong(this Span<byte> buffer, long value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.LongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.LongSize}, Available: {buffer.Length}");
@@ -124,6 +134,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static unsafe void WriteFloat(this Span<byte> buffer, float value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.FloatSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.FloatSize}, Available: {buffer.Length}");
@@ -146,6 +158,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static unsafe void WriteDouble(this Span<byte> buffer, double value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.DoubleSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.DoubleSize}, Available: {buffer.Length}");
@@ -168,6 +182,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static unsafe void WriteByte(this Span<byte> buffer, byte value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.ByteSize}, Available: {buffer.Length}");
@@ -189,6 +205,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static unsafe void WriteSByte(this Span<byte> buffer, sbyte value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.ByteSize}, Available: {buffer.Length}");
@@ -210,6 +228,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static unsafe void WriteBool(this Span<byte> buffer, bool value, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         if (offset + ConstSize.BoolSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.BoolSize}, Available: {buffer.Length}");
@@ -233,6 +253,7 @@ public static class SpanExtensions
     public static unsafe void WriteBytesWithoutLength(this Span<byte> buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
         if (offset + value.Length > buffer.Length)
         {
@@ -257,6 +278,7 @@ public static class SpanExtensions
     public static void WriteBytes(this Span<byte> buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
         WriteInt(buffer, value.Length, ref offset);
 
@@ -277,6 +299,7 @@ public static class SpanExtensions
     public static unsafe void WriteString(this Span<byte> buffer, string value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
         if (string.IsNullOrEmpty(value))
         {
@@ -307,19 +330,18 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量，读取后将更新此偏移量。</param>
     /// <returns>读取到的int值。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe int ReadInt(this Span<byte> buffer, ref int offset)
+    public static int ReadInt(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.IntSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.IntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            var value = *(int*)(ptr + offset);
-            offset += ConstSize.IntSize;
-            return IPAddress.NetworkToHostOrder(value);
-        }
+        var value = BinaryPrimitives.ReadInt32BigEndian(buffer[offset..]);
+        offset += ConstSize.IntSize;
+        return value;
     }
 
     /// <summary>
@@ -329,19 +351,18 @@ public static class SpanExtensions
     /// <param name="offset">偏移量，读取结束后会更新此偏移量。</param>
     /// <returns>从字节缓存区中读取出的短整型值</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe short ReadShort(this Span<byte> buffer, ref int offset)
+    public static short ReadShort(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.ShortSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.ShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            var value = *(short*)(ptr + offset);
-            offset += ConstSize.ShortSize;
-            return IPAddress.NetworkToHostOrder(value);
-        }
+        var value = BinaryPrimitives.ReadInt16BigEndian(buffer[offset..]);
+        offset += ConstSize.ShortSize;
+        return value;
     }
 
     /// <summary>
@@ -353,7 +374,9 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static uint ReadUInt(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.UIntSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.UIntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -373,7 +396,9 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static ulong ReadULong(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.ULongSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.ULongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -391,19 +416,18 @@ public static class SpanExtensions
     /// <param name="offset">偏移量，读取结束后会更新此偏移量。</param>
     /// <returns>从字节缓存区中读取出的长整型值</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe long ReadLong(this Span<byte> buffer, ref int offset)
+    public static long ReadLong(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.LongSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.LongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            var value = *(long*)(ptr + offset);
-            offset += ConstSize.LongSize;
-            return IPAddress.NetworkToHostOrder(value);
-        }
+        var value = BinaryPrimitives.ReadInt64BigEndian(buffer[offset..]);
+        offset += ConstSize.LongSize;
+        return value;
     }
 
     /// <summary>
@@ -413,20 +437,18 @@ public static class SpanExtensions
     /// <param name="offset">偏移量，读取结束后会更新此偏移量。</param>
     /// <returns>从字节缓存区中读取出的浮点型值</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe float ReadFloat(this Span<byte> buffer, ref int offset)
+    public static float ReadFloat(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.FloatSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.FloatSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(int*)(ptr + offset) = IPAddress.NetworkToHostOrder(*(int*)(ptr + offset));
-            var value = *(float*)(ptr + offset);
-            offset += ConstSize.FloatSize;
-            return value;
-        }
+        var value = BinaryPrimitives.ReadSingleBigEndian(buffer[offset..]);
+        offset += ConstSize.FloatSize;
+        return value;
     }
 
     /// <summary>
@@ -436,20 +458,18 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量，读取后会自动增加。</param>
     /// <returns>读取的浮点数。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe double ReadDouble(this Span<byte> buffer, ref int offset)
+    public static double ReadDouble(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.DoubleSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.DoubleSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(long*)(ptr + offset) = IPAddress.NetworkToHostOrder(*(long*)(ptr + offset));
-            var value = *(double*)(ptr + offset);
-            offset += ConstSize.DoubleSize;
-            return value;
-        }
+        var value = BinaryPrimitives.ReadDoubleBigEndian(buffer[offset..]);
+        offset += ConstSize.DoubleSize;
+        return value;
     }
 
     /// <summary>
@@ -459,19 +479,18 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量，读取后会自动增加。</param>
     /// <returns>读取的字节。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe byte ReadByte(this Span<byte> buffer, ref int offset)
+    public static byte ReadByte(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.ByteSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            var value = *(ptr + offset);
-            offset += ConstSize.ByteSize;
-            return value;
-        }
+        var value = buffer[offset];
+        offset += ConstSize.ByteSize;
+        return value;
     }
 
     /// <summary>
@@ -483,6 +502,8 @@ public static class SpanExtensions
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
     public static byte[] ReadBytes(this Span<byte> buffer, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         var len = ReadInt(buffer, ref offset);
 
         if (len <= 0)
@@ -490,7 +511,7 @@ public static class SpanExtensions
             return Array.Empty<byte>();
         }
 
-        if (offset > buffer.Length + len * ConstSize.ByteSize)
+        if (offset + len > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
@@ -507,19 +528,18 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量。</param>
     /// <returns>返回读取的有符号字节。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe sbyte ReadSByte(this Span<byte> buffer, ref int offset)
+    public static sbyte ReadSByte(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.ByteSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            var value = *(sbyte*)(ptr + offset);
-            offset += ConstSize.ByteSize;
-            return value;
-        }
+        var value = (sbyte)buffer[offset];
+        offset += ConstSize.ByteSize;
+        return value;
     }
 
     /// <summary>
@@ -529,8 +549,10 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量。</param>
     /// <returns>返回读取的字符串。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe string ReadString(this Span<byte> buffer, ref int offset)
+    public static string ReadString(this Span<byte> buffer, ref int offset)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
         var len = ReadShort(buffer, ref offset);
 
         if (len <= 0)
@@ -538,17 +560,14 @@ public static class SpanExtensions
             return string.Empty;
         }
 
-        if (offset > buffer.Length + len * ConstSize.ByteSize)
+        if (offset + len > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            var value = Encoding.UTF8.GetString(ptr + offset, len);
-            offset += len;
-            return value;
-        }
+        var value = Encoding.UTF8.GetString(buffer.Slice(offset, len));
+        offset += len;
+        return value;
     }
 
     /// <summary>
@@ -558,19 +577,18 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量。</param>
     /// <returns>返回读取的布尔值。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe bool ReadBool(this Span<byte> buffer, ref int offset)
+    public static bool ReadBool(this Span<byte> buffer, ref int offset)
     {
-        if (offset > buffer.Length + ConstSize.BoolSize)
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        
+        if (offset + ConstSize.BoolSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            var value = *(bool*)(ptr + offset);
-            offset += ConstSize.BoolSize;
-            return value;
-        }
+        var value = buffer[offset] != 0;
+        offset += ConstSize.BoolSize;
+        return value;
     }
 
     #endregion
