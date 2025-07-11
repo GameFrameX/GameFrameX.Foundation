@@ -69,7 +69,7 @@ public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
     /// <summary>
     /// 返回一个枚举器，该枚举器可以遍历集合中的每个元素列表。
     /// </summary>
-    /// <returns>一个 <see cref="IEnumerator&lt;List&lt;TElement&gt;&gt;"/> 枚举器，用于遍历集合中的每个元素列表。</returns>
+    /// <returns>一个 <see cref="IEnumerator{T}"/> 枚举器，用于遍历集合中的每个元素列表。</returns>
     public IEnumerator<List<TElement>> GetEnumerator()
     {
         return _dictionary.Values.GetEnumerator();

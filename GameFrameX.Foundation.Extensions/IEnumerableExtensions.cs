@@ -707,12 +707,12 @@ public static class IEnumerableExtensions
     /// <param name="cancellationToken">用于取消操作的取消令牌</param>
     /// <returns>表示异步操作的任务</returns>
     /// <remarks>
-    /// 如果source是ICollection<T>类型，直接使用其Count作为最大并行数。
+    /// 如果source是ICollection&lt;T&gt;类型，直接使用其Count作为最大并行数。
     /// 否则将source转换为List后使用其Count作为最大并行数。
     /// 这样可以确保所有元素都能得到处理，同时避免过多的并行任务。
     /// 
     /// 性能说明:
-    /// 1. 对于ICollection<T>类型，避免了额外的ToList()转换开销
+    /// 1. 对于ICollection&lt;T&gt;类型，避免了额外的ToList()转换开销
     /// 2. 并行度自动适配集合大小，避免创建过多任务
     /// 3. 支持通过CancellationToken取消操作
     /// 

@@ -14,6 +14,10 @@ namespace GameFrameX.Foundation.Extensions;
 /// <typeparam name="TValue">值的类型</typeparam>
 public readonly struct FallbackValue<TValue>
 {
+    /// <summary>
+    /// 获取包装的值
+    /// </summary>
+    /// <value>包装的泛型类型 T 的值</value>
     public TValue Value { get; }
 
     /// <summary>
