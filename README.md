@@ -78,8 +78,8 @@ value.CheckRange(1, 100); // 范围检查
 // 高性能字节操作
 Span<byte> buffer = stackalloc byte[8];
 int offset = 0;
-buffer.WriteUInt(12345u, ref offset);
-buffer.WriteFloat(3.14f, ref offset);
+buffer.WriteUIntValue(12345u, ref offset);
+buffer.WriteFloatValue(3.14f, ref offset);
 
 // 双向字典
 var biDict = new BidirectionalDictionary<string, int>();
@@ -281,8 +281,8 @@ Span<byte> buffer = stackalloc byte[8];
 int offset = 0;
 
 // 写入各种数据类型
-buffer.WriteUInt(12345u, ref offset);
-buffer.WriteFloat(3.14f, ref offset);
+buffer.WriteUIntValue(12345u, ref offset);
+buffer.WriteFloatValue(3.14f, ref offset);
 
 // 读取数据类型
 offset = 0;
