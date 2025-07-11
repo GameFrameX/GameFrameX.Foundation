@@ -80,4 +80,40 @@ public static class ConstSize
     /// 取值范围：0 到 18,446,744,073,709,551,615
     /// </summary>
     public const int ULongSize = sizeof(ulong);
+
+    /// <summary>
+    /// 字符型变量（16 位 Unicode）的字节数。
+    /// 取值范围：U+0000 到 U+FFFF
+    /// 用于存储单个 Unicode 字符
+    /// </summary>
+    public const int CharSize = sizeof(char);
+
+    /// <summary>
+    /// 高精度十进制浮点型变量的字节数。
+    /// 精度：28-29位十进制数字
+    /// 取值范围：±1.0 × 10^-28 到 ±7.9228 × 10^28
+    /// 适用于金融计算等需要高精度的场景
+    /// </summary>
+    public const int DecimalSize = sizeof(decimal);
+
+    /// <summary>
+    /// 日期时间类型变量的字节数。
+    /// 表示从公元1年1月1日午夜12:00:00到9999年12月31日晚上11:59:59之间的日期和时间
+    /// 精度：100纳秒（0.1微秒）
+    /// </summary>
+    public const int DateTimeSize = 8; // DateTime 是 8 字节
+
+    /// <summary>
+    /// 全局唯一标识符（GUID）的字节数。
+    /// 128位（16字节）的唯一标识符
+    /// 格式：xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+    /// </summary>
+    public const int GuidSize = 16; // Guid 是 16 字节
+
+    /// <summary>
+    /// 时间跨度类型变量的字节数。
+    /// 表示时间间隔，精度为100纳秒（0.1微秒）
+    /// 取值范围：-10,675,199天到10,675,199天
+    /// </summary>
+    public const int TimeSpanSize = 8; // TimeSpan 是 8 字节
 }
