@@ -184,7 +184,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteUInt(this byte[] buffer, uint value, ref int offset)
+    public static void WriteUIntValue(this byte[] buffer, uint value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -207,7 +207,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteInt(this byte[] buffer, int value, ref int offset)
+    public static void WriteIntValue(this byte[] buffer, int value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -230,7 +230,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteByte(this byte[] buffer, byte value, ref int offset)
+    public static void WriteByteValue(this byte[] buffer, byte value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -253,7 +253,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteShort(this byte[] buffer, short value, ref int offset)
+    public static void WriteShortValue(this byte[] buffer, short value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -276,7 +276,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteUShort(this byte[] buffer, ushort value, ref int offset)
+    public static void WriteUShortValue(this byte[] buffer, ushort value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -299,7 +299,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteLong(this byte[] buffer, long value, ref int offset)
+    public static void WriteLongValue(this byte[] buffer, long value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -322,7 +322,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteULong(this byte[] buffer, ulong value, ref int offset)
+    public static void WriteULongValue(this byte[] buffer, ulong value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -485,7 +485,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteFloat(this byte[] buffer, float value, ref int offset)
+    public static unsafe void WriteFloatValue(this byte[] buffer, float value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -512,7 +512,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteDouble(this byte[] buffer, double value, ref int offset)
+    public static unsafe void WriteDoubleValue(this byte[] buffer, double value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -540,14 +540,14 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static void WriteBytes(this byte[] buffer, byte[] value, ref int offset)
+    public static void WriteBytesValue(this byte[] buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
         if (value == null)
         {
-            buffer.WriteInt(0, ref offset);
+            buffer.WriteIntValue(0, ref offset);
             return;
         }
 
@@ -557,7 +557,7 @@ public static class ByteExtensions
             return;
         }
 
-        buffer.WriteInt(value.Length, ref offset);
+        buffer.WriteIntValue(value.Length, ref offset);
         value.AsSpan().CopyTo(buffer.AsSpan(offset, value.Length));
         offset += value.Length;
     }
@@ -577,7 +577,7 @@ public static class ByteExtensions
 
         if (value == null)
         {
-            buffer.WriteInt(0, ref offset);
+            buffer.WriteIntValue(0, ref offset);
             return;
         }
 
@@ -601,7 +601,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteSByte(this byte[] buffer, sbyte value, ref int offset)
+    public static unsafe void WriteSByteValue(this byte[] buffer, sbyte value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -627,7 +627,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteString(this byte[] buffer, string value, ref int offset)
+    public static unsafe void WriteStringValue(this byte[] buffer, string value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -654,7 +654,7 @@ public static class ByteExtensions
         fixed (byte* ptr = buffer)
         {
             Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + ConstBaseTypeSize.ShortSize);
-            WriteShort(buffer, (short)len, ref offset);
+            WriteShortValue(buffer, (short)len, ref offset);
             offset += len;
         }
     }
@@ -667,7 +667,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteBool(this byte[] buffer, bool value, ref int offset)
+    public static unsafe void WriteBoolValue(this byte[] buffer, bool value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));

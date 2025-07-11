@@ -202,7 +202,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteUInt(value, ref offset);
+        buffer.WriteUIntValue(value, ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -221,7 +221,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => buffer.WriteUInt(value, ref offset));
+        Assert.Throws<ArgumentNullException>(() => buffer.WriteUIntValue(value, ref offset));
     }
 
     [Fact]
@@ -233,7 +233,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteInt(value, ref offset);
+        buffer.WriteIntValue(value, ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -248,7 +248,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteByte(value, ref offset);
+        buffer.WriteByteValue(value, ref offset);
 
         // Assert
         Assert.Equal(1, offset);
@@ -264,7 +264,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteString(value, ref offset);
+        buffer.WriteStringValue(value, ref offset);
 
         // Assert
         Assert.True(offset > 2); // Should have written length + string bytes
@@ -279,7 +279,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteString(value, ref offset);
+        buffer.WriteStringValue(value, ref offset);
 
         // Assert
         Assert.Equal(2, offset); // Should write length 0
@@ -398,7 +398,7 @@ public class ByteExtensionTests
         string testString = "Hello";
         byte[] buffer = new byte[100];
         int writeOffset = 0;
-        buffer.WriteString(testString, ref writeOffset);
+        buffer.WriteStringValue(testString, ref writeOffset);
         
         int readOffset = 0;
 
@@ -417,7 +417,7 @@ public class ByteExtensionTests
         byte[] buffer = new byte[10];
         bool testValue = true;
         int writeOffset = 0;
-        buffer.WriteBool(testValue, ref writeOffset);
+        buffer.WriteBoolValue(testValue, ref writeOffset);
         
         int readOffset = 0;
 
@@ -442,7 +442,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteUInt(value, ref offset);
+        buffer.WriteUIntValue(value, ref offset);
 
         // Assert
         Assert.Equal(4, offset); // Offset should be updated even if write fails
