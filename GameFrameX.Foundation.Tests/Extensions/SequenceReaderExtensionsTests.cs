@@ -231,7 +231,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBool(ref reader, out bool value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBoolValue(ref reader, out bool value);
 
         // Assert
         Assert.True(result);
@@ -251,7 +251,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBytes(ref reader, 3, out byte[] value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBytesValue(ref reader, 3, out byte[] value);
 
         // Assert
         Assert.True(result);
@@ -273,7 +273,7 @@ public class SequenceReaderExtensionsTests
         // Act & Assert
         try
         {
-            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBytes(ref reader, -1, out _);
+            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBytesValue(ref reader, -1, out _);
             Assert.Fail("Expected ArgumentOutOfRangeException was not thrown.");
         }
         catch (ArgumentOutOfRangeException ex)
@@ -297,7 +297,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBytesWithLength(ref reader, out byte[] value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBytesWithLengthValue(ref reader, out byte[] value);
 
         // Assert
         Assert.True(result);
@@ -321,7 +321,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadString(ref reader, out string value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringValue(ref reader, out string value);
 
         // Assert
         Assert.True(result);
@@ -346,7 +346,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadString(ref reader, encoding, out string value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringValue(ref reader, encoding, out string value);
 
         // Assert
         Assert.True(result);
@@ -368,7 +368,7 @@ public class SequenceReaderExtensionsTests
         // Act & Assert
         try
         {
-            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadString(ref reader, null, out _);
+            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringValue(ref reader, null, out _);
             Assert.Fail("Expected ArgumentNullException was not thrown.");
         }
         catch (ArgumentNullException ex)
@@ -393,7 +393,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringWithIntLength(ref reader, out string value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringWithIntLengthValue(ref reader, out string value);
 
         // Assert
         Assert.True(result);
@@ -418,7 +418,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringWithIntLength(ref reader, encoding, out string value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringWithIntLengthValue(ref reader, encoding, out string value);
 
         // Assert
         Assert.True(result);
@@ -440,7 +440,7 @@ public class SequenceReaderExtensionsTests
         // Act & Assert
         try
         {
-            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringWithIntLength(ref reader, null, out _);
+            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadStringWithIntLengthValue(ref reader, null, out _);
             Assert.Fail("Expected ArgumentNullException was not thrown.");
         }
         catch (ArgumentNullException ex)
@@ -485,7 +485,7 @@ public class SequenceReaderExtensionsTests
         // Act & Assert
         try
         {
-            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBytes(ref reader, -1, out _);
+            GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBytesValue(ref reader, -1, out _);
             Assert.Fail("Expected ArgumentOutOfRangeException was not thrown.");
         }
         catch (ArgumentOutOfRangeException ex)

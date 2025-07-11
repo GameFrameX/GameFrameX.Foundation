@@ -268,7 +268,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBool(this ref SequenceReader<byte> reader, out bool value)
+    public static bool TryReadBoolValue(this ref SequenceReader<byte> reader, out bool value)
     {
         value = false;
         if (reader.Remaining < ConstBaseTypeSize.BoolSize)
@@ -294,7 +294,7 @@ public static class SequenceReaderExtensions
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当长度小于0时抛出。</exception>
-    public static bool TryReadBytes(this ref SequenceReader<byte> reader, int length, out byte[] value)
+    public static bool TryReadBytesValue(this ref SequenceReader<byte> reader, int length, out byte[] value)
     {
         if (length < 0)
         {
@@ -319,7 +319,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBytesWithLength(this ref SequenceReader<byte> reader, out byte[] value)
+    public static bool TryReadBytesWithLengthValue(this ref SequenceReader<byte> reader, out byte[] value)
     {
         value = Array.Empty<byte>();
 
@@ -333,7 +333,7 @@ public static class SequenceReaderExtensions
             return true;
         }
 
-        return TryReadBytes(ref reader, length, out value);
+        return TryReadBytesValue(ref reader, length, out value);
     }
 
     /// <summary>
@@ -344,7 +344,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadString(this ref SequenceReader<byte> reader, out string value)
+    public static bool TryReadStringValue(this ref SequenceReader<byte> reader, out string value)
     {
         value = string.Empty;
 
@@ -358,7 +358,7 @@ public static class SequenceReaderExtensions
             return true;
         }
 
-        if (!TryReadBytes(ref reader, length, out byte[] bytes))
+        if (!TryReadBytesValue(ref reader, length, out byte[] bytes))
         {
             return false;
         }
@@ -377,7 +377,7 @@ public static class SequenceReaderExtensions
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
     /// <exception cref="ArgumentNullException">当编码为 null 时抛出。</exception>
-    public static bool TryReadString(this ref SequenceReader<byte> reader, Encoding encoding, out string value)
+    public static bool TryReadStringValue(this ref SequenceReader<byte> reader, Encoding encoding, out string value)
     {
         if (encoding == null)
         {
@@ -396,7 +396,7 @@ public static class SequenceReaderExtensions
             return true;
         }
 
-        if (!TryReadBytes(ref reader, length, out byte[] bytes))
+        if (!TryReadBytesValue(ref reader, length, out byte[] bytes))
         {
             return false;
         }
@@ -413,7 +413,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadStringWithIntLength(this ref SequenceReader<byte> reader, out string value)
+    public static bool TryReadStringWithIntLengthValue(this ref SequenceReader<byte> reader, out string value)
     {
         value = string.Empty;
 
@@ -427,7 +427,7 @@ public static class SequenceReaderExtensions
             return true;
         }
 
-        if (!TryReadBytes(ref reader, length, out byte[] bytes))
+        if (!TryReadBytesValue(ref reader, length, out byte[] bytes))
         {
             return false;
         }
@@ -446,7 +446,7 @@ public static class SequenceReaderExtensions
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
     /// <exception cref="ArgumentNullException">当编码为 null 时抛出。</exception>
-    public static bool TryReadStringWithIntLength(this ref SequenceReader<byte> reader, Encoding encoding, out string value)
+    public static bool TryReadStringWithIntLengthValue(this ref SequenceReader<byte> reader, Encoding encoding, out string value)
     {
         if (encoding == null)
         {
@@ -465,7 +465,7 @@ public static class SequenceReaderExtensions
             return true;
         }
 
-        if (!TryReadBytes(ref reader, length, out byte[] bytes))
+        if (!TryReadBytesValue(ref reader, length, out byte[] bytes))
         {
             return false;
         }
@@ -707,7 +707,7 @@ public static class SequenceReaderExtensions
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 length 小于 0 时抛出。</exception>
-    public static bool TryPeekBytes(this ref SequenceReader<byte> reader, int length, out byte[] value)
+    public static bool TryPeekBytesValue(this ref SequenceReader<byte> reader, int length, out byte[] value)
     {
         // SequenceReader 是值类型，不需要进行 null 检查
 
@@ -735,7 +735,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekString(this ref SequenceReader<byte> reader, out string value)
+    public static bool TryPeekStringValue(this ref SequenceReader<byte> reader, out string value)
     {
         value = null;
 
@@ -765,7 +765,7 @@ public static class SequenceReaderExtensions
         }
 
         // 读取字符串内容
-        if (!TryPeekBytes(ref reader, ConstBaseTypeSize.ShortSize + stringLength, out byte[] bytes))
+        if (!TryPeekBytesValue(ref reader, ConstBaseTypeSize.ShortSize + stringLength, out byte[] bytes))
         {
             return false;
         }
@@ -782,7 +782,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBytesWithLength(this ref SequenceReader<byte> reader, out byte[] value)
+    public static bool TryPeekBytesWithLengthValue(this ref SequenceReader<byte> reader, out byte[] value)
     {
         value = null;
 
@@ -812,7 +812,7 @@ public static class SequenceReaderExtensions
         }
 
         // 读取字节数组内容
-        if (!TryPeekBytes(ref reader, ConstBaseTypeSize.IntSize + bytesLength, out byte[] bytes))
+        if (!TryPeekBytesValue(ref reader, ConstBaseTypeSize.IntSize + bytesLength, out byte[] bytes))
         {
             return false;
         }
