@@ -202,7 +202,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteUIntValue(value, ref offset);
+        buffer.AsSpan().WriteUIntBigEndianValue(value, ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -213,7 +213,7 @@ public class ByteExtensionTests
     }
 
     [Fact]
-    public void WriteUInt_NullBuffer_ShouldThrowArgumentNullException()
+    public void WriteUInt_NullBuffer_ShouldThrowArgumentOutOfRangeException()
     {
         // Arrange
         byte[] buffer = null;
@@ -221,7 +221,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => buffer.WriteUIntValue(value, ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().WriteUIntBigEndianValue(value, ref offset));
     }
 
     [Fact]
@@ -233,7 +233,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        buffer.WriteIntValue(value, ref offset);
+        buffer.AsSpan().WriteIntBigEndianValue(value, ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -297,7 +297,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        var result = buffer.ReadUIntValue(ref offset);
+        var result = buffer.AsSpan().ReadUIntBigEndianValue(ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -305,14 +305,14 @@ public class ByteExtensionTests
     }
 
     [Fact]
-    public void ReadUInt_NullBuffer_ShouldThrowArgumentNullException()
+    public void ReadUInt_NullBuffer_ShouldThrowArgumentOutOfRangeException()
     {
         // Arrange
         byte[] buffer = null;
         int offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => buffer.ReadUIntValue(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadUIntBigEndianValue(ref offset));
     }
 
     [Fact]
@@ -323,7 +323,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ReadUIntValue(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadUIntBigEndianValue(ref offset));
     }
 
     [Fact]
@@ -334,7 +334,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        var result = buffer.ReadIntValue(ref offset);
+        var result = buffer.AsSpan().ReadIntBigEndianValue(ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -434,18 +434,15 @@ public class ByteExtensionTests
     #region Edge Cases
 
     [Fact]
-    public void WriteUInt_InsufficientBuffer_ShouldUpdateOffsetOnly()
+    public void WriteUInt_InsufficientBuffer_ShouldThrowArgumentOutOfRangeException()
     {
         // Arrange
         byte[] buffer = new byte[2]; // Too small for uint (4 bytes)
         uint value = 123;
         int offset = 0;
 
-        // Act
-        buffer.WriteUIntValue(value, ref offset);
-
-        // Assert
-        Assert.Equal(4, offset); // Offset should be updated even if write fails
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().WriteUIntBigEndianValue(value, ref offset));
     }
 
     [Fact]
