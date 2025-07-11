@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GameFrameX.Foundation.Extensions;
@@ -77,9 +79,19 @@ public class DisposableConcurrentDictionary<TKey, TValue> : NullableConcurrentDi
     /// <param name="disposing">指示是否应释放托管资源。</param>
     protected virtual void Dispose(bool disposing)
     {
-        foreach (var s in Values.Where(v => v != null))
+        if (disposing)
         {
-            s.Dispose();
+            try
+            {
+                foreach (var s in Values.Where(v => v != null))
+                {
+                    s.Dispose();
+                }
+            }
+            catch
+            {
+                // 忽略释放过程中的异常
+            }
         }
     }
 }
