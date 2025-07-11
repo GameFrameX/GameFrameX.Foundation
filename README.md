@@ -3,29 +3,19 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-6.0%2B-purple.svg)](https://dotnet.microsoft.com/)
 
-### 📊 NuGet 包状态
+### 📦 程序集概览
 
-| 包名 | 版本 | 下载次数 |
-|------|------|----------|
-| GameFrameX.Foundation.Encryption | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) |
-| GameFrameX.Foundation.Hash | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) |
-| GameFrameX.Foundation.Http.Extension | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) |
-| GameFrameX.Foundation.Http.Normalization | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
-| GameFrameX.Foundation.Json | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) |
-| GameFrameX.Foundation.Logger | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) |
+| 程序集 | 功能描述 | NuGet 包名 | 版本 | 下载次数 |
+|--------|----------|------------|------|----------|
+| GameFrameX.Foundation.Encryption | 加密工具库 | `GameFrameX.Foundation.Encryption` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) |
+| GameFrameX.Foundation.Extensions | 扩展方法库 | `GameFrameX.Foundation.Extensions` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/) |
+| GameFrameX.Foundation.Hash | 哈希工具库 | `GameFrameX.Foundation.Hash` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) |
+| GameFrameX.Foundation.Http.Extension | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) |
+| GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化 | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
+| GameFrameX.Foundation.Json | JSON 序列化工具 | `GameFrameX.Foundation.Json` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) |
+| GameFrameX.Foundation.Logger | Serilog 日志配置 | `GameFrameX.Foundation.Logger` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) |
 
 GameFrameX 的基础工具库，提供了一系列高性能、易用的基础组件和工具类，涵盖加密、哈希、HTTP、JSON、日志等常用功能。
-
-## 📦 程序集概览
-
-| 程序集 | 功能描述 | NuGet 包名 |
-|--------|----------|------------|
-| GameFrameX.Foundation.Encryption | 加密工具库 | `GameFrameX.Foundation.Encryption` |
-| GameFrameX.Foundation.Hash | 哈希工具库 | `GameFrameX.Foundation.Hash` |
-| GameFrameX.Foundation.Http.Extension | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension` |
-| GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化 | `GameFrameX.Foundation.Http.Normalization` |
-| GameFrameX.Foundation.Json | JSON 序列化工具 | `GameFrameX.Foundation.Json` |
-| GameFrameX.Foundation.Logger | Serilog 日志配置 | `GameFrameX.Foundation.Logger` |
 
 ## 🚀 快速开始
 
@@ -36,6 +26,9 @@ GameFrameX 的基础工具库，提供了一系列高性能、易用的基础组
 ```bash
 # 安装加密工具库
 dotnet add package GameFrameX.Foundation.Encryption
+
+# 安装扩展方法库
+dotnet add package GameFrameX.Foundation.Extensions
 
 # 安装哈希工具库
 dotnet add package GameFrameX.Foundation.Hash
@@ -57,6 +50,7 @@ dotnet add package GameFrameX.Foundation.Http.Normalization
 
 ```csharp
 using GameFrameX.Foundation.Encryption;
+using GameFrameX.Foundation.Extensions;
 using GameFrameX.Foundation.Hash;
 using GameFrameX.Foundation.Json;
 using GameFrameX.Foundation.Logger;
@@ -64,6 +58,11 @@ using GameFrameX.Foundation.Logger;
 // AES 加密
 string encrypted = AesHelper.Encrypt("Hello World", "your-key");
 string decrypted = AesHelper.Decrypt(encrypted, "your-key");
+
+// 扩展方法使用
+var list = new List<int> { 1, 2, 3, 4, 5 };
+var randomItem = list.Random(); // 随机获取元素
+var isNullOrEmpty = myString.IsNullOrEmpty(); // 字符串检查
 
 // SHA-256 哈希
 string hash = Sha256Helper.ComputeHash("Hello World");
@@ -78,6 +77,170 @@ LogHelper.Info("应用程序启动");
 ```
 
 ## 📚 详细文档
+
+### 🧩 扩展方法库 (GameFrameX.Foundation.Extensions)
+
+提供丰富的扩展方法集合，增强 .NET 基础类型的功能，提高开发效率和代码可读性。
+
+#### 核心组件
+
+- **集合扩展** (`CollectionExtensions`): 为各种集合类型提供便捷操作
+- **字符串扩展** (`StringExtensions`): 增强字符串处理能力
+- **对象扩展** (`ObjectExtensions`): 提供对象验证和范围检查
+- **类型扩展** (`TypeExtensions`): 类型检查和反射相关扩展
+- **枚举扩展** (`IEnumerableExtensions`): LINQ 增强和集合操作
+- **双向字典** (`BidirectionalDictionary`): 支持双向查找的字典实现
+- **特殊集合**: 包含只读 Span、序列读取器等高性能扩展
+
+#### 集合扩展功能
+
+```csharp
+using GameFrameX.Foundation.Extensions;
+
+// 集合操作
+var list = new List<int> { 1, 2, 3, 4, 5 };
+var randomItem = list.Random(); // 随机获取元素
+var isEmpty = list.IsNullOrEmpty(); // 检查是否为空
+
+// 字典扩展
+var dict = new Dictionary<string, int>();
+dict.Merge("key", 10, (old, new) => old + new); // 合并值
+var value = dict.GetOrAdd("key", k => 42); // 获取或添加
+dict.RemoveIf((k, v) => v > 100); // 条件移除
+
+// HashSet 扩展
+var hashSet = new HashSet<int>();
+hashSet.AddRange(new[] { 1, 2, 3, 4, 5 }); // 批量添加
+```
+
+#### 字符串扩展功能
+
+```csharp
+// 字符串检查
+string text = "Hello World";
+bool isEmpty = text.IsNullOrEmpty();
+bool isEmptyOrWhitespace = text.IsNullOrEmptyOrWhiteSpace();
+bool hasContent = text.IsNotNullOrEmptyOrWhiteSpace();
+
+// 字符串处理
+string base64 = "SGVsbG8gV29ybGQ=";
+string urlSafe = base64.ToUrlSafeBase64(); // 转换为 URL 安全格式
+string restored = urlSafe.FromUrlSafeBase64(); // 还原标准格式
+
+// 字符串操作
+string centered = "Hello".CenterAlignedText(20); // 居中对齐
+string cleaned = "Hello World   ".RemoveWhiteSpace(); // 移除空白字符
+string trimmed = "Hello!".RemoveSuffix('!'); // 移除后缀
+
+// 字符重复
+string repeated = 'A'.RepeatChar(5); // "AAAAA"
+```
+
+#### 对象验证和范围检查
+
+```csharp
+// 空值检查
+object obj = GetSomeObject();
+if (obj.IsNotNull())
+{
+    // 对象不为空时的处理
+}
+
+// 参数验证
+obj.ThrowIfNull(nameof(obj)); // 为空时抛出异常
+
+// 数值范围检查
+int value = 50;
+value.CheckRange(1, 100); // 检查范围，超出时抛出异常
+bool inRange = value.IsRange(1, 100); // 检查是否在范围内
+
+// 支持多种数值类型
+uint uintValue = 25;
+uintValue.CheckRange(0, 50);
+
+long longValue = 1000;
+longValue.CheckRange(500, 2000);
+```
+
+#### 类型检查扩展
+
+```csharp
+// 泛型接口检查
+Type listType = typeof(List<string>);
+Type genericListType = typeof(List<>);
+bool implementsGeneric = listType.HasImplementedRawGeneric(genericListType);
+
+// 接口实现检查
+Type stringType = typeof(string);
+Type comparableType = typeof(IComparable);
+bool implementsInterface = stringType.IsImplWithInterface(comparableType);
+```
+
+#### LINQ 增强扩展
+
+```csharp
+// 交集操作
+var list1 = new[] { 1, 2, 3, 4, 5 };
+var list2 = new[] { 3, 4, 5, 6, 7 };
+var intersection = list1.IntersectBy(list2, x => x); // 按键取交集
+
+// 多集合交集
+var collections = new[] { list1, list2, new[] { 4, 5, 6 } };
+var allIntersection = collections.IntersectAll(); // 所有集合的交集
+
+// 差集操作
+var difference = list1.ExceptBy(list2, (x, y) => x == y);
+
+// 批量添加
+var collection = new List<int>();
+collection.AddRange(1, 2, 3, 4, 5); // 使用 params 参数
+collection.AddRange(new[] { 6, 7, 8 }); // 使用数组
+```
+
+#### 双向字典
+
+```csharp
+// 创建双向字典
+var biDict = new BidirectionalDictionary<string, int>();
+
+// 添加键值对
+biDict.TryAdd("one", 1);
+biDict.TryAdd("two", 2);
+
+// 双向查找
+if (biDict.TryGetValue("one", out int value))
+{
+    Console.WriteLine($"Key 'one' maps to {value}");
+}
+
+if (biDict.TryGetKey(1, out string key))
+{
+    Console.WriteLine($"Value 1 maps to '{key}'");
+}
+
+// 清空字典
+biDict.Clear();
+```
+
+#### 高性能扩展
+
+```csharp
+// Span 和 ReadOnlySpan 扩展
+ReadOnlySpan<byte> span = stackalloc byte[] { 1, 2, 3, 4, 5 };
+// 提供针对 Span 的高性能操作扩展
+
+// 序列读取器扩展
+// 为 SequenceReader 提供便捷的读取方法
+```
+
+#### 特殊工具类
+
+- **ConstSize**: 常量大小定义
+- **NullObject**: 空对象模式实现
+- **NullableConcurrentDictionary**: 支持空值的并发字典
+- **NullableDictionary**: 支持空值的字典
+- **LookupX**: 增强的查找表实现
+- **ArgumentAlreadyException**: 参数已存在异常
 
 ### 🔐 加密工具库 (GameFrameX.Foundation.Encryption)
 
