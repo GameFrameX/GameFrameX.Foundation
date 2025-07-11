@@ -23,7 +23,7 @@ public class SpanExtensionsTests
         // Assert
         Assert.Equal(4, offset);
         var readOffset = 0;
-        var result = buffer.AsSpan().ReadInt(ref readOffset);
+        var result = buffer.AsSpan().ReadIntValue(ref readOffset);
         Assert.Equal(value, result);
     }
 
@@ -41,7 +41,7 @@ public class SpanExtensionsTests
         // Assert
         Assert.Equal(4, offset);
         var readOffset = 0;
-        var result = buffer.AsSpan().ReadUInt(ref readOffset);
+        var result = buffer.AsSpan().ReadUIntValue(ref readOffset);
         Assert.Equal(value, result);
     }
 
@@ -59,7 +59,7 @@ public class SpanExtensionsTests
         // Assert
         Assert.Equal(2, offset);
         var readOffset = 0;
-        var result = buffer.AsSpan().ReadShort(ref readOffset);
+        var result = buffer.AsSpan().ReadShortValue(ref readOffset);
         Assert.Equal(value, result);
     }
 
@@ -76,7 +76,7 @@ public class SpanExtensionsTests
 
         // Assert
         var readOffset = 0;
-        var result = buffer.AsSpan().ReadString(ref readOffset);
+        var result = buffer.AsSpan().ReadStringValue(ref readOffset);
         Assert.Equal(value, result);
     }
 
@@ -95,7 +95,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadInt(ref offset);
+        var result = buffer.AsSpan().ReadIntValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -110,7 +110,7 @@ public class SpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadIntValue(ref offset));
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public class SpanExtensionsTests
         var offset = 1; // Only 3 bytes left, but need 4 for int
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadIntValue(ref offset));
     }
 
     [Fact]
@@ -135,7 +135,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadUInt(ref offset);
+        var result = buffer.AsSpan().ReadUIntValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -150,7 +150,7 @@ public class SpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadUInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadUIntValue(ref offset));
     }
 
     [Fact]
@@ -164,7 +164,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadShort(ref offset);
+        var result = buffer.AsSpan().ReadShortValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -179,7 +179,7 @@ public class SpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadShort(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadShortValue(ref offset));
     }
 
     [Fact]
@@ -193,7 +193,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadString(ref offset);
+        var result = buffer.AsSpan().ReadStringValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -210,7 +210,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadString(ref offset);
+        var result = buffer.AsSpan().ReadStringValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -227,7 +227,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadByte(ref offset);
+        var result = buffer.AsSpan().ReadByteValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -242,7 +242,7 @@ public class SpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadByte(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.AsSpan().ReadByteValue(ref offset));
     }
 
     [Fact]
@@ -256,7 +256,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadBool(ref offset);
+        var result = buffer.AsSpan().ReadBoolValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -274,7 +274,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadBytes(ref offset);
+        var result = buffer.AsSpan().ReadBytesValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -291,7 +291,7 @@ public class SpanExtensionsTests
         offset = 0;
 
         // Act
-        var result = buffer.AsSpan().ReadBytes(ref offset);
+        var result = buffer.AsSpan().ReadBytesValue(ref offset);
 
         // Assert
         Assert.Equal(expectedValue, result);
@@ -312,7 +312,7 @@ public class SpanExtensionsTests
 
         // Act
         buffer.AsSpan().WriteInt(originalValue, ref writeOffset);
-        var result = buffer.AsSpan().ReadInt(ref readOffset);
+        var result = buffer.AsSpan().ReadIntValue(ref readOffset);
 
         // Assert
         Assert.Equal(originalValue, result);
@@ -330,7 +330,7 @@ public class SpanExtensionsTests
 
         // Act
         buffer.AsSpan().WriteFloat(originalValue, ref writeOffset);
-        var result = buffer.AsSpan().ReadFloat(ref readOffset);
+        var result = buffer.AsSpan().ReadFloatValue(ref readOffset);
 
         // Assert
         Assert.Equal(originalValue, result, 6); // 6 decimal places precision
@@ -348,7 +348,7 @@ public class SpanExtensionsTests
 
         // Act
         buffer.AsSpan().WriteDouble(originalValue, ref writeOffset);
-        var result = buffer.AsSpan().ReadDouble(ref readOffset);
+        var result = buffer.AsSpan().ReadDoubleValue(ref readOffset);
 
         // Assert
         Assert.Equal(originalValue, result, 10); // 10 decimal places precision

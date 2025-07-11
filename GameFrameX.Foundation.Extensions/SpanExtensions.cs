@@ -330,7 +330,7 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量，读取后将更新此偏移量。</param>
     /// <returns>读取到的int值。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static int ReadInt(this Span<byte> buffer, ref int offset)
+    public static int ReadIntValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -351,7 +351,7 @@ public static class SpanExtensions
     /// <param name="offset">偏移量，读取结束后会更新此偏移量。</param>
     /// <returns>从字节缓存区中读取出的短整型值</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static short ReadShort(this Span<byte> buffer, ref int offset)
+    public static short ReadShortValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -372,7 +372,7 @@ public static class SpanExtensions
     /// <param name="offset">引用偏移量。</param>
     /// <returns>返回读取的32位无符号整数。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static uint ReadUInt(this Span<byte> buffer, ref int offset)
+    public static uint ReadUIntValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -394,7 +394,7 @@ public static class SpanExtensions
     /// <param name="offset">引用偏移量。</param>
     /// <returns>返回读取的64位无符号整数。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static ulong ReadULong(this Span<byte> buffer, ref int offset)
+    public static ulong ReadULongValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -416,7 +416,7 @@ public static class SpanExtensions
     /// <param name="offset">偏移量，读取结束后会更新此偏移量。</param>
     /// <returns>从字节缓存区中读取出的长整型值</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static long ReadLong(this Span<byte> buffer, ref int offset)
+    public static long ReadLongValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -437,7 +437,7 @@ public static class SpanExtensions
     /// <param name="offset">偏移量，读取结束后会更新此偏移量。</param>
     /// <returns>从字节缓存区中读取出的浮点型值</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static float ReadFloat(this Span<byte> buffer, ref int offset)
+    public static float ReadFloatValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -458,7 +458,7 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量，读取后会自动增加。</param>
     /// <returns>读取的浮点数。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static double ReadDouble(this Span<byte> buffer, ref int offset)
+    public static double ReadDoubleValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -479,7 +479,7 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量，读取后会自动增加。</param>
     /// <returns>读取的字节。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static byte ReadByte(this Span<byte> buffer, ref int offset)
+    public static byte ReadByteValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -500,11 +500,11 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量，读取后会增加对应的字节数组的长度。</param>
     /// <returns>读取的字节数组。如果长度小于或等于0，返回空数组。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static byte[] ReadBytes(this Span<byte> buffer, ref int offset)
+    public static byte[] ReadBytesValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
-        var len = ReadInt(buffer, ref offset);
+        var len = ReadIntValue(buffer, ref offset);
 
         if (len <= 0)
         {
@@ -528,7 +528,7 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量。</param>
     /// <returns>返回读取的有符号字节。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static sbyte ReadSByte(this Span<byte> buffer, ref int offset)
+    public static sbyte ReadSByteValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -549,11 +549,11 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量。</param>
     /// <returns>返回读取的字符串。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static string ReadString(this Span<byte> buffer, ref int offset)
+    public static string ReadStringValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
-        var len = ReadShort(buffer, ref offset);
+        var len = ReadShortValue(buffer, ref offset);
 
         if (len <= 0)
         {
@@ -577,7 +577,7 @@ public static class SpanExtensions
     /// <param name="offset">开始读取的偏移量。</param>
     /// <returns>返回读取的布尔值。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static bool ReadBool(this Span<byte> buffer, ref int offset)
+    public static bool ReadBoolValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
