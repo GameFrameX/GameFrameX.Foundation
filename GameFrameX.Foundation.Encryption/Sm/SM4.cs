@@ -28,7 +28,7 @@ internal sealed class Sm4
     /// <returns>转换后的长整型值</returns>
     private long GET_ULONG_BE(byte[] b, int i)
     {
-        long n = 0;
+        long n;
         if (ForJavascript)
         {
             n = (b[i] & 0xff) << 24 | ((b[i + 1] & 0xff) << 16) | ((b[i + 2] & 0xff) << 8) | (b[i + 3] & 0xff) & 0xff;
@@ -90,7 +90,7 @@ internal sealed class Sm4
     /// <summary>
     /// SM4算法使用的S盒
     /// </summary>
-    private byte[] SboxTable = new byte[]
+    private readonly byte[] _sboxTable = new byte[]
     {
         0xd6, 0x90, 0xe9, 0xfe, 0xcc, 0xe1, 0x3d, 0xb7,
         0x16, 0xb6, 0x14, 0xc2, 0x28, 0xfb, 0x2c, 0x05,
@@ -129,7 +129,7 @@ internal sealed class Sm4
     /// <summary>
     /// SM4算法系统参数FK
     /// </summary>
-    public uint[] FK =
+    public readonly uint[] Fk =
     {
         0xa3b1bac6,
         0x56aa3350,
@@ -140,7 +140,7 @@ internal sealed class Sm4
     /// <summary>
     /// SM4算法固定参数CK
     /// </summary>
-    public uint[] CK =
+    public readonly uint[] Ck =
     {
         0x00070e15, 0x1c232a31, 0x383f464d, 0x545b6269,
         0x70777e85, 0x8c939aa1, 0xa8afb6bd, 0xc4cbd2d9,
@@ -160,7 +160,7 @@ internal sealed class Sm4
     private byte Sm4Sbox(byte inch)
     {
         int i = inch & 0xFF;
-        byte retVal = SboxTable[i];
+        byte retVal = _sboxTable[i];
         return retVal;
     }
 
@@ -219,25 +219,25 @@ internal sealed class Sm4
     /// <summary>
     /// 密钥扩展
     /// </summary>
-    /// <param name="SK">轮密钥数组</param>
+    /// <param name="sk">轮密钥数组</param>
     /// <param name="key">初始密钥</param>
-    private void Sm4_Setkey(long[] SK, byte[] key)
+    private void Sm4_Setkey(long[] sk, byte[] key)
     {
-        long[] MK = new long[4];
+        long[] mk = new long[4];
         long[] k = new long[36];
         int i = 0;
-        MK[0] = GET_ULONG_BE(key, 0);
-        MK[1] = GET_ULONG_BE(key, 4);
-        MK[2] = GET_ULONG_BE(key, 8);
-        MK[3] = GET_ULONG_BE(key, 12);
-        k[0] = MK[0] ^ (long)FK[0];
-        k[1] = MK[1] ^ (long)FK[1];
-        k[2] = MK[2] ^ (long)FK[2];
-        k[3] = MK[3] ^ (long)FK[3];
+        mk[0] = GET_ULONG_BE(key, 0);
+        mk[1] = GET_ULONG_BE(key, 4);
+        mk[2] = GET_ULONG_BE(key, 8);
+        mk[3] = GET_ULONG_BE(key, 12);
+        k[0] = mk[0] ^ Fk[0];
+        k[1] = mk[1] ^ Fk[1];
+        k[2] = mk[2] ^ Fk[2];
+        k[3] = mk[3] ^ Fk[3];
         for (; i < 32; i++)
         {
-            k[(i + 4)] = (k[i] ^ Sm4CalciRk(k[(i + 1)] ^ k[(i + 2)] ^ k[(i + 3)] ^ (long)CK[i]));
-            SK[i] = k[(i + 4)];
+            k[(i + 4)] = (k[i] ^ Sm4CalciRk(k[(i + 1)] ^ k[(i + 2)] ^ k[(i + 3)] ^ Ck[i]));
+            sk[i] = k[(i + 4)];
         }
     }
 
@@ -376,7 +376,6 @@ internal sealed class Sm4
             input = Padding(input, Sm4Encrypt);
         }
 
-        int i = 0;
         int length = input.Length;
         byte[] bins = new byte[length];
         Array.Copy(input, 0, bins, 0, length);

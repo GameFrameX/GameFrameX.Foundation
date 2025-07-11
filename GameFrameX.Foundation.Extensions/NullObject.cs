@@ -40,7 +40,7 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <param name="value">要比较的对象。</param>
     /// <returns>一个整数，指示当前对象与 <paramref name="value" /> 的相对顺序。</returns>
     /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出。</exception>
-    public int CompareTo(object? value)
+    public int CompareTo(object value)
     {
         if (value is null)
         {
@@ -50,11 +50,19 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
         if (value is NullObject<T> nullObject)
         {
             if (Item is null && nullObject.Item is null)
+            {
                 return 0;
+            }
+
             if (Item is null)
+            {
                 return -1;
+            }
+
             if (nullObject.Item is null)
+            {
                 return 1;
+            }
 
             if (Item is IComparable comparable)
             {
@@ -78,14 +86,22 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <param name="other">要比较的对象。</param>
     /// <returns>一个整数，指示当前对象与 <paramref name="other" /> 的相对顺序。</returns>
     /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出。</exception>
-    public int CompareTo(T? other)
+    public int CompareTo(T other)
     {
         if (Item is null && other is null)
+        {
             return 0;
+        }
+
         if (Item is null)
+        {
             return -1;
+        }
+
         if (other is null)
+        {
             return 1;
+        }
 
         if (Item is IComparable comparable)
         {

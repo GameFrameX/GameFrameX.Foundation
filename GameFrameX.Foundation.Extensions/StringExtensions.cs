@@ -9,6 +9,9 @@ using System.Text.RegularExpressions;
 
 namespace GameFrameX.Foundation.Extensions;
 
+/// <summary>
+/// 提供字符串类型的扩展方法
+/// </summary>
 public static class StringExtensions
 {
     /// <summary>

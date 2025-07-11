@@ -1,5 +1,4 @@
 using GameFrameX.Foundation.Hash;
-using System.Text;
 using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Hash;
@@ -242,7 +241,7 @@ public class HmacSha256HelperTests
         }
         catch (FormatException)
         {
-            Assert.True(false, "返回的哈希值不是有效的Base64字符串");
+            Assert.Fail("返回的哈希值不是有效的Base64字符串");
         }
     }
 

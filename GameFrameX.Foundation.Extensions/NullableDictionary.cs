@@ -15,12 +15,21 @@ namespace GameFrameX.Foundation.Extensions;
 public readonly struct FallbackValue<TValue>
 {
     public TValue Value { get; }
-    
+
+    /// <summary>
+    /// 初始化一个包含指定值的 FallbackValue
+    /// </summary>
+    /// <param name="value"></param>
     public FallbackValue(TValue value)
     {
         Value = value;
     }
-    
+
+    /// <summary>
+    /// 将 TValue 转换为 FallbackValue
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public static implicit operator FallbackValue<TValue>(TValue value)
     {
         return new FallbackValue<TValue>(value);
