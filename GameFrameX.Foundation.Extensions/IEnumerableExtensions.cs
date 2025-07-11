@@ -24,8 +24,13 @@ public static class IEnumerableExtensions
     /// <param name="second">第二个集合</param>
     /// <param name="condition">用于判断两个元素是否相等的条件，返回true表示元素相等</param>
     /// <returns>返回两个集合中满足条件的交集元素</returns>
+    /// <exception cref="ArgumentNullException">当first、second或condition为null时抛出</exception>
     public static IEnumerable<TFirst> IntersectBy<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, bool> condition)
     {
+        ArgumentNullException.ThrowIfNull(first, nameof(first));
+        ArgumentNullException.ThrowIfNull(second, nameof(second));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        
         return first.Where(f => second.Any(s => condition(f, s)));
     }
 
@@ -38,8 +43,13 @@ public static class IEnumerableExtensions
     /// <param name="second">第二个集合</param>
     /// <param name="keySelector">用于从每个元素中提取键的函数</param>
     /// <returns>返回两个集合中具有相同键的交集元素</returns>
+    /// <exception cref="ArgumentNullException">当first、second或keySelector为null时抛出</exception>
     public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TKey> keySelector)
     {
+        ArgumentNullException.ThrowIfNull(first, nameof(first));
+        ArgumentNullException.ThrowIfNull(second, nameof(second));
+        ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
+        
         return first.IntersectBy(second, keySelector, null);
     }
 
@@ -81,8 +91,11 @@ public static class IEnumerableExtensions
     /// <typeparam name="T">集合的元素类型</typeparam>
     /// <param name="source">多个集合的序列</param>
     /// <returns>返回所有集合的交集元素</returns>
+    /// <exception cref="ArgumentNullException">当source为null时抛出</exception>
     public static IEnumerable<T> IntersectAll<T>(this IEnumerable<IEnumerable<T>> source)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.Aggregate((current, item) => current.Intersect(item));
     }
 
@@ -94,8 +107,12 @@ public static class IEnumerableExtensions
     /// <param name="source">多个集合的序列</param>
     /// <param name="keySelector">用于从每个元素中提取键的函数</param>
     /// <returns>返回所有集合的交集元素</returns>
+    /// <exception cref="ArgumentNullException">当source或keySelector为null时抛出</exception>
     public static IEnumerable<TSource> IntersectAll<TSource, TKey>(this IEnumerable<IEnumerable<TSource>> source, Func<TSource, TKey> keySelector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
+        
         return source.Aggregate((current, item) => current.IntersectBy(item, keySelector));
     }
 
@@ -108,8 +125,12 @@ public static class IEnumerableExtensions
     /// <param name="keySelector">用于从每个元素中提取键的函数</param>
     /// <param name="comparer">用于比较键的比较器</param>
     /// <returns>返回所有集合的交集元素</returns>
+    /// <exception cref="ArgumentNullException">当source或keySelector为null时抛出</exception>
     public static IEnumerable<TSource> IntersectAll<TSource, TKey>(this IEnumerable<IEnumerable<TSource>> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
+        
         return source.Aggregate((current, item) => current.IntersectBy(item, keySelector, comparer));
     }
 
@@ -120,8 +141,11 @@ public static class IEnumerableExtensions
     /// <param name="source">多个集合的序列</param>
     /// <param name="comparer">用于比较元素的比较器</param>
     /// <returns>返回所有集合的交集元素</returns>
+    /// <exception cref="ArgumentNullException">当source为null时抛出</exception>
     public static IEnumerable<T> IntersectAll<T>(this IEnumerable<IEnumerable<T>> source, IEqualityComparer<T> comparer)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.Aggregate((current, item) => current.Intersect(item, comparer));
     }
 
@@ -134,114 +158,21 @@ public static class IEnumerableExtensions
     /// <param name="second">第二个集合</param>
     /// <param name="condition">用于判断两个元素是否相等的条件，返回true表示元素相等</param>
     /// <returns>返回第一个集合中不在第二个集合中的元素</returns>
+    /// <exception cref="ArgumentNullException">当first、second或condition为null时抛出</exception>
     public static IEnumerable<TFirst> ExceptBy<TFirst, TSecond>(this IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func<TFirst, TSecond, bool> condition)
     {
+        ArgumentNullException.ThrowIfNull(first, nameof(first));
+        ArgumentNullException.ThrowIfNull(second, nameof(second));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        
         return first.Where(f => !second.Any(s => condition(f, s)));
     }
 
-    /// <summary>
-    /// 按字段去重。此方法根据指定的键选择器对集合中的元素进行去重操作。
-    /// </summary>
-    /// <typeparam name="TSource">集合的元素类型</typeparam>
-    /// <typeparam name="TKey">键的选择器返回的键类型</typeparam>
-    /// <param name="source">要去重的源集合</param>
-    /// <param name="keySelector">用于从每个元素中提取键的函数</param>
-    /// <returns>返回去重后的集合。对于重复的键，只保留第一个遇到的元素</returns>
-    /// <exception cref="ArgumentNullException">当source或keySelector为null时抛出</exception>
-    public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-    {
-        ArgumentNullException.ThrowIfNull(source, nameof(source));
-        ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
 
-        var set = new HashSet<TKey>();
-        return source.Where(item => set.Add(keySelector(item)));
-    }
 
-    /// <summary>
-    /// 按字段属性判等取交集。此方法使用默认的相等比较器。
-    /// </summary>
-    /// <typeparam name="TSource">集合的元素类型</typeparam>
-    /// <typeparam name="TKey">键的选择器返回的键类型</typeparam>
-    /// <param name="first">第一个集合</param>
-    /// <param name="second">第二个集合，包含要匹配的键</param>
-    /// <param name="keySelector">用于从第一个集合的每个元素中提取键的函数</param>
-    /// <returns>返回两个集合中具有相同键的交集元素</returns>
-    public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector)
-    {
-        return first.IntersectBy(second, keySelector, null);
-    }
 
-    /// <summary>
-    /// 按字段属性判等取交集。此方法允许使用自定义的相等比较器。
-    /// </summary>
-    /// <typeparam name="TSource">集合的元素类型</typeparam>
-    /// <typeparam name="TKey">键的选择器返回的键类型</typeparam>
-    /// <param name="first">第一个集合</param>
-    /// <param name="second">第二个集合，包含要匹配的键</param>
-    /// <param name="keySelector">用于从第一个集合的每个元素中提取键的函数</param>
-    /// <param name="comparer">用于比较键的比较器，如果为null则使用默认比较器</param>
-    /// <returns>返回两个集合中具有相同键的交集元素</returns>
-    /// <exception cref="ArgumentNullException">当first、second或keySelector为null时抛出</exception>
-    public static IEnumerable<TSource> IntersectBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-    {
-        ArgumentNullException.ThrowIfNull(first, nameof(first));
-        ArgumentNullException.ThrowIfNull(second, nameof(second));
-        ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
 
-        return IntersectByIterator(first, second, keySelector, comparer);
-    }
 
-    /// <summary>
-    /// 实现按键选择器取交集的迭代器方法
-    /// </summary>
-    private static IEnumerable<TSource> IntersectByIterator<TSource, TKey>(IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-    {
-        var set = new HashSet<TKey>(second, comparer);
-        return first.Where(source => set.Remove(keySelector(source)));
-    }
-
-    /// <summary>
-    /// 按字段属性判等取差集。此方法使用默认的相等比较器。
-    /// </summary>
-    /// <typeparam name="TSource">源集合中的元素类型</typeparam>
-    /// <typeparam name="TKey">键的选择器返回的类型</typeparam>
-    /// <param name="first">第一个集合</param>
-    /// <param name="second">第二个集合，包含要排除的键</param>
-    /// <param name="keySelector">从源集合中的每个元素中提取键的函数</param>
-    /// <returns>一个包含第一个集合中存在但第二个集合中不存在的元素的新集合</returns>
-    public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector)
-    {
-        return first.ExceptBy(second, keySelector, null);
-    }
-
-    /// <summary>
-    /// 按字段属性判等取差集。此方法允许使用自定义的相等比较器。
-    /// </summary>
-    /// <typeparam name="TSource">源集合中的元素类型</typeparam>
-    /// <typeparam name="TKey">键的选择器返回的类型</typeparam>
-    /// <param name="first">第一个集合</param>
-    /// <param name="second">第二个集合，包含要排除的键</param>
-    /// <param name="keySelector">从源集合中的每个元素中提取键的函数</param>
-    /// <param name="comparer">用于比较键的相等比较器，如果为 null，则使用默认的相等比较器</param>
-    /// <returns>一个包含第一个集合中存在但第二个集合中不存在的元素的新集合</returns>
-    /// <exception cref="ArgumentNullException">如果 first、second 或 keySelector 为 null，则抛出此异常</exception>
-    public static IEnumerable<TSource> ExceptBy<TSource, TKey>(this IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-    {
-        ArgumentNullException.ThrowIfNull(first, nameof(first));
-        ArgumentNullException.ThrowIfNull(second, nameof(second));
-        ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-
-        return ExceptByIterator(first, second, keySelector, comparer);
-    }
-
-    /// <summary>
-    /// 实现按键选择器取差集的迭代器方法
-    /// </summary>
-    private static IEnumerable<TSource> ExceptByIterator<TSource, TKey>(IEnumerable<TSource> first, IEnumerable<TKey> second, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer)
-    {
-        var set = new HashSet<TKey>(second, comparer);
-        return first.Where(source => set.Add(keySelector(source)));
-    }
 
     /// <summary>
     /// 向集合中添加多个元素。此方法允许通过params参数传入任意数量的元素。
@@ -252,6 +183,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self或values为null时抛出</exception>
     public static void AddRange<T>(this ICollection<T> self, params T[] values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values)
         {
             self.Add(obj);
@@ -267,6 +201,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self或values为null时抛出</exception>
     public static void AddRange<T>(this ICollection<T> self, IEnumerable<T> values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values)
         {
             self.Add(obj);
@@ -282,6 +219,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self或values为null时抛出</exception>
     public static void AddRange<T>(this ConcurrentBag<T> self, params T[] values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values)
         {
             self.Add(obj);
@@ -297,6 +237,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self或values为null时抛出</exception>
     public static void AddRange<T>(this ConcurrentQueue<T> self, params T[] values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values)
         {
             self.Enqueue(obj);
@@ -313,6 +256,10 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self、predicate或values为null时抛出</exception>
     public static void AddRangeIf<T>(this ICollection<T> self, Func<T, bool> predicate, params T[] values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values.Where(predicate))
         {
             self.Add(obj);
@@ -329,6 +276,10 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self、predicate或values为null时抛出</exception>
     public static void AddRangeIf<T>(this ConcurrentBag<T> self, Func<T, bool> predicate, params T[] values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values.Where(predicate))
         {
             self.Add(obj);
@@ -345,6 +296,10 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self、predicate或values为null时抛出</exception>
     public static void AddRangeIf<T>(this ConcurrentQueue<T> self, Func<T, bool> predicate, params T[] values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values.Where(predicate))
         {
             self.Enqueue(obj);
@@ -360,6 +315,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self或values为null时抛出</exception>
     public static void AddRangeIfNotContains<T>(this ICollection<T> self, params T[] values)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(values, nameof(values));
+        
         foreach (var obj in values)
         {
             if (!self.Contains(obj))
@@ -378,6 +336,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当self或where为null时抛出</exception>
     public static void RemoveWhere<T>(this ICollection<T> self, Func<T, bool> where)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(where, nameof(where));
+        
         foreach (var obj in self.Where(where).ToList())
         {
             self.Remove(obj);
@@ -395,8 +356,11 @@ public static class IEnumerableExtensions
     /// 如果满足条件的元素是集合的最后一个元素，则会将新值添加到集合末尾。
     /// 插入操作从后向前进行，以保证插入位置的正确性。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当self或condition为null时抛出</exception>
     public static void InsertAfter<T>(this IList<T> self, Func<T, bool> condition, T value)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
         var list = self.Select((item, index) => new
         {
             item,
@@ -426,8 +390,10 @@ public static class IEnumerableExtensions
     /// 如果指定的索引位置是集合的最后一个位置，则会将新值添加到集合末尾。
     /// 如果指定的索引不存在，则不会进行任何操作。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当list为null时抛出</exception>
     public static void InsertAfter<T>(this IList<T> list, int index, T value)
     {
+        ArgumentNullException.ThrowIfNull(list, nameof(list));
         var src = list.Select((v, i) => new
         {
             Value = v,
@@ -458,8 +424,12 @@ public static class IEnumerableExtensions
     /// HashSet会自动去除重复元素，确保结果集合中的元素唯一性。
     /// 如果选择器函数返回相同的值，只会保留其中一个。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当source或selector为null时抛出</exception>
     public static HashSet<TResult> ToHashSet<T, TResult>(this IEnumerable<T> source, Func<T, TResult> selector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return new HashSet<TResult>(source.Select(selector));
     }
 
@@ -473,8 +443,12 @@ public static class IEnumerableExtensions
     /// 此方法是对foreach循环的封装，使代码更简洁。
     /// 在遍历过程中修改集合可能会导致异常。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当self或action为null时抛出</exception>
     public static void ForEach<T>(this IEnumerable<T> self, Action<T> action)
     {
+        ArgumentNullException.ThrowIfNull(self, nameof(self));
+        ArgumentNullException.ThrowIfNull(action, nameof(action));
+        
         foreach (var o in self)
         {
             action(o);
@@ -495,8 +469,11 @@ public static class IEnumerableExtensions
     /// 当达到最大并行数时，会等待至少一个任务完成后才继续执行新任务。
     /// 可以通过cancellationToken取消正在进行的操作。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当source或action为null时抛出</exception>
     public static async Task ForeachAsync<T>(this IEnumerable<T> source, Func<T, Task> action, int maxParallelCount, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(action, nameof(action));
         if (Debugger.IsAttached)
         {
             foreach (var item in source)
@@ -538,8 +515,11 @@ public static class IEnumerableExtensions
     /// 如果source是ICollection类型，会使用其Count作为最大并行数。
     /// 否则会先将集合转换为List后再使用其Count作为最大并行数。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当source或action为null时抛出</exception>
     public static Task ForeachAsync<T>(this IEnumerable<T> source, Func<T, Task> action, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(action, nameof(action));
         if (source is ICollection<T> collection)
         {
             return ForeachAsync(collection, action, collection.Count, cancellationToken);
@@ -561,8 +541,12 @@ public static class IEnumerableExtensions
     /// 所有转换操作会并行执行。
     /// 返回的任务在所有转换操作完成后完成。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当source或selector为null时抛出</exception>
     public static Task<TResult[]> SelectAsync<T, TResult>(this IEnumerable<T> source, Func<T, Task<TResult>> selector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return Task.WhenAll(source.Select(selector));
     }
 
@@ -579,8 +563,12 @@ public static class IEnumerableExtensions
     /// 选择器函数可以通过索引参数获取元素在集合中的位置。
     /// 返回的任务在所有转换操作完成后完成。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当source或selector为null时抛出</exception>
     public static Task<TResult[]> SelectAsync<T, TResult>(this IEnumerable<T> source, Func<T, int, Task<TResult>> selector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return Task.WhenAll(source.Select(selector));
     }
 
@@ -597,8 +585,11 @@ public static class IEnumerableExtensions
     /// 此方法会限制并行执行的任务数量，当达到最大并行数时会等待部分任务完成后再继续处理。
     /// 已完成的任务结果会立即添加到结果列表中，未完成的任务继续执行。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">当source或selector为null时抛出</exception>
     public static async Task<List<TResult>> SelectAsync<T, TResult>(this IEnumerable<T> source, Func<T, Task<TResult>> selector, int maxParallelCount)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
         var results = new List<TResult>();
         var tasks = new List<Task<TResult>>();
         foreach (var item in source)
@@ -632,8 +623,12 @@ public static class IEnumerableExtensions
     /// 已完成的任务结果会立即添加到结果列表中，未完成的任务继续执行。
     /// 使用Interlocked.Add确保在多线程环境下索引计数的准确性。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">source 或 selector 为 null 时抛出此异常</exception>
     public static async Task<List<TResult>> SelectAsync<T, TResult>(this IEnumerable<T> source, Func<T, int, Task<TResult>> selector, int maxParallelCount)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         var results = new List<TResult>();
         var tasks = new List<Task<TResult>>();
         var index = 0;
@@ -670,8 +665,12 @@ public static class IEnumerableExtensions
     /// 支持通过cancellationToken取消操作。
     /// 使用Interlocked.Add确保在多线程环境下索引计数的准确性。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">source 或 selector 为 null 时抛出此异常</exception>
     public static async Task ForAsync<T>(this IEnumerable<T> source, Func<T, int, Task> selector, int maxParallelCount, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         var index = 0;
         if (Debugger.IsAttached)
         {
@@ -730,6 +729,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source 或 selector 为 null 时抛出此异常</exception>
     public static Task ForAsync<T>(this IEnumerable<T> source, Func<T, int, Task> selector, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         if (source is ICollection<T> collection)
         {
             return ForAsync(collection, selector, collection.Count, cancellationToken);
@@ -751,8 +753,12 @@ public static class IEnumerableExtensions
     /// 此方法通过DefaultIfEmpty确保在集合为空时返回默认值而不是抛出异常。
     /// 适用于需要安全获取最大值的LINQ查询场景。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">source 或 selector 为 null 时抛出此异常</exception>
     public static TResult MaxOrDefault<TSource, TResult>(this IQueryable<TSource> source, Expression<Func<TSource, TResult>> selector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty().Max();
     }
 
@@ -769,6 +775,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source或selector为null时抛出。</exception>
     public static TResult MaxOrDefault<TSource, TResult>(this IQueryable<TSource> source, Expression<Func<TSource, TResult>> selector, TResult defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -782,6 +791,8 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source为null时抛出。</exception>
     public static TSource MaxOrDefault<TSource>(this IQueryable<TSource> source)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty().Max();
     }
 
@@ -796,6 +807,8 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source为null时抛出。</exception>
     public static TSource MaxOrDefault<TSource>(this IQueryable<TSource> source, TSource defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -812,6 +825,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source或selector为null时抛出。</exception>
     public static TResult MaxOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -827,6 +843,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source或selector为null时抛出。</exception>
     public static TResult MaxOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty().Max();
     }
 
@@ -840,6 +859,8 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source为null时抛出。</exception>
     public static TSource MaxOrDefault<TSource>(this IEnumerable<TSource> source)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty().Max();
     }
 
@@ -854,6 +875,8 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source为null时抛出。</exception>
     public static TSource MaxOrDefault<TSource>(this IEnumerable<TSource> source, TSource defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -869,6 +892,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source或selector为null时抛出。</exception>
     public static TResult MinOrDefault<TSource, TResult>(this IQueryable<TSource> source, Expression<Func<TSource, TResult>> selector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty().Min();
     }
 
@@ -885,6 +911,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source或selector为null时抛出。</exception>
     public static TResult MinOrDefault<TSource, TResult>(this IQueryable<TSource> source, Expression<Func<TSource, TResult>> selector, TResult defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -898,6 +927,8 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source为null时抛出。</exception>
     public static TSource MinOrDefault<TSource>(this IQueryable<TSource> source)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty().Min();
     }
 
@@ -912,6 +943,8 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">source为null时抛出。</exception>
     public static TSource MinOrDefault<TSource>(this IQueryable<TSource> source, TSource defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -929,6 +962,9 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static TResult MinOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty().Min();
     }
 
@@ -947,6 +983,9 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static TResult MinOrDefault<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector, TResult defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(selector, nameof(selector));
+        
         return source.Select(selector).DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -962,6 +1001,8 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static TSource MinOrDefault<TSource>(this IEnumerable<TSource> source)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty().Min();
     }
 
@@ -978,6 +1019,8 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static TSource MinOrDefault<TSource>(this IEnumerable<TSource> source, TSource defaultValue)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -993,8 +1036,11 @@ public static class IEnumerableExtensions
     /// 3. 将平方和除以元素个数后开平方
     /// 注意：当序列元素少于2个时，返回0
     /// </remarks>
+    /// <exception cref="ArgumentNullException">source 为 null 时抛出此异常</exception>
     public static double StandardDeviation(this IEnumerable<double> source)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         double result = 0;
         var list = source as ICollection<double> ?? source.ToList();
         var count = list.Count;
@@ -1019,13 +1065,16 @@ public static class IEnumerableExtensions
     /// 注意：此方法的随机性依赖于GUID的随机性，适用于一般场景，
     /// 但如果需要更高质量的随机排序，建议使用专门的随机数生成器。
     /// </remarks>
+    /// <exception cref="ArgumentNullException">source 为 null 时抛出此异常</exception>
     public static IOrderedEnumerable<T> OrderByRandom<T>(this IEnumerable<T> source)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        
         return source.OrderBy(_ => Guid.NewGuid());
     }
 
     /// <summary>
-    /// 判断两个序列是否相等，使用自定义的比较条件。
+    /// 判断两个相同类型的序列是否相等，使用自定义的比较条件。
     /// </summary>
     /// <typeparam name="T">序列中元素的类型。</typeparam>
     /// <param name="first">第一个序列。</param>
@@ -1042,9 +1091,15 @@ public static class IEnumerableExtensions
     /// - 两个序列长度相等
     /// - 相同位置的元素满足比较条件
     /// - 使用自定义的比较逻辑而不是默认的相等比较
+    /// 
+    /// 注意：此重载专门用于相同类型的序列比较。对于不同类型的序列比较，请使用泛型重载版本。
     /// </remarks>
-    public static bool SequenceEqual<T>(this IEnumerable<T> first, IEnumerable<T> second, Func<T, T, bool> condition)
+    public static bool SequenceEqualSameType<T>(this IEnumerable<T> first, IEnumerable<T> second, Func<T, T, bool> condition)
     {
+        ArgumentNullException.ThrowIfNull(first, nameof(first));
+        ArgumentNullException.ThrowIfNull(second, nameof(second));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        
         if (first is ICollection<T> source1 && second is ICollection<T> source2)
         {
             if (source1.Count != source2.Count)
@@ -1098,6 +1153,10 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static bool SequenceEqual<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, bool> condition)
     {
+        ArgumentNullException.ThrowIfNull(first, nameof(first));
+        ArgumentNullException.ThrowIfNull(second, nameof(second));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        
         if (first is ICollection<T1> source1 && second is ICollection<T2> source2)
         {
             if (source1.Count != source2.Count)
@@ -1152,6 +1211,8 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static (List<T1> adds, List<T2> remove, List<T1> updates) CompareChanges<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, bool> condition)
     {
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        
         first ??= new List<T1>();
         second ??= new List<T2>();
         var firstSource = first as ICollection<T1> ?? first.ToList();
@@ -1181,6 +1242,8 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static (List<T1> adds, List<T2> remove, List<(T1 first, T2 second)> updates) CompareChangesPlus<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, bool> condition)
     {
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        
         first ??= new List<T1>();
         second ??= new List<T2>();
         var firstSource = first as ICollection<T1> ?? first.ToList();
@@ -1237,6 +1300,9 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static IEnumerable<T> WhereIf<T>(this IEnumerable<T> source, bool condition, Func<T, bool> where)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(where, nameof(where));
+        
         return condition ? source.Where(where) : source;
     }
 
@@ -1255,6 +1321,10 @@ public static class IEnumerableExtensions
     /// </remarks>
     public static IEnumerable<T> WhereIf<T>(this IEnumerable<T> source, Func<bool> condition, Func<T, bool> where)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        ArgumentNullException.ThrowIfNull(where, nameof(where));
+        
         return condition() ? source.Where(where) : source;
     }
 
@@ -1269,6 +1339,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当source或where为null时抛出。</exception>
     public static IQueryable<T> WhereIf<T>(this IQueryable<T> source, bool condition, Expression<Func<T, bool>> where)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(where, nameof(where));
+        
         return condition ? source.Where(where) : source;
     }
 
@@ -1283,6 +1356,10 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">当source、condition或where为null时抛出。</exception>
     public static IQueryable<T> WhereIf<T>(this IQueryable<T> source, Func<bool> condition, Expression<Func<T, bool>> where)
     {
+        ArgumentNullException.ThrowIfNull(source, nameof(source));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        ArgumentNullException.ThrowIfNull(where, nameof(where));
+        
         return condition() ? source.Where(where) : source;
     }
 
@@ -1297,7 +1374,9 @@ public static class IEnumerableExtensions
     /// <returns>操作后的集合，以支持方法链式调用。</returns>
     public static IList<T> ChangeIndex<T>(this IList<T> list, T item, int index)
     {
+        ArgumentNullException.ThrowIfNull(list, nameof(list));
         ArgumentNullException.ThrowIfNull(item, nameof(item));
+        
         ChangeIndexInternal(list, item, index);
         return list;
     }
@@ -1313,6 +1392,9 @@ public static class IEnumerableExtensions
     /// <exception cref="ArgumentNullException">如果list或condition为null，则抛出此异常。</exception>
     public static IList<T> ChangeIndex<T>(this IList<T> list, Func<T, bool> condition, int index)
     {
+        ArgumentNullException.ThrowIfNull(list, nameof(list));
+        ArgumentNullException.ThrowIfNull(condition, nameof(condition));
+        
         var item = list.FirstOrDefault(condition);
         if (item != null)
         {
