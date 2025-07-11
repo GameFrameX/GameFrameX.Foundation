@@ -286,13 +286,13 @@ buffer.WriteFloat(3.14f, ref offset);
 
 // 读取数据类型
 offset = 0;
-uint value = buffer.ReadUInt(ref offset);
-float floatValue = buffer.ReadFloat(ref offset);
+uint value = buffer.ReadUIntValue(ref offset);
+float floatValue = buffer.ReadFloatValue(ref offset);
 
 // ReadOnlySpan 读取操作
 ReadOnlySpan<byte> readBuffer = buffer;
 offset = 0;
-uint readValue = readBuffer.ReadUInt(ref offset);
+uint readValue = readBuffer.ReadUIntValue(ref offset);
 ```
 
 #### 序列读取器扩展

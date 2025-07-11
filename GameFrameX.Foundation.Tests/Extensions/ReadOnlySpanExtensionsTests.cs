@@ -20,7 +20,7 @@ public class ReadOnlySpanExtensionsTests
         const uint expected = 0x12345678;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadUInt(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadUIntValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -36,7 +36,7 @@ public class ReadOnlySpanExtensionsTests
         const uint expected = 0x12345678;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadUInt(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadUIntValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -51,7 +51,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUIntValue(ref offset));
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 1; // Only 3 bytes remaining, need 4
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUIntValue(ref offset));
     }
 
     #endregion
@@ -78,7 +78,7 @@ public class ReadOnlySpanExtensionsTests
         const int expected = 0x12345678;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadInt(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadIntValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -93,7 +93,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadIntValue(ref offset));
     }
 
     #endregion
@@ -109,7 +109,7 @@ public class ReadOnlySpanExtensionsTests
         const ulong expected = 0x123456789ABCDEF0;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadULong(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadULongValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -124,7 +124,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadULong(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadULongValue(ref offset));
     }
 
     #endregion
@@ -140,7 +140,7 @@ public class ReadOnlySpanExtensionsTests
         const long expected = 0x123456789ABCDEF0;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadLong(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadLongValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -155,7 +155,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadLong(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadLongValue(ref offset));
     }
 
     #endregion
@@ -171,7 +171,7 @@ public class ReadOnlySpanExtensionsTests
         const ushort expected = 0x1234;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadUShort(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadUShortValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -186,7 +186,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUShort(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUShortValue(ref offset));
     }
 
     #endregion
@@ -202,7 +202,7 @@ public class ReadOnlySpanExtensionsTests
         const short expected = 0x1234;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadShort(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadShortValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -217,7 +217,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadShort(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadShortValue(ref offset));
     }
 
     #endregion
@@ -233,7 +233,7 @@ public class ReadOnlySpanExtensionsTests
         const float expected = 42.0f;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadFloat(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadFloatValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -248,7 +248,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadFloat(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadFloatValue(ref offset));
     }
 
     #endregion
@@ -264,7 +264,7 @@ public class ReadOnlySpanExtensionsTests
         const double expected = 42.0;
 
         // Act
-        var result = ((ReadOnlySpan<byte>)buffer).ReadDouble(ref offset);
+        var result = ((ReadOnlySpan<byte>)buffer).ReadDoubleValue(ref offset);
 
         // Assert
         Assert.Equal(expected, result);
@@ -279,7 +279,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadDouble(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadDoubleValue(ref offset));
     }
 
     #endregion
@@ -305,7 +305,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadIntValue(ref offset));
     }
 
     [Fact]
@@ -316,7 +316,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadULong(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadULongValue(ref offset));
     }
 
     [Fact]
@@ -327,7 +327,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadLong(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadLongValue(ref offset));
     }
 
     [Fact]
@@ -338,7 +338,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUShort(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUShortValue(ref offset));
     }
 
     [Fact]
@@ -349,7 +349,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadShort(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadShortValue(ref offset));
     }
 
     [Fact]
@@ -360,7 +360,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadFloat(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadFloatValue(ref offset));
     }
 
     [Fact]
@@ -371,7 +371,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadDouble(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadDoubleValue(ref offset));
     }
 
     #endregion

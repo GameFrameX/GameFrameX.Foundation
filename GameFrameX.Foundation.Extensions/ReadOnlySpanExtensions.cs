@@ -21,7 +21,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的无符号整型。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static uint ReadUInt(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static uint ReadUIntValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -42,7 +42,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的整型。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static int ReadInt(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static int ReadIntValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -63,7 +63,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的无符号长整型。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static ulong ReadULong(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static ulong ReadULongValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -84,7 +84,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的长整型。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static long ReadLong(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static long ReadLongValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -105,7 +105,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的无符号短整型。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static ushort ReadUShort(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static ushort ReadUShortValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -126,7 +126,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的短整型。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static short ReadShort(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static short ReadShortValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -147,7 +147,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的单精度浮点数。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static float ReadFloat(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static float ReadFloatValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -168,7 +168,7 @@ public static class ReadOnlySpanExtensions
     /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
     /// <returns>读取的双精度浮点数。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static double ReadDouble(this ReadOnlySpan<byte> buffer, ref int offset)
+    public static double ReadDoubleValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
