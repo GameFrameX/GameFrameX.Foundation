@@ -409,8 +409,8 @@ dotnet test --filter "ClassName=XxHashHelperTests"
 
 ## 🔗 相关链接
 
-- [GameFrameX 官网](https://gameframex.com)
-- [文档中心](https://docs.gameframex.com)
+- [GameFrameX 官网](https://gameframex.doc.alianblank.com)
+- [文档中心](https://gameframex.doc.alianblank.com)
 - [问题反馈](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
 
 ---
