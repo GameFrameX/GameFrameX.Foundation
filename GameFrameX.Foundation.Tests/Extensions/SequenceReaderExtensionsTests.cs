@@ -23,7 +23,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out byte value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out byte value);
 
         // Assert
         Assert.True(result);
@@ -43,7 +43,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out ushort value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out ushort value);
 
         // Assert
         Assert.True(result);
@@ -63,7 +63,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out short value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out short value);
 
         // Assert
         Assert.True(result);
@@ -83,7 +83,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out uint value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out uint value);
 
         // Assert
         Assert.True(result);
@@ -103,7 +103,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out int value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out int value);
 
         // Assert
         Assert.True(result);
@@ -123,7 +123,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out ulong value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out ulong value);
 
         // Assert
         Assert.True(result);
@@ -143,7 +143,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out long value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out long value);
 
         // Assert
         Assert.True(result);
@@ -165,7 +165,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out float value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out float value);
 
         // Assert
         Assert.True(result);
@@ -187,7 +187,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out double value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out double value);
 
         // Assert
         Assert.True(result);
@@ -209,7 +209,7 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act
-        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out bool value);
+        var result = GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out bool value);
 
         // Assert
         Assert.True(result);
@@ -461,14 +461,14 @@ public class SequenceReaderExtensionsTests
         var reader = new SequenceReader<byte>(sequence);
 
         // Act & Assert
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out ushort _));
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out short _));
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out uint _));
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out int _));
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out ulong _));
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out long _));
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out float _));
-        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndian(ref reader, out double _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out ushort _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out short _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out uint _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out int _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out ulong _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out long _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out float _));
+        Assert.False(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryReadBigEndianValue(ref reader, out double _));
     }
 
     /// <summary>
@@ -507,19 +507,19 @@ public class SequenceReaderExtensionsTests
         var originalRemaining = reader.Remaining;
 
         // Act & Assert
-        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndian(ref reader, out byte byteValue));
+        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndianValue(ref reader, out byte byteValue));
         Assert.Equal(0x12, byteValue);
         Assert.Equal(originalRemaining, reader.Remaining);
 
-        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndian(ref reader, out ushort ushortValue));
+        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndianValue(ref reader, out ushort ushortValue));
         Assert.Equal(0x1234, ushortValue);
         Assert.Equal(originalRemaining, reader.Remaining);
 
-        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndian(ref reader, out uint uintValue));
+        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndianValue(ref reader, out uint uintValue));
         Assert.Equal(0x12345678u, uintValue);
         Assert.Equal(originalRemaining, reader.Remaining);
 
-        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndian(ref reader, out ulong ulongValue));
+        Assert.True(GameFrameX.Foundation.Extensions.SequenceReaderExtensions.TryPeekBigEndianValue(ref reader, out ulong ulongValue));
         Assert.Equal(0x123456789ABCDEF0ul, ulongValue);
         Assert.Equal(originalRemaining, reader.Remaining);
     }

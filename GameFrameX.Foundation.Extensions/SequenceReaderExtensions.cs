@@ -22,7 +22,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out byte value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out byte value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.ByteSize || !reader.TryRead(out var num1))
@@ -41,7 +41,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out ushort value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out ushort value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.UShortSize)
@@ -67,7 +67,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out short value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out short value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.ShortSize)
@@ -93,7 +93,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out uint value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out uint value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.UIntSize)
@@ -119,7 +119,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out int value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out int value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.IntSize)
@@ -145,7 +145,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out ulong value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out ulong value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.ULongSize)
@@ -171,7 +171,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out long value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out long value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.LongSize)
@@ -197,7 +197,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out float value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out float value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.FloatSize)
@@ -223,7 +223,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out double value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out double value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.DoubleSize)
@@ -249,7 +249,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out bool value)
+    public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out bool value)
     {
         value = false;
         if (reader.Remaining < ConstBaseTypeSize.BoolSize || !reader.TryRead(out var num1))
@@ -323,7 +323,7 @@ public static class SequenceReaderExtensions
     {
         value = Array.Empty<byte>();
 
-        if (!TryReadBigEndian(ref reader, out int length))
+        if (!TryReadBigEndianValue(ref reader, out int length))
         {
             return false;
         }
@@ -348,7 +348,7 @@ public static class SequenceReaderExtensions
     {
         value = string.Empty;
 
-        if (!TryReadBigEndian(ref reader, out short length))
+        if (!TryReadBigEndianValue(ref reader, out short length))
         {
             return false;
         }
@@ -386,7 +386,7 @@ public static class SequenceReaderExtensions
 
         value = string.Empty;
 
-        if (!TryReadBigEndian(ref reader, out short length))
+        if (!TryReadBigEndianValue(ref reader, out short length))
         {
             return false;
         }
@@ -417,7 +417,7 @@ public static class SequenceReaderExtensions
     {
         value = string.Empty;
 
-        if (!TryReadBigEndian(ref reader, out int length))
+        if (!TryReadBigEndianValue(ref reader, out int length))
         {
             return false;
         }
@@ -455,7 +455,7 @@ public static class SequenceReaderExtensions
 
         value = string.Empty;
 
-        if (!TryReadBigEndian(ref reader, out int length))
+        if (!TryReadBigEndianValue(ref reader, out int length))
         {
             return false;
         }
@@ -481,7 +481,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out byte value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out byte value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.ByteSize || !reader.TryPeek(0, out var num1))
@@ -500,7 +500,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out ushort value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out ushort value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.UShortSize || !reader.TryPeek(0, out var num1) || !reader.TryPeek(1, out var num2))
@@ -519,10 +519,10 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out short value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out short value)
     {
         value = 0;
-        if (!TryPeekBigEndian(ref reader, out ushort uValue))
+        if (!TryPeekBigEndianValue(ref reader, out ushort uValue))
         {
             return false;
         }
@@ -538,7 +538,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out uint value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out uint value)
     {
         value = 0U;
         if (reader.Remaining < ConstBaseTypeSize.UIntSize)
@@ -570,10 +570,10 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out int value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out int value)
     {
         value = 0;
-        if (!TryPeekBigEndian(ref reader, out uint uValue))
+        if (!TryPeekBigEndianValue(ref reader, out uint uValue))
         {
             return false;
         }
@@ -589,7 +589,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out ulong value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out ulong value)
     {
         value = 0UL;
         if (reader.Remaining < ConstBaseTypeSize.ULongSize)
@@ -621,10 +621,10 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out long value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out long value)
     {
         value = 0;
-        if (!TryPeekBigEndian(ref reader, out ulong uValue))
+        if (!TryPeekBigEndianValue(ref reader, out ulong uValue))
         {
             return false;
         }
@@ -640,7 +640,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out float value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out float value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.FloatSize)
@@ -663,7 +663,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out double value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out double value)
     {
         value = 0;
         if (reader.Remaining < ConstBaseTypeSize.DoubleSize)
@@ -686,7 +686,7 @@ public static class SequenceReaderExtensions
     /// <param name="value">结果值。</param>
     /// <returns>读取成功返回 True，否则返回 False。</returns>
     /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
-    public static bool TryPeekBool(this ref SequenceReader<byte> reader, out bool value)
+    public static bool TryPeekBigEndianValue(this ref SequenceReader<byte> reader, out bool value)
     {
         value = false;
         if (reader.Remaining < ConstBaseTypeSize.BoolSize || !reader.TryPeek(0, out var num1))
@@ -740,7 +740,7 @@ public static class SequenceReaderExtensions
         value = null;
 
         // 首先读取字符串长度（short 类型）
-        if (!TryPeekBigEndian(ref reader, out short stringLength))
+        if (!TryPeekBigEndianValue(ref reader, out short stringLength))
         {
             return false;
         }
@@ -787,7 +787,7 @@ public static class SequenceReaderExtensions
         value = null;
 
         // 首先读取字节数组长度（int 类型）
-        if (!TryPeekBigEndian(ref reader, out int bytesLength))
+        if (!TryPeekBigEndianValue(ref reader, out int bytesLength))
         {
             return false;
         }
