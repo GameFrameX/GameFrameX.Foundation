@@ -91,7 +91,7 @@ public class SpanExtensionsTests
         var buffer = new byte[10];
         var offset = 0;
         const int expectedValue = 12345;
-        buffer.AsSpan().WriteInt(expectedValue, ref offset);
+        buffer.AsSpan().WriteIntValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -131,7 +131,7 @@ public class SpanExtensionsTests
         var buffer = new byte[10];
         var offset = 0;
         const uint expectedValue = 12345u;
-        buffer.AsSpan().WriteUInt(expectedValue, ref offset);
+        buffer.AsSpan().WriteUIntValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -160,7 +160,7 @@ public class SpanExtensionsTests
         var buffer = new byte[10];
         var offset = 0;
         const short expectedValue = 12345;
-        buffer.AsSpan().WriteShort(expectedValue, ref offset);
+        buffer.AsSpan().WriteShortValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -189,7 +189,7 @@ public class SpanExtensionsTests
         var buffer = new byte[100];
         var offset = 0;
         const string expectedValue = "Hello, World!";
-        buffer.AsSpan().WriteString(expectedValue, ref offset);
+        buffer.AsSpan().WriteStringValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -206,7 +206,7 @@ public class SpanExtensionsTests
         var buffer = new byte[10];
         var offset = 0;
         const string expectedValue = "";
-        buffer.AsSpan().WriteString(expectedValue, ref offset);
+        buffer.AsSpan().WriteStringValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -223,7 +223,7 @@ public class SpanExtensionsTests
         var buffer = new byte[10];
         var offset = 0;
         const byte expectedValue = 123;
-        buffer.AsSpan().WriteByte(expectedValue, ref offset);
+        buffer.AsSpan().WriteByteValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -252,7 +252,7 @@ public class SpanExtensionsTests
         var buffer = new byte[10];
         var offset = 0;
         const bool expectedValue = true;
-        buffer.AsSpan().WriteBool(expectedValue, ref offset);
+        buffer.AsSpan().WriteBoolValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -270,7 +270,7 @@ public class SpanExtensionsTests
         var buffer = new byte[100];
         var offset = 0;
         var expectedValue = new byte[] { 1, 2, 3, 4, 5 };
-        buffer.AsSpan().WriteBytes(expectedValue, ref offset);
+        buffer.AsSpan().WriteBytesValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -287,7 +287,7 @@ public class SpanExtensionsTests
         var buffer = new byte[10];
         var offset = 0;
         var expectedValue = Array.Empty<byte>();
-        buffer.AsSpan().WriteBytes(expectedValue, ref offset);
+        buffer.AsSpan().WriteBytesValue(expectedValue, ref offset);
         offset = 0;
 
         // Act
@@ -311,7 +311,7 @@ public class SpanExtensionsTests
         const int originalValue = -12345;
 
         // Act
-        buffer.AsSpan().WriteInt(originalValue, ref writeOffset);
+        buffer.AsSpan().WriteIntValue(originalValue, ref writeOffset);
         var result = buffer.AsSpan().ReadIntValue(ref readOffset);
 
         // Assert
@@ -329,7 +329,7 @@ public class SpanExtensionsTests
         const float originalValue = 123.456f;
 
         // Act
-        buffer.AsSpan().WriteFloat(originalValue, ref writeOffset);
+        buffer.AsSpan().WriteFloatValue(originalValue, ref writeOffset);
         var result = buffer.AsSpan().ReadFloatValue(ref readOffset);
 
         // Assert
@@ -347,7 +347,7 @@ public class SpanExtensionsTests
         const double originalValue = 123.456789;
 
         // Act
-        buffer.AsSpan().WriteDouble(originalValue, ref writeOffset);
+        buffer.AsSpan().WriteDoubleValue(originalValue, ref writeOffset);
         var result = buffer.AsSpan().ReadDoubleValue(ref readOffset);
 
         // Assert
