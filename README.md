@@ -116,7 +116,7 @@ LogHelper.Info("应用程序启动");
 | **字典扩展**     | `IDictionaryExtensions.cs`                                        | 字典操作增强，支持合并、条件移除等             |
 | **列表扩展**     | `ListExtensions.cs`                                               | 列表特定的扩展方法                     |
 | **字节扩展**     | `ByteExtensions.cs`                                               | 字节数组操作，包含子数组提取等               |
-| **Span扩展**   | `SpanExtensions.cs`                                               | 高性能内存操作，支持各种数据类型读写            |
+| **Span扩展**   | `SpanExtensions.cs`                                               | 高性能内存操作，支持各种数据类型读写，包含大端序和小端序支持 |
 | **只读Span扩展** | `ReadOnlySpanExtensions.cs`                                       | 只读内存的高性能读取操作                  |
 | **序列读取器扩展**  | `SequenceReaderExtensions.cs`                                     | 序列数据的便捷读取方法                   |
 | **双向字典**     | `BidirectionalDictionary.cs`                                      | 支持双向查找的字典实现                   |
@@ -277,22 +277,26 @@ byte[] data = { 1, 2, 3, 4, 5 };
 byte[] subArray = data.SubArray(1, 3); // 获取子数组
 
 // Span 和 ReadOnlySpan 扩展 - 高性能字节操作
-Span<byte> buffer = stackalloc byte[8];
+Span<byte> buffer = stackalloc byte[16];
 int offset = 0;
 
-// 写入各种数据类型
+// 写入各种数据类型（支持大端序和小端序）
 buffer.WriteUIntValue(12345u, ref offset);
 buffer.WriteFloatValue(3.14f, ref offset);
+buffer.WriteUIntBigEndianValue(12345u, ref offset); // 大端序写入
+buffer.WriteFloatBigEndianValue(3.14f, ref offset); // 大端序写入
 
 // 读取数据类型
 offset = 0;
 uint value = buffer.ReadUIntValue(ref offset);
 float floatValue = buffer.ReadFloatValue(ref offset);
+uint bigEndianValue = buffer.ReadUIntBigEndianValue(ref offset); // 大端序读取
 
 // ReadOnlySpan 读取操作
 ReadOnlySpan<byte> readBuffer = buffer;
 offset = 0;
 uint readValue = readBuffer.ReadUIntValue(ref offset);
+float readFloatValue = readBuffer.ReadFloatBigEndianValue(ref offset);
 ```
 
 #### 序列读取器扩展
