@@ -822,4 +822,480 @@ public static class SequenceReaderExtensions
         Array.Copy(bytes, ConstBaseTypeSize.IntSize, value, 0, bytesLength);
         return true;
     }
+
+    #region 小端字节序读取方法
+
+    /// <summary>
+    /// 从只读内存中获取一个字节数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out byte value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.ByteSize || !reader.TryRead(out var num1))
+        {
+            return false;
+        }
+
+        value = num1;
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个无符号短整型数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out ushort value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.UShortSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.UShortSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadUInt16LittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.UShortSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个有符号短整型数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out short value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.ShortSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.ShortSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadInt16LittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.ShortSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个无符号整型数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out uint value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.UIntSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.UIntSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadUInt32LittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.UIntSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个有符号整型数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out int value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.IntSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.IntSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadInt32LittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.IntSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个无符号长整型数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out ulong value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.ULongSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.ULongSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadUInt64LittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.ULongSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个有符号长整型数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out long value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.LongSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.LongSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadInt64LittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.LongSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个单精度浮点数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out float value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.FloatSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.FloatSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadSingleLittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.FloatSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个双精度浮点数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out double value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.DoubleSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.DoubleSize];
+        if (!reader.TryCopyTo(span))
+        {
+            return false;
+        }
+
+        value = BinaryPrimitives.ReadDoubleLittleEndian(span);
+        reader.Advance(ConstBaseTypeSize.DoubleSize);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个布尔值数据（小端字节序）。
+    /// </summary>
+    /// <param name="reader">只读内存读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryReadLittleEndianValue(this ref SequenceReader<byte> reader, out bool value)
+    {
+        value = false;
+        if (reader.Remaining < ConstBaseTypeSize.BoolSize || !reader.TryRead(out var num1))
+        {
+            return false;
+        }
+
+        value = num1 != 0;
+        return true;
+    }
+
+    #endregion
+
+    #region 小端字节序预览方法
+
+    /// <summary>
+    /// 从只读内存中获取一个字节数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out byte value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.ByteSize || !reader.TryPeek(0, out var num1))
+        {
+            return false;
+        }
+
+        value = num1;
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个无符号短整型数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out ushort value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.UShortSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.UShortSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.UShortSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadUInt16LittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个有符号短整型数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out short value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.ShortSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.ShortSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.ShortSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadInt16LittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个无符号整型数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out uint value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.UIntSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.UIntSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.UIntSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadUInt32LittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个有符号整型数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out int value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.IntSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.IntSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.IntSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadInt32LittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个无符号长整型数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out ulong value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.ULongSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.ULongSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.ULongSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadUInt64LittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个有符号长整型数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out long value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.LongSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.LongSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.LongSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadInt64LittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个单精度浮点数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out float value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.FloatSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.FloatSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.FloatSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadSingleLittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个双精度浮点数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out double value)
+    {
+        value = 0;
+        if (reader.Remaining < ConstBaseTypeSize.DoubleSize)
+        {
+            return false;
+        }
+
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.DoubleSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.DoubleSize);
+        sequence.CopyTo(span);
+
+        value = BinaryPrimitives.ReadDoubleLittleEndian(span);
+        return true;
+    }
+
+    /// <summary>
+    /// 从只读内存中获取一个布尔值数据（小端字节序），但不移动读取位置。
+    /// </summary>
+    /// <param name="reader">读取器。</param>
+    /// <param name="value">结果值。</param>
+    /// <returns>读取成功返回 True，否则返回 False。</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    public static bool TryPeekLittleEndianValue(this ref SequenceReader<byte> reader, out bool value)
+    {
+        value = false;
+        if (reader.Remaining < ConstBaseTypeSize.BoolSize || !reader.TryPeek(0, out var num1))
+        {
+            return false;
+        }
+
+        value = num1 != 0;
+        return true;
+    }
+
+    #endregion
 }
