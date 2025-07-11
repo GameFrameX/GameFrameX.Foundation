@@ -294,7 +294,7 @@ public class ReadOnlySpanExtensionsTests
         var offset = -1;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ((ReadOnlySpan<byte>)buffer).ReadUIntValue(ref offset));
     }
 
     [Fact]

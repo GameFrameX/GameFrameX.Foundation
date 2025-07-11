@@ -297,7 +297,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        var result = buffer.ReadUInt(ref offset);
+        var result = buffer.ReadUIntValue(ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -312,7 +312,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => buffer.ReadUInt(ref offset));
+        Assert.Throws<ArgumentNullException>(() => buffer.ReadUIntValue(ref offset));
     }
 
     [Fact]
@@ -323,7 +323,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ReadUInt(ref offset));
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ReadUIntValue(ref offset));
     }
 
     [Fact]
@@ -334,7 +334,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        var result = buffer.ReadInt(ref offset);
+        var result = buffer.ReadIntValue(ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -348,7 +348,7 @@ public class ByteExtensionTests
         int offset = 0;
 
         // Act
-        var result = buffer.ReadByte(ref offset);
+        var result = buffer.ReadByteValue(ref offset);
 
         // Assert
         Assert.Equal(1, offset);
@@ -364,7 +364,7 @@ public class ByteExtensionTests
         int length = 3;
 
         // Act
-        var result = buffer.ReadBytes(offset, length);
+        var result = buffer.ReadBytesValue(offset, length);
 
         // Assert
         Assert.Equal(3, result.Length);
@@ -382,7 +382,7 @@ public class ByteExtensionTests
         int length = 2;
 
         // Act
-        var result = buffer.ReadBytes(ref offset, length);
+        var result = buffer.ReadBytesValue(ref offset, length);
 
         // Assert
         Assert.Equal(2, offset);
@@ -403,7 +403,7 @@ public class ByteExtensionTests
         int readOffset = 0;
 
         // Act
-        var result = buffer.ReadString(ref readOffset);
+        var result = buffer.ReadStringValue(ref readOffset);
 
         // Assert
         Assert.Equal(testString, result);
@@ -422,7 +422,7 @@ public class ByteExtensionTests
         int readOffset = 0;
 
         // Act
-        var result = buffer.ReadBool(ref readOffset);
+        var result = buffer.ReadBoolValue(ref readOffset);
 
         // Assert
         Assert.Equal(testValue, result);
@@ -457,7 +457,7 @@ public class ByteExtensionTests
         int length = 0;
 
         // Act
-        var result = buffer.ReadBytes(offset, length);
+        var result = buffer.ReadBytesValue(offset, length);
 
         // Assert
         Assert.Empty(result);
@@ -472,7 +472,7 @@ public class ByteExtensionTests
         int length = -1;
 
         // Act
-        var result = buffer.ReadBytes(offset, length);
+        var result = buffer.ReadBytesValue(offset, length);
 
         // Assert
         Assert.Empty(result);

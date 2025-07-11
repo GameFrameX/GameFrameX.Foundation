@@ -345,7 +345,7 @@ public static class ByteExtensions
     /// <returns>返回读取的16位无符号整数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static ushort ReadUShort(this byte[] buffer, ref int offset)
+    public static ushort ReadUShortValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -368,7 +368,7 @@ public static class ByteExtensions
     /// <returns>返回读取的16位有符号整数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static short ReadShort(this byte[] buffer, ref int offset)
+    public static short ReadShortValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -391,7 +391,7 @@ public static class ByteExtensions
     /// <returns>返回读取的32位无符号整数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static uint ReadUInt(this byte[] buffer, ref int offset)
+    public static uint ReadUIntValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -414,7 +414,7 @@ public static class ByteExtensions
     /// <returns>返回读取的32位有符号整数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static int ReadInt(this byte[] buffer, ref int offset)
+    public static int ReadIntValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -437,7 +437,7 @@ public static class ByteExtensions
     /// <returns>返回读取的64位无符号整数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static ulong ReadULong(this byte[] buffer, ref int offset)
+    public static ulong ReadULongValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -460,7 +460,7 @@ public static class ByteExtensions
     /// <returns>返回读取的64位有符号整数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static long ReadLong(this byte[] buffer, ref int offset)
+    public static long ReadLongValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -697,7 +697,7 @@ public static class ByteExtensions
     /// <returns>从字节缓冲区中读取的浮点数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static unsafe float ReadFloat(this byte[] buffer, ref int offset)
+    public static unsafe float ReadFloatValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -724,7 +724,7 @@ public static class ByteExtensions
     /// <returns>返回从缓冲区读取的 double 类型数据。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static unsafe double ReadDouble(this byte[] buffer, ref int offset)
+    public static unsafe double ReadDoubleValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -751,7 +751,7 @@ public static class ByteExtensions
     /// <returns>返回从缓冲区读取的 byte 类型数据。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static byte ReadByte(this byte[] buffer, ref int offset)
+    public static byte ReadByteValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -775,7 +775,7 @@ public static class ByteExtensions
     /// <returns>返回从缓冲区读取的 byte[] 类型数据。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static byte[] ReadBytes(this byte[] buffer, int offset, int len)
+    public static byte[] ReadBytesValue(this byte[] buffer, int offset, int len)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -804,7 +804,7 @@ public static class ByteExtensions
     /// <returns>返回从缓冲区读取的 byte[] 类型数据。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static byte[] ReadBytes(this byte[] buffer, ref int offset, int len)
+    public static byte[] ReadBytesValue(this byte[] buffer, ref int offset, int len)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -833,9 +833,9 @@ public static class ByteExtensions
     /// <returns>返回从缓冲区读取的 byte[] 类型数据。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static byte[] ReadBytes(this byte[] buffer, ref int offset)
+    public static byte[] ReadBytesValue(this byte[] buffer, ref int offset)
     {
-        var len = ReadInt(buffer, ref offset);
+        var len = ReadIntValue(buffer, ref offset);
 
         if (len <= 0)
         {
@@ -861,7 +861,7 @@ public static class ByteExtensions
     /// <returns>读取的有符号字节。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static sbyte ReadSByte(this byte[] buffer, ref int offset)
+    public static sbyte ReadSByteValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -884,9 +884,9 @@ public static class ByteExtensions
     /// <returns>读取的字符串，若读取长度小于等于0或偏移量超出数组长度，返回空字符串。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static string ReadString(this byte[] buffer, ref int offset)
+    public static string ReadStringValue(this byte[] buffer, ref int offset)
     {
-        var len = ReadShort(buffer, ref offset);
+        var len = ReadShortValue(buffer, ref offset);
 
         if (len <= 0)
         {
@@ -911,7 +911,7 @@ public static class ByteExtensions
     /// <returns>读取的布尔值。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static bool ReadBool(this byte[] buffer, ref int offset)
+    public static bool ReadBoolValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
