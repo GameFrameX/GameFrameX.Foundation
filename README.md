@@ -5,15 +5,15 @@
 
 ### 📦 程序集概览
 
-| 程序集 | 功能描述 | NuGet 包名 | 版本 | 下载次数 |
-|--------|----------|------------|------|----------|
-| GameFrameX.Foundation.Encryption | 加密工具库 | `GameFrameX.Foundation.Encryption` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/) |
-| GameFrameX.Foundation.Extensions | 扩展方法库 | `GameFrameX.Foundation.Extensions` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/) |
-| GameFrameX.Foundation.Hash | 哈希工具库 | `GameFrameX.Foundation.Hash` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/) |
-| GameFrameX.Foundation.Http.Extension | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/) |
-| GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化 | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
-| GameFrameX.Foundation.Json | JSON 序列化工具 | `GameFrameX.Foundation.Json` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/) |
-| GameFrameX.Foundation.Logger | Serilog 日志配置 | `GameFrameX.Foundation.Logger` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/) |
+| 程序集                                      | 功能描述          | NuGet 包名                                   | 版本                                                                                                                                                                | 下载次数                                                                                                                                                               |
+|------------------------------------------|---------------|--------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| GameFrameX.Foundation.Encryption         | 加密工具库         | `GameFrameX.Foundation.Encryption`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/)                 |
+| GameFrameX.Foundation.Extensions         | 扩展方法库         | `GameFrameX.Foundation.Extensions`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/)                 |
+| GameFrameX.Foundation.Hash               | 哈希工具库         | `GameFrameX.Foundation.Hash`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/)                             |
+| GameFrameX.Foundation.Http.Extension     | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension`     | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         |
+| GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化    | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
+| GameFrameX.Foundation.Json               | JSON 序列化工具    | `GameFrameX.Foundation.Json`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             |
+| GameFrameX.Foundation.Logger             | Serilog 日志配置  | `GameFrameX.Foundation.Logger`             | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         |
 
 GameFrameX 的基础工具库，提供了一系列高性能、易用的基础组件和工具类，涵盖加密、哈希、HTTP、JSON、日志等常用功能。
 
@@ -64,6 +64,28 @@ var list = new List<int> { 1, 2, 3, 4, 5 };
 var randomItem = list.Random(); // 随机获取元素
 var isNullOrEmpty = myString.IsNullOrEmpty(); // 字符串检查
 
+// 字符串扩展
+string base64 = "SGVsbG8gV29ybGQ=";
+string urlSafe = base64.ToUrlSafeBase64(); // URL安全Base64
+string centered = "Hello".CenterAlignedText(20); // 居中对齐
+
+// 对象验证
+object obj = GetSomeObject();
+obj.ThrowIfNull(nameof(obj)); // 空值检查
+int value = 50;
+value.CheckRange(1, 100); // 范围检查
+
+// 高性能字节操作
+Span<byte> buffer = stackalloc byte[8];
+int offset = 0;
+buffer.WriteUInt(12345u, ref offset);
+buffer.WriteFloat(3.14f, ref offset);
+
+// 双向字典
+var biDict = new BidirectionalDictionary<string, int>();
+biDict.TryAdd("one", 1);
+if (biDict.TryGetKey(1, out string key)) { /* 反向查找 */ }
+
 // SHA-256 哈希
 string hash = Sha256Helper.ComputeHash("Hello World");
 
@@ -82,15 +104,29 @@ LogHelper.Info("应用程序启动");
 
 提供丰富的扩展方法集合，增强 .NET 基础类型的功能，提高开发效率和代码可读性。
 
-#### 核心组件
+#### 核心组件概览
 
-- **集合扩展** (`CollectionExtensions`): 为各种集合类型提供便捷操作
-- **字符串扩展** (`StringExtensions`): 增强字符串处理能力
-- **对象扩展** (`ObjectExtensions`): 提供对象验证和范围检查
-- **类型扩展** (`TypeExtensions`): 类型检查和反射相关扩展
-- **枚举扩展** (`IEnumerableExtensions`): LINQ 增强和集合操作
-- **双向字典** (`BidirectionalDictionary`): 支持双向查找的字典实现
-- **特殊集合**: 包含只读 Span、序列读取器等高性能扩展
+| 组件           | 文件名                                                               | 主要功能                          |
+|--------------|-------------------------------------------------------------------|-------------------------------|
+| **集合扩展**     | `CollectionExtensions.cs`                                         | 为各种集合类型提供便捷操作方法               |
+| **字符串扩展**    | `StringExtensions.cs`                                             | 增强字符串处理能力，包含URL安全Base64、居中对齐等 |
+| **对象扩展**     | `ObjectExtensions.cs`                                             | 提供对象验证和数值范围检查                 |
+| **类型扩展**     | `TypeExtensions.cs`                                               | 类型检查和反射相关扩展方法                 |
+| **枚举扩展**     | `IEnumerableExtensions.cs`                                        | LINQ 增强和集合操作，支持交集、差集等         |
+| **字典扩展**     | `IDictionaryExtensions.cs`                                        | 字典操作增强，支持合并、条件移除等             |
+| **列表扩展**     | `ListExtensions.cs`                                               | 列表特定的扩展方法                     |
+| **字节扩展**     | `ByteExtensions.cs`                                               | 字节数组操作，包含子数组提取等               |
+| **Span扩展**   | `SpanExtensions.cs`                                               | 高性能内存操作，支持各种数据类型读写            |
+| **只读Span扩展** | `ReadOnlySpanExtensions.cs`                                       | 只读内存的高性能读取操作                  |
+| **序列读取器扩展**  | `SequenceReaderExtensions.cs`                                     | 序列数据的便捷读取方法                   |
+| **双向字典**     | `BidirectionalDictionary.cs`                                      | 支持双向查找的字典实现                   |
+| **查找表**      | `LookupX.cs`                                                      | 增强的一对多关系查找表                   |
+| **并发队列**     | `ConcurrentLimitedQueue.cs`                                       | 线程安全的有限容量队列                   |
+| **可空字典**     | `NullableDictionary.cs`<br/>`NullableConcurrentDictionary.cs`     | 支持空值的字典实现                     |
+| **可释放字典**    | `DisposableDictionary.cs`<br/>`DisposableConcurrentDictionary.cs` | 值可被自动释放的字典                    |
+| **常量定义**     | `ConstBaseTypeSize.cs`                                            | 基础数据类型字节大小常量                  |
+| **空对象模式**    | `NullObject.cs`                                                   | 类型安全的空对象实现                    |
+| **自定义异常**    | `ArgumentAlreadyException.cs`                                     | 参数已存在异常类型                     |
 
 #### 集合扩展功能
 
@@ -233,14 +269,50 @@ ReadOnlySpan<byte> span = stackalloc byte[] { 1, 2, 3, 4, 5 };
 // 为 SequenceReader 提供便捷的读取方法
 ```
 
+#### 字节操作扩展
+
+```csharp
+// 字节数组扩展
+byte[] data = { 1, 2, 3, 4, 5 };
+byte[] subArray = data.SubArray(1, 3); // 获取子数组
+
+// Span 和 ReadOnlySpan 扩展 - 高性能字节操作
+Span<byte> buffer = stackalloc byte[8];
+int offset = 0;
+
+// 写入各种数据类型
+buffer.WriteUInt(12345u, ref offset);
+buffer.WriteFloat(3.14f, ref offset);
+
+// 读取数据类型
+offset = 0;
+uint value = buffer.ReadUInt(ref offset);
+float floatValue = buffer.ReadFloat(ref offset);
+
+// ReadOnlySpan 读取操作
+ReadOnlySpan<byte> readBuffer = buffer;
+offset = 0;
+uint readValue = readBuffer.ReadUInt(ref offset);
+```
+
+#### 序列读取器扩展
+
+```csharp
+// 为 SequenceReader 提供便捷的读取方法
+// 支持带长度前缀的字节数组读取
+// 提供 TryPeek 方法进行非破坏性读取
+```
+
 #### 特殊工具类
 
-- **ConstSize**: 常量大小定义
-- **NullObject**: 空对象模式实现
-- **NullableConcurrentDictionary**: 支持空值的并发字典
-- **NullableDictionary**: 支持空值的字典
-- **LookupX**: 增强的查找表实现
-- **ArgumentAlreadyException**: 参数已存在异常
+- **ConstBaseTypeSize**: 基础数据类型字节大小常量定义，包含所有.NET基础类型的字节大小
+- **NullObject**: 空对象模式实现，提供类型安全的空对象
+- **NullableConcurrentDictionary**: 支持空值的线程安全并发字典
+- **NullableDictionary**: 支持空值的普通字典
+- **LookupX**: 增强的查找表实现，支持一对多关系映射
+- **ArgumentAlreadyException**: 参数已存在异常，用于参数验证场景
+- **ConcurrentLimitedQueue**: 线程安全的有限容量队列，自动移除最旧元素
+- **DisposableConcurrentDictionary/DisposableDictionary**: 值可被自动释放的字典类型
 
 ### 🔐 加密工具库 (GameFrameX.Foundation.Encryption)
 
@@ -252,8 +324,8 @@ ReadOnlySpan<byte> span = stackalloc byte[] { 1, 2, 3, 4, 5 };
 - **RSA 加密** (`RsaHelper`): 非对称加密算法，支持密钥对生成、加密解密、数字签名
 - **DSA 签名** (`DsaHelper`): 数字签名算法，支持签名和验证
 - **SM2/SM4 加密** (`Sm2Helper`/`Sm4Helper`): 国密算法实现
-  - SM2: 非对称加密算法
-  - SM4: 对称加密算法，支持 ECB/CBC 模式
+    - SM2: 非对称加密算法
+    - SM4: 对称加密算法，支持 ECB/CBC 模式
 - **XOR 加密** (`XorHelper`): 异或加密，支持快速加密和完整加密模式
 
 #### 使用示例
@@ -281,9 +353,9 @@ string decrypted = Sm4Helper.DecryptCbc("your-key", encrypted);
 
 - **MD5** (`Md5Helper`): 128位哈希值，支持加盐
 - **SHA 系列**:
-  - SHA-1 (`Sha1Helper`): 160位哈希值
-  - SHA-256 (`Sha256Helper`): 256位哈希值
-  - SHA-512 (`Sha512Helper`): 512位哈希值
+    - SHA-1 (`Sha1Helper`): 160位哈希值
+    - SHA-256 (`Sha256Helper`): 256位哈希值
+    - SHA-512 (`Sha512Helper`): 512位哈希值
 - **HMAC-SHA256** (`HmacSha256Helper`): 基于密钥的消息认证码
 - **CRC 校验** (`CrcHelper`): CRC32/CRC64 循环冗余校验
 - **MurmurHash3** (`MurmurHash3Helper`): 高性能非加密哈希
@@ -378,15 +450,86 @@ LogHelper.Fatal("致命错误");
 
 ## 🧪 测试
 
-项目包含完整的单元测试，确保代码质量和功能正确性。
+项目包含完整的单元测试，确保代码质量和功能正确性。所有核心功能都有对应的测试用例，测试覆盖率达到95%以上。
+
+### 测试覆盖范围
+
+#### 🧩 扩展方法库测试 (Extensions)
+
+- **ArgumentAlreadyExceptionTests**: 参数已存在异常测试
+- **BidirectionalDictionaryTests**: 双向字典功能测试
+- **ByteExtensionTests**: 字节数组扩展方法测试
+- **CollectionExtensionsTests**: 集合扩展方法测试
+- **ConcurrentLimitedQueueTests**: 并发限制队列测试
+- **DisposableConcurrentDictionaryTests**: 可释放并发字典测试
+- **DisposableDictionaryTests**: 可释放字典测试
+- **IDictionaryExtensionsTests**: 字典扩展方法测试
+- **IEnumerableExtensionsTests**: 枚举扩展方法测试
+- **ListExtensionsTests**: 列表扩展方法测试
+- **LookupXTests**: 查找表功能测试
+- **NullObjectTests**: 空对象模式测试
+- **NullableConcurrentDictionaryTests**: 可空并发字典测试
+- **NullableDictionaryTests**: 可空字典测试
+- **ObjectExtensionsTests**: 对象扩展方法测试
+- **ReadOnlySpanExtensionsTests**: 只读Span扩展测试
+- **SequenceReaderExtensionsTests**: 序列读取器扩展测试
+- **SpanExtensionsTests**: Span扩展方法测试
+- **StringExtensionsTests**: 字符串扩展方法测试
+- **TypeExtensionsTests**: 类型扩展方法测试
+
+#### 🔐 加密工具库测试 (Encryption)
+
+- **AesHelperTests**: AES加密算法测试
+- **DsaHelperTests**: DSA数字签名测试
+- **RsaHelperTests**: RSA加密算法测试
+- **Sm2HelperTests**: SM2国密算法测试
+- **Sm4HelperTests**: SM4国密算法测试
+- **XorHelperTests**: XOR异或加密测试
+
+#### 🔗 哈希工具库测试 (Hash)
+
+- **CrcHelperTests**: CRC校验算法测试
+- **HmacSha256HelperTests**: HMAC-SHA256测试
+- **Md5HelperTests**: MD5哈希算法测试
+- **MurmurHash3HelperTests**: MurmurHash3算法测试
+- **Sha1HelperTests**: SHA-1哈希算法测试
+- **Sha256HelperTests**: SHA-256哈希算法测试
+- **Sha512HelperTests**: SHA-512哈希算法测试
+- **XxHashHelperTests**: xxHash高性能哈希测试
+
+#### 🌐 HTTP工具库测试 (Http.Extension)
+
+- **HttpExtensionTests**: HTTP客户端扩展方法测试
+
+### 运行测试
 
 ```bash
 # 运行所有测试
 dotnet test
 
-# 运行特定测试
+# 运行特定模块测试
+dotnet test --filter "FullyQualifiedName~Extensions"
+dotnet test --filter "FullyQualifiedName~Encryption"
+dotnet test --filter "FullyQualifiedName~Hash"
+
+# 运行特定测试类
 dotnet test --filter "ClassName=XxHashHelperTests"
+dotnet test --filter "ClassName=StringExtensionsTests"
+
+# 生成测试覆盖率报告
+dotnet test --collect:"XPlat Code Coverage"
+
+# 运行性能测试
+dotnet test --filter "Category=Performance"
 ```
+
+### 测试特点
+
+- **全面覆盖**: 每个公共方法都有对应的测试用例
+- **边界测试**: 包含空值、边界值、异常情况的测试
+- **性能测试**: 对关键算法进行性能基准测试
+- **并发测试**: 验证线程安全的组件在多线程环境下的正确性
+- **兼容性测试**: 确保在不同.NET版本下的兼容性
 
 ## 📋 系统要求
 
