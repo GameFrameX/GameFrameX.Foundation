@@ -11,18 +11,19 @@ namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
 /// 表示键和元素之间的多对多关系的集合。
+/// 提供了一种高效的方式来存储和检索与特定键关联的多个元素。
 /// </summary>
-/// <typeparam name="TKey">键的类型。</typeparam>
-/// <typeparam name="TElement">元素的类型。</typeparam>
+/// <typeparam name="TKey">键的泛型类型。</typeparam>
+/// <typeparam name="TElement">元素的泛型类型。</typeparam>
 public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
 {
     private readonly IDictionary<TKey, List<TElement>> _dictionary;
 
     /// <summary>
-    /// 使用指定的字典初始化一个新的 <see cref="LookupX{TKey, TElement}" /> 实例。
+    /// 使用指定的字典初始化一个新的 <see cref="LookupX&lt;TKey, TElement&gt;" /> 实例。
     /// </summary>
-    /// <param name="dic">用于存储键和元素列表的字典。</param>
-    /// <exception cref="ArgumentNullException">The dictionary parameter is null.</exception>
+    /// <param name="dic">用于存储键和元素列表的字典。不能为 null。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出。</exception>
     public LookupX(IDictionary<TKey, List<TElement>> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -30,10 +31,10 @@ public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
     }
 
     /// <summary>
-    /// 使用指定的并发字典初始化一个新的 <see cref="LookupX{TKey, TElement}" /> 实例。
+    /// 使用指定的并发字典初始化一个新的 <see cref="LookupX&lt;TKey, TElement&gt;" /> 实例。
     /// </summary>
-    /// <param name="dic">用于存储键和元素列表的并发字典。</param>
-    /// <exception cref="ArgumentNullException">The dictionary parameter is null.</exception>
+    /// <param name="dic">用于存储键和元素列表的并发字典。不能为 null。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出。</exception>
     public LookupX(ConcurrentDictionary<TKey, List<TElement>> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -43,6 +44,7 @@ public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
     /// <summary>
     /// 获取集合中的键值对数量。
     /// </summary>
+    /// <value>表示集合中包含的键值对的总数。</value>
     public int Count
     {
         get { return _dictionary.Count; }
@@ -52,9 +54,9 @@ public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
     /// 获取与指定键关联的元素列表。
     /// 如果键不存在，则返回一个空的元素列表。
     /// </summary>
-    /// <param name="key">要查找的键。</param>
-    /// <returns>与指定键关联的元素列表。</returns>
-    /// <exception cref="ArgumentNullException">The key parameter is null.</exception>
+    /// <param name="key">要查找的键。不能为 null。</param>
+    /// <returns>与指定键关联的元素列表。如果键不存在，返回空列表。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="key"/> 为 null 时抛出。</exception>
     public List<TElement> this[TKey key]
     {
         get
@@ -67,16 +69,16 @@ public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
     /// <summary>
     /// 返回一个枚举器，该枚举器可以遍历集合中的每个元素列表。
     /// </summary>
-    /// <returns>一个枚举器，该枚举器可以遍历集合中的每个元素列表。</returns>
+    /// <returns>一个 <see cref="IEnumerator&lt;List&lt;TElement&gt;&gt;"/> 枚举器，用于遍历集合中的每个元素列表。</returns>
     public IEnumerator<List<TElement>> GetEnumerator()
     {
         return _dictionary.Values.GetEnumerator();
     }
 
     /// <summary>
-    /// 返回一个枚举器，该枚举器可以遍历集合中的每个元素列表。
+    /// 返回一个非泛型枚举器，该枚举器可以遍历集合中的每个元素列表。
     /// </summary>
-    /// <returns>一个枚举器，该枚举器可以遍历集合中的每个元素列表。</returns>
+    /// <returns>一个 <see cref="IEnumerator"/> 枚举器，用于遍历集合中的每个元素列表。</returns>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
@@ -85,9 +87,9 @@ public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
     /// <summary>
     /// 判断集合中是否包含指定的键。
     /// </summary>
-    /// <param name="key">要检查的键。</param>
-    /// <returns>如果集合中包含指定的键，则返回 true；否则返回 false。</returns>
-    /// <exception cref="ArgumentNullException">The key parameter is null.</exception>
+    /// <param name="key">要检查的键。不能为 null。</param>
+    /// <returns>如果集合中包含指定的键，则返回 <c>true</c>；否则返回 <c>false</c>。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="key"/> 为 null 时抛出。</exception>
     public bool Contains(TKey key)
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
