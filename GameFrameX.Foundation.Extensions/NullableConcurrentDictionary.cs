@@ -16,71 +16,167 @@ namespace GameFrameX.Foundation.Extensions;
 public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<NullObject<TKey>, TValue>
 {
     /// <summary>
-    /// 初始化一个新的 <see cref="NullableConcurrentDictionary{TKey, TValue}" /> 实例。
+    /// 当键不存在时返回的默认值
+    /// </summary>
+    private TValue _fallbackValue;
+
+    /// <summary>
+    /// 初始化一个空的 NullableConcurrentDictionary 实例
     /// </summary>
     public NullableConcurrentDictionary()
     {
+        // FallbackValue 将使用字段的默认值
     }
 
     /// <summary>
-    /// 使用指定的默认值初始化一个新的 <see cref="NullableConcurrentDictionary{TKey, TValue}" /> 实例。
+    /// 使用指定的初始容量初始化 NullableConcurrentDictionary 实例
+    /// 注意：当 TValue 为 int 类型时，请使用 WithCapacity 静态方法来避免与 fallbackValue 构造函数的歧义
     /// </summary>
-    /// <param name="fallbackValue">当键不存在时返回的默认值，可以为null（如果TValue是引用类型）。</param>
-    public NullableConcurrentDictionary(TValue fallbackValue)
+    /// <param name="capacity">字典的初始容量，必须大于等于0</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 capacity 小于 0 时抛出</exception>
+    public NullableConcurrentDictionary(int capacity) : base(Environment.ProcessorCount, capacity)
     {
-        FallbackValue = fallbackValue;
+        ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
     }
 
     /// <summary>
-    /// 使用指定的并发级别和初始容量初始化一个新的 <see cref="NullableConcurrentDictionary{TKey, TValue}" /> 实例。
+    /// 使用指定的并发级别和初始容量初始化 NullableConcurrentDictionary 实例
     /// </summary>
-    /// <param name="concurrencyLevel">并发级别，必须大于0。</param>
-    /// <param name="capacity">初始容量，必须大于0。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当<paramref name="concurrencyLevel"/>或<paramref name="capacity"/>小于或等于0时抛出。</exception>
+    /// <param name="concurrencyLevel">并发级别，必须大于0</param>
+    /// <param name="capacity">字典的初始容量，必须大于等于0</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 concurrencyLevel 小于等于 0 或 capacity 小于 0 时抛出</exception>
     public NullableConcurrentDictionary(int concurrencyLevel, int capacity) : base(concurrencyLevel, capacity)
     {
-        if (concurrencyLevel <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(concurrencyLevel), "The concurrency level must be positive.");
-        }
-
-        if (capacity <= 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(capacity), "The capacity must be positive.");
-        }
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(concurrencyLevel, nameof(concurrencyLevel));
+        ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
     }
 
     /// <summary>
-    /// 使用指定的比较器初始化一个新的 <see cref="NullableConcurrentDictionary{TKey, TValue}" /> 实例。
+    /// 创建一个带有指定初始容量的 NullableConcurrentDictionary 实例
     /// </summary>
-    /// <param name="comparer">用于比较键的比较器，不能为null。</param>
-    /// <exception cref="ArgumentNullException">当<paramref name="comparer"/>为null时抛出。</exception>
+    /// <param name="capacity">字典的初始容量，必须大于等于0</param>
+    /// <returns>新的 NullableConcurrentDictionary 实例</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 capacity 小于 0 时抛出</exception>
+    public static NullableConcurrentDictionary<TKey, TValue> WithCapacity(int capacity)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
+        return new NullableConcurrentDictionary<TKey, TValue>(Environment.ProcessorCount, capacity);
+    }
+
+    /// <summary>
+    /// 使用指定的默认值初始化 NullableConcurrentDictionary 实例
+    /// </summary>
+    /// <param name="fallbackValue">当键不存在时返回的默认值</param>
+    public NullableConcurrentDictionary(TValue fallbackValue) : base()
+    {
+        _fallbackValue = fallbackValue;
+    }
+
+    /// <summary>
+    /// 使用指定的默认值初始化 NullableConcurrentDictionary 实例（明确指定为 fallback 值）
+    /// </summary>
+    /// <param name="fallbackValue">当键不存在时返回的默认值</param>
+    public NullableConcurrentDictionary(FallbackValue<TValue> fallbackValue) : base()
+    {
+        _fallbackValue = fallbackValue.Value;
+    }
+
+    /// <summary>
+    /// 使用指定的比较器初始化 NullableConcurrentDictionary 实例
+    /// </summary>
+    /// <param name="comparer">用于键的比较器，不能为null</param>
+    /// <exception cref="ArgumentNullException">当 comparer 为 null 时抛出</exception>
     public NullableConcurrentDictionary(IEqualityComparer<NullObject<TKey>> comparer) : base(comparer)
     {
         ArgumentNullException.ThrowIfNull(comparer, nameof(comparer));
     }
 
     /// <summary>
+    /// 使用指定的并发级别、初始容量和比较器初始化 NullableConcurrentDictionary 实例
+    /// </summary>
+    /// <param name="concurrencyLevel">并发级别，必须大于0</param>
+    /// <param name="capacity">字典的初始容量，必须大于等于0</param>
+    /// <param name="comparer">用于键的比较器，不能为null</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 concurrencyLevel 小于等于 0 或 capacity 小于 0 时抛出</exception>
+    /// <exception cref="ArgumentNullException">当 comparer 为 null 时抛出</exception>
+    public NullableConcurrentDictionary(int concurrencyLevel, int capacity, IEqualityComparer<NullObject<TKey>> comparer) : base(concurrencyLevel, capacity, comparer)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(concurrencyLevel, nameof(concurrencyLevel));
+        ArgumentOutOfRangeException.ThrowIfNegative(capacity, nameof(capacity));
+        ArgumentNullException.ThrowIfNull(comparer, nameof(comparer));
+    }
+
+    /// <summary>
+    /// 使用指定的字典初始化 NullableConcurrentDictionary 实例
+    /// </summary>
+    /// <param name="collection">用于初始化字典的键值对集合，不能为null</param>
+    /// <exception cref="ArgumentNullException">当 collection 为 null 时抛出</exception>
+    public NullableConcurrentDictionary(IEnumerable<KeyValuePair<NullObject<TKey>, TValue>> collection) : base(collection)
+    {
+        ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+    }
+
+    /// <summary>
+    /// 使用指定的字典和比较器初始化 NullableConcurrentDictionary 实例
+    /// </summary>
+    /// <param name="collection">用于初始化字典的键值对集合，不能为null</param>
+    /// <param name="comparer">用于键的比较器，不能为null</param>
+    /// <exception cref="ArgumentNullException">当 collection 或 comparer 为 null 时抛出</exception>
+    public NullableConcurrentDictionary(IEnumerable<KeyValuePair<NullObject<TKey>, TValue>> collection, IEqualityComparer<NullObject<TKey>> comparer) : base(collection, comparer)
+    {
+        ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+        ArgumentNullException.ThrowIfNull(comparer, nameof(comparer));
+    }
+
+    /// <summary>
+    /// 使用指定的并发级别、字典和比较器初始化 NullableConcurrentDictionary 实例
+    /// </summary>
+    /// <param name="concurrencyLevel">并发级别，必须大于0</param>
+    /// <param name="collection">用于初始化字典的键值对集合，不能为null</param>
+    /// <param name="comparer">用于键的比较器，不能为null</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 concurrencyLevel 小于等于 0 时抛出</exception>
+    /// <exception cref="ArgumentNullException">当 collection 或 comparer 为 null 时抛出</exception>
+    public NullableConcurrentDictionary(int concurrencyLevel, IEnumerable<KeyValuePair<NullObject<TKey>, TValue>> collection, IEqualityComparer<NullObject<TKey>> comparer) : base(concurrencyLevel, collection, comparer)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(concurrencyLevel, nameof(concurrencyLevel));
+        ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+        ArgumentNullException.ThrowIfNull(comparer, nameof(comparer));
+    }
+
+    /// <summary>
+    /// 创建一个带有指定默认值的 NullableConcurrentDictionary 实例
+    /// </summary>
+    /// <param name="fallbackValue">当键不存在时返回的默认值</param>
+    /// <returns>新的 NullableConcurrentDictionary 实例</returns>
+    public static NullableConcurrentDictionary<TKey, TValue> WithFallbackValue(TValue fallbackValue)
+    {
+        var dictionary = new NullableConcurrentDictionary<TKey, TValue>();
+        dictionary._fallbackValue = fallbackValue;
+        return dictionary;
+    }
+
+    /// <summary>
     /// 获取或设置当键不存在时返回的默认值。
     /// </summary>
-    internal TValue FallbackValue { get; set; }
+    public TValue FallbackValue 
+    { 
+        get => _fallbackValue; 
+        set => _fallbackValue = value; 
+    }
 
     /// <summary>
     /// 获取或设置指定键的值。
     /// </summary>
-    /// <param name="key">键，不能为null。</param>
+    /// <param name="key">键，可以为null。</param>
     /// <returns>如果找到该键，则返回对应的值；否则返回默认值。</returns>
-    /// <exception cref="ArgumentNullException">当<paramref name="key"/>为null时抛出。</exception>
     public new TValue this[NullObject<TKey> key]
     {
         get
         {
-            ArgumentNullException.ThrowIfNull(key, nameof(key));
             return base.TryGetValue(key, out var value) ? value : FallbackValue;
         }
         set
         {
-            ArgumentNullException.ThrowIfNull(key, nameof(key));
             base[key] = value;
         }
     }
@@ -217,55 +313,75 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     }
 
     /// <summary>
-    /// 判断字典中是否包含指定的键。
+    /// 判断字典是否包含指定的键
     /// </summary>
-    /// <param name="key">键，可以为null。</param>
-    /// <returns>如果包含指定的键，则返回 true；否则返回 false。</returns>
+    /// <param name="key">键，可以为null</param>
+    /// <returns>如果包含则返回 true，否则返回 false</returns>
     public bool ContainsKey(TKey key)
     {
         return base.ContainsKey(new NullObject<TKey>(key));
     }
 
     /// <summary>
-    /// 尝试添加一个键值对。
+    /// 向字典中添加键值对
     /// </summary>
-    /// <param name="key">键，可以为null。</param>
-    /// <param name="value">值，可以为null（如果TValue是引用类型）。</param>
-    /// <returns>如果成功添加，则返回 true；否则返回 false。</returns>
+    /// <param name="key">键，可以为null</param>
+    /// <param name="value">值，可以为null（如果TValue是引用类型）</param>
+    public void Add(TKey key, TValue value)
+    {
+        base[new NullObject<TKey>(key)] = value;
+    }
+
+    /// <summary>
+    /// 尝试向字典中添加键值对
+    /// </summary>
+    /// <param name="key">键，可以为null</param>
+    /// <param name="value">值，可以为null（如果TValue是引用类型）</param>
+    /// <returns>如果成功添加则返回 true，否则返回 false</returns>
     public bool TryAdd(TKey key, TValue value)
     {
         return base.TryAdd(new NullObject<TKey>(key), value);
     }
 
     /// <summary>
-    /// 尝试移除一个键值对。
+    /// 从字典中移除指定的键
     /// </summary>
-    /// <param name="key">键，可以为null。</param>
-    /// <param name="value">移除的值。如果键存在，则包含被移除的值；否则包含默认值。</param>
-    /// <returns>如果成功移除，则返回 true；否则返回 false。</returns>
+    /// <param name="key">键，可以为null</param>
+    /// <returns>如果成功移除则返回 true，否则返回 false</returns>
+    public bool Remove(TKey key)
+    {
+        return base.TryRemove(new NullObject<TKey>(key), out _);
+    }
+
+    /// <summary>
+    /// 尝试从字典中移除指定的键
+    /// </summary>
+    /// <param name="key">键，可以为null</param>
+    /// <param name="value">输出参数，存储被移除的值</param>
+    /// <returns>如果成功移除则返回 true，否则返回 false</returns>
     public bool TryRemove(TKey key, out TValue value)
     {
         return base.TryRemove(new NullObject<TKey>(key), out value);
     }
 
     /// <summary>
-    /// 尝试更新一个键值对。
+    /// 尝试更新字典中指定键的值
     /// </summary>
-    /// <param name="key">键，可以为null。</param>
-    /// <param name="value">新的值，可以为null（如果TValue是引用类型）。</param>
-    /// <param name="comparisionValue">比较值，用于确保更新操作的原子性。</param>
-    /// <returns>如果成功更新，则返回 true；否则返回 false。</returns>
-    public bool TryUpdate(TKey key, TValue value, TValue comparisionValue)
+    /// <param name="key">键，可以为null</param>
+    /// <param name="newValue">新值，可以为null（如果TValue是引用类型）</param>
+    /// <param name="comparisonValue">比较值，可以为null（如果TValue是引用类型）</param>
+    /// <returns>如果成功更新则返回 true，否则返回 false</returns>
+    public bool TryUpdate(TKey key, TValue newValue, TValue comparisonValue)
     {
-        return base.TryUpdate(new NullObject<TKey>(key), value, comparisionValue);
+        return base.TryUpdate(new NullObject<TKey>(key), newValue, comparisonValue);
     }
 
     /// <summary>
-    /// 尝试获取指定键的值。
+    /// 尝试获取指定键的值
     /// </summary>
-    /// <param name="key">键，可以为null。</param>
-    /// <param name="value">获取的值。如果键存在，则包含对应的值；否则包含默认值。</param>
-    /// <returns>如果成功获取，则返回 true；否则返回 false。</returns>
+    /// <param name="key">键，可以为null</param>
+    /// <param name="value">输出参数，存储找到的值</param>
+    /// <returns>如果找到则返回 true，否则返回 false</returns>
     public bool TryGetValue(TKey key, out TValue value)
     {
         return base.TryGetValue(new NullObject<TKey>(key), out value);
@@ -322,7 +438,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
         var concurrentDictionary = new ConcurrentDictionary<TKey, TValue>();
         foreach (var p in dic)
         {
-            concurrentDictionary[p.Key] = p.Value;
+            concurrentDictionary[p.Key.Item] = p.Value;
         }
 
         return concurrentDictionary;
