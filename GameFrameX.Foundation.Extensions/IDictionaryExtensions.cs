@@ -17,7 +17,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(that, nameof(that));
-        
+
         foreach (var item in that)
         {
             self[item.Key] = item.Value;
@@ -34,7 +34,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(that, nameof(that));
-        
+
         foreach (var item in that)
         {
             self[item.Key] = item.Value;
@@ -51,7 +51,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(that, nameof(that));
-        
+
         foreach (var item in that)
         {
             self[item.Key] = item.Value;
@@ -71,7 +71,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = updateValueFactory(key, self[key]);
@@ -93,7 +93,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = updateValueFactory(key, self[key]);
@@ -117,7 +117,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = updateValueFactory(key, self[key]);
@@ -140,7 +140,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = updateValue;
@@ -161,7 +161,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = updateValue;
@@ -184,7 +184,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = updateValue;
@@ -207,7 +207,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(that, nameof(that));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         foreach (var item in that)
         {
             AddOrUpdate(self, item.Key, item.Value, updateValueFactory);
@@ -228,7 +228,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(that, nameof(that));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         foreach (var item in that)
         {
             AddOrUpdate(self, item.Key, item.Value, updateValueFactory);
@@ -249,7 +249,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(that, nameof(that));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         foreach (var item in that)
         {
             AddOrUpdate(self, item.Key, item.Value, updateValueFactory);
@@ -272,7 +272,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(addValueFactory, nameof(addValueFactory));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValueFactory(key)))
         {
             self[key] = updateValueFactory(key, self[key]);
@@ -297,7 +297,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(addValueFactory, nameof(addValueFactory));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValueFactory(key)))
         {
             self[key] = updateValueFactory(key, self[key]);
@@ -322,7 +322,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(addValueFactory, nameof(addValueFactory));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValueFactory(key)))
         {
             self[key] = updateValueFactory(key, self[key]);
@@ -346,7 +346,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = await updateValueFactory(key, self[key]);
@@ -370,7 +370,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(updateValueFactory, nameof(updateValueFactory));
-        
+
         if (!self.TryAdd(key, addValue))
         {
             self[key] = await updateValueFactory(key, self[key]);
@@ -634,7 +634,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(addValueFactory, nameof(addValueFactory));
-        
+
         if (!self.ContainsKey(key))
         {
             self[key] = addValueFactory();
@@ -700,7 +700,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
         ArgumentNullException.ThrowIfNull(action, nameof(action));
-        
+
         foreach (var item in dic)
         {
             action(item.Key, item.Value);
@@ -717,7 +717,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
         ArgumentNullException.ThrowIfNull(action, nameof(action));
-        
+
         return dic.ForeachAsync(x => action(x.Key, x.Value));
     }
 
@@ -733,7 +733,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-        
+
         var items = source as IList<TSource> ?? source.ToList();
         var dic = new NullableDictionary<TKey, TSource>(items.Count);
         foreach (var item in items)
@@ -757,7 +757,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-        
+
         var items = source as IList<TSource> ?? source.ToList();
         var dic = new NullableDictionary<TKey, TSource>(items.Count)
         {
@@ -786,7 +786,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
         ArgumentNullException.ThrowIfNull(elementSelector, nameof(elementSelector));
-        
+
         var items = source as IList<TSource> ?? source.ToList();
         var dic = new NullableDictionary<TKey, TElement>(items.Count);
         foreach (var item in items)
@@ -813,7 +813,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
         ArgumentNullException.ThrowIfNull(elementSelector, nameof(elementSelector));
-        
+
         var items = source as IList<TSource> ?? source.ToList();
         var dic = new NullableDictionary<TKey, TElement>(items.Count)
         {
@@ -1004,7 +1004,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-        
+
         var dic = new NullableConcurrentDictionary<TKey, TSource>();
         foreach (var item in source)
         {
@@ -1052,7 +1052,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
         ArgumentNullException.ThrowIfNull(elementSelector, nameof(elementSelector));
-        
+
         var dic = new NullableConcurrentDictionary<TKey, TElement>();
         foreach (var item in source)
         {
@@ -1241,7 +1241,7 @@ public static class IDictionaryExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-        
+
         var items = source as IList<TSource> ?? source.ToList();
         var dic = new Dictionary<TKey, List<TSource>>(items.Count);
         foreach (var item in items)
@@ -1276,7 +1276,7 @@ public static class IDictionaryExtensions
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
         ArgumentNullException.ThrowIfNull(elementSelector, nameof(elementSelector));
-        
+
         var items = source as IList<TSource> ?? source.ToList();
         var dic = new Dictionary<TKey, List<TElement>>(items.Count);
         foreach (var item in items)
@@ -1332,7 +1332,7 @@ public static class IDictionaryExtensions
     public static NullableConcurrentDictionary<TKey, TValue> AsConcurrentDictionary<TKey, TValue>(this Dictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
-        
+
         return dic;
     }
 
@@ -1346,7 +1346,7 @@ public static class IDictionaryExtensions
     public static NullableConcurrentDictionary<TKey, TValue> AsConcurrentDictionary<TKey, TValue>(this Dictionary<TKey, TValue> dic, TValue defaultValue)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
-        
+
         var nullableDictionary = new NullableConcurrentDictionary<TKey, TValue>
         {
             FallbackValue = defaultValue,
@@ -1368,7 +1368,7 @@ public static class IDictionaryExtensions
     public static NullableDictionary<TKey, TValue> AsDictionary<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
-        
+
         return dic;
     }
 
@@ -1382,7 +1382,7 @@ public static class IDictionaryExtensions
     public static NullableDictionary<TKey, TValue> AsDictionary<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dic, TValue defaultValue)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
-        
+
         var nullableDictionary = new NullableDictionary<TKey, TValue>
         {
             FallbackValue = defaultValue,

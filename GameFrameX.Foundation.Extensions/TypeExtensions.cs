@@ -138,7 +138,6 @@ public static partial class TypeExtensions
 
 
         return false;
-
     }
 
     /// <summary>

@@ -24,14 +24,14 @@ public static class ReadOnlySpanExtensions
     public static uint ReadUInt(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UIntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadUInt32BigEndian(buffer[offset..]);
-        offset += ConstSize.UIntSize;
+        offset += ConstBaseTypeSize.UIntSize;
         return value;
     }
 
@@ -45,14 +45,14 @@ public static class ReadOnlySpanExtensions
     public static int ReadInt(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.IntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadInt32BigEndian(buffer[offset..]);
-        offset += ConstSize.IntSize;
+        offset += ConstBaseTypeSize.IntSize;
         return value;
     }
 
@@ -66,14 +66,14 @@ public static class ReadOnlySpanExtensions
     public static ulong ReadULong(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ULongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadUInt64BigEndian(buffer[offset..]);
-        offset += ConstSize.ULongSize;
+        offset += ConstBaseTypeSize.ULongSize;
         return value;
     }
 
@@ -87,14 +87,14 @@ public static class ReadOnlySpanExtensions
     public static long ReadLong(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.LongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadInt64BigEndian(buffer[offset..]);
-        offset += ConstSize.LongSize;
+        offset += ConstBaseTypeSize.LongSize;
         return value;
     }
 
@@ -108,14 +108,14 @@ public static class ReadOnlySpanExtensions
     public static ushort ReadUShort(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadUInt16BigEndian(buffer[offset..]);
-        offset += ConstSize.UShortSize;
+        offset += ConstBaseTypeSize.UShortSize;
         return value;
     }
 
@@ -129,14 +129,14 @@ public static class ReadOnlySpanExtensions
     public static short ReadShort(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadInt16BigEndian(buffer[offset..]);
-        offset += ConstSize.ShortSize;
+        offset += ConstBaseTypeSize.ShortSize;
         return value;
     }
 
@@ -150,14 +150,14 @@ public static class ReadOnlySpanExtensions
     public static float ReadFloat(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.FloatSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadSingleBigEndian(buffer[offset..]);
-        offset += ConstSize.FloatSize;
+        offset += ConstBaseTypeSize.FloatSize;
         return value;
     }
 
@@ -171,14 +171,14 @@ public static class ReadOnlySpanExtensions
     public static double ReadDouble(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.DoubleSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadDoubleBigEndian(buffer[offset..]);
-        offset += ConstSize.DoubleSize;
+        offset += ConstBaseTypeSize.DoubleSize;
         return value;
     }
 }

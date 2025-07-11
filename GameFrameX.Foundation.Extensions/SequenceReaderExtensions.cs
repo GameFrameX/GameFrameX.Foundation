@@ -25,7 +25,7 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out byte value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.ByteSize || !reader.TryRead(out var num1))
+        if (reader.Remaining < ConstBaseTypeSize.ByteSize || !reader.TryRead(out var num1))
         {
             return false;
         }
@@ -44,19 +44,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out ushort value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.UShortSize)
+        if (reader.Remaining < ConstBaseTypeSize.UShortSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.UShortSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.UShortSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadUInt16BigEndian(span);
-        reader.Advance(ConstSize.UShortSize);
+        reader.Advance(ConstBaseTypeSize.UShortSize);
         return true;
     }
 
@@ -70,19 +70,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out short value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.ShortSize)
+        if (reader.Remaining < ConstBaseTypeSize.ShortSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.ShortSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.ShortSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadInt16BigEndian(span);
-        reader.Advance(ConstSize.ShortSize);
+        reader.Advance(ConstBaseTypeSize.ShortSize);
         return true;
     }
 
@@ -96,19 +96,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out uint value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.UIntSize)
+        if (reader.Remaining < ConstBaseTypeSize.UIntSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.UIntSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.UIntSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadUInt32BigEndian(span);
-        reader.Advance(ConstSize.UIntSize);
+        reader.Advance(ConstBaseTypeSize.UIntSize);
         return true;
     }
 
@@ -122,19 +122,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out int value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.IntSize)
+        if (reader.Remaining < ConstBaseTypeSize.IntSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.IntSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.IntSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadInt32BigEndian(span);
-        reader.Advance(ConstSize.IntSize);
+        reader.Advance(ConstBaseTypeSize.IntSize);
         return true;
     }
 
@@ -148,19 +148,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out ulong value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.ULongSize)
+        if (reader.Remaining < ConstBaseTypeSize.ULongSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.ULongSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.ULongSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadUInt64BigEndian(span);
-        reader.Advance(ConstSize.ULongSize);
+        reader.Advance(ConstBaseTypeSize.ULongSize);
         return true;
     }
 
@@ -174,19 +174,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out long value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.LongSize)
+        if (reader.Remaining < ConstBaseTypeSize.LongSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.LongSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.LongSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadInt64BigEndian(span);
-        reader.Advance(ConstSize.LongSize);
+        reader.Advance(ConstBaseTypeSize.LongSize);
         return true;
     }
 
@@ -200,19 +200,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out float value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.FloatSize)
+        if (reader.Remaining < ConstBaseTypeSize.FloatSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.FloatSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.FloatSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadSingleBigEndian(span);
-        reader.Advance(ConstSize.FloatSize);
+        reader.Advance(ConstBaseTypeSize.FloatSize);
         return true;
     }
 
@@ -226,19 +226,19 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out double value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.DoubleSize)
+        if (reader.Remaining < ConstBaseTypeSize.DoubleSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.DoubleSize];
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.DoubleSize];
         if (!reader.TryCopyTo(span))
         {
             return false;
         }
 
         value = BinaryPrimitives.ReadDoubleBigEndian(span);
-        reader.Advance(ConstSize.DoubleSize);
+        reader.Advance(ConstBaseTypeSize.DoubleSize);
         return true;
     }
 
@@ -252,7 +252,7 @@ public static class SequenceReaderExtensions
     public static bool TryReadBigEndian(this ref SequenceReader<byte> reader, out bool value)
     {
         value = false;
-        if (reader.Remaining < ConstSize.BoolSize || !reader.TryRead(out var num1))
+        if (reader.Remaining < ConstBaseTypeSize.BoolSize || !reader.TryRead(out var num1))
         {
             return false;
         }
@@ -271,7 +271,7 @@ public static class SequenceReaderExtensions
     public static bool TryReadBool(this ref SequenceReader<byte> reader, out bool value)
     {
         value = false;
-        if (reader.Remaining < ConstSize.BoolSize)
+        if (reader.Remaining < ConstBaseTypeSize.BoolSize)
         {
             return false;
         }
@@ -484,7 +484,7 @@ public static class SequenceReaderExtensions
     public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out byte value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.ByteSize || !reader.TryPeek(0, out var num1))
+        if (reader.Remaining < ConstBaseTypeSize.ByteSize || !reader.TryPeek(0, out var num1))
         {
             return false;
         }
@@ -503,7 +503,7 @@ public static class SequenceReaderExtensions
     public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out ushort value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.UShortSize || !reader.TryPeek(0, out var num1) || !reader.TryPeek(1, out var num2))
+        if (reader.Remaining < ConstBaseTypeSize.UShortSize || !reader.TryPeek(0, out var num1) || !reader.TryPeek(1, out var num2))
         {
             return false;
         }
@@ -541,7 +541,7 @@ public static class SequenceReaderExtensions
     public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out uint value)
     {
         value = 0U;
-        if (reader.Remaining < ConstSize.UIntSize)
+        if (reader.Remaining < ConstBaseTypeSize.UIntSize)
         {
             return false;
         }
@@ -592,7 +592,7 @@ public static class SequenceReaderExtensions
     public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out ulong value)
     {
         value = 0UL;
-        if (reader.Remaining < ConstSize.ULongSize)
+        if (reader.Remaining < ConstBaseTypeSize.ULongSize)
         {
             return false;
         }
@@ -643,13 +643,13 @@ public static class SequenceReaderExtensions
     public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out float value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.FloatSize)
+        if (reader.Remaining < ConstBaseTypeSize.FloatSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.FloatSize];
-        var sequence = reader.Sequence.Slice(reader.Position, ConstSize.FloatSize);
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.FloatSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.FloatSize);
         sequence.CopyTo(span);
 
         value = BinaryPrimitives.ReadSingleBigEndian(span);
@@ -666,13 +666,13 @@ public static class SequenceReaderExtensions
     public static bool TryPeekBigEndian(this ref SequenceReader<byte> reader, out double value)
     {
         value = 0;
-        if (reader.Remaining < ConstSize.DoubleSize)
+        if (reader.Remaining < ConstBaseTypeSize.DoubleSize)
         {
             return false;
         }
 
-        Span<byte> span = stackalloc byte[ConstSize.DoubleSize];
-        var sequence = reader.Sequence.Slice(reader.Position, ConstSize.DoubleSize);
+        Span<byte> span = stackalloc byte[ConstBaseTypeSize.DoubleSize];
+        var sequence = reader.Sequence.Slice(reader.Position, ConstBaseTypeSize.DoubleSize);
         sequence.CopyTo(span);
 
         value = BinaryPrimitives.ReadDoubleBigEndian(span);
@@ -689,7 +689,7 @@ public static class SequenceReaderExtensions
     public static bool TryPeekBool(this ref SequenceReader<byte> reader, out bool value)
     {
         value = false;
-        if (reader.Remaining < ConstSize.BoolSize || !reader.TryPeek(0, out var num1))
+        if (reader.Remaining < ConstBaseTypeSize.BoolSize || !reader.TryPeek(0, out var num1))
         {
             return false;
         }
@@ -759,19 +759,19 @@ public static class SequenceReaderExtensions
         }
 
         // 检查剩余数据是否足够
-        if (reader.Remaining < ConstSize.ShortSize + stringLength)
+        if (reader.Remaining < ConstBaseTypeSize.ShortSize + stringLength)
         {
             return false;
         }
 
         // 读取字符串内容
-        if (!TryPeekBytes(ref reader, ConstSize.ShortSize + stringLength, out byte[] bytes))
+        if (!TryPeekBytes(ref reader, ConstBaseTypeSize.ShortSize + stringLength, out byte[] bytes))
         {
             return false;
         }
 
         // 转换为字符串（跳过长度前缀）
-        value = Encoding.UTF8.GetString(bytes, ConstSize.ShortSize, stringLength);
+        value = Encoding.UTF8.GetString(bytes, ConstBaseTypeSize.ShortSize, stringLength);
         return true;
     }
 
@@ -806,20 +806,20 @@ public static class SequenceReaderExtensions
         }
 
         // 检查剩余数据是否足够
-        if (reader.Remaining < ConstSize.IntSize + bytesLength)
+        if (reader.Remaining < ConstBaseTypeSize.IntSize + bytesLength)
         {
             return false;
         }
 
         // 读取字节数组内容
-        if (!TryPeekBytes(ref reader, ConstSize.IntSize + bytesLength, out byte[] bytes))
+        if (!TryPeekBytes(ref reader, ConstBaseTypeSize.IntSize + bytesLength, out byte[] bytes))
         {
             return false;
         }
 
         // 提取字节数组（跳过长度前缀）
         value = new byte[bytesLength];
-        Array.Copy(bytes, ConstSize.IntSize, value, 0, bytesLength);
+        Array.Copy(bytes, ConstBaseTypeSize.IntSize, value, 0, bytesLength);
         return true;
     }
 }

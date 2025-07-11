@@ -37,7 +37,7 @@ public class DisposableDictionary<TKey, TValue> : NullableDictionary<TKey, TValu
     public DisposableDictionary(Dictionary<TKey, TValue> dictionary)
     {
         ArgumentNullException.ThrowIfNull(dictionary, nameof(dictionary));
-        
+
         foreach (var kvp in dictionary)
         {
             this[kvp.Key] = kvp.Value;

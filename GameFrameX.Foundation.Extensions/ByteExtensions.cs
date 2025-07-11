@@ -28,7 +28,7 @@ public static class ByteExtensions
     public static string ToArrayString(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        
+
         var stringBuilder = new StringBuilder();
         foreach (var b in bytes)
         {
@@ -47,7 +47,7 @@ public static class ByteExtensions
     public static string ToHex(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        
+
         var stringBuilder = new StringBuilder();
         foreach (var b in bytes)
         {
@@ -67,7 +67,7 @@ public static class ByteExtensions
     public static string ToHex(this byte[] bytes, string format)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        
+
         var stringBuilder = new StringBuilder();
         foreach (var b in bytes)
         {
@@ -91,12 +91,12 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
-        
+
         if (offset + count > bytes.Length)
         {
             throw new ArgumentException("The sum of offset and count is greater than the buffer length.", nameof(count));
         }
-        
+
         var stringBuilder = new StringBuilder();
         for (var i = offset; i < offset + count; ++i)
         {
@@ -132,12 +132,12 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(index, nameof(index));
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
-        
+
         if (index + count > bytes.Length)
         {
             throw new ArgumentException("The sum of index and count is greater than the buffer length.", nameof(count));
         }
-        
+
         return Encoding.Default.GetString(bytes, index, count);
     }
 
@@ -167,12 +167,12 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(index, nameof(index));
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
-        
+
         if (index + count > bytes.Length)
         {
             throw new ArgumentException("The sum of index and count is greater than the buffer length.", nameof(count));
         }
-        
+
         return Encoding.UTF8.GetString(bytes, index, count);
     }
 
@@ -188,15 +188,15 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UIntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            offset += ConstSize.UIntSize;
+            offset += ConstBaseTypeSize.UIntSize;
             return;
         }
 
         BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan()[offset..], value);
-        offset += ConstSize.UIntSize;
+        offset += ConstBaseTypeSize.UIntSize;
     }
 
     /// <summary>
@@ -211,15 +211,15 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.IntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            offset += ConstSize.IntSize;
+            offset += ConstBaseTypeSize.IntSize;
             return;
         }
 
         BinaryPrimitives.WriteInt32BigEndian(buffer.AsSpan()[offset..], value);
-        offset += ConstSize.IntSize;
+        offset += ConstBaseTypeSize.IntSize;
     }
 
     /// <summary>
@@ -234,15 +234,15 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ByteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            offset += ConstSize.ByteSize;
+            offset += ConstBaseTypeSize.ByteSize;
             return;
         }
 
         buffer[offset] = value;
-        offset += ConstSize.ByteSize;
+        offset += ConstBaseTypeSize.ByteSize;
     }
 
     /// <summary>
@@ -257,15 +257,15 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            offset += ConstSize.ShortSize;
+            offset += ConstBaseTypeSize.ShortSize;
             return;
         }
 
         BinaryPrimitives.WriteInt16BigEndian(buffer.AsSpan()[offset..], value);
-        offset += ConstSize.ShortSize;
+        offset += ConstBaseTypeSize.ShortSize;
     }
 
     /// <summary>
@@ -280,15 +280,15 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            offset += ConstSize.UShortSize;
+            offset += ConstBaseTypeSize.UShortSize;
             return;
         }
 
         BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan()[offset..], value);
-        offset += ConstSize.UShortSize;
+        offset += ConstBaseTypeSize.UShortSize;
     }
 
     /// <summary>
@@ -303,15 +303,15 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.LongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            offset += ConstSize.LongSize;
+            offset += ConstBaseTypeSize.LongSize;
             return;
         }
 
         BinaryPrimitives.WriteInt64BigEndian(buffer.AsSpan()[offset..], value);
-        offset += ConstSize.LongSize;
+        offset += ConstBaseTypeSize.LongSize;
     }
 
     /// <summary>
@@ -326,15 +326,15 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ULongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            offset += ConstSize.ULongSize;
+            offset += ConstBaseTypeSize.ULongSize;
             return;
         }
 
         BinaryPrimitives.WriteUInt64BigEndian(buffer.AsSpan()[offset..], value);
-        offset += ConstSize.ULongSize;
+        offset += ConstBaseTypeSize.ULongSize;
     }
 
     /// <summary>
@@ -349,14 +349,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = BinaryPrimitives.ReadUInt16BigEndian(buffer.AsSpan()[offset..]);
-        offset += ConstSize.UShortSize;
+        offset += ConstBaseTypeSize.UShortSize;
         return value;
     }
 
@@ -372,14 +372,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = BinaryPrimitives.ReadInt16BigEndian(buffer.AsSpan()[offset..]);
-        offset += ConstSize.ShortSize;
+        offset += ConstBaseTypeSize.ShortSize;
         return value;
     }
 
@@ -395,14 +395,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UIntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = BinaryPrimitives.ReadUInt32BigEndian(buffer.AsSpan()[offset..]);
-        offset += ConstSize.UIntSize;
+        offset += ConstBaseTypeSize.UIntSize;
         return value;
     }
 
@@ -418,14 +418,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.IntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = BinaryPrimitives.ReadInt32BigEndian(buffer.AsSpan()[offset..]);
-        offset += ConstSize.IntSize;
+        offset += ConstBaseTypeSize.IntSize;
         return value;
     }
 
@@ -441,14 +441,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ULongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = BinaryPrimitives.ReadUInt64BigEndian(buffer.AsSpan()[offset..]);
-        offset += ConstSize.ULongSize;
+        offset += ConstBaseTypeSize.ULongSize;
         return value;
     }
 
@@ -464,14 +464,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.LongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = BinaryPrimitives.ReadInt64BigEndian(buffer.AsSpan()[offset..]);
-        offset += ConstSize.LongSize;
+        offset += ConstBaseTypeSize.LongSize;
         return value;
     }
 
@@ -489,10 +489,10 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.FloatSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            offset += ConstSize.FloatSize;
+            offset += ConstBaseTypeSize.FloatSize;
             return;
         }
 
@@ -500,7 +500,7 @@ public static class ByteExtensions
         {
             *(float*)(ptr + offset) = value;
             *(int*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(int*)(ptr + offset));
-            offset += ConstSize.FloatSize;
+            offset += ConstBaseTypeSize.FloatSize;
         }
     }
 
@@ -516,10 +516,10 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.DoubleSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            offset += ConstSize.DoubleSize;
+            offset += ConstBaseTypeSize.DoubleSize;
             return;
         }
 
@@ -527,7 +527,7 @@ public static class ByteExtensions
         {
             *(double*)(ptr + offset) = value;
             *(long*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(long*)(ptr + offset));
-            offset += ConstSize.DoubleSize;
+            offset += ConstBaseTypeSize.DoubleSize;
         }
     }
 
@@ -544,16 +544,16 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
+
         if (value == null)
         {
             buffer.WriteInt(0, ref offset);
             return;
         }
 
-        if (offset + value.Length + ConstSize.IntSize > buffer.Length)
+        if (offset + value.Length + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            offset += value.Length + ConstSize.IntSize;
+            offset += value.Length + ConstBaseTypeSize.IntSize;
             return;
         }
 
@@ -574,7 +574,7 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
+
         if (value == null)
         {
             buffer.WriteInt(0, ref offset);
@@ -605,17 +605,17 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.SbyteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.SbyteSize > buffer.Length)
         {
-            offset += ConstSize.SbyteSize;
+            offset += ConstBaseTypeSize.SbyteSize;
             return;
         }
 
         fixed (byte* ptr = buffer)
         {
             *(sbyte*)(ptr + offset) = value;
-            offset += ConstSize.SbyteSize;
+            offset += ConstBaseTypeSize.SbyteSize;
         }
     }
 
@@ -631,7 +631,7 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
+
         if (value == null)
         {
             value = string.Empty;
@@ -645,15 +645,15 @@ public static class ByteExtensions
         }
 
 
-        if (offset + len + ConstSize.ShortSize > buffer.Length)
+        if (offset + len + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            offset += len + ConstSize.ShortSize;
+            offset += len + ConstBaseTypeSize.ShortSize;
             return;
         }
 
         fixed (byte* ptr = buffer)
         {
-            Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + ConstSize.ShortSize);
+            Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + ConstBaseTypeSize.ShortSize);
             WriteShort(buffer, (short)len, ref offset);
             offset += len;
         }
@@ -671,17 +671,17 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.BoolSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            offset += ConstSize.BoolSize;
+            offset += ConstBaseTypeSize.BoolSize;
             return;
         }
 
         fixed (byte* ptr = buffer)
         {
             *(bool*)(ptr + offset) = value;
-            offset += ConstSize.BoolSize;
+            offset += ConstBaseTypeSize.BoolSize;
         }
     }
 
@@ -701,8 +701,8 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.FloatSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
@@ -711,7 +711,7 @@ public static class ByteExtensions
         {
             *(int*)(ptr + offset) = IPAddress.NetworkToHostOrder(*(int*)(ptr + offset));
             var value = *(float*)(ptr + offset);
-            offset += ConstSize.FloatSize;
+            offset += ConstBaseTypeSize.FloatSize;
             return value;
         }
     }
@@ -728,8 +728,8 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.DoubleSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
@@ -738,7 +738,7 @@ public static class ByteExtensions
         {
             *(long*)(ptr + offset) = IPAddress.NetworkToHostOrder(*(long*)(ptr + offset));
             var value = *(double*)(ptr + offset);
-            offset += ConstSize.DoubleSize;
+            offset += ConstBaseTypeSize.DoubleSize;
             return value;
         }
     }
@@ -755,14 +755,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ByteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = buffer[offset];
-        offset += ConstSize.ByteSize;
+        offset += ConstBaseTypeSize.ByteSize;
         return value;
     }
 
@@ -779,12 +779,12 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
+
         if (len <= 0)
         {
             return Array.Empty<byte>();
         }
-        
+
         if (offset + len > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
@@ -808,12 +808,12 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
+
         if (len <= 0)
         {
             return Array.Empty<byte>();
         }
-        
+
         if (offset + len > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
@@ -841,7 +841,7 @@ public static class ByteExtensions
         {
             return Array.Empty<byte>();
         }
-        
+
         if (offset + len > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
@@ -865,14 +865,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.SbyteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.SbyteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = (sbyte)buffer[offset];
-        offset += ConstSize.SbyteSize;
+        offset += ConstBaseTypeSize.SbyteSize;
         return value;
     }
 
@@ -892,7 +892,7 @@ public static class ByteExtensions
         {
             return string.Empty;
         }
-        
+
         if (offset + len > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
@@ -915,14 +915,14 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.BoolSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
         var value = buffer[offset] != 0;
-        offset += ConstSize.BoolSize;
+        offset += ConstBaseTypeSize.BoolSize;
         return value;
     }
 
@@ -941,12 +941,12 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes1, nameof(bytes1));
         ArgumentNullException.ThrowIfNull(bytes2, nameof(bytes2));
-        
+
         if (bytes1.Length != bytes2.Length)
         {
             return false;
         }
-        
+
         for (int i = 0; i < bytes1.Length; i++)
         {
             if (bytes1[i] != bytes2[i])
@@ -954,7 +954,7 @@ public static class ByteExtensions
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -967,7 +967,7 @@ public static class ByteExtensions
     public static void Fill(this byte[] bytes, byte value)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        
+
         for (int i = 0; i < bytes.Length; i++)
         {
             bytes[i] = value;
@@ -988,12 +988,12 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
-        
+
         if (startIndex + count > bytes.Length)
         {
             throw new ArgumentException("The sum of startIndex and count is greater than the buffer length.", nameof(count));
         }
-        
+
         for (int i = startIndex; i < startIndex + count; i++)
         {
             bytes[i] = value;
@@ -1024,12 +1024,12 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(index, nameof(index));
         ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
-        
+
         if (index + length > bytes.Length)
         {
             throw new ArgumentException("The sum of index and length is greater than the buffer length.", nameof(length));
         }
-        
+
         Array.Reverse(bytes, index, length);
     }
 
@@ -1059,12 +1059,12 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
         ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
-        
+
         if (offset + length > bytes.Length)
         {
             throw new ArgumentException("The sum of offset and length is greater than the buffer length.", nameof(length));
         }
-        
+
         return Convert.ToBase64String(bytes, offset, length);
     }
 
@@ -1092,18 +1092,18 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes1, nameof(bytes1));
         ArgumentNullException.ThrowIfNull(bytes2, nameof(bytes2));
-        
+
         if (bytes1.Length != bytes2.Length)
         {
             throw new ArgumentException("The length of bytes1 and bytes2 must be equal.");
         }
-        
+
         var result = new byte[bytes1.Length];
         for (int i = 0; i < bytes1.Length; i++)
         {
             result[i] = (byte)(bytes1[i] ^ bytes2[i]);
         }
-        
+
         return result;
     }
 
@@ -1117,13 +1117,13 @@ public static class ByteExtensions
     public static byte[] Xor(this byte[] bytes, byte value)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        
+
         var result = new byte[bytes.Length];
         for (int i = 0; i < bytes.Length; i++)
         {
             result[i] = (byte)(bytes[i] ^ value);
         }
-        
+
         return result;
     }
 
@@ -1138,17 +1138,17 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(pattern, nameof(pattern));
-        
+
         if (pattern.Length == 0)
         {
             return 0;
         }
-        
+
         if (pattern.Length > bytes.Length)
         {
             return -1;
         }
-        
+
         for (int i = 0; i <= bytes.Length - pattern.Length; i++)
         {
             bool found = true;
@@ -1160,13 +1160,13 @@ public static class ByteExtensions
                     break;
                 }
             }
-            
+
             if (found)
             {
                 return i;
             }
         }
-        
+
         return -1;
     }
 
@@ -1180,7 +1180,7 @@ public static class ByteExtensions
     public static int IndexOf(this byte[] bytes, byte value)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        
+
         for (int i = 0; i < bytes.Length; i++)
         {
             if (bytes[i] == value)
@@ -1188,7 +1188,7 @@ public static class ByteExtensions
                 return i;
             }
         }
-        
+
         return -1;
     }
 
@@ -1205,12 +1205,12 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
-        
+
         if (startIndex >= bytes.Length)
         {
             return -1;
         }
-        
+
         for (int i = startIndex; i < bytes.Length; i++)
         {
             if (bytes[i] == value)
@@ -1218,7 +1218,7 @@ public static class ByteExtensions
                 return i;
             }
         }
-        
+
         return -1;
     }
 
@@ -1233,12 +1233,12 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(prefix, nameof(prefix));
-        
+
         if (prefix.Length > bytes.Length)
         {
             return false;
         }
-        
+
         for (int i = 0; i < prefix.Length; i++)
         {
             if (bytes[i] != prefix[i])
@@ -1246,7 +1246,7 @@ public static class ByteExtensions
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -1261,12 +1261,12 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(suffix, nameof(suffix));
-        
+
         if (suffix.Length > bytes.Length)
         {
             return false;
         }
-        
+
         int startIndex = bytes.Length - suffix.Length;
         for (int i = 0; i < suffix.Length; i++)
         {
@@ -1275,7 +1275,7 @@ public static class ByteExtensions
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -1288,7 +1288,7 @@ public static class ByteExtensions
     public static byte[] Concat(params byte[][] arrays)
     {
         ArgumentNullException.ThrowIfNull(arrays, nameof(arrays));
-        
+
         int totalLength = 0;
         foreach (var array in arrays)
         {
@@ -1297,10 +1297,10 @@ public static class ByteExtensions
                 totalLength += array.Length;
             }
         }
-        
+
         var result = new byte[totalLength];
         int offset = 0;
-        
+
         foreach (var array in arrays)
         {
             if (array != null)
@@ -1309,7 +1309,7 @@ public static class ByteExtensions
                 offset += array.Length;
             }
         }
-        
+
         return result;
     }
 
@@ -1325,12 +1325,12 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
-        
+
         if (startIndex >= bytes.Length)
         {
             return Array.Empty<byte>();
         }
-        
+
         return SubArray(bytes, startIndex, bytes.Length - startIndex);
     }
 
@@ -1348,12 +1348,12 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
         ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
-        
+
         if (startIndex + length > bytes.Length)
         {
             throw new ArgumentException("The sum of startIndex and length is greater than the buffer length.", nameof(length));
         }
-        
+
         var result = new byte[length];
         bytes.AsSpan(startIndex, length).CopyTo(result);
         return result;

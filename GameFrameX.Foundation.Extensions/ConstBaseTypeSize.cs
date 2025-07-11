@@ -10,7 +10,7 @@ namespace GameFrameX.Foundation.Extensions;
 /// 常量型变量的字节数
 /// 提供了常用基础数据类型的字节大小常量值
 /// </summary>
-public static class ConstSize
+public static class ConstBaseTypeSize
 {
     /// <summary>
     /// 整型变量（32 位）的字节数。

@@ -30,7 +30,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(first, nameof(first));
         ArgumentNullException.ThrowIfNull(second, nameof(second));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-        
+
         return first.Where(f => second.Any(s => condition(f, s)));
     }
 
@@ -49,7 +49,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(first, nameof(first));
         ArgumentNullException.ThrowIfNull(second, nameof(second));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-        
+
         return first.IntersectBy(second, keySelector, null);
     }
 
@@ -95,7 +95,7 @@ public static class IEnumerableExtensions
     public static IEnumerable<T> IntersectAll<T>(this IEnumerable<IEnumerable<T>> source)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.Aggregate((current, item) => current.Intersect(item));
     }
 
@@ -112,7 +112,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-        
+
         return source.Aggregate((current, item) => current.IntersectBy(item, keySelector));
     }
 
@@ -130,7 +130,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(keySelector, nameof(keySelector));
-        
+
         return source.Aggregate((current, item) => current.IntersectBy(item, keySelector, comparer));
     }
 
@@ -145,7 +145,7 @@ public static class IEnumerableExtensions
     public static IEnumerable<T> IntersectAll<T>(this IEnumerable<IEnumerable<T>> source, IEqualityComparer<T> comparer)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.Aggregate((current, item) => current.Intersect(item, comparer));
     }
 
@@ -164,14 +164,9 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(first, nameof(first));
         ArgumentNullException.ThrowIfNull(second, nameof(second));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-        
+
         return first.Where(f => !second.Any(s => condition(f, s)));
     }
-
-
-
-
-
 
 
     /// <summary>
@@ -185,7 +180,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values)
         {
             self.Add(obj);
@@ -203,7 +198,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values)
         {
             self.Add(obj);
@@ -221,7 +216,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values)
         {
             self.Add(obj);
@@ -239,7 +234,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values)
         {
             self.Enqueue(obj);
@@ -259,7 +254,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values.Where(predicate))
         {
             self.Add(obj);
@@ -279,7 +274,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values.Where(predicate))
         {
             self.Add(obj);
@@ -299,7 +294,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(predicate, nameof(predicate));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values.Where(predicate))
         {
             self.Enqueue(obj);
@@ -317,7 +312,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(values, nameof(values));
-        
+
         foreach (var obj in values)
         {
             if (!self.Contains(obj))
@@ -338,7 +333,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(where, nameof(where));
-        
+
         foreach (var obj in self.Where(where).ToList())
         {
             self.Remove(obj);
@@ -429,7 +424,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return new HashSet<TResult>(source.Select(selector));
     }
 
@@ -448,7 +443,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(action, nameof(action));
-        
+
         foreach (var o in self)
         {
             action(o);
@@ -546,7 +541,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return Task.WhenAll(source.Select(selector));
     }
 
@@ -568,7 +563,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return Task.WhenAll(source.Select(selector));
     }
 
@@ -628,7 +623,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         var results = new List<TResult>();
         var tasks = new List<Task<TResult>>();
         var index = 0;
@@ -670,7 +665,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         var index = 0;
         if (Debugger.IsAttached)
         {
@@ -731,7 +726,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         if (source is ICollection<T> collection)
         {
             return ForAsync(collection, selector, collection.Count, cancellationToken);
@@ -758,7 +753,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty().Max();
     }
 
@@ -777,7 +772,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -792,7 +787,7 @@ public static class IEnumerableExtensions
     public static TSource MaxOrDefault<TSource>(this IQueryable<TSource> source)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty().Max();
     }
 
@@ -808,7 +803,7 @@ public static class IEnumerableExtensions
     public static TSource MaxOrDefault<TSource>(this IQueryable<TSource> source, TSource defaultValue)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -827,7 +822,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -845,7 +840,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty().Max();
     }
 
@@ -860,7 +855,7 @@ public static class IEnumerableExtensions
     public static TSource MaxOrDefault<TSource>(this IEnumerable<TSource> source)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty().Max();
     }
 
@@ -876,7 +871,7 @@ public static class IEnumerableExtensions
     public static TSource MaxOrDefault<TSource>(this IEnumerable<TSource> source, TSource defaultValue)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty(defaultValue).Max();
     }
 
@@ -894,7 +889,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty().Min();
     }
 
@@ -913,7 +908,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -928,7 +923,7 @@ public static class IEnumerableExtensions
     public static TSource MinOrDefault<TSource>(this IQueryable<TSource> source)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty().Min();
     }
 
@@ -944,7 +939,7 @@ public static class IEnumerableExtensions
     public static TSource MinOrDefault<TSource>(this IQueryable<TSource> source, TSource defaultValue)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -964,7 +959,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty().Min();
     }
 
@@ -985,7 +980,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(selector, nameof(selector));
-        
+
         return source.Select(selector).DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -1002,7 +997,7 @@ public static class IEnumerableExtensions
     public static TSource MinOrDefault<TSource>(this IEnumerable<TSource> source)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty().Min();
     }
 
@@ -1020,7 +1015,7 @@ public static class IEnumerableExtensions
     public static TSource MinOrDefault<TSource>(this IEnumerable<TSource> source, TSource defaultValue)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.DefaultIfEmpty(defaultValue).Min();
     }
 
@@ -1040,7 +1035,7 @@ public static class IEnumerableExtensions
     public static double StandardDeviation(this IEnumerable<double> source)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         double result = 0;
         var list = source as ICollection<double> ?? source.ToList();
         var count = list.Count;
@@ -1069,7 +1064,7 @@ public static class IEnumerableExtensions
     public static IOrderedEnumerable<T> OrderByRandom<T>(this IEnumerable<T> source)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
-        
+
         return source.OrderBy(_ => Guid.NewGuid());
     }
 
@@ -1099,7 +1094,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(first, nameof(first));
         ArgumentNullException.ThrowIfNull(second, nameof(second));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-        
+
         if (first is ICollection<T> source1 && second is ICollection<T> source2)
         {
             if (source1.Count != source2.Count)
@@ -1156,7 +1151,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(first, nameof(first));
         ArgumentNullException.ThrowIfNull(second, nameof(second));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-        
+
         if (first is ICollection<T1> source1 && second is ICollection<T2> source2)
         {
             if (source1.Count != source2.Count)
@@ -1212,7 +1207,7 @@ public static class IEnumerableExtensions
     public static (List<T1> adds, List<T2> remove, List<T1> updates) CompareChanges<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, bool> condition)
     {
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-        
+
         first ??= new List<T1>();
         second ??= new List<T2>();
         var firstSource = first as ICollection<T1> ?? first.ToList();
@@ -1243,7 +1238,7 @@ public static class IEnumerableExtensions
     public static (List<T1> adds, List<T2> remove, List<(T1 first, T2 second)> updates) CompareChangesPlus<T1, T2>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, bool> condition)
     {
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-        
+
         first ??= new List<T1>();
         second ??= new List<T2>();
         var firstSource = first as ICollection<T1> ?? first.ToList();
@@ -1302,7 +1297,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(where, nameof(where));
-        
+
         return condition ? source.Where(where) : source;
     }
 
@@ -1324,7 +1319,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
         ArgumentNullException.ThrowIfNull(where, nameof(where));
-        
+
         return condition() ? source.Where(where) : source;
     }
 
@@ -1341,7 +1336,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(where, nameof(where));
-        
+
         return condition ? source.Where(where) : source;
     }
 
@@ -1359,7 +1354,7 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(source, nameof(source));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
         ArgumentNullException.ThrowIfNull(where, nameof(where));
-        
+
         return condition() ? source.Where(where) : source;
     }
 
@@ -1376,7 +1371,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
         ArgumentNullException.ThrowIfNull(item, nameof(item));
-        
+
         ChangeIndexInternal(list, item, index);
         return list;
     }
@@ -1394,7 +1389,7 @@ public static class IEnumerableExtensions
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-        
+
         var item = list.FirstOrDefault(condition);
         if (item != null)
         {

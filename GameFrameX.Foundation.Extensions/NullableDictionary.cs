@@ -156,13 +156,10 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// <summary>
     /// 当键不存在时返回的默认值
     /// </summary>
-    internal TValue FallbackValue 
-    { 
-        get 
-        {
-            return _fallbackValue;
-        }
-        set => _fallbackValue = value; 
+    internal TValue FallbackValue
+    {
+        get { return _fallbackValue; }
+        set => _fallbackValue = value;
     }
 
     /// <summary>
@@ -186,7 +183,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         get
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(new KeyValuePair<TKey, TValue>(pair.Key.Item, pair.Value))))
             {
                 return pair.Value;
@@ -197,7 +194,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         set
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(new KeyValuePair<TKey, TValue>(pair.Key.Item, pair.Value))))
             {
                 this[pair.Key] = value;
@@ -216,7 +213,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         get
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(pair.Key.Item, pair.Value)))
             {
                 return pair.Value;
@@ -227,7 +224,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         set
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(pair.Key.Item, pair.Value)))
             {
                 this[pair.Key] = value;
@@ -246,7 +243,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         get
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(pair.Key.Item)))
             {
                 return pair.Value;
@@ -257,7 +254,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         set
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(pair.Key.Item)))
             {
                 this[pair.Key] = value;
@@ -276,7 +273,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         get
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(pair.Value)))
             {
                 return pair.Value;
@@ -287,7 +284,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
         set
         {
             ArgumentNullException.ThrowIfNull(condition, nameof(condition));
-            
+
             foreach (var pair in this.Where(pair => condition(pair.Value)))
             {
                 this[pair.Key] = value;
@@ -355,7 +352,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     public static implicit operator NullableDictionary<TKey, TValue>(Dictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
-        
+
         var nullableDictionary = new NullableDictionary<TKey, TValue>();
         foreach (var p in dic)
         {
@@ -374,7 +371,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     public static implicit operator NullableDictionary<TKey, TValue>(ConcurrentDictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
-        
+
         var nullableDictionary = new NullableDictionary<TKey, TValue>();
         foreach (var p in dic)
         {
@@ -393,7 +390,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     public static implicit operator Dictionary<TKey, TValue>(NullableDictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
-        
+
         var dictionary = new Dictionary<TKey, TValue>();
         foreach (var p in dic)
         {

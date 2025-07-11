@@ -158,10 +158,10 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <summary>
     /// 获取或设置当键不存在时返回的默认值。
     /// </summary>
-    public TValue FallbackValue 
-    { 
-        get => _fallbackValue; 
-        set => _fallbackValue = value; 
+    public TValue FallbackValue
+    {
+        get => _fallbackValue;
+        set => _fallbackValue = value;
     }
 
     /// <summary>
@@ -171,14 +171,8 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <returns>如果找到该键，则返回对应的值；否则返回默认值。</returns>
     public new TValue this[NullObject<TKey> key]
     {
-        get
-        {
-            return base.TryGetValue(key, out var value) ? value : FallbackValue;
-        }
-        set
-        {
-            base[key] = value;
-        }
+        get { return base.TryGetValue(key, out var value) ? value : FallbackValue; }
+        set { base[key] = value; }
     }
 
     /// <summary>

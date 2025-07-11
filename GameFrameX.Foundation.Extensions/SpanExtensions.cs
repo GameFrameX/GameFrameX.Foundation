@@ -27,14 +27,14 @@ public static class SpanExtensions
     public static void WriteUInt(this Span<byte> buffer, uint value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UIntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.UIntSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.UIntSize}, Available: {buffer.Length}");
         }
 
         BinaryPrimitives.WriteUInt32BigEndian(buffer[offset..], value);
-        offset += ConstSize.UIntSize;
+        offset += ConstBaseTypeSize.UIntSize;
     }
 
     /// <summary>
@@ -47,14 +47,14 @@ public static class SpanExtensions
     public static void WriteUShort(this Span<byte> buffer, ushort value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.UShortSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.UShortSize}, Available: {buffer.Length}");
         }
 
         BinaryPrimitives.WriteUInt16BigEndian(buffer[offset..], value);
-        offset += ConstSize.UShortSize;
+        offset += ConstBaseTypeSize.UShortSize;
     }
 
     /// <summary>
@@ -67,14 +67,14 @@ public static class SpanExtensions
     public static void WriteShort(this Span<byte> buffer, short value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.ShortSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ShortSize}, Available: {buffer.Length}");
         }
 
         BinaryPrimitives.WriteInt16BigEndian(buffer[offset..], value);
-        offset += ConstSize.ShortSize;
+        offset += ConstBaseTypeSize.ShortSize;
     }
 
     /// <summary>
@@ -88,16 +88,16 @@ public static class SpanExtensions
     public static unsafe void WriteInt(this Span<byte> buffer, int value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.IntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.IntSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.IntSize}, Available: {buffer.Length}");
         }
 
         fixed (byte* ptr = buffer)
         {
             *(int*)(ptr + offset) = IPAddress.HostToNetworkOrder(value);
-            offset += ConstSize.IntSize;
+            offset += ConstBaseTypeSize.IntSize;
         }
     }
 
@@ -112,16 +112,16 @@ public static class SpanExtensions
     public static unsafe void WriteLong(this Span<byte> buffer, long value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.LongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.LongSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.LongSize}, Available: {buffer.Length}");
         }
 
         fixed (byte* ptr = buffer)
         {
             *(long*)(ptr + offset) = IPAddress.HostToNetworkOrder(value);
-            offset += ConstSize.LongSize;
+            offset += ConstBaseTypeSize.LongSize;
         }
     }
 
@@ -135,17 +135,17 @@ public static class SpanExtensions
     public static unsafe void WriteFloat(this Span<byte> buffer, float value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.FloatSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.FloatSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.FloatSize}, Available: {buffer.Length}");
         }
 
         fixed (byte* ptr = buffer)
         {
             *(float*)(ptr + offset) = value;
             *(int*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(int*)(ptr + offset));
-            offset += ConstSize.FloatSize;
+            offset += ConstBaseTypeSize.FloatSize;
         }
     }
 
@@ -159,17 +159,17 @@ public static class SpanExtensions
     public static unsafe void WriteDouble(this Span<byte> buffer, double value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.DoubleSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.DoubleSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.DoubleSize}, Available: {buffer.Length}");
         }
 
         fixed (byte* ptr = buffer)
         {
             *(double*)(ptr + offset) = value;
             *(long*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(long*)(ptr + offset));
-            offset += ConstSize.DoubleSize;
+            offset += ConstBaseTypeSize.DoubleSize;
         }
     }
 
@@ -183,16 +183,16 @@ public static class SpanExtensions
     public static unsafe void WriteByte(this Span<byte> buffer, byte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ByteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.ByteSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ByteSize}, Available: {buffer.Length}");
         }
 
         fixed (byte* ptr = buffer)
         {
             *(ptr + offset) = value;
-            offset += ConstSize.ByteSize;
+            offset += ConstBaseTypeSize.ByteSize;
         }
     }
 
@@ -206,16 +206,16 @@ public static class SpanExtensions
     public static unsafe void WriteSByte(this Span<byte> buffer, sbyte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ByteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.ByteSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ByteSize}, Available: {buffer.Length}");
         }
 
         fixed (byte* ptr = buffer)
         {
             *(sbyte*)(ptr + offset) = value;
-            offset += ConstSize.ByteSize;
+            offset += ConstBaseTypeSize.ByteSize;
         }
     }
 
@@ -229,16 +229,16 @@ public static class SpanExtensions
     public static unsafe void WriteBool(this Span<byte> buffer, bool value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.BoolSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstSize.BoolSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.BoolSize}, Available: {buffer.Length}");
         }
 
         fixed (byte* ptr = buffer)
         {
             *(bool*)(ptr + offset) = value;
-            offset += ConstSize.BoolSize;
+            offset += ConstBaseTypeSize.BoolSize;
         }
     }
 
@@ -333,14 +333,14 @@ public static class SpanExtensions
     public static int ReadInt(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.IntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadInt32BigEndian(buffer[offset..]);
-        offset += ConstSize.IntSize;
+        offset += ConstBaseTypeSize.IntSize;
         return value;
     }
 
@@ -354,14 +354,14 @@ public static class SpanExtensions
     public static short ReadShort(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ShortSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadInt16BigEndian(buffer[offset..]);
-        offset += ConstSize.ShortSize;
+        offset += ConstBaseTypeSize.ShortSize;
         return value;
     }
 
@@ -375,14 +375,14 @@ public static class SpanExtensions
     public static uint ReadUInt(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.UIntSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadUInt32BigEndian(buffer[offset..]);
-        offset += ConstSize.UIntSize;
+        offset += ConstBaseTypeSize.UIntSize;
         return value;
     }
 
@@ -397,14 +397,14 @@ public static class SpanExtensions
     public static ulong ReadULong(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ULongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadUInt64BigEndian(buffer[offset..]);
-        offset += ConstSize.ULongSize;
+        offset += ConstBaseTypeSize.ULongSize;
         return value;
     }
 
@@ -419,14 +419,14 @@ public static class SpanExtensions
     public static long ReadLong(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.LongSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadInt64BigEndian(buffer[offset..]);
-        offset += ConstSize.LongSize;
+        offset += ConstBaseTypeSize.LongSize;
         return value;
     }
 
@@ -440,14 +440,14 @@ public static class SpanExtensions
     public static float ReadFloat(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.FloatSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadSingleBigEndian(buffer[offset..]);
-        offset += ConstSize.FloatSize;
+        offset += ConstBaseTypeSize.FloatSize;
         return value;
     }
 
@@ -461,14 +461,14 @@ public static class SpanExtensions
     public static double ReadDouble(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.DoubleSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = BinaryPrimitives.ReadDoubleBigEndian(buffer[offset..]);
-        offset += ConstSize.DoubleSize;
+        offset += ConstBaseTypeSize.DoubleSize;
         return value;
     }
 
@@ -482,14 +482,14 @@ public static class SpanExtensions
     public static byte ReadByte(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ByteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = buffer[offset];
-        offset += ConstSize.ByteSize;
+        offset += ConstBaseTypeSize.ByteSize;
         return value;
     }
 
@@ -503,7 +503,7 @@ public static class SpanExtensions
     public static byte[] ReadBytes(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
+
         var len = ReadInt(buffer, ref offset);
 
         if (len <= 0)
@@ -531,14 +531,14 @@ public static class SpanExtensions
     public static sbyte ReadSByte(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.ByteSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = (sbyte)buffer[offset];
-        offset += ConstSize.ByteSize;
+        offset += ConstBaseTypeSize.ByteSize;
         return value;
     }
 
@@ -552,7 +552,7 @@ public static class SpanExtensions
     public static string ReadString(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
+
         var len = ReadShort(buffer, ref offset);
 
         if (len <= 0)
@@ -580,14 +580,14 @@ public static class SpanExtensions
     public static bool ReadBool(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-        
-        if (offset + ConstSize.BoolSize > buffer.Length)
+
+        if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
         }
 
         var value = buffer[offset] != 0;
-        offset += ConstSize.BoolSize;
+        offset += ConstBaseTypeSize.BoolSize;
         return value;
     }
 

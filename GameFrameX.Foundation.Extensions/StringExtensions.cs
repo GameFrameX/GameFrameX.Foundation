@@ -44,14 +44,14 @@ public static class StringExtensions
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
         var result = value.Replace("-", "+").Replace("_", "/");
-        
+
         // 添加必要的填充字符
         var padding = 4 - (result.Length % 4);
         if (padding < 4)
         {
             result = result.PadRight(result.Length + padding, '=');
         }
-        
+
         return result;
     }
 
@@ -77,7 +77,7 @@ public static class StringExtensions
     public static string RepeatChar(this char c, int count)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
-        
+
         var stringBuilder = new StringBuilder();
         stringBuilder.Clear();
         for (var i = 0; i < count; i++)
@@ -104,7 +104,7 @@ public static class StringExtensions
     {
         ArgumentNullException.ThrowIfNull(text, nameof(text));
         ArgumentOutOfRangeException.ThrowIfNegative(width, nameof(width));
-        
+
         if (width < text.Length)
         {
             width = text.Length;
@@ -148,7 +148,7 @@ public static class StringExtensions
         {
             return self;
         }
-        
+
         return self.EndsWith(toRemove) ? self.Substring(0, self.Length - toRemove.Length) : self;
     }
 
@@ -366,7 +366,7 @@ public static class StringExtensions
     public static void CreateAsDirectory(this string path, bool isFile = false)
     {
         ArgumentNullException.ThrowIfNull(path, nameof(path));
-        
+
         if (isFile)
         {
             path = Path.GetDirectoryName(path);
@@ -469,7 +469,7 @@ public static class StringExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(target, nameof(target));
-        
+
         int ap = self.Length - 1;
         int bp = target.Length - 1;
 
@@ -498,7 +498,7 @@ public static class StringExtensions
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(target, nameof(target));
-        
+
         int aLen = self.Length;
         int bLen = target.Length;
 
