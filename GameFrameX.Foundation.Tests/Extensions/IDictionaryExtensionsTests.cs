@@ -201,7 +201,7 @@ public class IDictionaryExtensionsTests
         var result = source.ToDictionarySafety(s => s.Length);
         
         // Assert
-        Assert.Equal(1, result.Count);
+        Assert.Single(result);
         Assert.Equal("c", result[1]); // Last value should win
     }
     

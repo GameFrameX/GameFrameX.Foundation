@@ -113,7 +113,7 @@ public class AesHelperTests
     {
         // Arrange
         var plainText = TestPlainText;
-        string? key = null;
+        string key = null!;
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() => AesHelper.Encrypt(plainText, key!));

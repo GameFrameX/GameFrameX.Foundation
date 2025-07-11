@@ -25,7 +25,7 @@ public class ConcurrentLimitedQueueTests
         // Assert
         Assert.NotNull(queue);
         Assert.Equal(limit, queue.Limit);
-        Assert.Equal(0, queue.Count);
+        Assert.Empty(queue);
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public class ConcurrentLimitedQueueTests
         // Assert
         Assert.NotNull(queue);
         Assert.Equal(0, queue.Limit);
-        Assert.Equal(0, queue.Count);
+        Assert.Empty(queue);
     }
 
     #endregion
@@ -211,7 +211,7 @@ public class ConcurrentLimitedQueueTests
         queue.Enqueue(3);
 
         // Assert
-        Assert.Equal(1, queue.Count);
+        Assert.Single(queue);
         Assert.Equal(3, queue.ToArray()[0]);
     }
 

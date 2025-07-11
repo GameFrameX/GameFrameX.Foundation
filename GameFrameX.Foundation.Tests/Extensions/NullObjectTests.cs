@@ -134,7 +134,7 @@ public class NullObjectTests
     {
         // Arrange
         var nullObject = new NullObject<string>("test");
-        string other = null;
+        string other = null!;
 
         // Act
         var result = nullObject.CompareTo(other);
@@ -163,8 +163,8 @@ public class NullObjectTests
         var nullObject2 = new NullObject<string>(null);
 
         // Act
-        var result1 = nullObject1.CompareTo((object?)null);
-        var result2 = nullObject2.CompareTo((object?)null);
+        var result1 = nullObject1.CompareTo((object)null!);
+        var result2 = nullObject2.CompareTo((object)null!);
 
         // Assert
         Assert.Equal(1, result1); // non-null is greater than null

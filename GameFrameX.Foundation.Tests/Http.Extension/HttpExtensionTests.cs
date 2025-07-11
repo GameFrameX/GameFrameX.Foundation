@@ -241,7 +241,7 @@ public class HttpExtensionTests : IDisposable
         
         // Assert
         Assert.NotEmpty(methods);
-        Assert.Equal(1, methods.Length); // Should have 1 overload
+        Assert.Single(methods); // Should have 1 overload
     }
     
     [Fact]
