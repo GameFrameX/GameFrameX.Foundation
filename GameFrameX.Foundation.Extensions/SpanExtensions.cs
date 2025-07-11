@@ -24,7 +24,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static void WriteUInt(this Span<byte> buffer, uint value, ref int offset)
+    public static void WriteUIntValue(this Span<byte> buffer, uint value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -44,7 +44,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static void WriteUShort(this Span<byte> buffer, ushort value, ref int offset)
+    public static void WriteUShortValue(this Span<byte> buffer, ushort value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -64,7 +64,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static void WriteShort(this Span<byte> buffer, short value, ref int offset)
+    public static void WriteShortValue(this Span<byte> buffer, short value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -85,7 +85,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的整数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加整数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteInt(this Span<byte> buffer, int value, ref int offset)
+    public static unsafe void WriteIntValue(this Span<byte> buffer, int value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -109,7 +109,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的长整数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加长整数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteLong(this Span<byte> buffer, long value, ref int offset)
+    public static unsafe void WriteLongValue(this Span<byte> buffer, long value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -132,7 +132,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的浮点数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加浮点数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteFloat(this Span<byte> buffer, float value, ref int offset)
+    public static unsafe void WriteFloatValue(this Span<byte> buffer, float value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -156,7 +156,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的双精度浮点数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加双精度浮点数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteDouble(this Span<byte> buffer, double value, ref int offset)
+    public static unsafe void WriteDoubleValue(this Span<byte> buffer, double value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -180,7 +180,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的字节值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加字节的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteByte(this Span<byte> buffer, byte value, ref int offset)
+    public static unsafe void WriteByteValue(this Span<byte> buffer, byte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -203,7 +203,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的有符号字节值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加字节的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteSByte(this Span<byte> buffer, sbyte value, ref int offset)
+    public static unsafe void WriteSByteValue(this Span<byte> buffer, sbyte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -226,7 +226,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的布尔值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加布尔值的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteBool(this Span<byte> buffer, bool value, ref int offset)
+    public static unsafe void WriteBoolValue(this Span<byte> buffer, bool value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -275,12 +275,12 @@ public static class SpanExtensions
     /// <param name="offset">字节写入的起始偏移量，写入后更新。</param>
     /// <exception cref="ArgumentNullException">当 value 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static void WriteBytes(this Span<byte> buffer, byte[] value, ref int offset)
+    public static void WriteBytesValue(this Span<byte> buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
-        WriteInt(buffer, value.Length, ref offset);
+        WriteIntValue(buffer, value.Length, ref offset);
 
         if (value.Length > 0)
         {
@@ -296,14 +296,14 @@ public static class SpanExtensions
     /// <param name="offset">字节写入的起始偏移量，写入后更新。</param>
     /// <exception cref="ArgumentNullException">当 value 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteString(this Span<byte> buffer, string value, ref int offset)
+    public static unsafe void WriteStringValue(this Span<byte> buffer, string value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
         if (string.IsNullOrEmpty(value))
         {
-            WriteShort(buffer, 0, ref offset);
+            WriteShortValue(buffer, 0, ref offset);
             return;
         }
 
@@ -314,7 +314,7 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(value), $"String is too long. Maximum length is {ushort.MaxValue} bytes.");
         }
 
-        WriteShort(buffer, (short)bytes.Length, ref offset);
+        WriteShortValue(buffer, (short)bytes.Length, ref offset);
         WriteBytesWithoutLength(buffer, bytes, ref offset);
     }
 

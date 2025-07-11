@@ -18,7 +18,7 @@ public class SpanExtensionsTests
         const int value = 12345;
 
         // Act
-        buffer.AsSpan().WriteInt(value, ref offset);
+        buffer.AsSpan().WriteIntValue(value, ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -36,7 +36,7 @@ public class SpanExtensionsTests
         const uint value = 12345u;
 
         // Act
-        buffer.AsSpan().WriteUInt(value, ref offset);
+        buffer.AsSpan().WriteUIntValue(value, ref offset);
 
         // Assert
         Assert.Equal(4, offset);
@@ -54,7 +54,7 @@ public class SpanExtensionsTests
         const short value = 12345;
 
         // Act
-        buffer.AsSpan().WriteShort(value, ref offset);
+        buffer.AsSpan().WriteShortValue(value, ref offset);
 
         // Assert
         Assert.Equal(2, offset);
@@ -72,7 +72,7 @@ public class SpanExtensionsTests
         const string value = "Hello, World!";
 
         // Act
-        buffer.AsSpan().WriteString(value, ref offset);
+        buffer.AsSpan().WriteStringValue(value, ref offset);
 
         // Assert
         var readOffset = 0;
