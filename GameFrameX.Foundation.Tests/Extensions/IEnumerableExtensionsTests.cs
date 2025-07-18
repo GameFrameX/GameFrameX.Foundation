@@ -23,7 +23,7 @@ public class IEnumerableExtensionsTests
         var second = new[] { "2", "4", "6" };
 
         // Act
-        var result = first.IntersectBy(second, (f, s) => f.ToString() == s).ToList();
+        var result = first.IntersectByComparer(second, (f, s) => f.ToString() == s).ToList();
 
         // Assert
         Assert.Equal(new[] { 2, 4 }, result);
@@ -47,7 +47,7 @@ public class IEnumerableExtensionsTests
         };
 
         // Act
-        var result = collections.IntersectAll().ToList();
+        var result = collections.IntersectAllComparer().ToList();
 
         // Assert
         Assert.Equal(new[] { 3, 4 }, result);
@@ -65,7 +65,7 @@ public class IEnumerableExtensionsTests
         };
 
         // Act
-        var result = collections.IntersectAll(x => x).ToList();
+        var result = collections.IntersectAllComparer(x => x).ToList();
 
         // Assert
         Assert.Equal(new[] { 3, 4 }, result);
@@ -83,7 +83,7 @@ public class IEnumerableExtensionsTests
         var second = new[] { "2", "4" };
 
         // Act
-        var result = first.ExceptBy(second, (f, s) => f.ToString() == s).ToList();
+        var result = first.ExceptByExpression(second, (f, s) => f.ToString() == s).ToList();
 
         // Assert
         Assert.Equal(new[] { 1, 3, 5 }, result);
@@ -119,7 +119,7 @@ public class IEnumerableExtensionsTests
         var values = new[] { 3, 4, 5 };
 
         // Act
-        bag.AddRange(values);
+        bag.AddRangeValues(values);
 
         // Assert
         Assert.Equal(5, bag.Count);
@@ -138,7 +138,7 @@ public class IEnumerableExtensionsTests
         var values = new[] { 3, 4, 5 };
 
         // Act
-        queue.AddRange(values);
+        queue.AddRangeValues(values);
 
         // Assert
         Assert.Equal(5, queue.Count);
@@ -211,7 +211,7 @@ public class IEnumerableExtensionsTests
         var source = new int[0];
 
         // Act
-        var result = source.MaxOrDefault();
+        var result = source.MaxOrDefaultValue();
 
         // Assert
         Assert.Equal(0, result);
@@ -224,7 +224,7 @@ public class IEnumerableExtensionsTests
         var source = new int[0];
 
         // Act
-        var result = source.MaxOrDefault(-1);
+        var result = source.MaxOrDefaultValue(-1);
 
         // Assert
         Assert.Equal(-1, result);
@@ -237,7 +237,7 @@ public class IEnumerableExtensionsTests
         var source = new[] { "a", "abc", "ab" };
 
         // Act
-        var result = source.MaxOrDefault(x => x.Length);
+        var result = source.MaxOrDefaultValue(x => x.Length);
 
         // Assert
         Assert.Equal(3, result);
@@ -254,7 +254,7 @@ public class IEnumerableExtensionsTests
         var source = new int[0];
 
         // Act
-        var result = source.MinOrDefault();
+        var result = source.MinOrDefaultValue();
 
         // Assert
         Assert.Equal(0, result);
@@ -267,7 +267,7 @@ public class IEnumerableExtensionsTests
         var source = new int[0];
 
         // Act
-        var result = source.MinOrDefault(-1);
+        var result = source.MinOrDefaultValue(-1);
 
         // Assert
         Assert.Equal(-1, result);
@@ -280,7 +280,7 @@ public class IEnumerableExtensionsTests
         var source = new[] { "abc", "a", "ab" };
 
         // Act
-        var result = source.MinOrDefault(x => x.Length);
+        var result = source.MinOrDefaultValue(x => x.Length);
 
         // Assert
         Assert.Equal(1, result);

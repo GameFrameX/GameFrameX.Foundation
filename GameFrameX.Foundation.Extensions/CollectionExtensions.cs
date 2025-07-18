@@ -34,7 +34,7 @@ public static class CollectionExtensions
     /// <param name="enumerable">要添加的元素的可枚举集合，不能为 null。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="hashSet"/> 或 <paramref name="enumerable"/> 为 null 时抛出</exception>
     /// <remarks>此方法会将指定集合中的所有元素添加到目标哈希集合中。如果元素已存在，则会被忽略。</remarks>
-    public static void AddRange<T>(this HashSet<T> hashSet, IEnumerable<T> enumerable)
+    public static void AddRangeValues<T>(this HashSet<T> hashSet, IEnumerable<T> enumerable)
     {
         ArgumentNullException.ThrowIfNull(hashSet, nameof(hashSet));
         ArgumentNullException.ThrowIfNull(enumerable, nameof(enumerable));
@@ -85,7 +85,7 @@ public static class CollectionExtensions
     /// <param name="valueGetter">用于获取值的函数，接收键作为参数并返回对应的值，不能为 null。</param>
     /// <returns>指定键的值。如果键不存在，则返回新创建的值。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/>（如果是引用类型）或 <paramref name="valueGetter"/> 为 null 时抛出</exception>
-    public static TValue GetOrAdd<TKey, TValue>(this Dictionary<TKey, TValue> self, TKey key, Func<TKey, TValue> valueGetter)
+    public static TValue GetOrAddValue<TKey, TValue>(this Dictionary<TKey, TValue> self, TKey key, Func<TKey, TValue> valueGetter)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
@@ -109,9 +109,9 @@ public static class CollectionExtensions
     /// <param name="key">要获取值的键，不能为 null（如果 TKey 是引用类型）。</param>
     /// <returns>指定键的值。如果键不存在，则返回新创建的值。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="key"/> 为 null 时抛出</exception>
-    public static TValue GetOrAdd<TKey, TValue>(this Dictionary<TKey, TValue> self, TKey key) where TValue : new()
+    public static TValue GetOrAddValue<TKey, TValue>(this Dictionary<TKey, TValue> self, TKey key) where TValue : new()
     {
-        return GetOrAdd(self, key, _ => new TValue());
+        return GetOrAddValue(self, key, _ => new TValue());
     }
 
     /// <summary>

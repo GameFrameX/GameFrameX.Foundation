@@ -63,7 +63,7 @@ public class CollectionExtensionsTests
         IEnumerable<string> enumerable = null;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => hashSet.AddRange(enumerable));
+        Assert.Throws<ArgumentNullException>(() => hashSet.AddRangeValues(enumerable));
     }
 
     #endregion
@@ -147,7 +147,7 @@ public class CollectionExtensionsTests
         Dictionary<string, int> dictionary = null;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAdd("key", k => 1));
+        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAddValue("key", k => 1));
     }
 
     [Fact]
@@ -157,7 +157,7 @@ public class CollectionExtensionsTests
         var dictionary = new Dictionary<string, int>();
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAdd(null, k => 1));
+        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAddValue(null, k => 1));
     }
 
     [Fact]
@@ -167,7 +167,7 @@ public class CollectionExtensionsTests
         var dictionary = new Dictionary<string, int>();
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAdd("key", (Func<string, int>)null));
+        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAddValue("key", (Func<string, int>)null));
     }
 
     [Fact]
@@ -177,7 +177,7 @@ public class CollectionExtensionsTests
         var dictionary = new Dictionary<string, int> { ["key1"] = 5 };
 
         // Act
-        var result = dictionary.GetOrAdd("key1", k => 10);
+        var result = dictionary.GetOrAddValue("key1", k => 10);
 
         // Assert
         Assert.Equal(5, result);
@@ -191,7 +191,7 @@ public class CollectionExtensionsTests
         var dictionary = new Dictionary<string, int>();
 
         // Act
-        var result = dictionary.GetOrAdd("key1", k => 10);
+        var result = dictionary.GetOrAddValue("key1", k => 10);
 
         // Assert
         Assert.Equal(10, result);
@@ -205,7 +205,7 @@ public class CollectionExtensionsTests
         Dictionary<string, List<int>> dictionary = null;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAdd("key"));
+        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAddValue("key"));
     }
 
     [Fact]
@@ -215,7 +215,7 @@ public class CollectionExtensionsTests
         var dictionary = new Dictionary<string, List<int>>();
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAdd(null));
+        Assert.Throws<ArgumentNullException>(() => dictionary.GetOrAddValue(null));
     }
 
     [Fact]
@@ -225,7 +225,7 @@ public class CollectionExtensionsTests
         var dictionary = new Dictionary<string, List<int>>();
 
         // Act
-        var result = dictionary.GetOrAdd("key1");
+        var result = dictionary.GetOrAddValue("key1");
 
         // Assert
         Assert.NotNull(result);

@@ -252,38 +252,6 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// 验证字符串不为null或空，否则抛出异常。
-    /// </summary>
-    /// <param name="value">要验证的字符串。</param>
-    /// <param name="name">异常消息中的参数名称。</param>
-    /// <exception cref="ArgumentException">当字符串为null或空时抛出。</exception>
-    /// <remarks>
-    /// 常用于方法参数验证。
-    /// 抛出的异常包含参数名称，便于问题定位。
-    /// 异常消息使用英文以保持一致性。
-    /// </remarks>
-    public static void CheckNotNullOrEmpty(this string value, string name)
-    {
-        ArgumentException.ThrowIfNullOrEmpty(value, name);
-    }
-
-    /// <summary>
-    /// 验证字符串不为null、空或仅包含空白字符，否则抛出异常。
-    /// </summary>
-    /// <param name="value">要验证的字符串。</param>
-    /// <param name="name">异常消息中的参数名称。</param>
-    /// <exception cref="ArgumentException">当字符串为null、空或仅包含空白字符时抛出。</exception>
-    /// <remarks>
-    /// 比CheckNotNullOrEmpty更严格的验证。
-    /// 确保字符串包含至少一个非空白字符。
-    /// 常用于需要确保有效输入内容的场景。
-    /// </remarks>
-    public static void CheckNotNullOrEmptyOrWhiteSpace(this string value, string name)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(value, name);
-    }
-
-    /// <summary>
     /// 将字符串按指定分隔符拆分为整数数组。
     /// </summary>
     /// <param name="str">要拆分的字符串。</param>
