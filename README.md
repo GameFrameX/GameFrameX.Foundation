@@ -14,6 +14,7 @@
 | GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化    | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
 | GameFrameX.Foundation.Json               | JSON 序列化工具    | `GameFrameX.Foundation.Json`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             |
 | GameFrameX.Foundation.Logger             | Serilog 日志配置  | `GameFrameX.Foundation.Logger`             | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         |
+| GameFrameX.Foundation.Options            | 命令行参数处理       | `GameFrameX.Foundation.Options`            | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       |
 
 GameFrameX 的基础工具库，提供了一系列高性能、易用的基础组件和工具类，涵盖加密、哈希、HTTP、JSON、日志等常用功能。
 
@@ -39,6 +40,9 @@ dotnet add package GameFrameX.Foundation.Json
 # 安装日志工具库
 dotnet add package GameFrameX.Foundation.Logger
 
+# 安装命令行参数处理库
+dotnet add package GameFrameX.Foundation.Options
+
 # 安装 HTTP 扩展
 dotnet add package GameFrameX.Foundation.Http.Extension
 
@@ -54,6 +58,7 @@ using GameFrameX.Foundation.Extensions;
 using GameFrameX.Foundation.Hash;
 using GameFrameX.Foundation.Json;
 using GameFrameX.Foundation.Logger;
+using GameFrameX.Foundation.Options;
 
 // AES 加密
 string encrypted = AesHelper.Encrypt("Hello World", "your-key");
@@ -85,6 +90,12 @@ buffer.WriteFloatValue(3.14f, ref offset);
 var biDict = new BidirectionalDictionary<string, int>();
 biDict.TryAdd("one", 1);
 if (biDict.TryGetKey(1, out string key)) { /* 反向查找 */ }
+
+// 命令行参数处理
+var converter = new CommandLineArgumentConverter();
+var args = new[] { "--port", "8080", "-h", "localhost" };
+var standardArgs = converter.ConvertToStandardFormat(args); // 合并环境变量
+var commandLine = converter.ToCommandLineString(standardArgs); // 转换为命令行字符串
 
 // SHA-256 哈希
 string hash = Sha256Helper.ComputeHash("Hello World");
@@ -452,6 +463,128 @@ LogHelper.Error("错误信息");
 LogHelper.Fatal("致命错误");
 ```
 
+### ⚙️ 命令行参数处理 (GameFrameX.Foundation.Options)
+
+提供强大的命令行参数和环境变量处理功能，支持将命令行参数与环境变量合并为标准格式。
+
+#### 特性
+
+- **参数标准化**: 将命令行参数和环境变量合并为统一格式
+- **环境变量集成**: 自动读取并转换环境变量为命令行参数格式
+- **值清理**: 自动清理参数值中的连字符和特殊字符
+- **格式转换**: 支持单连字符到双连字符的转换
+- **命令行字符串生成**: 将参数列表转换为可执行的命令行字符串
+- **重复检测**: 避免重复添加已存在的参数
+- **布尔类型支持**: 智能识别和处理布尔类型参数，支持多种格式
+
+#### 核心组件
+
+| 组件                           | 功能描述                    |
+|------------------------------|-------------------------|
+| `CommandLineArgumentConverter` | 命令行参数转换器，提供参数处理的核心功能    |
+| `Example`                    | 使用示例类，演示各种功能的使用方法       |
+
+#### 使用示例
+
+```csharp
+using GameFrameX.Foundation.Options;
+
+// 创建转换器实例
+var converter = new CommandLineArgumentConverter();
+
+// 原始命令行参数
+var args = new[] { "--port", "8080", "-h", "localhost" };
+
+// 设置环境变量（可选）
+Environment.SetEnvironmentVariable("APP_NAME", "MyApplication");
+Environment.SetEnvironmentVariable("LOG_LEVEL", "debug-mode");
+
+// 转换为标准格式（合并命令行参数和环境变量）
+var standardArgs = converter.ConvertToStandardFormat(args);
+// 结果: ["--port", "8080", "-h", "localhost", "--APP_NAME", "MyApplication", "--LOG_LEVEL", "debugmode"]
+
+// 转换为命令行字符串
+var commandLineString = converter.ToCommandLineString(standardArgs);
+// 结果: "--port 8080 -h localhost --APP_NAME MyApplication --LOG_LEVEL debugmode"
+
+// 获取所有环境变量
+var envVars = converter.GetEnvironmentVariables();
+Console.WriteLine($"检测到 {envVars.Count} 个环境变量");
+```
+
+#### 布尔类型参数支持
+
+`CommandLineArgumentConverter` 支持智能识别和处理布尔类型参数，提供三种格式：
+
+```csharp
+using GameFrameX.Foundation.Options;
+
+// 设置布尔类型环境变量
+Environment.SetEnvironmentVariable("ENABLE_LOGGING", "true");
+Environment.SetEnvironmentVariable("DEBUG_MODE", "false");
+Environment.SetEnvironmentVariable("VERBOSE", "yes");
+
+var converter = new CommandLineArgumentConverter();
+
+// 1. 标志格式 (默认) - 只为 true 值添加标志
+converter.BoolFormat = BoolArgumentFormat.Flag;
+var flagArgs = converter.ConvertToStandardFormat(Array.Empty<string>());
+// 结果: ["--ENABLE_LOGGING", "--VERBOSE"] (只包含 true 值)
+
+// 2. 键值对格式 - 添加键值对
+converter.BoolFormat = BoolArgumentFormat.KeyValue;
+var keyValueArgs = converter.ConvertToStandardFormat(Array.Empty<string>());
+// 结果: ["--ENABLE_LOGGING", "true", "--DEBUG_MODE", "false", "--VERBOSE", "true"]
+
+// 3. 分离格式 - 键和值分开
+converter.BoolFormat = BoolArgumentFormat.Separated;
+var separatedArgs = converter.ConvertToStandardFormat(Array.Empty<string>());
+// 结果: ["--ENABLE_LOGGING", "true", "--DEBUG_MODE", "false", "--VERBOSE", "true"]
+```
+
+支持的布尔值格式：
+- **True 值**: `"true"`, `"1"`, `"yes"`, `"on"`, `"enabled"` (不区分大小写)
+- **False 值**: `"false"`, `"0"`, `"no"`, `"off"`, `"disabled"` (不区分大小写)
+
+#### 高级功能
+
+```csharp
+// 值清理功能
+// 环境变量值 "test-value-with-hyphens" 会被清理为 "testvaluewithhyphens"
+
+// 参数去重
+// 如果命令行参数中已存在 "--port"，环境变量中的 "PORT" 不会被重复添加
+
+// 单连字符转换
+// "-p" 会保持为 "-p"，不会自动转换为 "--p"
+
+// 空值处理
+// 空的环境变量值会被忽略，不会添加到结果中
+```
+
+#### 实际应用场景
+
+```csharp
+// 场景1: 微服务配置
+var args = new[] { "--service-name", "UserService" };
+Environment.SetEnvironmentVariable("DATABASE_URL", "mongodb://localhost:27017");
+Environment.SetEnvironmentVariable("REDIS_HOST", "localhost");
+
+var standardArgs = converter.ConvertToStandardFormat(args);
+// 自动合并服务配置和环境变量
+
+// 场景2: 容器化部署
+// Docker 容器中的环境变量会自动转换为命令行参数格式
+var containerArgs = converter.ConvertToStandardFormat(Array.Empty<string>());
+// 所有环境变量都会被转换为 --KEY value 格式
+
+// 场景3: 配置文件与命令行参数结合
+var configArgs = LoadFromConfigFile(); // 从配置文件加载
+var runtimeArgs = Environment.GetCommandLineArgs().Skip(1).ToArray();
+var allArgs = configArgs.Concat(runtimeArgs).ToArray();
+var finalArgs = converter.ConvertToStandardFormat(allArgs);
+```
+
 ## 🧪 测试
 
 项目包含完整的单元测试，确保代码质量和功能正确性。所有核心功能都有对应的测试用例，测试覆盖率达到95%以上。
@@ -505,6 +638,25 @@ LogHelper.Fatal("致命错误");
 
 - **HttpExtensionTests**: HTTP客户端扩展方法测试
 
+#### ⚙️ 命令行参数处理测试 (Options)
+
+- **CommandLineArgumentConverterTests**: 命令行参数转换器功能测试
+  - 空参数数组处理测试
+  - 空参数值处理测试
+  - 重复参数检测测试
+  - 环境变量转换测试
+  - 值清理功能测试
+  - 单连字符参数转换测试
+  - 命令行字符串生成测试
+  - 环境变量获取测试
+  - 完整工作流程测试
+  - 布尔类型参数处理测试
+    - 标志格式布尔参数测试
+    - 键值对格式布尔参数测试
+    - 分离格式布尔参数测试
+    - 多种布尔值格式解析测试
+    - 非布尔值处理测试
+
 ### 运行测试
 
 ```bash
@@ -515,10 +667,12 @@ dotnet test
 dotnet test --filter "FullyQualifiedName~Extensions"
 dotnet test --filter "FullyQualifiedName~Encryption"
 dotnet test --filter "FullyQualifiedName~Hash"
+dotnet test --filter "FullyQualifiedName~Options"
 
 # 运行特定测试类
 dotnet test --filter "ClassName=XxHashHelperTests"
 dotnet test --filter "ClassName=StringExtensionsTests"
+dotnet test --filter "ClassName=CommandLineArgumentConverterTests"
 
 # 生成测试覆盖率报告
 dotnet test --collect:"XPlat Code Coverage"
