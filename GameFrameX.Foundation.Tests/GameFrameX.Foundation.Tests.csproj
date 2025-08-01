@@ -7,6 +7,7 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+      <LangVersion>10</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +31,7 @@
     <ProjectReference Include="..\GameFrameX.Foundation.Http.Normalization\GameFrameX.Foundation.Http.Normalization.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj" />
+      <ProjectReference Include="..\GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +40,7 @@
     <Folder Include="Hash\" />
     <Folder Include="Http.Extension\" />
     <Folder Include="Logger\" />
+      <Folder Include="Options\"/>
   </ItemGroup>
 
 </Project>
