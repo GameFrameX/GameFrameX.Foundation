@@ -47,10 +47,13 @@ public static class JsonHelper
         // - AllowReadingFromString: 允许从字符串中读取数字
         // - AllowNamedFloatingPointLiterals: 允许特殊浮点数值(如 NaN, Infinity)
         NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
-        // 添加自定义转换器，类似于 StringEnumConverter
+        // 添加自定义转换器
         Converters =
         {
             new JsonStringEnumConverter(), // 处理枚举为字符串
+            new SpecialFloatingPointConverter(), // 处理特殊浮点值 (double)
+            new SpecialFloatingPointConverterFloat(), // 处理特殊浮点值 (float)
+            new SpecialFloatingPointDocumentConverter(), // 处理JSON文档中的特殊浮点值
         },
     };
 
@@ -94,10 +97,13 @@ public static class JsonHelper
         NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.AllowNamedFloatingPointLiterals,
         // 格式化 JSON
         WriteIndented = true,
-        // 添加自定义转换器，类似于 StringEnumConverter
+        // 添加自定义转换器
         Converters =
         {
             new JsonStringEnumConverter(), // 处理枚举为字符串
+            new SpecialFloatingPointConverter(), // 处理特殊浮点值 (double)
+            new SpecialFloatingPointConverterFloat(), // 处理特殊浮点值 (float)
+            new SpecialFloatingPointDocumentConverter(), // 处理JSON文档中的特殊浮点值
         },
     };
 
@@ -187,8 +193,10 @@ public static class JsonHelper
     }
 
     /// <summary>
-    /// 将JSON字符串反序列化为指定类型的对象
+    /// 反序列化JSON字符串为指定类型的对象
     /// 使用默认序列化配置(DefaultOptions)
+    /// 如果使用默认配置失败，会尝试使用格式化配置(FormatOptions)
+    /// 如果两者都失败，会尝试预处理特殊浮点值后再次尝试
     /// </summary>
     /// <param name="json">需要反序列化的JSON字符串</param>
     /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数</typeparam>
@@ -200,7 +208,51 @@ public static class JsonHelper
         ArgumentNullException.ThrowIfNull(json, nameof(json));
         ArgumentException.ThrowIfNullOrEmpty(json, nameof(json));
         ArgumentException.ThrowIfNullOrWhiteSpace(json, nameof(json));
-        return JsonSerializer.Deserialize<T>(json, DefaultOptions);
+        try
+        {
+            return JsonSerializer.Deserialize<T>(json, DefaultOptions);
+        }
+        catch
+        {
+            try
+            {
+                // 如果使用默认配置失败，尝试使用格式化配置
+                return JsonSerializer.Deserialize<T>(json, FormatOptions);
+            }
+            catch
+            {
+                // 如果两者都失败，尝试预处理特殊浮点值
+                string processedJson = PreprocessSpecialFloatingPointValues(json);
+                try
+                {
+                    return JsonSerializer.Deserialize<T>(processedJson, DefaultOptions);
+                }
+                catch
+                {
+                    // 最后尝试使用格式化配置
+                    return JsonSerializer.Deserialize<T>(processedJson, FormatOptions);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 预处理JSON字符串中的特殊浮点值
+    /// 将NaN、Infinity、-Infinity转换为带引号的形式
+    /// </summary>
+    /// <param name="json">原始JSON字符串</param>
+    /// <returns>处理后的JSON字符串</returns>
+    private static string PreprocessSpecialFloatingPointValues(string json)
+    {
+        // 替换非字符串形式的特殊浮点值为带引号的形式
+        // 注意：这种简单的替换可能在某些复杂情况下不完全准确，但对大多数情况应该有效
+        json = System.Text.RegularExpressions.Regex.Replace(
+            json,
+            @":\s*(NaN|Infinity|-Infinity)\s*([,}])",
+            ": \"$1\"$2",
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+        return json;
     }
 
     /// <summary>
@@ -225,6 +277,7 @@ public static class JsonHelper
     /// <summary>
     /// 将JSON字符串反序列化为指定Type类型的对象
     /// 使用默认序列化配置(DefaultOptions)
+    /// 如果使用默认配置失败，会尝试使用格式化配置(FormatOptions)
     /// </summary>
     /// <param name="json">需要反序列化的JSON字符串</param>
     /// <param name="type">目标类型的Type对象</param>
@@ -237,7 +290,32 @@ public static class JsonHelper
         ArgumentException.ThrowIfNullOrEmpty(json, nameof(json));
         ArgumentException.ThrowIfNullOrWhiteSpace(json, nameof(json));
         ArgumentNullException.ThrowIfNull(type, nameof(type));
-        return JsonSerializer.Deserialize(json, type, DefaultOptions);
+        try
+        {
+            return JsonSerializer.Deserialize(json, type, DefaultOptions);
+        }
+        catch
+        {
+            try
+            {
+                // 如果使用默认配置失败，尝试使用格式化配置
+                return JsonSerializer.Deserialize(json, type, FormatOptions);
+            }
+            catch
+            {
+                // 如果两者都失败，尝试预处理特殊浮点值
+                string processedJson = PreprocessSpecialFloatingPointValues(json);
+                try
+                {
+                    return JsonSerializer.Deserialize(processedJson, type, DefaultOptions);
+                }
+                catch
+                {
+                    // 最后尝试使用格式化配置
+                    return JsonSerializer.Deserialize(processedJson, type, FormatOptions);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -263,6 +341,7 @@ public static class JsonHelper
     /// <summary>
     /// 从UTF8编码的字节数组反序列化为指定类型的对象
     /// 使用默认序列化配置(DefaultOptions)
+    /// 如果使用默认配置失败，会尝试使用格式化配置(FormatOptions)
     /// </summary>
     /// <param name="utf8Bytes">UTF8编码的JSON字节数组</param>
     /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数</typeparam>
@@ -271,7 +350,35 @@ public static class JsonHelper
     public static T DeserializeFromUtf8Bytes<T>(byte[] utf8Bytes) where T : class, new()
     {
         ArgumentNullException.ThrowIfNull(utf8Bytes, nameof(utf8Bytes));
-        return JsonSerializer.Deserialize<T>(utf8Bytes, DefaultOptions);
+        try
+        {
+            return JsonSerializer.Deserialize<T>(utf8Bytes, DefaultOptions);
+        }
+        catch
+        {
+            try
+            {
+                // 如果使用默认配置失败，尝试使用格式化配置
+                return JsonSerializer.Deserialize<T>(utf8Bytes, FormatOptions);
+            }
+            catch
+            {
+                // 如果两者都失败，尝试预处理特殊浮点值
+                string json = System.Text.Encoding.UTF8.GetString(utf8Bytes);
+                string processedJson = PreprocessSpecialFloatingPointValues(json);
+                byte[] processedBytes = System.Text.Encoding.UTF8.GetBytes(processedJson);
+
+                try
+                {
+                    return JsonSerializer.Deserialize<T>(processedBytes, DefaultOptions);
+                }
+                catch
+                {
+                    // 最后尝试使用格式化配置
+                    return JsonSerializer.Deserialize<T>(processedBytes, FormatOptions);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -291,47 +398,22 @@ public static class JsonHelper
     }
 
     /// <summary>
-    /// 从UTF8编码的字节数组反序列化为指定Type类型的对象
-    /// 使用默认序列化配置(DefaultOptions)
-    /// </summary>
-    /// <param name="utf8Bytes">UTF8编码的JSON字节数组</param>
-    /// <param name="type">目标类型的Type对象</param>
-    /// <returns>反序列化后的对象实例</returns>
-    /// <exception cref="ArgumentNullException">当utf8Bytes或type为null时抛出</exception>
-    public static object DeserializeFromUtf8Bytes(byte[] utf8Bytes, Type type)
-    {
-        ArgumentNullException.ThrowIfNull(utf8Bytes, nameof(utf8Bytes));
-        ArgumentNullException.ThrowIfNull(type, nameof(type));
-        return JsonSerializer.Deserialize(utf8Bytes, type, DefaultOptions);
-    }
-
-    /// <summary>
-    /// 从UTF8编码的字节数组反序列化为指定Type类型的对象
-    /// 使用自定义序列化配置
-    /// </summary>
-    /// <param name="utf8Bytes">UTF8编码的JSON字节数组</param>
-    /// <param name="type">目标类型的Type对象</param>
-    /// <param name="options">自定义序列化配置</param>
-    /// <returns>反序列化后的对象实例</returns>
-    /// <exception cref="ArgumentNullException">当utf8Bytes、type或options为null时抛出</exception>
-    public static object DeserializeFromUtf8Bytes(byte[] utf8Bytes, Type type, JsonSerializerOptions options)
-    {
-        ArgumentNullException.ThrowIfNull(utf8Bytes, nameof(utf8Bytes));
-        ArgumentNullException.ThrowIfNull(type, nameof(type));
-        ArgumentNullException.ThrowIfNull(options, nameof(options));
-        return JsonSerializer.Deserialize(utf8Bytes, type, options);
-    }
-
-    /// <summary>
     /// 尝试将JSON字符串反序列化为指定类型的对象
+    /// 如果反序列化失败，返回false并将result设置为null
     /// 使用默认序列化配置(DefaultOptions)
     /// </summary>
     /// <param name="json">需要反序列化的JSON字符串</param>
-    /// <param name="result">反序列化成功时的结果对象</param>
+    /// <param name="result">反序列化结果，如果失败则为null</param>
     /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数</typeparam>
     /// <returns>反序列化是否成功</returns>
     public static bool TryDeserialize<T>(string json, out T result) where T : class, new()
     {
+        result = null;
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return false;
+        }
+
         try
         {
             result = Deserialize<T>(json);
@@ -339,22 +421,28 @@ public static class JsonHelper
         }
         catch
         {
-            result = default;
             return false;
         }
     }
 
     /// <summary>
     /// 尝试将JSON字符串反序列化为指定类型的对象
+    /// 如果反序列化失败，返回false并将result设置为null
     /// 使用自定义序列化配置
     /// </summary>
     /// <param name="json">需要反序列化的JSON字符串</param>
-    /// <param name="result">反序列化成功时的结果对象</param>
+    /// <param name="result">反序列化结果，如果失败则为null</param>
     /// <param name="options">自定义序列化配置</param>
     /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数</typeparam>
     /// <returns>反序列化是否成功</returns>
     public static bool TryDeserialize<T>(string json, out T result, JsonSerializerOptions options) where T : class, new()
     {
+        result = null;
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return false;
+        }
+
         try
         {
             result = Deserialize<T>(json, options);
@@ -362,20 +450,26 @@ public static class JsonHelper
         }
         catch
         {
-            result = default;
             return false;
         }
     }
 
     /// <summary>
     /// 尝试将对象序列化为JSON字符串
+    /// 如果序列化失败，返回false并将result设置为null
     /// 使用默认序列化配置(DefaultOptions)
     /// </summary>
     /// <param name="obj">需要序列化的对象</param>
-    /// <param name="result">序列化成功时的JSON字符串</param>
+    /// <param name="result">序列化结果，如果失败则为null</param>
     /// <returns>序列化是否成功</returns>
     public static bool TrySerialize(object obj, out string result)
     {
+        result = null;
+        if (obj == null)
+        {
+            return false;
+        }
+
         try
         {
             result = Serialize(obj);
@@ -383,21 +477,27 @@ public static class JsonHelper
         }
         catch
         {
-            result = default;
             return false;
         }
     }
 
     /// <summary>
     /// 尝试将对象序列化为JSON字符串
+    /// 如果序列化失败，返回false并将result设置为null
     /// 使用自定义序列化配置
     /// </summary>
     /// <param name="obj">需要序列化的对象</param>
-    /// <param name="result">序列化成功时的JSON字符串</param>
+    /// <param name="result">序列化结果，如果失败则为null</param>
     /// <param name="options">自定义序列化配置</param>
     /// <returns>序列化是否成功</returns>
     public static bool TrySerialize(object obj, out string result, JsonSerializerOptions options)
     {
+        result = null;
+        if (obj == null)
+        {
+            return false;
+        }
+
         try
         {
             result = Serialize(obj, options);
@@ -405,7 +505,6 @@ public static class JsonHelper
         }
         catch
         {
-            result = default;
             return false;
         }
     }

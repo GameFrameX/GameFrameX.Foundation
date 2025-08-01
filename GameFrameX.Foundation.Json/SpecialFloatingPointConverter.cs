@@ -1,0 +1,100 @@
+// GameFrameX 组织下的以及组织衍生的项目的版权、商标、专利和其他相关权利均受相应法律法规的保护。使用本项目应遵守相关法律法规和许可证的要求。
+// 
+// 本项目主要遵循 MIT 许可证和 Apache 许可证（版本 2.0）进行分发和使用。许可证位于源代码树根目录中的 LICENSE 文件。
+// 
+// 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
+
+using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace GameFrameX.Foundation.Json;
+
+/// <summary>
+/// 处理特殊浮点值（NaN、Infinity、-Infinity）的 JSON 转换器
+/// </summary>
+public class SpecialFloatingPointConverter : JsonConverter<double>
+{
+    /// <summary>
+    /// 读取 JSON 中的 double 类型数据，支持特殊浮点值（NaN、Infinity、-Infinity）
+    /// </summary>
+    public override double Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.String)
+        {
+            string stringValue = reader.GetString();
+            if (string.Equals(stringValue, "NaN", StringComparison.OrdinalIgnoreCase))
+            {
+                return double.NaN;
+            }
+
+            if (string.Equals(stringValue, "Infinity", StringComparison.OrdinalIgnoreCase))
+            {
+                return double.PositiveInfinity;
+            }
+
+            if (string.Equals(stringValue, "-Infinity", StringComparison.OrdinalIgnoreCase))
+            {
+                return double.NegativeInfinity;
+            }
+
+            // 尝试从字符串解析数值
+            if (double.TryParse(stringValue, NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
+            {
+                return result;
+            }
+        }
+        else if (reader.TokenType == JsonTokenType.Number)
+        {
+            return reader.GetDouble();
+        }
+        else if (reader.TokenType == JsonTokenType.Null)
+        {
+            return 0;
+        }
+        else
+        {
+            // 尝试处理非标准格式，如直接的NaN、Infinity等
+            try
+            {
+                string propertyName = reader.GetString();
+                if (string.Equals(propertyName, "NaN", StringComparison.OrdinalIgnoreCase))
+                    return double.NaN;
+                if (string.Equals(propertyName, "Infinity", StringComparison.OrdinalIgnoreCase))
+                    return double.PositiveInfinity;
+                if (string.Equals(propertyName, "-Infinity", StringComparison.OrdinalIgnoreCase))
+                    return double.NegativeInfinity;
+            }
+            catch
+            {
+                // 忽略异常，继续尝试其他方式
+            }
+        }
+
+        // 如果无法解析，返回默认值
+        return 0;
+    }
+
+    /// <summary>
+    /// 将 double 类型的特殊值（NaN、Infinity、-Infinity）以字符串形式写入 JSON，其他数值正常写入
+    /// </summary>
+    public override void Write(Utf8JsonWriter writer, double value, JsonSerializerOptions options)
+    {
+        if (double.IsNaN(value))
+        {
+            writer.WriteStringValue("NaN");
+        }
+        else if (double.IsPositiveInfinity(value))
+        {
+            writer.WriteStringValue("Infinity");
+        }
+        else if (double.IsNegativeInfinity(value))
+        {
+            writer.WriteStringValue("-Infinity");
+        }
+        else
+        {
+            writer.WriteNumberValue(value);
+        }
+    }
+}
