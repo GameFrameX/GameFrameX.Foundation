@@ -17,6 +17,7 @@ public static partial class LogHelper
     /// <remarks>
     /// 使用默认日志记录器记录警告级别的日志信息。
     /// </remarks>
+    [Obsolete("Use Warning(string message) instead")]
     public static void Warn(string message)
     {
         GetLogger().Warning(message);
@@ -28,6 +29,7 @@ public static partial class LogHelper
     /// <param name="logger">用于记录日志的ILogger实例。</param>
     /// <param name="message">要记录的警告消息。</param>
     /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    [Obsolete("Use Warning(ILogger logger, string message) instead")]
     public static void Warn(ILogger logger, string message)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -42,6 +44,7 @@ public static partial class LogHelper
     /// <remarks>
     /// 用于记录警告级别的日志信息。
     /// </remarks>
+    [Obsolete("Use Warning(string message, params object[] args) instead")]
     public static void Warn(string message, params object[] args)
     {
         GetLogger().Warning(message, args);
@@ -54,6 +57,7 @@ public static partial class LogHelper
     /// <param name="message">要记录的警告消息。</param>
     /// <param name="args">消息的格式参数。</param>
     /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    [Obsolete("Use Warning(ILogger logger, string message, params object[] args) instead")]
     public static void Warn(ILogger logger, string message, params object[] args)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -69,6 +73,7 @@ public static partial class LogHelper
     /// 同时将警告信息输出到日志文件和控制台。
     /// 控制台输出使用黄色字体以突出显示警告信息。
     /// </remarks>
+    [Obsolete("Use WarningConsole(string message, params object[] args) instead")]
     public static void WarnConsole(string message, params object[] args)
     {
         Warn(message, args);
@@ -85,6 +90,7 @@ public static partial class LogHelper
     /// <param name="tag">日志标签</param>
     /// <param name="message">要记录的警告消息。</param>
     /// <param name="args">消息的格式参数。</param>
+    [Obsolete("Use Warning(string tag, string message, params object[] args) instead")]
     public static void Warn(string tag, string message, params object[] args)
     {
         GetLogger().Warning($"[{tag}] {message}", args);
@@ -98,6 +104,7 @@ public static partial class LogHelper
     /// <param name="message">要记录的警告消息。</param>
     /// <param name="args">消息的格式参数。</param>
     /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    [Obsolete("Use Warning(ILogger logger, string tag, string message, params object[] args) instead")]
     public static void Warn(ILogger logger, string tag, string message, params object[] args)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -110,6 +117,7 @@ public static partial class LogHelper
     /// <param name="tag">日志标签</param>
     /// <param name="message">要记录的警告消息。</param>
     /// <param name="args">消息的格式参数。</param>
+    [Obsolete("Use WarningConsole(string tag, string message, params object[] args) instead")]
     public static void WarnConsole(string tag, string message, params object[] args)
     {
         Warn(tag, message, args);
