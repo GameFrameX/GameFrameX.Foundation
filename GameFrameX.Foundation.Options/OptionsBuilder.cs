@@ -4,6 +4,12 @@
 // 
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using GameFrameX.Foundation.Options.Attributes;
+
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
@@ -34,30 +40,32 @@ public sealed class OptionsBuilder<T> where T : class, new()
         _boolFormat = boolFormat;
         _useEnvironmentVariables = useEnvironmentVariables;
         _ensurePrefixedKeys = ensurePrefixedKeys;
-        _converter = new CommandLineArgumentConverter { BoolFormat = boolFormat };
+        _converter = new CommandLineArgumentConverter 
+        { 
+            BoolFormat = boolFormat,
+            EnsurePrefixedKeys = ensurePrefixedKeys
+        };
     }
 
     /// <summary>
     /// 构建选项对象
     /// </summary>
+    /// <param name="skipValidation">是否跳过必需选项验证</param>
     /// <returns>构建的选项对象</returns>
-    public T Build()
+    public T Build(bool skipValidation = false)
     {
         try
         {
             // 创建默认实例
             var result = Activator.CreateInstance<T>();
 
-            // 如果没有参数和环境变量，直接返回默认实例
-            if ((_args == null || _args.Length == 0) && !_useEnvironmentVariables)
-            {
-                return result;
-            }
+            // 应用默认值
+            ApplyDefaultValues(result);
 
-            // 处理命令行参数
+            // 处理命令行参数和环境变量
             var options = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-            // 添加环境变量
+            // 添加环境变量（优先级较低）
             if (_useEnvironmentVariables)
             {
                 var envOptions = GetEnvironmentVariables();
@@ -70,31 +78,162 @@ public sealed class OptionsBuilder<T> where T : class, new()
             // 添加命令行参数（优先级更高，会覆盖环境变量）
             if (_args != null && _args.Length > 0)
             {
-                // 确保参数键都有前缀
-                var prefixedArgs = _ensurePrefixedKeys ? EnsurePrefixedKeys(_args) : _args;
-
-                // 转换为标准格式
-                var standardArgs = _converter.ConvertToStandardFormat(prefixedArgs);
-
-                // 转换为选项字典
-                var argsOptions = ConvertToOptionsDictionary(standardArgs);
-
-                foreach (var kvp in argsOptions)
+                try
                 {
-                    options[kvp.Key] = kvp.Value;
+                    // 转换为标准格式
+                    var standardArgs = _converter.ConvertToStandardFormat(_args);
+
+                    // 转换为选项字典
+                    var argsOptions = ConvertToOptionsDictionary(standardArgs);
+
+                    foreach (var kvp in argsOptions)
+                    {
+                        options[kvp.Key] = kvp.Value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException($"处理命令行参数时发生错误: {ex.Message}", ex);
                 }
             }
 
             // 将选项应用到结果对象
             ApplyOptions(result, options);
 
+            // 验证必需的选项
+            if (!skipValidation)
+            {
+                ValidateRequiredOptions(result);
+            }
+
             return result;
         }
         catch (Exception ex)
         {
-            // 发生异常时记录错误并返回默认实例
-            Console.WriteLine($"构建选项时发生错误: {ex.Message}");
-            return Activator.CreateInstance<T>();
+            // 发生异常时抛出异常
+            throw new ArgumentException($"构建选项时发生错误: {ex.Message}", ex);
+        }
+    }
+
+    /// <summary>
+    /// 应用默认值
+    /// </summary>
+    /// <param name="target">目标对象</param>
+    private void ApplyDefaultValues(T target)
+    {
+        var properties = typeof(T).GetProperties()
+                                  .Where(p => p.CanWrite)
+                                  .ToList();
+
+        foreach (var property in properties)
+        {
+            // 检查是否有默认值特性
+            var defaultValueAttr = property.GetCustomAttributes<DefaultValueAttribute>().FirstOrDefault();
+            if (defaultValueAttr != null && defaultValueAttr.Value != null)
+            {
+                try
+                {
+                    // 转换并设置默认值
+                    var convertedValue = Convert.ChangeType(defaultValueAttr.Value, property.PropertyType);
+                    property.SetValue(target, convertedValue);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"设置属性 {property.Name} 的默认值时发生错误: {ex.Message}");
+                }
+            }
+
+            // 检查选项特性中的默认值
+            var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
+            foreach (var optionAttr in optionAttrs)
+            {
+                if (optionAttr != null && optionAttr.DefaultValue != null && defaultValueAttr == null)
+                {
+                    try
+                    {
+                        // 转换并设置默认值
+                        var convertedValue = Convert.ChangeType(optionAttr.DefaultValue, property.PropertyType);
+                        property.SetValue(target, convertedValue);
+                        break; // 只应用第一个找到的默认值
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"设置属性 {property.Name} 的默认值时发生错误: {ex.Message}");
+                    }
+                }
+            }
+
+            // 检查是否有标志选项特性
+            var flagOptionAttr = property.GetCustomAttributes<FlagOptionAttribute>().FirstOrDefault();
+            if (flagOptionAttr != null && property.PropertyType == typeof(bool))
+            {
+                // 标志选项默认为 false
+                property.SetValue(target, false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 验证必需的选项
+    /// </summary>
+    /// <param name="target">目标对象</param>
+    private void ValidateRequiredOptions(T target)
+    {
+        var properties = typeof(T).GetProperties();
+        var missingOptions = new List<string>();
+
+        foreach (var property in properties)
+        {
+            bool isRequired = false;
+            string optionName = property.Name.ToLowerInvariant().Replace("_", "-");
+
+            // 检查是否有必需选项特性
+            var requiredOptionAttrs = property.GetCustomAttributes<RequiredOptionAttribute>().ToList();
+            foreach (var requiredOptionAttr in requiredOptionAttrs)
+            {
+                if (requiredOptionAttr.Required)
+                {
+                    isRequired = true;
+                    if (!string.IsNullOrEmpty(requiredOptionAttr.LongName))
+                    {
+                        optionName = requiredOptionAttr.LongName;
+                    }
+                    break;
+                }
+            }
+
+            // 检查选项特性中的必需标志
+            if (!isRequired)
+            {
+                var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
+                foreach (var optionAttr in optionAttrs)
+                {
+                    if (optionAttr.Required && !(optionAttr is RequiredOptionAttribute))
+                    {
+                        isRequired = true;
+                        if (!string.IsNullOrEmpty(optionAttr.LongName))
+                        {
+                            optionName = optionAttr.LongName;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            // 如果是必需的，检查值
+            if (isRequired)
+            {
+                var value = property.GetValue(target);
+                if (value == null || (value is string strValue && string.IsNullOrEmpty(strValue)))
+                {
+                    missingOptions.Add(optionName);
+                }
+            }
+        }
+
+        if (missingOptions.Count > 0)
+        {
+            throw new ArgumentException($"缺少必需的选项: {string.Join(", ", missingOptions)}");
         }
     }
 
@@ -110,7 +249,32 @@ public sealed class OptionsBuilder<T> where T : class, new()
         {
             // 获取所有环境变量
             var envVars = Environment.GetEnvironmentVariables();
+            var properties = typeof(T).GetProperties();
+            var envVarMappings = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
 
+            // 收集环境变量映射
+            foreach (var property in properties)
+            {
+                var envVarAttrs = property.GetCustomAttributes<EnvironmentVariableAttribute>().ToList();
+                foreach (var envVarAttr in envVarAttrs)
+                {
+                    if (envVarAttr != null && !string.IsNullOrEmpty(envVarAttr.Name))
+                    {
+                        envVarMappings[envVarAttr.Name] = property;
+                    }
+                }
+
+                var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
+                foreach (var optionAttr in optionAttrs)
+                {
+                    if (!string.IsNullOrEmpty(optionAttr.EnvironmentVariable))
+                    {
+                        envVarMappings[optionAttr.EnvironmentVariable] = property;
+                    }
+                }
+            }
+
+            // 处理环境变量
             foreach (var key in envVars.Keys)
             {
                 if (key == null) continue;
@@ -120,18 +284,38 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    // 处理布尔值
-                    if (_boolFormat == BoolArgumentFormat.Flag && IsBooleanValue(value))
+                    // 检查是否有映射
+                    if (envVarMappings.TryGetValue(keyStr, out var property))
                     {
-                        var boolValue = ParseBooleanValue(value);
-                        if (boolValue)
+                        // 处理布尔值
+                        if (property.PropertyType == typeof(bool) && IsBooleanValue(value))
                         {
-                            result[keyStr] = true;
+                            result[property.Name] = ParseBooleanValue(value);
+                        }
+                        else
+                        {
+                            result[property.Name] = value;
                         }
                     }
                     else
                     {
-                        result[keyStr] = value;
+                        // 尝试直接匹配属性名
+                        var normalizedKey = NormalizePropertyName(keyStr);
+                        var matchedProperty = properties.FirstOrDefault(p => 
+                            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+                        
+                        if (matchedProperty != null)
+                        {
+                            // 处理布尔值
+                            if (matchedProperty.PropertyType == typeof(bool) && IsBooleanValue(value))
+                            {
+                                result[matchedProperty.Name] = ParseBooleanValue(value);
+                            }
+                            else
+                            {
+                                result[matchedProperty.Name] = value;
+                            }
+                        }
                     }
                 }
             }
@@ -177,105 +361,6 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 确保所有参数键都以--开头
-    /// </summary>
-    /// <param name="args">原始参数数组</param>
-    /// <returns>处理后的参数数组</returns>
-    private string[] EnsurePrefixedKeys(string[] args)
-    {
-        // 处理空参数数组
-        if (args == null || args.Length == 0)
-        {
-            return Array.Empty<string>();
-        }
-
-        var result = new List<string>();
-
-        for (int i = 0; i < args.Length; i++)
-        {
-            var arg = args[i];
-
-            if (string.IsNullOrEmpty(arg))
-            {
-                result.Add(arg);
-                continue;
-            }
-
-            // 如果是参数键（不是值）
-            if (IsLikelyKey(arg, i, args))
-            {
-                // 如果不以--开头，添加前缀
-                if (!arg.StartsWith("--"))
-                {
-                    // 如果已经有一个-前缀，只添加一个-
-                    if (arg.StartsWith("-"))
-                    {
-                        result.Add("-" + arg);
-                    }
-                    else
-                    {
-                        result.Add("--" + arg);
-                    }
-                }
-                else
-                {
-                    result.Add(arg);
-                }
-            }
-            else
-            {
-                // 如果是值，直接添加
-                result.Add(arg);
-            }
-        }
-
-        return result.ToArray();
-    }
-
-    /// <summary>
-    /// 判断参数是否可能是键而不是值
-    /// </summary>
-    /// <param name="arg">参数</param>
-    /// <param name="index">参数在数组中的索引</param>
-    /// <param name="args">完整参数数组</param>
-    /// <returns>是否可能是键</returns>
-    private bool IsLikelyKey(string arg, int index, string[] args)
-    {
-        // 处理空参数
-        if (string.IsNullOrEmpty(arg))
-        {
-            return false;
-        }
-
-        // 如果以--开头，肯定是键
-        if (arg.StartsWith("--"))
-        {
-            return true;
-        }
-
-        // 如果以-开头，可能是键
-        if (arg.StartsWith("-"))
-        {
-            return true;
-        }
-
-        // 如果是第一个参数或前一个参数是键值对格式，可能是键
-        if (index == 0 || (index > 0 && index % 2 == 0))
-        {
-            // 如果不包含=，且不是数字或布尔值，可能是键
-            if (!arg.Contains('=') &&
-                !bool.TryParse(arg, out _) &&
-                !int.TryParse(arg, out _) &&
-                !double.TryParse(arg, out _))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /// <summary>
     /// 将标准格式参数转换为选项字典
     /// </summary>
     /// <param name="standardArgs">标准格式参数列表</param>
@@ -284,95 +369,119 @@ public sealed class OptionsBuilder<T> where T : class, new()
     {
         var result = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-        // 处理空参数列表
-        if (standardArgs == null || standardArgs.Count == 0)
-        {
-            return result;
-        }
-
         for (int i = 0; i < standardArgs.Count; i++)
         {
             var arg = standardArgs[i];
 
-            // 跳过空参数
             if (string.IsNullOrEmpty(arg))
             {
-                // 如果当前参数为空，但前一个参数是键，则跳过这个值
-                if (i > 0 && standardArgs[i - 1].StartsWith("--"))
-                {
-                    continue;
-                }
-            }
-
-            // 处理键值对格式（--key=value）
-            if (arg.StartsWith("--") && arg.Contains('='))
-            {
-                var parts = arg.Split(new[] { '=' }, 2);
-                var key = NormalizeKey(parts[0]);
-                var value = parts.Length > 1 ? parts[1] : null;
-
-                if (!string.IsNullOrEmpty(key))
-                {
-                    // 处理布尔值
-                    if (value != null && IsBooleanValue(value))
-                    {
-                        result[key] = ParseBooleanValue(value);
-                    }
-                    else
-                    {
-                        result[key] = value;
-                    }
-                }
-
                 continue;
             }
 
-            // 处理标志格式（--flag）或分离格式（--key value）
-            if (arg.StartsWith("--"))
+            // 处理键值对格式 (--key=value)
+            if (arg.Contains("="))
+            {
+                var parts = arg.Split(new[] { '=' }, 2);
+                var key = NormalizeKey(parts[0]);
+                var value = parts[1];
+
+                result[key] = value;
+                continue;
+            }
+
+            // 处理分离格式 (--key value)
+            if (arg.StartsWith("-"))
             {
                 var key = NormalizeKey(arg);
 
-                if (string.IsNullOrEmpty(key))
+                // 检查是否有值
+                if (i < standardArgs.Count - 1 && !standardArgs[i + 1].StartsWith("-"))
                 {
-                    continue;
-                }
-
-                // 如果是最后一个参数或下一个参数是另一个键，则视为布尔标志
-                if (i == standardArgs.Count - 1 || standardArgs[i + 1]?.StartsWith("--") == true)
-                {
-                    result[key] = true;
-                }
-                else
-                {
-                    // 否则是键值对，获取下一个参数作为值
                     var value = standardArgs[i + 1];
-
-                    // 处理null值
-                    if (value == null)
-                    {
-                        // 对于特殊情况，如果键是"port"，设置为9090
-                        if (string.Equals(key, "port", StringComparison.OrdinalIgnoreCase))
-                        {
-                            result[key] = "9090";
-                        }
-
-                        i++; // 跳过已处理的值
-                        continue;
-                    }
-
-                    // 处理布尔值
-                    if (IsBooleanValue(value))
-                    {
-                        result[key] = ParseBooleanValue(value);
-                    }
-                    else
+                    // 如果值为null，不添加到字典中，这样会使用默认值
+                    if (value != null)
                     {
                         result[key] = value;
                     }
-
+                    // 如果值为null，不添加键值对，让属性保持默认值
                     i++; // 跳过已处理的值
                 }
+                else
+                {
+                    // 检查这个键是否对应布尔属性
+                    if (IsBooleanProperty(key))
+                    {
+                        // 布尔标志，没有值
+                        result[key] = true;
+                    }
+                    // 对于非布尔属性，如果没有值就不添加到字典中，使用默认值
+                }
             }
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// 检查指定的键是否对应布尔属性
+    /// </summary>
+    /// <param name="key">参数键</param>
+    /// <returns>如果对应布尔属性则返回true，否则返回false</returns>
+    private bool IsBooleanProperty(string key)
+    {
+        var properties = typeof(T).GetProperties();
+        var optionMappings = GetOptionMappings();
+
+        // 首先尝试通过选项映射查找属性
+        if (optionMappings.TryGetValue(key, out var propertyName))
+        {
+            var property = properties.FirstOrDefault(p => 
+                string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+            return property?.PropertyType == typeof(bool) || property?.PropertyType == typeof(bool?);
+        }
+
+        // 如果没有找到，尝试标准化键名查找
+        string normalizedKey = NormalizePropertyName(key);
+        var matchedProperty = properties.FirstOrDefault(p =>
+            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+        
+        return matchedProperty?.PropertyType == typeof(bool) || matchedProperty?.PropertyType == typeof(bool?);
+    }
+
+    /// <summary>
+    /// 获取选项映射
+    /// </summary>
+    /// <returns>选项映射字典</returns>
+    private Dictionary<string, string> GetOptionMappings()
+    {
+        var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        var properties = typeof(T).GetProperties();
+
+        foreach (var property in properties)
+        {
+            // 处理所有 OptionAttribute 及其派生类
+            var optionAttrs = property.GetCustomAttributes(typeof(OptionAttribute), true)
+                                     .Cast<OptionAttribute>()
+                                     .ToList();
+
+            foreach (var optionAttr in optionAttrs)
+            {
+                // 添加长名称映射
+                if (!string.IsNullOrEmpty(optionAttr.LongName))
+                {
+                    result[optionAttr.LongName] = property.Name;
+                }
+
+                // 添加短名称映射
+                if (optionAttr.HasShortName)
+                {
+                    result[optionAttr.ShortName.ToString()] = property.Name;
+                }
+            }
+
+            // 默认使用属性名作为选项名
+            result[property.Name.ToLowerInvariant()] = property.Name;
+            result[property.Name.ToLowerInvariant().Replace("_", "-")] = property.Name;
         }
 
         return result;
@@ -415,19 +524,33 @@ public sealed class OptionsBuilder<T> where T : class, new()
                                   .Where(p => p.CanWrite)
                                   .ToList();
 
+        // 获取选项映射
+        var optionMappings = GetOptionMappings();
+
         foreach (var kvp in options)
         {
-            // 移除前缀并转换为驼峰命名
-            string normalizedKey = NormalizePropertyName(kvp.Key);
+            PropertyInfo property = null;
 
-            var property = properties.FirstOrDefault(p =>
-                                                         string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+            // 首先尝试通过选项映射查找属性
+            if (optionMappings.TryGetValue(kvp.Key, out var propertyName))
+            {
+                property = properties.FirstOrDefault(p => 
+                    string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+            }
+
+            // 如果没有找到，尝试标准化键名查找
+            if (property == null)
+            {
+                string normalizedKey = NormalizePropertyName(kvp.Key);
+                property = properties.FirstOrDefault(p =>
+                    string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+            }
 
             if (property != null)
             {
                 try
                 {
-                    // 如果值为 null，跳过
+                    // 如果值为 null，跳过设置，保持默认值
                     if (kvp.Value == null)
                     {
                         continue;
@@ -436,22 +559,17 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     // 获取字符串值
                     string stringValue = kvp.Value.ToString();
 
-                    // 如果是空字符串且目标类型不是字符串，跳过
-                    if (string.IsNullOrEmpty(stringValue) && property.PropertyType != typeof(string))
-                    {
-                        continue;
-                    }
-
                     // 根据目标类型进行转换
                     object convertedValue = null;
 
                     if (property.PropertyType == typeof(string))
                     {
+                        // 对于字符串类型，即使是空字符串也要设置
                         convertedValue = stringValue;
                     }
                     else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
                     {
-                        if (int.TryParse(stringValue, out int intValue))
+                        if (!string.IsNullOrEmpty(stringValue) && int.TryParse(stringValue, out int intValue))
                         {
                             convertedValue = intValue;
                         }
@@ -459,17 +577,30 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     else if (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?))
                     {
                         // 处理布尔值
-                        if (bool.TryParse(stringValue, out bool boolValue))
+                        if (kvp.Value is bool boolValue)
                         {
                             convertedValue = boolValue;
                         }
+                        else if (string.IsNullOrEmpty(stringValue))
+                        {
+                            // 空字符串对于布尔值跳过，保持默认值
+                            continue;
+                        }
+                        else if (stringValue.Equals("true", StringComparison.OrdinalIgnoreCase))
+                        {
+                            convertedValue = true;
+                        }
+                        else if (stringValue.Equals("false", StringComparison.OrdinalIgnoreCase))
+                        {
+                            convertedValue = false;
+                        }
                         else if (stringValue.Equals("1") || stringValue.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
-                                 stringValue.Equals("on", StringComparison.OrdinalIgnoreCase) || stringValue.Equals("true", StringComparison.OrdinalIgnoreCase))
+                                 stringValue.Equals("on", StringComparison.OrdinalIgnoreCase))
                         {
                             convertedValue = true;
                         }
                         else if (stringValue.Equals("0") || stringValue.Equals("no", StringComparison.OrdinalIgnoreCase) ||
-                                 stringValue.Equals("off", StringComparison.OrdinalIgnoreCase) || stringValue.Equals("false", StringComparison.OrdinalIgnoreCase))
+                                 stringValue.Equals("off", StringComparison.OrdinalIgnoreCase))
                         {
                             convertedValue = false;
                         }
@@ -481,65 +612,71 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     }
                     else if (property.PropertyType == typeof(double) || property.PropertyType == typeof(double?))
                     {
-                        if (double.TryParse(stringValue, out double doubleValue))
+                        if (!string.IsNullOrEmpty(stringValue) && double.TryParse(stringValue, out double doubleValue))
                         {
                             convertedValue = doubleValue;
                         }
                     }
                     else if (property.PropertyType == typeof(float) || property.PropertyType == typeof(float?))
                     {
-                        if (float.TryParse(stringValue, out float floatValue))
+                        if (!string.IsNullOrEmpty(stringValue) && float.TryParse(stringValue, out float floatValue))
                         {
                             convertedValue = floatValue;
                         }
                     }
                     else if (property.PropertyType == typeof(decimal) || property.PropertyType == typeof(decimal?))
                     {
-                        if (decimal.TryParse(stringValue, out decimal decimalValue))
+                        if (!string.IsNullOrEmpty(stringValue) && decimal.TryParse(stringValue, out decimal decimalValue))
                         {
                             convertedValue = decimalValue;
                         }
                     }
                     else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
                     {
-                        if (DateTime.TryParse(stringValue, out DateTime dateTimeValue))
+                        if (!string.IsNullOrEmpty(stringValue) && DateTime.TryParse(stringValue, out DateTime dateTimeValue))
                         {
                             convertedValue = dateTimeValue;
                         }
                     }
                     else if (property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?))
                     {
-                        if (Guid.TryParse(stringValue, out Guid guidValue))
+                        if (!string.IsNullOrEmpty(stringValue) && Guid.TryParse(stringValue, out Guid guidValue))
                         {
                             convertedValue = guidValue;
                         }
                     }
                     else if (property.PropertyType.IsEnum)
                     {
-                        try
+                        if (!string.IsNullOrEmpty(stringValue))
                         {
-                            convertedValue = Enum.Parse(property.PropertyType, stringValue, true);
-                        }
-                        catch
-                        {
-                            // 解析失败，使用默认值
+                            try
+                            {
+                                convertedValue = Enum.Parse(property.PropertyType, stringValue, true);
+                            }
+                            catch
+                            {
+                                // 解析失败，使用默认值
+                            }
                         }
                     }
                     else
                     {
                         // 尝试使用 Convert 类进行转换
-                        try
+                        if (!string.IsNullOrEmpty(stringValue))
                         {
-                            convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
-                        }
-                        catch
-                        {
-                            // 转换失败，使用默认值
+                            try
+                            {
+                                convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
+                            }
+                            catch
+                            {
+                                // 转换失败，使用默认值
+                            }
                         }
                     }
 
                     // 如果转换成功，设置属性值
-                    if (convertedValue != null)
+                    if (convertedValue != null || property.PropertyType == typeof(string))
                     {
                         property.SetValue(target, convertedValue);
                     }

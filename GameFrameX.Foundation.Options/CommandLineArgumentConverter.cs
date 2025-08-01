@@ -4,171 +4,211 @@
 // 
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
-using System.Collections;
-using System.Text;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
-/// 命令行参数转换器，用于将命令行参数和环境变量组合成标准的命令行参数格式
+/// 命令行参数转换器
 /// </summary>
-/// <remarks>
-/// 该类提供了将环境变量转换为命令行参数格式的功能，支持标准的 "--key value" 格式
-/// </remarks>
-public sealed class CommandLineArgumentConverter
+public class CommandLineArgumentConverter
 {
     /// <summary>
-    /// Bool类型参数的格式设置，默认为标志格式
+    /// 布尔参数格式
     /// </summary>
-    /// <value>
-    /// 获取或设置Bool类型参数的格式，默认值为 <see cref="BoolArgumentFormat.Flag"/>
-    /// </value>
-    /// <remarks>
-    /// 该属性决定了Bool类型的环境变量如何转换为命令行参数格式
-    /// </remarks>
     public BoolArgumentFormat BoolFormat { get; set; } = BoolArgumentFormat.Flag;
 
     /// <summary>
-    /// 将命令行参数和环境变量组合成标准的命令行参数列表
+    /// 是否确保键有前缀
     /// </summary>
-    /// <param name="args">原始命令行参数数组</param>
-    /// <returns>包含原始参数和环境变量的标准格式参数列表</returns>
-    /// <remarks>
-    /// 该方法会将环境变量转换为 "--key value" 格式，并与原始命令行参数合并。
-    /// 如果环境变量的键已经在原始参数中存在，则不会重复添加。
-    /// 环境变量的值中的连字符("-")会被移除以避免解析冲突。
-    /// Bool类型的环境变量会根据 <see cref="BoolFormat"/> 属性进行特殊处理。
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// var converter = new CommandLineArgumentConverter();
-    /// string[] originalArgs = { "--port", "8080" };
-    /// // 假设环境变量中有 SERVER_NAME=MyServer, DEBUG=true
-    /// var result = converter.ConvertToStandardFormat(originalArgs);
-    /// // 结果可能包含: ["--port", "8080", "--SERVER_NAME", "MyServer", "--DEBUG"]
-    /// </code>
-    /// </example>
-    public List<string> ConvertToStandardFormat(string[] args)
+    public bool EnsurePrefixedKeys { get; set; } = true;
+
+    /// <summary>
+    /// 将参数列表转换为命令行字符串
+    /// </summary>
+    /// <param name="args">参数列表</param>
+    /// <returns>格式化的命令行字符串</returns>
+    /// <exception cref="ArgumentNullException">如果参数列表为 null</exception>
+    public string ToCommandLineString(List<string> args)
     {
-        // 检查参数是否为 null
-        ArgumentNullException.ThrowIfNull(args, nameof(args));
-
-        var result = new List<string>(args);
-        var environmentVariables = Environment.GetEnvironmentVariables();
-        var existingKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        // 收集已存在的参数键
-        for (int i = 0; i < args.Length; i++)
+        if (args == null)
         {
-            if (string.IsNullOrEmpty(args[i]))
-            {
-                continue;
-            }
-
-            if (args[i].StartsWith("--"))
-            {
-                var key = args[i];
-                if (key.Contains('='))
-                {
-                    key = key.Split('=')[0];
-                }
-
-                existingKeys.Add(key);
-            }
-            else if (args[i].StartsWith("-") && !args[i].StartsWith("--"))
-            {
-                existingKeys.Add("--" + args[i].Substring(1));
-            }
+            throw new ArgumentNullException(nameof(args));
         }
 
-        foreach (DictionaryEntry environmentVariable in environmentVariables)
+        if (args.Count == 0)
         {
-            if (environmentVariable.Key == null || environmentVariable.Value == null)
+            return string.Empty;
+        }
+
+        var result = new List<string>();
+
+        for (int i = 0; i < args.Count; i++)
+        {
+            var arg = args[i];
+
+            // 如果是选项名
+            if (arg.StartsWith("-"))
             {
-                continue;
-            }
+                result.Add(arg);
 
-            var keyString = environmentVariable.Key.ToString();
-            var valueString = environmentVariable.Value.ToString();
+                // 如果不是最后一个参数，且下一个参数不是选项
+                if (i < args.Count - 1 && !args[i + 1].StartsWith("-"))
+                {
+                    var value = args[i + 1];
 
-            if (string.IsNullOrWhiteSpace(keyString) || string.IsNullOrWhiteSpace(valueString))
-            {
-                continue;
-            }
+                    // 如果值包含空格，添加引号
+                    if (value.Contains(" "))
+                    {
+                        result.Add($"\"{value}\"");
+                    }
+                    else
+                    {
+                        result.Add(value);
+                    }
 
-            // 标准化键名格式
-            var standardKey = keyString.StartsWith("--") ? keyString : "--" + keyString;
-
-            // 检查是否已存在该键
-            if (existingKeys.Contains(standardKey))
-            {
-                continue;
-            }
-
-            // 清理值中的连字符
-            var cleanedValue = CleanValue(valueString);
-
-            // 检查是否为Bool类型值
-            if (IsBooleanValue(valueString))
-            {
-                var boolValue = ParseBooleanValue(valueString);
-                AddBooleanArgument(result, standardKey, boolValue);
+                    i++; // 跳过已处理的值
+                }
             }
             else
             {
-                // 根据BoolFormat决定如何添加参数
-                if (BoolFormat == BoolArgumentFormat.KeyValue)
+                // 如果值包含空格，添加引号
+                if (arg.Contains(" "))
                 {
-                    result.Add($"{standardKey}={cleanedValue}");
+                    result.Add($"\"{arg}\"");
                 }
                 else
                 {
-                    result.Add(standardKey);
-                    result.Add(cleanedValue);
+                    result.Add(arg);
                 }
             }
-
-            existingKeys.Add(standardKey);
         }
 
-        return result;
+        return string.Join(" ", result);
     }
 
     /// <summary>
-    /// 清理参数值，移除可能导致解析问题的字符
+    /// 将命令行参数转换为标准格式
     /// </summary>
-    /// <param name="value">原始参数值</param>
-    /// <returns>清理后的参数值</returns>
-    /// <remarks>
-    /// 该方法会移除值中的连字符("-")以避免命令行解析器将其误认为是参数标识符
-    /// </remarks>
-    private static string CleanValue(string value)
+    /// <param name="args">命令行参数</param>
+    /// <returns>标准格式的参数列表</returns>
+    public List<string> ConvertToStandardFormat(string[] args)
     {
-        if (string.IsNullOrEmpty(value))
+        try
         {
-            return value;
-        }
-
-        var stringBuilder = new StringBuilder(value.Length);
-        foreach (char c in value)
-        {
-            if (c != '-')
+            if (args == null || args.Length == 0)
             {
-                stringBuilder.Append(c);
+                return new List<string>();
             }
+
+            var result = new List<string>();
+
+            // 处理命令行参数
+            for (int i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+                
+                // 如果参数为null，跳过
+                if (arg == null)
+                {
+                    continue;
+                }
+
+                // 处理键值对格式 (--key=value)
+                if (arg.Contains("="))
+                {
+                    var parts = arg.Split(new[] { '=' }, 2);
+                    var key = parts[0];
+                    var value = parts[1];
+
+                    // 根据EnsurePrefixedKeys设置处理键
+                    if (!key.StartsWith("-") && EnsurePrefixedKeys)
+                    {
+                        key = "--" + key;
+                    }
+
+                    result.Add(key + "=" + value);
+                    continue;
+                }
+
+                // 如果是空字符串，需要特殊处理
+                if (string.IsNullOrEmpty(arg))
+                {
+                    // 如果前一个参数是键，这个空字符串就是它的值
+                    if (result.Count > 0 && result[result.Count - 1].StartsWith("-") && !result[result.Count - 1].Contains("="))
+                    {
+                        result.Add(""); // 添加空字符串作为值
+                    }
+                    continue;
+                }
+
+                // 根据EnsurePrefixedKeys设置处理参数键
+                string argKey;
+                if (!arg.StartsWith("-"))
+                {
+                    if (EnsurePrefixedKeys)
+                    {
+                        argKey = "--" + arg;
+                    }
+                    else
+                    {
+                        argKey = arg;
+                    }
+                }
+                else
+                {
+                    argKey = arg;
+                }
+
+                result.Add(argKey);
+
+                // 检查下一个参数
+                if (i < args.Length - 1)
+                {
+                    var nextArg = args[i + 1];
+                    
+                    // 如果下一个参数是null，则当前参数被视为布尔标志（没有值）
+                    if (nextArg == null)
+                    {
+                        i++; // 跳过null参数
+                        // 不添加值，当前参数将被视为布尔标志
+                        continue;
+                    }
+                    
+                    // 如果下一个参数不是选项（不以-开头），则作为当前参数的值
+                    if (!nextArg.StartsWith("-"))
+                    {
+                        // 对于布尔标志格式，检查是否为布尔值
+                        if (BoolFormat == BoolArgumentFormat.Flag && IsBooleanValue(nextArg))
+                        {
+                            // 跳过布尔值，因为标志格式不需要显式值
+                            i++;
+                        }
+                        else
+                        {
+                            // 添加为普通值（包括空字符串）
+                            result.Add(nextArg);
+                            i++;
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
-
-        return stringBuilder.ToString();
+        catch (Exception ex)
+        {
+            throw new ArgumentException($"处理命令行参数时发生错误: {ex.Message}", ex);
+        }
     }
-
+    
     /// <summary>
     /// 检查字符串值是否为Bool类型
     /// </summary>
     /// <param name="value">要检查的字符串值</param>
     /// <returns>如果是Bool类型值则返回true，否则返回false</returns>
-    /// <remarks>
-    /// 该方法识别常见的Bool类型表示：true, false, 1, 0, yes, no, on, off（不区分大小写）
-    /// </remarks>
     private static bool IsBooleanValue(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -185,9 +225,6 @@ public sealed class CommandLineArgumentConverter
     /// </summary>
     /// <param name="value">要解析的字符串值</param>
     /// <returns>解析后的Bool值</returns>
-    /// <remarks>
-    /// 该方法将字符串转换为Bool值：true, 1, yes, on 被视为true；false, 0, no, off 被视为false
-    /// </remarks>
     private static bool ParseBooleanValue(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -197,108 +234,5 @@ public sealed class CommandLineArgumentConverter
 
         var normalizedValue = value.Trim().ToLowerInvariant();
         return normalizedValue is "true" or "1" or "yes" or "on";
-    }
-
-    /// <summary>
-    /// 根据Bool格式设置添加Bool类型参数
-    /// </summary>
-    /// <param name="arguments">参数列表</param>
-    /// <param name="key">参数键</param>
-    /// <param name="value">Bool值</param>
-    /// <remarks>
-    /// 该方法根据 <see cref="BoolFormat"/> 属性的设置，以不同格式添加Bool类型参数
-    /// </remarks>
-    private void AddBooleanArgument(List<string> arguments, string key, bool value)
-    {
-        switch (BoolFormat)
-        {
-            case BoolArgumentFormat.Flag:
-                // 标志格式：只有为true时才添加参数
-                if (value)
-                {
-                    arguments.Add(key);
-                }
-
-                break;
-
-            case BoolArgumentFormat.KeyValue:
-                // 键值对格式：使用等号连接
-                arguments.Add($"{key}={value.ToString().ToLowerInvariant()}");
-                break;
-
-            case BoolArgumentFormat.Separated:
-                // 分离格式：键和值分开
-                arguments.Add(key);
-                arguments.Add(value.ToString().ToLowerInvariant());
-                break;
-
-            default:
-                throw new ArgumentOutOfRangeException(nameof(BoolFormat), BoolFormat, "不支持的Bool参数格式");
-        }
-    }
-
-    /// <summary>
-    /// 将参数列表转换为命令行字符串
-    /// </summary>
-    /// <param name="arguments">参数列表</param>
-    /// <returns>格式化的命令行字符串</returns>
-    /// <remarks>
-    /// 该方法将参数列表转换为可以在命令行中使用的字符串格式，
-    /// 包含空格的参数值会被双引号包围
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// var converter = new CommandLineArgumentConverter();
-    /// var args = new List&lt;string&gt; { "--port", "8080", "--name", "My Server" };
-    /// var commandLine = converter.ToCommandLineString(args);
-    /// // 结果: --port 8080 --name "My Server"
-    /// </code>
-    /// </example>
-    public string ToCommandLineString(List<string> arguments)
-    {
-        ArgumentNullException.ThrowIfNull(arguments, nameof(arguments));
-        var stringBuilder = new StringBuilder();
-        for (int i = 0; i < arguments.Count; i++)
-        {
-            if (i > 0)
-            {
-                stringBuilder.Append(' ');
-            }
-
-            var arg = arguments[i];
-            if (arg.Contains(' ') && !arg.StartsWith("--"))
-            {
-                stringBuilder.Append('"').Append(arg).Append('"');
-            }
-            else
-            {
-                stringBuilder.Append(arg);
-            }
-        }
-
-        return stringBuilder.ToString();
-    }
-
-    /// <summary>
-    /// 获取所有环境变量的键值对
-    /// </summary>
-    /// <returns>环境变量的字典</returns>
-    /// <remarks>
-    /// 该方法返回当前进程的所有环境变量，键和值都转换为字符串格式
-    /// </remarks>
-    public Dictionary<string, string> GetEnvironmentVariables()
-    {
-        var result = new Dictionary<string, string>();
-        var environmentVariables = Environment.GetEnvironmentVariables();
-
-        foreach (DictionaryEntry entry in environmentVariables)
-        {
-            if (entry.Value != null)
-            {
-                result[entry.Key.ToString() ?? string.Empty] = entry.Value.ToString();
-            }
-        }
-
-        return result;
     }
 }
