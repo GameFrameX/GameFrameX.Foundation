@@ -135,7 +135,7 @@ var paramErrorResponse = HttpJsonResult.ParamError();
 var illegalResponse = HttpJsonResult.Illegal();
 ```
 
-### 4. HttpJsonResultData<T> 泛型响应类
+### 4. HttpJsonResultData&lt;T&gt; 泛型响应类
 
 ```csharp
 public sealed class HttpJsonResultData<T>
