@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <AssemblyTitle>GameFrameX Foundation Options Examples</AssemblyTitle>
+        <AssemblyDescription>GameFrameX Foundation Options 使用示例和演示程序</AssemblyDescription>
+        <AssemblyCompany>GameFrameX</AssemblyCompany>
+        <AssemblyProduct>GameFrameX Foundation</AssemblyProduct>
+        <Copyright>Copyright © GameFrameX 2024</Copyright>
+        <Version>1.0.0</Version>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj" />
+    </ItemGroup>
+
+</Project>
