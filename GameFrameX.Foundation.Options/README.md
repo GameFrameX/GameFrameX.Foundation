@@ -30,7 +30,31 @@ public class AppConfig
 }
 ```
 
-### 2. 使用OptionsBuilder
+### 2. 使用OptionsProvider（推荐）
+
+```csharp
+using GameFrameX.Foundation.Options;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // 初始化选项提供者
+        OptionsProvider.Initialize(args);
+        
+        // 获取配置对象（默认启用调试输出）
+        var config = OptionsProvider.GetOptions<AppConfig>();
+        
+        // 使用配置
+        Console.WriteLine($"服务器: {config.Host}:{config.Port}");
+        Console.WriteLine($"调试模式: {config.Debug}");
+        Console.WriteLine($"日志级别: {config.LogLevel}");
+        Console.WriteLine($"超时时间: {config.Timeout}秒");
+    }
+}
+```
+
+### 3. 使用OptionsBuilder（传统方式）
 
 ```csharp
 using GameFrameX.Foundation.Options;
@@ -47,12 +71,152 @@ class Program
         
         // 使用配置
         Console.WriteLine($"服务器: {config.Host}:{config.Port}");
-        Console.WriteLine($"调试模式: {config.Debug}");
-        Console.WriteLine($"日志级别: {config.LogLevel}");
-        Console.WriteLine($"超时时间: {config.Timeout}秒");
     }
 }
 ```
+
+## 智能调试模式
+
+### 默认行为
+
+从现在开始，**参数调试输出默认启用**，这意味着程序启动时会自动显示：
+
+- 📋 原始命令行参数
+- ⚙️ 所有可用选项定义
+- 🔗 参数映射分析
+- 📄 解析后的配置对象（包括JSON格式）
+
+### 运行示例
+
+```bash
+myapp.exe --host example.com --port 9090 --debug
+```
+
+输出：
+```
+╔══════════════════════════════════════════════════════════════╗
+║                    命令行参数解析调试信息                      ║
+╚══════════════════════════════════════════════════════════════╝
+
+📋 原始命令行参数:
+   参数数量: 3
+   [0] --host
+   [1] example.com
+   [2] --port
+   [3] 9090
+   [4] --debug
+
+⚙️  可用选项定义:
+   --host           : 服务器主机地址
+     类型: 字符串, 必需: false
+     默认值: localhost
+
+   --port           : 服务器端口号
+     类型: 整数, 必需: false
+     默认值: 8080
+
+🔗 参数映射分析:
+   识别的选项:
+   --host → host = example.com
+   --port → port = 9090
+   --debug → debug = <无值>
+
+╔══════════════════════════════════════════════════════════════╗
+║                    解析后的配置对象信息                        ║
+╚══════════════════════════════════════════════════════════════╝
+
+配置类型: AppConfig
+属性数量: 5
+
+  Debug                : true                           (布尔值)
+  Host                 : "example.com"                  (字符串)
+  LogLevel             : "info"                         (字符串)
+  Port                 : 9090                           (整数)
+  Timeout              : 30.5                           (浮点数)
+
+📄 JSON格式表示:
+{
+  "Host": "example.com",
+  "Port": 9090,
+  "Debug": true,
+  "LogLevel": "info",
+  "Timeout": 30.5
+}
+```
+
+### 控制调试输出
+
+#### 1. 通过环境变量控制
+
+```bash
+# 禁用调试输出
+export GAMEFRAMEX_OPTIONS_DEBUG=false
+myapp.exe --host example.com
+
+# 启用调试输出
+export GAMEFRAMEX_OPTIONS_DEBUG=true
+myapp.exe --host example.com
+
+# 支持多种格式
+export GAMEFRAMEX_OPTIONS_DEBUG=0        # 禁用
+export GAMEFRAMEX_OPTIONS_DEBUG=no       # 禁用
+export GAMEFRAMEX_OPTIONS_DEBUG=off      # 禁用
+export GAMEFRAMEX_OPTIONS_DEBUG=disable  # 禁用
+
+export GAMEFRAMEX_OPTIONS_DEBUG=1        # 启用
+export GAMEFRAMEX_OPTIONS_DEBUG=yes      # 启用
+export GAMEFRAMEX_OPTIONS_DEBUG=on       # 启用
+export GAMEFRAMEX_OPTIONS_DEBUG=enable   # 启用
+```
+
+#### 2. 通过代码控制
+
+```csharp
+// 强制启用调试输出
+var config = OptionsProvider.GetOptions<AppConfig>(enableDebugOutput: true);
+
+// 强制禁用调试输出
+var config = OptionsProvider.GetOptions<AppConfig>(enableDebugOutput: false);
+
+// 使用自动检测（默认行为）
+var config = OptionsProvider.GetOptions<AppConfig>();
+
+// 静默模式（禁用调试）
+var config = OptionsProvider.ParseSilent<AppConfig>(args);
+
+// 强制调试模式
+var config = OptionsProvider.ParseWithDebug<AppConfig>(args);
+```
+
+#### 3. 全局设置
+
+```csharp
+// 设置全局调试模式
+OptionsProvider.SetGlobalDebugMode(false);
+
+// 检查当前调试模式状态
+bool isDebugEnabled = OptionsProvider.IsDebugModeEnabled();
+```
+
+### 环境感知
+
+系统会根据运行环境自动调整调试输出：
+
+```csharp
+// 开发环境 - 默认启用调试
+export ASPNETCORE_ENVIRONMENT=Development
+export DOTNET_ENVIRONMENT=Development
+export ENVIRONMENT=Development
+
+// 生产环境 - 默认禁用调试
+export ASPNETCORE_ENVIRONMENT=Production
+export DOTNET_ENVIRONMENT=Production
+export ENVIRONMENT=Production
+```
+
+支持的环境值：
+- **启用调试**: `Development`, `Dev`, `Test`, `Testing`, `Debug`
+- **禁用调试**: `Production`, `Prod`, `Release`
 
 ## 使用方式
 
@@ -97,11 +261,11 @@ ENTRYPOINT ["dotnet", "MyApp.dll"]
 ```
 
 ```bash
-# Docker运行
+# Docker运行（会显示调试信息）
 docker run myapp --host example.com --port 9090 --debug
 
-# 或使用环境变量
-docker run -e HOST=example.com -e PORT=9090 -e DEBUG=true myapp
+# 或使用环境变量禁用调试
+docker run -e GAMEFRAMEX_OPTIONS_DEBUG=false myapp --host example.com
 ```
 
 ## 高级特性
@@ -282,8 +446,8 @@ public class AppConfig
 ```csharp
 try
 {
-    var builder = new OptionsBuilder<AppConfig>(args);
-    var config = builder.Build();
+    OptionsProvider.Initialize(args);
+    var config = OptionsProvider.GetOptions<AppConfig>();
     
     // 使用配置启动应用
     StartApplication(config);
@@ -295,7 +459,7 @@ catch (ArgumentException ex)
 }
 ```
 
-### 3. Docker集成
+### 3. 生产环境部署
 
 ```csharp
 // Program.cs
@@ -303,17 +467,28 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = new OptionsBuilder<AppConfig>(args);
-        var config = builder.Build();
+        // 在生产环境中禁用调试输出
+        if (IsProductionEnvironment())
+        {
+            OptionsProvider.SetGlobalDebugMode(false);
+        }
         
-        // 在Docker中，通常使用环境变量
-        // 在开发中，通常使用命令行参数
+        OptionsProvider.Initialize(args);
+        var config = OptionsProvider.GetOptions<AppConfig>();
         
         var app = CreateApplication(config);
         app.Run();
     }
+    
+    private static bool IsProductionEnvironment()
+    {
+        var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        return string.Equals(env, "Production", StringComparison.OrdinalIgnoreCase);
+    }
 }
 ```
+
+### 4. Docker集成
 
 ```yaml
 # docker-compose.yml
@@ -325,8 +500,37 @@ services:
       - HOST=0.0.0.0
       - PORT=8080
       - DEBUG=false
+      - ASPNETCORE_ENVIRONMENT=Production
+      - GAMEFRAMEX_OPTIONS_DEBUG=false  # 禁用参数调试
     command: ["--log-level", "info"]
 ```
+
+## 调试功能详细说明
+
+### 输出内容说明
+
+1. **原始参数信息**
+   - 显示传入的所有命令行参数
+   - 参数数量和索引
+
+2. **可用选项定义**
+   - 所有配置属性的选项定义
+   - 参数类型、是否必需、默认值
+
+3. **参数映射分析**
+   - 参数如何映射到配置属性
+   - 识别的选项和未识别的参数
+
+4. **解析结果展示**
+   - 最终配置对象的所有属性值
+   - JSON格式的配置表示
+
+### 使用场景
+
+- **开发调试**: 验证参数解析是否正确
+- **部署验证**: 确认生产环境配置是否符合预期
+- **问题排查**: 快速定位配置相关问题
+- **文档生成**: 自动生成当前配置的文档
 
 ## 完整示例
 
@@ -370,22 +574,21 @@ namespace MyApp
         {
             try
             {
-                var builder = new OptionsBuilder<ServerConfig>(args);
-                var config = builder.Build();
+                // 初始化选项提供者
+                OptionsProvider.Initialize(args);
+                
+                // 获取配置（默认启用调试输出）
+                var config = OptionsProvider.GetOptions<ServerConfig>();
 
-                Console.WriteLine("服务器配置:");
-                Console.WriteLine($"  主机: {config.Host}");
-                Console.WriteLine($"  端口: {config.Port}");
-                Console.WriteLine($"  调试: {config.Debug}");
-                Console.WriteLine($"  数据库: {config.DatabaseUrl}");
-                Console.WriteLine($"  超时: {config.Timeout}秒");
-
+                Console.WriteLine("🚀 服务器启动中...");
+                Console.WriteLine($"服务器地址: {config.Host}:{config.Port}");
+                
                 // 启动服务器
                 StartServer(config);
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"配置错误: {ex.Message}");
+                Console.WriteLine($"❌ 配置错误: {ex.Message}");
                 ShowHelp();
                 Environment.Exit(1);
             }
@@ -394,13 +597,13 @@ namespace MyApp
         static void StartServer(ServerConfig config)
         {
             // 服务器启动逻辑
-            Console.WriteLine($"服务器启动在 {config.Host}:{config.Port}");
+            Console.WriteLine($"✅ 服务器已启动在 {config.Host}:{config.Port}");
         }
 
         static void ShowHelp()
         {
             Console.WriteLine("用法:");
-            Console.WriteLine("  myapp.exe --host <主机> --port <端口> --database-url <数据库URL> [选项]");
+            Console.WriteLine("  myapp.exe --database-url <数据库URL> [选项]");
             Console.WriteLine();
             Console.WriteLine("选项:");
             Console.WriteLine("  -h, --host <主机>           服务器主机地址 (默认: localhost)");
@@ -408,7 +611,13 @@ namespace MyApp
             Console.WriteLine("  -d, --debug                 启用调试模式");
             Console.WriteLine("      --database-url <URL>    数据库连接字符串 (必需)");
             Console.WriteLine("      --timeout <秒>          请求超时时间 (默认: 30.0)");
+            Console.WriteLine();
+            Console.WriteLine("环境变量:");
+            Console.WriteLine("  GAMEFRAMEX_OPTIONS_DEBUG    控制参数调试输出 (true/false)");
+            Console.WriteLine("  ASPNETCORE_ENVIRONMENT      运行环境 (Development/Production)");
         }
     }
 }
 ```
+
+现在，每次启动程序时都会自动显示详细的参数解析信息，让你能够第一时间验证配置是否正确！
