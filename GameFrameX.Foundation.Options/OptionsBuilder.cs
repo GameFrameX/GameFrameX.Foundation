@@ -15,6 +15,131 @@ namespace GameFrameX.Foundation.Options;
 /// <summary>
 /// 选项构建器，用于从命令行参数和环境变量构建配置选项
 /// </summary>
+public class OptionsBuilder
+{
+    #region 静态便捷方法
+
+    /// <summary>
+    /// 静态方法：从命令行参数构建配置选项（使用默认设置）
+    /// </summary>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <param name="args">命令行参数</param>
+    /// <param name="skipValidation">是否跳过必需选项验证</param>
+    /// <returns>构建的配置选项对象</returns>
+    public static TOptions Create<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
+    {
+        var builder = new OptionsBuilder<TOptions>(args);
+        return builder.Build(skipValidation);
+    }
+
+    /// <summary>
+    /// 静态方法：从命令行参数构建配置选项（完整参数控制）
+    /// </summary>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <param name="args">命令行参数</param>
+    /// <param name="boolFormat">布尔参数格式</param>
+    /// <param name="ensurePrefixedKeys">是否确保参数键都有前缀</param>
+    /// <param name="useEnvironmentVariables">是否使用环境变量</param>
+    /// <param name="skipValidation">是否跳过必需选项验证</param>
+    /// <returns>构建的配置选项对象</returns>
+    public static TOptions Create<TOptions>(
+        string[] args,
+        BoolArgumentFormat boolFormat,
+        bool ensurePrefixedKeys = true,
+        bool useEnvironmentVariables = true,
+        bool skipValidation = false) where TOptions : class, new()
+    {
+        var builder = new OptionsBuilder<TOptions>(args, boolFormat, ensurePrefixedKeys, useEnvironmentVariables);
+        return builder.Build(skipValidation);
+    }
+
+    /// <summary>
+    /// 静态方法：从命令行参数构建配置选项（仅使用命令行参数，不使用环境变量）
+    /// </summary>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <param name="args">命令行参数</param>
+    /// <param name="skipValidation">是否跳过必需选项验证</param>
+    /// <returns>构建的配置选项对象</returns>
+    public static TOptions CreateFromArgsOnly<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
+    {
+        var builder = new OptionsBuilder<TOptions>(args, useEnvironmentVariables: false);
+        return builder.Build(skipValidation);
+    }
+
+    /// <summary>
+    /// 静态方法：从环境变量构建配置选项（不使用命令行参数）
+    /// </summary>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <param name="skipValidation">是否跳过必需选项验证</param>
+    /// <returns>构建的配置选项对象</returns>
+    public static TOptions CreateFromEnvironmentOnly<TOptions>(bool skipValidation = false) where TOptions : class, new()
+    {
+        var builder = new OptionsBuilder<TOptions>(Array.Empty<string>(), useEnvironmentVariables: true);
+        return builder.Build(skipValidation);
+    }
+
+    /// <summary>
+    /// 静态方法：创建默认配置选项（仅使用默认值，不使用命令行参数和环境变量）
+    /// </summary>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <returns>构建的配置选项对象</returns>
+    public static TOptions CreateDefault<TOptions>() where TOptions : class, new()
+    {
+        var builder = new OptionsBuilder<TOptions>(Array.Empty<string>(), useEnvironmentVariables: false);
+        return builder.Build(skipValidation: true);
+    }
+
+    /// <summary>
+    /// 静态方法：尝试从命令行参数构建配置选项，如果失败则返回默认配置
+    /// </summary>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <param name="args">命令行参数</param>
+    /// <param name="result">构建结果</param>
+    /// <param name="error">错误信息（如果构建失败）</param>
+    /// <returns>是否构建成功</returns>
+    public static bool TryCreate<TOptions>(string[] args, out TOptions result, out string error) where TOptions : class, new()
+    {
+        try
+        {
+            result = Create<TOptions>(args);
+            error = null;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            result = CreateDefault<TOptions>();
+            error = ex.Message;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 静态方法：从命令行参数构建配置选项并启用调试输出
+    /// </summary>
+    /// <typeparam name="TOptions">配置选项类型</typeparam>
+    /// <param name="args">命令行参数</param>
+    /// <param name="skipValidation">是否跳过必需选项验证</param>
+    /// <returns>构建的配置选项对象</returns>
+    public static TOptions CreateWithDebug<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
+    {
+        // 先打印调试信息
+        OptionsDebugger.PrintStructuredArguments(args, typeof(TOptions));
+
+        // 创建配置选项
+        var result = Create<TOptions>(args, skipValidation);
+
+        // 打印解析结果
+        OptionsDebugger.PrintParsedOptions(result);
+
+        return result;
+    }
+
+    #endregion
+}
+
+/// <summary>
+/// 选项构建器，用于从命令行参数和环境变量构建配置选项
+/// </summary>
 /// <typeparam name="T">配置选项类型</typeparam>
 /// <remarks>
 /// 该类提供了从命令行参数和环境变量构建配置选项的功能
@@ -40,8 +165,8 @@ public sealed class OptionsBuilder<T> where T : class, new()
         _boolFormat = boolFormat;
         _useEnvironmentVariables = useEnvironmentVariables;
         _ensurePrefixedKeys = ensurePrefixedKeys;
-        _converter = new CommandLineArgumentConverter 
-        { 
+        _converter = new CommandLineArgumentConverter
+        {
             BoolFormat = boolFormat,
             EnsurePrefixedKeys = ensurePrefixedKeys
         };
@@ -198,6 +323,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     {
                         optionName = requiredOptionAttr.LongName;
                     }
+
                     break;
                 }
             }
@@ -215,6 +341,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                         {
                             optionName = optionAttr.LongName;
                         }
+
                         break;
                     }
                 }
@@ -301,9 +428,9 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     {
                         // 尝试直接匹配属性名
                         var normalizedKey = NormalizePropertyName(keyStr);
-                        var matchedProperty = properties.FirstOrDefault(p => 
-                            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
-                        
+                        var matchedProperty = properties.FirstOrDefault(p =>
+                                                                            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+
                         if (matchedProperty != null)
                         {
                             // 处理布尔值
@@ -403,6 +530,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     {
                         result[key] = value;
                     }
+
                     // 如果值为null，不添加键值对，让属性保持默认值
                     i++; // 跳过已处理的值
                 }
@@ -435,16 +563,16 @@ public sealed class OptionsBuilder<T> where T : class, new()
         // 首先尝试通过选项映射查找属性
         if (optionMappings.TryGetValue(key, out var propertyName))
         {
-            var property = properties.FirstOrDefault(p => 
-                string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+            var property = properties.FirstOrDefault(p =>
+                                                         string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
             return property?.PropertyType == typeof(bool) || property?.PropertyType == typeof(bool?);
         }
 
         // 如果没有找到，尝试标准化键名查找
         string normalizedKey = NormalizePropertyName(key);
         var matchedProperty = properties.FirstOrDefault(p =>
-            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
-        
+                                                            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+
         return matchedProperty?.PropertyType == typeof(bool) || matchedProperty?.PropertyType == typeof(bool?);
     }
 
@@ -461,8 +589,8 @@ public sealed class OptionsBuilder<T> where T : class, new()
         {
             // 处理所有 OptionAttribute 及其派生类
             var optionAttrs = property.GetCustomAttributes(typeof(OptionAttribute), true)
-                                     .Cast<OptionAttribute>()
-                                     .ToList();
+                                      .Cast<OptionAttribute>()
+                                      .ToList();
 
             foreach (var optionAttr in optionAttrs)
             {
@@ -534,8 +662,8 @@ public sealed class OptionsBuilder<T> where T : class, new()
             // 首先尝试通过选项映射查找属性
             if (optionMappings.TryGetValue(kvp.Key, out var propertyName))
             {
-                property = properties.FirstOrDefault(p => 
-                    string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+                property = properties.FirstOrDefault(p =>
+                                                         string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
             }
 
             // 如果没有找到，尝试标准化键名查找
@@ -543,7 +671,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
             {
                 string normalizedKey = NormalizePropertyName(kvp.Key);
                 property = properties.FirstOrDefault(p =>
-                    string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+                                                         string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
             }
 
             if (property != null)
@@ -723,123 +851,4 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         return key;
     }
-
-    #region 静态便捷方法
-
-    /// <summary>
-    /// 静态方法：从命令行参数构建配置选项（使用默认设置）
-    /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
-    public static TOptions Create<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
-    {
-        var builder = new OptionsBuilder<TOptions>(args);
-        return builder.Build(skipValidation);
-    }
-
-    /// <summary>
-    /// 静态方法：从命令行参数构建配置选项（完整参数控制）
-    /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="boolFormat">布尔参数格式</param>
-    /// <param name="ensurePrefixedKeys">是否确保参数键都有前缀</param>
-    /// <param name="useEnvironmentVariables">是否使用环境变量</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
-    public static TOptions Create<TOptions>(
-        string[] args,
-        BoolArgumentFormat boolFormat,
-        bool ensurePrefixedKeys = true,
-        bool useEnvironmentVariables = true,
-        bool skipValidation = false) where TOptions : class, new()
-    {
-        var builder = new OptionsBuilder<TOptions>(args, boolFormat, ensurePrefixedKeys, useEnvironmentVariables);
-        return builder.Build(skipValidation);
-    }
-
-    /// <summary>
-    /// 静态方法：从命令行参数构建配置选项（仅使用命令行参数，不使用环境变量）
-    /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
-    public static TOptions CreateFromArgsOnly<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
-    {
-        var builder = new OptionsBuilder<TOptions>(args, useEnvironmentVariables: false);
-        return builder.Build(skipValidation);
-    }
-
-    /// <summary>
-    /// 静态方法：从环境变量构建配置选项（不使用命令行参数）
-    /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
-    public static TOptions CreateFromEnvironmentOnly<TOptions>(bool skipValidation = false) where TOptions : class, new()
-    {
-        var builder = new OptionsBuilder<TOptions>(Array.Empty<string>(), useEnvironmentVariables: true);
-        return builder.Build(skipValidation);
-    }
-
-    /// <summary>
-    /// 静态方法：创建默认配置选项（仅使用默认值，不使用命令行参数和环境变量）
-    /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <returns>构建的配置选项对象</returns>
-    public static TOptions CreateDefault<TOptions>() where TOptions : class, new()
-    {
-        var builder = new OptionsBuilder<TOptions>(Array.Empty<string>(), useEnvironmentVariables: false);
-        return builder.Build(skipValidation: true);
-    }
-
-    /// <summary>
-    /// 静态方法：尝试从命令行参数构建配置选项，如果失败则返回默认配置
-    /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="result">构建结果</param>
-    /// <param name="error">错误信息（如果构建失败）</param>
-    /// <returns>是否构建成功</returns>
-    public static bool TryCreate<TOptions>(string[] args, out TOptions result, out string error) where TOptions : class, new()
-    {
-        try
-        {
-            result = Create<TOptions>(args);
-            error = null;
-            return true;
-        }
-        catch (Exception ex)
-        {
-            result = CreateDefault<TOptions>();
-            error = ex.Message;
-            return false;
-        }
-    }
-
-    /// <summary>
-    /// 静态方法：从命令行参数构建配置选项并启用调试输出
-    /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
-    public static TOptions CreateWithDebug<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
-    {
-        // 先打印调试信息
-        OptionsDebugger.PrintStructuredArguments(args, typeof(TOptions));
-        
-        // 创建配置选项
-        var result = Create<TOptions>(args, skipValidation);
-        
-        // 打印解析结果
-        OptionsDebugger.PrintParsedOptions(result);
-        
-        return result;
-    }
-
-    #endregion
 }
