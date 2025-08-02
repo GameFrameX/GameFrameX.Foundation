@@ -94,24 +94,24 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
 
                 // 1. 基本静态方法
                 Console.WriteLine("📋 方法1: OptionsBuilder<T>.Create(args) - 最简单的使用方式");
-                var config1 = OptionsBuilder<StaticMethodsDemoConfig>.Create(args);
+                var config1 = OptionsBuilder.Create<StaticMethodsDemoConfig>(args);
                 PrintConfig("Create", config1);
                 Console.WriteLine();
 
                 // 2. 完整参数控制
                 Console.WriteLine("📋 方法2: OptionsBuilder<T>.Create(args, boolFormat, ...) - 完整参数控制");
-                var config2 = OptionsBuilder<StaticMethodsDemoConfig>.Create(
-                    args, 
-                    BoolArgumentFormat.Flag, 
-                    ensurePrefixedKeys: true, 
-                    useEnvironmentVariables: true, 
+                var config2 = OptionsBuilder.Create<StaticMethodsDemoConfig>(
+                    args,
+                    BoolArgumentFormat.Flag,
+                    ensurePrefixedKeys: true,
+                    useEnvironmentVariables: true,
                     skipValidation: false);
                 PrintConfig("Create (完整参数)", config2);
                 Console.WriteLine();
 
                 // 3. 仅使用命令行参数
                 Console.WriteLine("📋 方法3: OptionsBuilder<T>.CreateFromArgsOnly(args) - 仅使用命令行参数");
-                var config3 = OptionsBuilder<StaticMethodsDemoConfig>.CreateFromArgsOnly(args);
+                var config3 = OptionsBuilder.CreateFromArgsOnly<StaticMethodsDemoConfig>(args);
                 PrintConfig("CreateFromArgsOnly", config3);
                 Console.WriteLine();
 
@@ -121,20 +121,20 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Environment.SetEnvironmentVariable("APP_NAME", "EnvApp");
                 Environment.SetEnvironmentVariable("HOST", "env.example.com");
                 Environment.SetEnvironmentVariable("PORT", "7070");
-                
-                var config4 = OptionsBuilder<StaticMethodsDemoConfig>.CreateFromEnvironmentOnly(skipValidation: true);
+
+                var config4 = OptionsBuilder.CreateFromEnvironmentOnly<StaticMethodsDemoConfig>(skipValidation: true);
                 PrintConfig("CreateFromEnvironmentOnly", config4);
                 Console.WriteLine();
 
                 // 5. 创建默认配置
                 Console.WriteLine("📋 方法5: OptionsBuilder<T>.CreateDefault() - 仅使用默认值");
-                var config5 = OptionsBuilder<StaticMethodsDemoConfig>.CreateDefault();
+                var config5 = OptionsBuilder.CreateDefault<StaticMethodsDemoConfig>();
                 PrintConfig("CreateDefault", config5);
                 Console.WriteLine();
 
                 // 6. 安全创建方法
                 Console.WriteLine("📋 方法6: OptionsBuilder<T>.TryCreate(args, out result, out error) - 安全创建");
-                if (OptionsBuilder<StaticMethodsDemoConfig>.TryCreate(args, out var config6, out var error))
+                if (OptionsBuilder.TryCreate<StaticMethodsDemoConfig>(args, out var config6, out var error))
                 {
                     Console.WriteLine("✅ 创建成功!");
                     PrintConfig("TryCreate", config6);
@@ -145,13 +145,14 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                     Console.WriteLine("🔄 使用默认配置:");
                     PrintConfig("TryCreate (默认)", config6);
                 }
+
                 Console.WriteLine();
 
                 // 7. 带调试输出的创建
                 Console.WriteLine("📋 方法7: OptionsBuilder<T>.CreateWithDebug(args) - 带调试输出");
                 Console.WriteLine("   (注意：这个方法会显示详细的调试信息)");
                 Console.WriteLine();
-                var config7 = OptionsBuilder<StaticMethodsDemoConfig>.CreateWithDebug(args);
+                var config7 = OptionsBuilder.CreateWithDebug<StaticMethodsDemoConfig>(args);
                 Console.WriteLine("✅ CreateWithDebug 完成!");
                 Console.WriteLine();
 
@@ -168,7 +169,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Console.WriteLine("⚖️  传统方式 vs 静态方法对比");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
                 CompareWithTraditionalWay(args);
-
             }
             catch (Exception ex)
             {
@@ -265,13 +265,13 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("var builder = new OptionsBuilder<AppConfig>(args);");
             Console.WriteLine("var config = builder.Build();");
             Console.WriteLine("```");
-            
+
             // 传统方式
             var startTime1 = DateTime.Now;
             var builder = new OptionsBuilder<StaticMethodsDemoConfig>(args);
             var traditionalConfig = builder.Build(skipValidation: true);
             var elapsed1 = DateTime.Now - startTime1;
-            
+
             PrintConfig("传统方式", traditionalConfig);
             Console.WriteLine($"   执行时间: {elapsed1.TotalMilliseconds:F2}ms");
             Console.WriteLine();
@@ -280,12 +280,12 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("```csharp");
             Console.WriteLine("var config = OptionsBuilder<AppConfig>.Create(args);");
             Console.WriteLine("```");
-            
+
             // 静态方法
             var startTime2 = DateTime.Now;
-            var staticConfig = OptionsBuilder<StaticMethodsDemoConfig>.Create(args, skipValidation: true);
+            var staticConfig = OptionsBuilder.Create<StaticMethodsDemoConfig>(args, skipValidation: true);
             var elapsed2 = DateTime.Now - startTime2;
-            
+
             PrintConfig("静态方法", staticConfig);
             Console.WriteLine($"   执行时间: {elapsed2.TotalMilliseconds:F2}ms");
             Console.WriteLine();

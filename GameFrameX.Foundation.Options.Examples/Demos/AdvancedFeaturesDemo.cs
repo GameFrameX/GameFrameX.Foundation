@@ -201,7 +201,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Console.WriteLine();
 
                 // 使用调试模式解析配置
-                var config = OptionsBuilder<AdvancedFeaturesDemoConfig>.CreateWithDebug(args);
+                var config = OptionsBuilder.CreateWithDebug<AdvancedFeaturesDemoConfig>(args);
                 
                 Console.WriteLine("✅ 解析成功！详细配置信息:");
                 PrintDetailedConfig(config);
@@ -281,7 +281,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 
                 try
                 {
-                    var config = OptionsBuilder<AdvancedFeaturesDemoConfig>.Create(testCase.Args, skipValidation: true);
+                    var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(testCase.Args, skipValidation: true);
                     
                     switch (testCase.Name)
                     {
@@ -332,7 +332,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
 
             // 测试1: 仅使用环境变量
             Console.WriteLine("🔧 测试1: 仅使用环境变量");
-            var config1 = OptionsBuilder<AdvancedFeaturesDemoConfig>.CreateFromEnvironmentOnly(skipValidation: true);
+            var config1 = OptionsBuilder.CreateFromEnvironmentOnly<AdvancedFeaturesDemoConfig>(skipValidation: true);
             Console.WriteLine($"   结果: {config1.Host}:{config1.Port}, SSL={config1.EnableSsl}, LogLevel={config1.LogLevel}");
             Console.WriteLine();
 
@@ -340,15 +340,15 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("🔧 测试2: 命令行参数覆盖环境变量");
             var args = new[] { "--app-name", "PriorityTest", "--database-url", "test://db", "--host", "cmd.example.com", "--log-level", "Debug" };
             Console.WriteLine($"   参数: {string.Join(" ", args)}");
-            
-            var config2 = OptionsBuilder<AdvancedFeaturesDemoConfig>.Create(args, skipValidation: true);
+
+            var config2 = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(args, skipValidation: true);
             Console.WriteLine($"   结果: {config2.Host}:{config2.Port}, SSL={config2.EnableSsl}, LogLevel={config2.LogLevel}");
             Console.WriteLine("   说明: Host和LogLevel被命令行参数覆盖，Port和SSL来自环境变量");
             Console.WriteLine();
 
             // 测试3: 默认值的使用
             Console.WriteLine("🔧 测试3: 默认值的使用");
-            var config3 = OptionsBuilder<AdvancedFeaturesDemoConfig>.CreateDefault();
+            var config3 = OptionsBuilder.CreateDefault<AdvancedFeaturesDemoConfig>();
             Console.WriteLine($"   结果: {config3.Host}:{config3.Port}, SSL={config3.EnableSsl}, LogLevel={config3.LogLevel}");
             Console.WriteLine("   说明: 所有值都使用默认值");
 
@@ -370,7 +370,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             
             try
             {
-                var config = OptionsBuilder<AdvancedFeaturesDemoConfig>.Create(invalidArgs1);
+                var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(invalidArgs1);
                 Console.WriteLine("   ❌ 应该失败但没有失败");
             }
             catch (ArgumentException ex)
@@ -385,7 +385,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             
             try
             {
-                var config = OptionsBuilder<AdvancedFeaturesDemoConfig>.Create(invalidArgs2, skipValidation: true);
+                var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(invalidArgs2, skipValidation: true);
                 Console.WriteLine($"   结果: Port={config.Port} (使用默认值), Timeout={config.Timeout} (使用默认值)");
                 Console.WriteLine("   说明: 无效值被忽略，使用默认值");
             }
@@ -401,7 +401,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             
             try
             {
-                var config = OptionsBuilder<AdvancedFeaturesDemoConfig>.Create(invalidArgs3, skipValidation: true);
+                var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(invalidArgs3, skipValidation: true);
                 Console.WriteLine($"   结果: LogLevel={config.LogLevel} (使用默认值)");
                 Console.WriteLine("   说明: 无效枚举值被忽略，使用默认值");
             }
@@ -433,7 +433,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 
                 try
                 {
-                    var config = OptionsBuilder<AdvancedFeaturesDemoConfig>.Create(testCase.Args, skipValidation: true);
+                    var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(testCase.Args, skipValidation: true);
                     Console.WriteLine($"   结果: SSL={config.EnableSsl}, Debug={config.Debug}");
                 }
                 catch (Exception ex)
@@ -475,7 +475,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine($"   {string.Join(" ", args)}");
             Console.WriteLine();
 
-            var config = OptionsBuilder<AdvancedFeaturesDemoConfig>.Create(args, skipValidation: true);
+            var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(args, skipValidation: true);
 
             Console.WriteLine("✅ 解析结果展示特性组合效果:");
             Console.WriteLine($"   应用名称: {config.AppName} (来自命令行 - RequiredOption)");

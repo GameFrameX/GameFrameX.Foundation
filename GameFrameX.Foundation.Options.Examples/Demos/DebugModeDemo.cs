@@ -180,7 +180,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Console.WriteLine();
                 
                 // 使用OptionsBuilder的调试方法
-                var options6 = OptionsBuilder<DebugModeDemoConfig>.CreateWithDebug(args);
+                var options6 = OptionsBuilder.CreateWithDebug<DebugModeDemoConfig>(args);
                 
                 Console.WriteLine("✅ 测试6完成！（OptionsBuilder调试方法）");
                 Console.WriteLine();

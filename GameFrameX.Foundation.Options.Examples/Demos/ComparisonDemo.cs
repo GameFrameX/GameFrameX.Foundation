@@ -141,7 +141,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine();
             
             // 静态方法
-            var staticConfig = OptionsBuilder<ComparisonDemoConfig>.Create(args, skipValidation: true);
+            var staticConfig = OptionsBuilder.Create<ComparisonDemoConfig>(args, skipValidation: true);
             
             Console.WriteLine("✅ 静态方法结果:");
             PrintConfig("静态方法", staticConfig);
@@ -182,7 +182,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             // 预热
             for (int i = 0; i < 10; i++)
             {
-                var _ = OptionsBuilder<ComparisonDemoConfig>.Create(args, skipValidation: true);
+                var _ = OptionsBuilder.Create<ComparisonDemoConfig>(args, skipValidation: true);
             }
 
             // 测试传统方式
@@ -198,7 +198,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             var sw2 = Stopwatch.StartNew();
             for (int i = 0; i < iterations; i++)
             {
-                var config = OptionsBuilder<ComparisonDemoConfig>.Create(args, skipValidation: true);
+                var config = OptionsBuilder.Create<ComparisonDemoConfig>(args, skipValidation: true);
             }
             sw2.Stop();
 

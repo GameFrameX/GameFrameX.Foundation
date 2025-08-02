@@ -103,7 +103,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
                 
                 // 静态方法
-                var config2 = OptionsBuilder<BasicDemoConfig>.Create(args);
+                var config2 = OptionsBuilder.Create<BasicDemoConfig>(args);
                 
                 Console.WriteLine("✅ 解析成功！配置信息:");
                 PrintConfig(config2);
@@ -176,7 +176,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 
                 try
                 {
-                    var config = OptionsBuilder<BasicDemoConfig>.Create(testCase.Args, skipValidation: true);
+                    var config = OptionsBuilder.Create<BasicDemoConfig>(testCase.Args, skipValidation: true);
                     Console.WriteLine($"   结果: {config.AppName} @ {config.Host}:{config.Port} (调试: {config.Debug})");
                 }
                 catch (Exception ex)
@@ -207,7 +207,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("🔧 仅使用环境变量:");
             try
             {
-                var config1 = OptionsBuilder<BasicDemoConfig>.CreateFromEnvironmentOnly(skipValidation: true);
+                var config1 = OptionsBuilder.CreateFromEnvironmentOnly<BasicDemoConfig>(skipValidation: true);
                 PrintConfig(config1);
             }
             catch (Exception ex)
@@ -223,7 +223,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             
             try
             {
-                var config2 = OptionsBuilder<BasicDemoConfig>.Create(args, skipValidation: true);
+                var config2 = OptionsBuilder.Create<BasicDemoConfig>(args, skipValidation: true);
                 Console.WriteLine("   结果（注意HOST被命令行参数覆盖，PORT来自环境变量）:");
                 PrintConfig(config2);
             }
@@ -249,7 +249,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             
             try
             {
-                var config = OptionsBuilder<BasicDemoConfig>.Create(invalidArgs1);
+                var config = OptionsBuilder.Create<BasicDemoConfig>(invalidArgs1);
                 Console.WriteLine("   ❌ 应该失败但没有失败");
             }
             catch (ArgumentException ex)
@@ -259,7 +259,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine();
 
             Console.WriteLine("📋 测试安全创建方法:");
-            if (OptionsBuilder<BasicDemoConfig>.TryCreate(invalidArgs1, out var result, out var error))
+            if (OptionsBuilder.TryCreate<BasicDemoConfig>(invalidArgs1, out var result, out var error))
             {
                 Console.WriteLine("   ❌ 应该失败但返回了成功");
             }
