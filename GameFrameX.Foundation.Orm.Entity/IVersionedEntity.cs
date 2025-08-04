@@ -17,5 +17,5 @@ public interface IVersionedEntity
     /// 版本号（用于乐观锁）
     /// </summary>
     [Description("版本号（用于乐观锁）")]
-    long Version { get; set; }
+    long? Version { get; set; }
 }

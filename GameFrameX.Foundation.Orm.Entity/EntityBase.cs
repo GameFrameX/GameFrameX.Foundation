@@ -62,7 +62,7 @@ public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilte
     /// 版本号（用于乐观锁）
     /// </summary>
     [Description("版本号（用于乐观锁）")]
-    public virtual long Version { get; set; } = 1;
+    public virtual long? Version { get; set; } = 1;
 }
 
 /// <summary>
@@ -118,5 +118,5 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, I
     /// 版本号（用于乐观锁）
     /// </summary>
     [Description("版本号（用于乐观锁）")]
-    public virtual long Version { get; set; } = 1;
+    public virtual long? Version { get; set; } = 1;
 }
