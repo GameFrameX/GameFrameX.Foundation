@@ -19,5 +19,5 @@ public interface ISelectFilter
     /// <summary>
     /// 详细描述
     /// </summary>
-    string Description { get; set; }
+    string? Description { get; set; }
 }
