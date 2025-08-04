@@ -16,7 +16,7 @@ public abstract class EntityTenantBase : EntityBase, ITenantIdFilter
     /// <summary>
     /// 租户Id
     /// </summary>
-    public virtual long? TenantId { get; set; }
+    public virtual long TenantId { get; set; }
 }
 
 /// <summary>
@@ -28,5 +28,5 @@ public abstract class EntityTenantBase<TKey> : EntityBase<TKey>, ITenantIdFilter
     /// <summary>
     /// 租户Id
     /// </summary>
-    public virtual long? TenantId { get; set; }
+    public virtual long TenantId { get; set; }
 }
