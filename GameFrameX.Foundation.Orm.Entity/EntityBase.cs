@@ -4,6 +4,7 @@
 // 
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using GameFrameX.Foundation.Orm.Entity.Filter;
 
@@ -18,41 +19,49 @@ public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilte
     /// 创建时间
     /// </summary>
     [Column]
+    [Description("创建时间")]
     public virtual DateTime CreateTime { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// 更新时间
     /// </summary>
+    [Description("更新时间")]
     public virtual DateTime? UpdateTime { get; set; }
 
     /// <summary>
     /// 创建者Id
     /// </summary>
+    [Description("创建者Id")]
     public virtual long? CreateUserId { get; set; }
 
     /// <summary>
     /// 创建者姓名
     /// </summary>
+    [Description("创建者姓名")]
     public virtual string? CreateUserName { get; set; }
 
     /// <summary>
     /// 修改者Id
     /// </summary>
+    [Description("修改者Id")]
     public virtual long? UpdateUserId { get; set; }
 
     /// <summary>
     /// 修改者姓名
     /// </summary>
+    [Description("修改者姓名")]
     public virtual string? UpdateUserName { get; set; }
 
     /// <summary>
     /// 软删除
     /// </summary>
+    [Description("软删除标记,true:删除,false:未删除")]
     public virtual bool IsDelete { get; set; } = false;
 
     /// <summary>
     /// 版本号（用于乐观锁）
     /// </summary>
+    [Description("版本号（用于乐观锁）")]
     public virtual long Version { get; set; } = 1;
 }
 
@@ -66,40 +75,48 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, I
     /// 创建时间
     /// </summary>
     [Column]
+    [Description("创建时间")]
     public virtual DateTime CreateTime { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// 更新时间
     /// </summary>
+    [Description("更新时间")]
     public virtual DateTime? UpdateTime { get; set; }
 
     /// <summary>
     /// 创建者Id
     /// </summary>
+    [Description("创建者Id")]
     public virtual long? CreateUserId { get; set; }
 
     /// <summary>
     /// 创建者姓名
     /// </summary>
+    [Description("创建者姓名")]
     public virtual string? CreateUserName { get; set; }
 
     /// <summary>
     /// 修改者Id
     /// </summary>
+    [Description("修改者Id")]
     public virtual long? UpdateUserId { get; set; }
 
     /// <summary>
     /// 修改者姓名
     /// </summary>
+    [Description("修改者姓名")]
     public virtual string? UpdateUserName { get; set; }
 
     /// <summary>
     /// 软删除
     /// </summary>
+    [Description("软删除标记,true:删除,false:未删除")]
     public virtual bool IsDelete { get; set; } = false;
 
     /// <summary>
     /// 版本号（用于乐观锁）
     /// </summary>
+    [Description("版本号（用于乐观锁）")]
     public virtual long Version { get; set; } = 1;
 }

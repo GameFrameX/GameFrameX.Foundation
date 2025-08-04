@@ -4,6 +4,8 @@
 // 
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
+using System.ComponentModel;
+
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
@@ -14,30 +16,36 @@ public interface IAuditableEntity
     /// <summary>
     /// 创建时间
     /// </summary>
+    [Description("创建时间")]
     DateTime CreateTime { get; set; }
 
     /// <summary>
     /// 更新时间
     /// </summary>
+    [Description("更新时间")]
     DateTime? UpdateTime { get; set; }
 
     /// <summary>
     /// 创建者Id
     /// </summary>
+    [Description("创建者Id")]
     long? CreateUserId { get; set; }
 
     /// <summary>
     /// 创建者姓名
     /// </summary>
+    [Description("创建者姓名")]
     string? CreateUserName { get; set; }
 
     /// <summary>
     /// 修改者Id
     /// </summary>
+    [Description("修改者Id")]
     long? UpdateUserId { get; set; }
 
     /// <summary>
     /// 修改者姓名
     /// </summary>
+    [Description("修改者姓名")]
     string? UpdateUserName { get; set; }
 }

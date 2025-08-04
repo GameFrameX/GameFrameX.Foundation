@@ -8,11 +8,12 @@ namespace GameFrameX.Foundation.Orm.Entity;
 public abstract class EntityBaseId : IEntity<long>
 {
     /// <summary>
-    /// Id
+    /// 主键Id
     /// </summary>
     [Key]
     [Required]
     [Editable(false, AllowInitialValue = true)]
+    [System.ComponentModel.Description("主键Id")]
     public virtual long Id { get; set; }
 }
 
@@ -23,10 +24,11 @@ public abstract class EntityBaseId : IEntity<long>
 public abstract class EntityBaseId<TKey> : IEntity<TKey>
 {
     /// <summary>
-    /// Id
+    /// 主键Id
     /// </summary>
     [Key]
     [Required]
     [Editable(false, AllowInitialValue = true)]
+    [System.ComponentModel.Description("主键Id")]
     public virtual TKey Id { get; set; } = default!;
 }

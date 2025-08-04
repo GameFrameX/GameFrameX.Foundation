@@ -18,6 +18,7 @@ public abstract class EntitySelectBase : EntityBase, ISelectFilter
     /// 名称
     /// </summary>
     [Required]
+    [System.ComponentModel.Description("名称")]
     public virtual string Name { get; set; }
 
     /// <summary>
@@ -36,6 +37,7 @@ public abstract class EntitySelectBase<TKey> where TKey : EntityBase, ISelectFil
     /// 名称
     /// </summary>
     [Required]
+    [System.ComponentModel.Description("名称")]
     public virtual string Name { get; set; }
 
     /// <summary>

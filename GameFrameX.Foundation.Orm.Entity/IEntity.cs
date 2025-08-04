@@ -22,5 +22,6 @@ public interface IEntity<TKey> : IEntity
     /// <summary>
     /// 主键
     /// </summary>
+    [System.ComponentModel.Description("主键Id")]
     TKey Id { get; set; }
 }
