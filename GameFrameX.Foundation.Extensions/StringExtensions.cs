@@ -31,6 +31,25 @@ public static class StringExtensions
     }
 
     /// <summary>
+    /// 将Base64字符串转换为URL安全格式。
+    /// </summary>
+    /// <param name="value">要处理的Base64字符串。</param>
+    /// <param name="removePadding">是否移除填充字符=。</param>
+    /// <returns>URL安全的Base64字符串。</returns>
+    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
+    /// <remarks>
+    /// 此方法将Base64字符串中的+和/字符分别替换为-和_字符。
+    /// 当removePadding为true时，移除填充字符=；当为false时，保留填充字符=。
+    /// 符合RFC 4648标准的Base64URL编码规范。
+    /// </remarks>
+    public static string ToUrlSafeBase64(this string value, bool removePadding)
+    {
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        var result = value.Replace("+", "-").Replace("/", "_");
+        return removePadding ? result.TrimEnd('=') : result;
+    }
+
+    /// <summary>
     /// 将URL安全的Base64字符串转换回标准Base64格式。
     /// </summary>
     /// <param name="value">要处理的URL安全Base64字符串。</param>
@@ -54,6 +73,37 @@ public static class StringExtensions
 
         return result;
     }
+
+    /// <summary>
+    /// 将URL安全的Base64字符串转换回标准Base64格式。
+    /// </summary>
+    /// <param name="value">要处理的URL安全Base64字符串。</param>
+    /// <param name="addPadding">是否自动添加填充字符=。</param>
+    /// <returns>标准格式的Base64字符串。</returns>
+    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
+    /// <remarks>
+    /// 此方法是ToUrlSafeBase64的反向操作，将-和_字符分别替换回+和/字符。
+    /// 当addPadding为true时，自动添加必要的填充字符=；当为false时，不添加填充字符。
+    /// 用于将URL安全的Base64字符串还原为标准Base64格式。
+    /// </remarks>
+    public static string FromUrlSafeBase64(this string value, bool addPadding)
+    {
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        var result = value.Replace("-", "+").Replace("_", "/");
+
+        if (addPadding)
+        {
+            // 添加必要的填充字符
+            var padding = 4 - (result.Length % 4);
+            if (padding < 4)
+            {
+                result = result.PadRight(result.Length + padding, '=');
+            }
+        }
+
+        return result;
+    }
+
 
     /// <summary>
     /// 匹配中文字符的正则表达式。
