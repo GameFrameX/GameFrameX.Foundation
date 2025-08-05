@@ -55,8 +55,8 @@ public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilte
     /// <summary>
     /// 软删除
     /// </summary>
-    [Description("软删除标记,true:删除,false:未删除")]
-    public virtual bool IsDelete { get; set; } = false;
+    [Description("软删除标记,true:删除,false:未删除,null:未设置(未删除)")]
+    public virtual bool? IsDelete { get; set; } = false;
 
     /// <summary>
     /// 版本号（用于乐观锁）
@@ -111,8 +111,8 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, I
     /// <summary>
     /// 软删除
     /// </summary>
-    [Description("软删除标记,true:删除,false:未删除")]
-    public virtual bool IsDelete { get; set; } = false;
+    [Description("软删除标记,true:删除,false:未删除,null:未设置(未删除)")]
+    public virtual bool? IsDelete { get; set; } = false;
 
     /// <summary>
     /// 版本号（用于乐观锁）

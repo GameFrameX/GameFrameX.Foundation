@@ -14,5 +14,5 @@ public interface IDeletedFilter
     /// <summary>
     /// 软删除
     /// </summary>
-    bool IsDelete { get; set; }
+    bool? IsDelete { get; set; }
 }
