@@ -20,7 +20,7 @@ public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilte
     /// </summary>
     [Column]
     [Description("创建时间")]
-    public virtual DateTime CreateTime { get; set; } = DateTime.UtcNow;
+    public virtual DateTime? CreateTime { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// 更新时间
@@ -76,7 +76,7 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, I
     /// </summary>
     [Column]
     [Description("创建时间")]
-    public virtual DateTime CreateTime { get; set; } = DateTime.UtcNow;
+    public virtual DateTime? CreateTime { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// 更新时间

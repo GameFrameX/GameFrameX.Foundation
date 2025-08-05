@@ -17,7 +17,7 @@ public interface IAuditableEntity
     /// 创建时间
     /// </summary>
     [Description("创建时间")]
-    DateTime CreateTime { get; set; }
+    DateTime? CreateTime { get; set; }
 
     /// <summary>
     /// 更新时间
