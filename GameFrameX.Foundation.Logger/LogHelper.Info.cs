@@ -37,6 +37,144 @@ public static partial class LogHelper
     }
 
     /// <summary>
+    /// 记录信息消息模板。
+    /// </summary>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <remarks>
+    /// 使用结构化日志记录信息级别的消息模板。
+    /// </remarks>
+    public static void Info(string messageTemplate)
+    {
+        GetLogger().Information(messageTemplate);
+    }
+
+    /// <summary>
+    /// 记录带有单个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T">属性值的类型。</typeparam>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue">属性值。</param>
+    /// <remarks>
+    /// 使用结构化日志记录带有单个属性的信息消息。
+    /// </remarks>
+    public static void Info<T>(string messageTemplate, T propertyValue)
+    {
+        GetLogger().Information(messageTemplate, propertyValue);
+    }
+
+    /// <summary>
+    /// 记录带有两个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <remarks>
+    /// 使用结构化日志记录带有两个属性的信息消息。
+    /// </remarks>
+    public static void Info<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+    {
+        GetLogger().Information(messageTemplate, propertyValue0, propertyValue1);
+    }
+
+    /// <summary>
+    /// 记录带有三个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <remarks>
+    /// 使用结构化日志记录带有三个属性的信息消息。
+    /// </remarks>
+    public static void Info<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+    {
+        GetLogger().Information(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+    }
+
+    /// <summary>
+    /// 记录带有异常的信息消息模板。
+    /// </summary>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <remarks>
+    /// 记录信息级别的异常信息和消息模板。
+    /// </remarks>
+    public static void Info(Exception exception, string messageTemplate)
+    {
+        GetLogger().Information(exception, messageTemplate);
+    }
+
+    /// <summary>
+    /// 记录带有异常和单个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T">属性值的类型。</typeparam>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue">属性值。</param>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有单个属性的消息模板。
+    /// </remarks>
+    public static void Info<T>(Exception exception, string messageTemplate, T propertyValue)
+    {
+        GetLogger().Information(exception, messageTemplate, propertyValue);
+    }
+
+    /// <summary>
+    /// 记录带有异常和两个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有两个属性的消息模板。
+    /// </remarks>
+    public static void Info<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+    {
+        GetLogger().Information(exception, messageTemplate, propertyValue0, propertyValue1);
+    }
+
+    /// <summary>
+    /// 记录带有异常和三个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有三个属性的消息模板。
+    /// </remarks>
+    public static void Info<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+    {
+        GetLogger().Information(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+    }
+
+    /// <summary>
+    /// 记录带有异常和格式参数的信息消息模板。
+    /// </summary>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValues">属性值数组。</param>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有多个属性的消息模板。
+    /// </remarks>
+    public static void Info(Exception exception, string messageTemplate, params object[] propertyValues)
+    {
+        GetLogger().Information(exception, messageTemplate, propertyValues);
+    }
+
+    /// <summary>
     /// 使用指定的日志记录器记录带有格式参数的信息消息
     /// </summary>
     /// <param name="logger">要使用的日志记录器实例</param>
@@ -47,6 +185,171 @@ public static partial class LogHelper
     {
         ArgumentNullException.ThrowIfNull(logger);
         logger.Information(message, args);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录信息消息模板。
+    /// </summary>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 使用结构化日志记录信息级别的消息模板。
+    /// </remarks>
+    public static void Info(ILogger logger, string messageTemplate)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(messageTemplate);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有单个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T">属性值的类型。</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue">属性值。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 使用结构化日志记录带有单个属性的信息消息。
+    /// </remarks>
+    public static void Info<T>(ILogger logger, string messageTemplate, T propertyValue)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(messageTemplate, propertyValue);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有两个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 使用结构化日志记录带有两个属性的信息消息。
+    /// </remarks>
+    public static void Info<T0, T1>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(messageTemplate, propertyValue0, propertyValue1);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有三个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 使用结构化日志记录带有三个属性的信息消息。
+    /// </remarks>
+    public static void Info<T0, T1, T2>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有异常的信息消息模板。
+    /// </summary>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 记录信息级别的异常信息和消息模板。
+    /// </remarks>
+    public static void Info(ILogger logger, Exception exception, string messageTemplate)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(exception, messageTemplate);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有异常和单个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T">属性值的类型。</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue">属性值。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有单个属性的消息模板。
+    /// </remarks>
+    public static void Info<T>(ILogger logger, Exception exception, string messageTemplate, T propertyValue)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(exception, messageTemplate, propertyValue);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有异常和两个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有两个属性的消息模板。
+    /// </remarks>
+    public static void Info<T0, T1>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(exception, messageTemplate, propertyValue0, propertyValue1);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有异常和三个属性值的信息消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValue0">第一个属性值。</param>
+    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有三个属性的消息模板。
+    /// </remarks>
+    public static void Info<T0, T1, T2>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+    }
+
+    /// <summary>
+    /// 使用指定的日志记录器记录带有异常和格式参数的信息消息模板。
+    /// </summary>
+    /// <param name="logger">用于记录日志的ILogger实例</param>
+    /// <param name="exception">异常信息。</param>
+    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="propertyValues">属性值数组。</param>
+    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <remarks>
+    /// 记录信息级别的异常信息和带有多个属性的消息模板。
+    /// </remarks>
+    public static void Info(ILogger logger, Exception exception, string messageTemplate, params object[] propertyValues)
+    {
+        ArgumentNullException.ThrowIfNull(logger);
+        logger.Information(exception, messageTemplate, propertyValues);
     }
 
     /// <summary>
