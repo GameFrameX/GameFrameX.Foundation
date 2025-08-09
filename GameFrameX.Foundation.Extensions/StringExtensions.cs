@@ -139,6 +139,60 @@ public static class StringExtensions
     }
 
     /// <summary>
+    /// 获取在指定宽度内左对齐的文本。
+    /// </summary>
+    /// <param name="text">要左对齐的文本。</param>
+    /// <param name="width">总宽度。</param>
+    /// <returns>右侧填充空格的左对齐文本。</returns>
+    /// <exception cref="ArgumentNullException">当text为null时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当width为负数时抛出。</exception>
+    /// <remarks>
+    /// 如果指定的宽度小于文本长度，将使用文本长度作为宽度。
+    /// 文本左对齐，右侧填充空格至指定宽度。
+    /// </remarks>
+    public static string LeftAlignedText(this string text, int width)
+    {
+        ArgumentNullException.ThrowIfNull(text, nameof(text));
+        ArgumentOutOfRangeException.ThrowIfNegative(width, nameof(width));
+
+        if (width < text.Length)
+        {
+            width = text.Length;
+        }
+
+        var rightSpaces = width - text.Length;
+        var paddedText = text + new string(' ', rightSpaces);
+        return paddedText;
+    }
+
+    /// <summary>
+    /// 获取在指定宽度内右对齐的文本。
+    /// </summary>
+    /// <param name="text">要右对齐的文本。</param>
+    /// <param name="width">总宽度。</param>
+    /// <returns>左侧填充空格的右对齐文本。</returns>
+    /// <exception cref="ArgumentNullException">当text为null时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当width为负数时抛出。</exception>
+    /// <remarks>
+    /// 如果指定的宽度小于文本长度，将使用文本长度作为宽度。
+    /// 文本右对齐，左侧填充空格至指定宽度。
+    /// </remarks>
+    public static string RightAlignedText(this string text, int width)
+    {
+        ArgumentNullException.ThrowIfNull(text, nameof(text));
+        ArgumentOutOfRangeException.ThrowIfNegative(width, nameof(width));
+
+        if (width < text.Length)
+        {
+            width = text.Length;
+        }
+
+        var leftSpaces = width - text.Length;
+        var paddedText = new string(' ', leftSpaces) + text;
+        return paddedText;
+    }
+
+    /// <summary>
     /// 获取在指定宽度内居中对齐的文本。
     /// </summary>
     /// <param name="text">要居中对齐的文本。</param>
