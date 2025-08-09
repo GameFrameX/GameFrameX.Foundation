@@ -44,9 +44,4 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj"/>
-    </ItemGroup>
-
 </Project>
