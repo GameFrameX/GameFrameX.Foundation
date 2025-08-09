@@ -9,7 +9,7 @@ namespace GameFrameX.Foundation.Options.Attributes;
 /// <summary>
 /// 表示一个必需的命令行选项的特性
 /// </summary>
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property)]
 public class RequiredOptionAttribute : OptionAttribute
 {
     /// <summary>

@@ -9,7 +9,7 @@ namespace GameFrameX.Foundation.Options.Attributes;
 /// <summary>
 /// 表示一个布尔标志选项的特性，存在即为true，不存在即为false
 /// </summary>
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property)]
 public class FlagOptionAttribute : OptionAttribute
 {
     /// <summary>

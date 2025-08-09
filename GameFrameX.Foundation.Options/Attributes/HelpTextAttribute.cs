@@ -9,7 +9,7 @@ namespace GameFrameX.Foundation.Options.Attributes;
 /// <summary>
 /// 表示命令行选项的帮助文本的特性
 /// </summary>
-[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property)]
 public class HelpTextAttribute : Attribute
 {
     /// <summary>

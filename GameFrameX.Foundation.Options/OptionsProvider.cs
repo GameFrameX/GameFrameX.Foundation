@@ -4,17 +4,14 @@
 // 
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
-using System;
-using System.Collections.Generic;
-
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
 /// 选项提供者，用于获取和缓存配置选项
 /// </summary>
-public class OptionsProvider
+public static class OptionsProvider
 {
-    private static readonly Dictionary<Type, object> _optionsCache = new Dictionary<Type, object>();
+    private static readonly Dictionary<Type, object> OptionsCache = new Dictionary<Type, object>();
     private static string[] _args;
 
     /// <summary>
@@ -24,7 +21,7 @@ public class OptionsProvider
     public static void Initialize(string[] args)
     {
         _args = args ?? Array.Empty<string>();
-        _optionsCache.Clear();
+        OptionsCache.Clear();
     }
 
     /// <summary>
@@ -103,7 +100,7 @@ public class OptionsProvider
         }
 
         // 如果缓存中已存在，直接返回
-        if (_optionsCache.TryGetValue(type, out var cachedOptions))
+        if (OptionsCache.TryGetValue(type, out var cachedOptions))
         {
             var cachedResult = (T)cachedOptions;
             
@@ -124,7 +121,7 @@ public class OptionsProvider
         var options = builder.Build(skipValidation);
 
         // 缓存选项
-        _optionsCache[type] = options;
+        OptionsCache[type] = options;
 
         // 如果启用调试输出，打印解析后的选项对象
         if (shouldDebug)
@@ -140,7 +137,7 @@ public class OptionsProvider
     /// </summary>
     public static void ClearCache()
     {
-        _optionsCache.Clear();
+        OptionsCache.Clear();
     }
 
     /// <summary>
@@ -150,9 +147,9 @@ public class OptionsProvider
     public static void RemoveFromCache<T>() where T : class
     {
         var type = typeof(T);
-        if (_optionsCache.ContainsKey(type))
+        if (OptionsCache.ContainsKey(type))
         {
-            _optionsCache.Remove(type);
+            OptionsCache.Remove(type);
         }
     }
 
