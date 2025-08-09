@@ -29,7 +29,6 @@ namespace GameFrameX.Foundation.Options
             PrintAvailableOptions(optionsType);
 
             Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            Console.WriteLine();
         }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace GameFrameX.Foundation.Options
                 // 使用反射获取所有属性
                 var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-                Console.WriteLine($"配置类型: {typeof(T).Name} 属性数量: {properties.Length}");
+                Console.WriteLine($"  配置类型: {typeof(T).Name}    属性数量: {properties.Length}");
                 Console.WriteLine();
 
                 // 打印每个属性的值
@@ -62,7 +61,7 @@ namespace GameFrameX.Foundation.Options
                         var displayValue = FormatPropertyValue(value);
                         var propertyType = property.PropertyType;
 
-                        Console.WriteLine($"  {property.Name,-20} : {displayValue,-30} ({GetFriendlyTypeName(propertyType)})");
+                        Console.WriteLine($"  {property.Name,-20} : {displayValue,-30}  ({GetFriendlyTypeName(propertyType)})");
                     }
                     catch (Exception ex)
                     {
@@ -71,9 +70,6 @@ namespace GameFrameX.Foundation.Options
                 }
 
                 Console.WriteLine();
-
-                // 尝试序列化为JSON格式显示
-                PrintJsonRepresentation(options);
             }
             catch (Exception ex)
             {
@@ -126,7 +122,7 @@ namespace GameFrameX.Foundation.Options
                 if (optionAttribute != null)
                 {
                     var shortName = optionAttribute.HasShortName ? optionAttribute.ShortName.ToString() : "";
-                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : {optionAttribute.Description ?? "无描述"}  类型: {GetFriendlyTypeName(property.PropertyType)}, 必需: {optionAttribute.Required} {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : "")}");
+                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : 必需: {(optionAttribute.Required ? "是" : "否")}, 类型: {GetFriendlyTypeName(property.PropertyType)}, 描述: {optionAttribute.Description ?? "无描述"}  {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : "")}");
                 }
                 else
                 {
@@ -250,31 +246,6 @@ namespace GameFrameX.Foundation.Options
             }
 
             return type.Name;
-        }
-
-        /// <summary>
-        /// 打印JSON格式的对象表示
-        /// </summary>
-        private static void PrintJsonRepresentation<T>(T options)
-        {
-            try
-            {
-                Console.WriteLine("📄 JSON格式表示:");
-                var jsonOptions = new JsonSerializerOptions
-                {
-                    WriteIndented = true,
-                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-                };
-
-                var json = JsonSerializer.Serialize(options, jsonOptions);
-                Console.WriteLine(json);
-                Console.WriteLine();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"   无法序列化为JSON: {ex.Message}");
-                Console.WriteLine();
-            }
         }
     }
 }
