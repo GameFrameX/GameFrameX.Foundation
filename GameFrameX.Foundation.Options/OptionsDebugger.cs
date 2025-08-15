@@ -118,7 +118,7 @@ namespace GameFrameX.Foundation.Options
                 if (optionAttribute != null)
                 {
                     var shortName = optionAttribute.HasShortName ? optionAttribute.ShortName.ToString() : "";
-                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : 必需: {(optionAttribute.Required ? "是" : "否")}, 类型: {GetFriendlyTypeName(property.PropertyType)}, 描述: {optionAttribute.Description ?? (helpTextAttribute != null ? helpTextAttribute.HelpText : "无描述或帮助文本")}  {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : "")}");
+                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : 必需: {(optionAttribute.Required ? "是" : "否")}, 类型: {GetFriendlyTypeName(property.PropertyType)}, 描述: {optionAttribute.Description ?? "无描述"}  {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : string.Empty)}  {(helpTextAttribute != null ? $"帮助文本: {helpTextAttribute.HelpText}" : string.Empty)}");
                 }
                 else
                 {
