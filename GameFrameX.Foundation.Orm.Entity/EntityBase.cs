@@ -13,7 +13,7 @@ namespace GameFrameX.Foundation.Orm.Entity;
 /// <summary>
 /// 框架实体基类
 /// </summary>
-public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilter, IVersionedEntity
+public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilter, IVersionedEntity, IEnabledFilter
 {
     /// <summary>
     /// 创建时间
@@ -63,6 +63,15 @@ public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilte
     /// </summary>
     [Description("版本号（用于乐观锁）")]
     public virtual long? Version { get; set; } = 1;
+
+    /// <summary>
+    /// 是否启用该实体或功能的标识
+    /// </summary>
+    /// <value>
+    /// true表示启用，false表示禁用，null表示未设置
+    /// </value>
+    [Description("是否启用,true:启用，false:禁用，null:未设置(启用)")]
+    public virtual bool? IsEnabled { get; set; }
 }
 
 /// <summary>
