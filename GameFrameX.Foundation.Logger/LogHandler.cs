@@ -58,9 +58,9 @@ public static class LogHandler
             var logPath = Path.Combine(logSavePath, logFileName);
 
             Console.WriteLine("以下为日志配置信息");
+            Console.WriteLine("╔═════════════════════════════════════════════════════════╗");
             Console.WriteLine(logOptions);
-            Console.WriteLine();
-            Console.WriteLine("日志系统配置 开始");
+            Console.WriteLine("╚═════════════════════════════════════════════════════════╝");
             Console.WriteLine();
             var logger = new LoggerConfiguration()
                          .Enrich.FromLogContext()
@@ -155,7 +155,6 @@ public static class LogHandler
                 LogHelper.SetLogger(serilog);
             }
 
-            Console.WriteLine("日志系统配置 结束");
             return serilog;
         }
         catch (Exception e)
