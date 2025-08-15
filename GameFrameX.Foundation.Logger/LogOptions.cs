@@ -92,6 +92,14 @@ public sealed class LogOptions
     public string GrafanaLokiPassword { get; set; }
 
     /// <summary>
+    /// 是否启用 GrafanaLoki 数据压缩，默认为 true
+    /// </summary>
+    /// <remarks>
+    /// 启用压缩可以减少网络传输的数据量，提高传输效率
+    /// </remarks>
+    public bool GrafanaLokiCompressionEnabled { get; set; } = true;
+
+    /// <summary>
     /// 日志滚动间隔，默认为每天（Day）。
     /// </summary>
     /// <remarks>

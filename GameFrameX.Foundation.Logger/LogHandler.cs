@@ -4,9 +4,11 @@
 // 
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
+using System.IO.Compression;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Grafana.Loki;
+using Serilog.Sinks.Grafana.Loki.HttpClients;
 
 namespace GameFrameX.Foundation.Logger;
 
@@ -90,7 +92,20 @@ public static class LogHandler
                     };
                 }
 
-                logger.WriteTo.GrafanaLoki(logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials);
+                // 判断是否启用压缩
+                if (logOptions.GrafanaLokiCompressionEnabled)
+                {
+                    // 使用默认压缩数据客户端
+                    var lokiGzipHttpClient = new LokiGzipHttpClient(null, CompressionLevel.Optimal);
+                    lokiGzipHttpClient.SetCredentials(lokiCredentials);
+                    lokiGzipHttpClient.SetTenant(null);
+                    // 根据源码的实际参数配置 GrafanaLoki
+                    logger.WriteTo.GrafanaLoki(uri: logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials, null, LogEventLevel.Verbose, 1000, null, TimeSpan.FromSeconds(2), null, lokiGzipHttpClient);
+                }
+                else
+                {
+                    logger.WriteTo.GrafanaLoki(logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials);
+                }
             }
 
             configurationAction?.Invoke(logger);
