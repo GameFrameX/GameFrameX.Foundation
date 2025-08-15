@@ -80,18 +80,19 @@ namespace GameFrameX.Foundation.Options
         /// </summary>
         private static void PrintAvailableOptions(Type optionsType)
         {
-            Console.WriteLine("⚙️  可用选项定义:");
+            Console.WriteLine("⚙  可用选项定义:");
 
             var properties = optionsType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             // 计算最大显示宽度
             int maxWidth = 0;
-            var optionInfos = new List<(PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute)>();
+            var optionInfos = new List<(PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute, Attributes.HelpTextAttribute helpTextAttribute)>();
 
             foreach (var property in properties.OrderBy(p => p.Name))
             {
                 var attributes = property.GetCustomAttributes(true);
                 var optionAttribute = attributes.OfType<Attributes.OptionAttribute>().FirstOrDefault();
+                var helpTextAttribute = attributes.OfType<Attributes.HelpTextAttribute>().FirstOrDefault();
 
                 string displayName;
                 if (optionAttribute != null)
@@ -105,19 +106,19 @@ namespace GameFrameX.Foundation.Options
                 }
 
                 maxWidth = Math.Max(maxWidth, displayName.Length);
-                optionInfos.Add((property, displayName, optionAttribute));
+                optionInfos.Add((property, displayName, optionAttribute, helpTextAttribute));
             }
 
             // 添加2个字符的缓冲空间
             maxWidth += 2;
 
             // 使用计算出的最大宽度进行格式化输出
-            foreach (var (property, displayName, optionAttribute) in optionInfos)
+            foreach (var (property, displayName, optionAttribute, helpTextAttribute) in optionInfos)
             {
                 if (optionAttribute != null)
                 {
                     var shortName = optionAttribute.HasShortName ? optionAttribute.ShortName.ToString() : "";
-                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : 必需: {(optionAttribute.Required ? "是" : "否")}, 类型: {GetFriendlyTypeName(property.PropertyType)}, 描述: {optionAttribute.Description ?? "无描述"}  {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : "")}");
+                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : 必需: {(optionAttribute.Required ? "是" : "否")}, 类型: {GetFriendlyTypeName(property.PropertyType)}, 描述: {optionAttribute.Description ?? (helpTextAttribute != null ? helpTextAttribute.HelpText : "无描述或帮助文本")}  {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : "")}");
                 }
                 else
                 {
