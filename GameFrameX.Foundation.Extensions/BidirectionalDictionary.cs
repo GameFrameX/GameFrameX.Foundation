@@ -111,4 +111,40 @@ public class BidirectionalDictionary<TKey, TValue>
 
         return false;
     }
+
+    /// <summary>
+    /// 尝试根据键移除键值对
+    /// </summary>
+    /// <param name="key">要移除的键，不能为 null（如果 TKey 是引用类型）。</param>
+    /// <param name="value">查找到的值。如果未找到对应的值，将设置为默认值。</param>
+    /// <returns>如果成功找到值并移除键值对，则为 true；否则为 false。</returns>
+    public bool TryRemoveKey(TKey key, out TValue value)
+    {
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        if (_forwardDictionary.Remove(key, out value))
+        {
+            _reverseDictionary.Remove(value);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 尝试根据值移除键值对
+    /// </summary>
+    /// <param name="value">要移除的值，不能为 null（如果 TValue 是引用类型）。</param>
+    /// <param name="key">查找到的键。如果未找到对应的值，将设置为默认值。</param>
+    /// <returns>如果成功找到值并移除键值对，则为 true；否则为 false。</returns>
+    public bool TryRemoveValue(TValue value, out TKey key)
+    {
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        if (_reverseDictionary.Remove(value, out key))
+        {
+            _forwardDictionary.Remove(key);
+            return true;
+        }
+
+        return false;
+    }
 }
