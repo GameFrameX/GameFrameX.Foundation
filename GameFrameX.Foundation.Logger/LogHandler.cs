@@ -66,9 +66,13 @@ public static class LogHandler
                          .Enrich.FromLogContext()
                          .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                          .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-                         .Enrich.WithProperty("AppType", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName)
-                         .Enrich.WithProperty("TagName", logOptions.LogTagName ?? "")
-                         .WriteTo.File(logPath, rollingInterval: logOptions.RollingInterval, rollOnFileSizeLimit: logOptions.IsFileSizeLimit, fileSizeLimitBytes: logOptions.FileSizeLimitBytes, retainedFileCountLimit: logOptions.RetainedFileCountLimit);
+                         .Enrich.WithProperty("AppType", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName);
+            if (!string.IsNullOrEmpty(logOptions.LogTagName))
+            {
+                logger.Enrich.WithProperty("TagName", logOptions.LogTagName ?? "");
+            }
+
+            logger.WriteTo.File(logPath, rollingInterval: logOptions.RollingInterval, rollOnFileSizeLimit: logOptions.IsFileSizeLimit, fileSizeLimitBytes: logOptions.FileSizeLimitBytes, retainedFileCountLimit: logOptions.RetainedFileCountLimit);
             if (logOptions.IsGrafanaLoki)
             {
                 var grafanaLokiLabels = new List<LokiLabel>();
