@@ -82,6 +82,24 @@ public static class LogHandler
                     grafanaLokiLabels.Add(lokiLabel);
                 }
 
+                if (logOptions.GrafanaLokiProperty != null)
+                {
+                    foreach (var property in logOptions.GrafanaLokiProperty)
+                    {
+                        if (string.IsNullOrWhiteSpace(property.Key))
+                        {
+                            continue;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(property.Value))
+                        {
+                            continue;
+                        }
+
+                        logger.Enrich.WithProperty(property.Key, property.Value);
+                    }
+                }
+
                 LokiCredentials lokiCredentials = null;
                 if (!string.IsNullOrWhiteSpace(logOptions.GrafanaLokiUsername) && !string.IsNullOrWhiteSpace(logOptions.GrafanaLokiPassword))
                 {

@@ -82,6 +82,11 @@ public sealed class LogOptions
     public Dictionary<string, string> GrafanaLokiLabels { get; set; } = new Dictionary<string, string>();
 
     /// <summary>
+    /// GrafanaLoki 其他属性
+    /// </summary>
+    public Dictionary<string, string> GrafanaLokiProperty { get; set; } = new Dictionary<string, string>();
+
+    /// <summary>
     /// GrafanaLoki 用户名
     /// </summary>
     public string GrafanaLokiUsername { get; set; }
