@@ -24,15 +24,13 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 服务器主机地址
         /// </summary>
-        [OptionAttribute('h', "host")]
-        [DefaultValueAttribute("localhost")]
+        [OptionAttribute('h', "host", DefaultValue = "localhost")]
         public string Host { get; set; } = "localhost";
 
         /// <summary>
         /// 服务器端口号
         /// </summary>
-        [OptionAttribute('p', "port")]
-        [DefaultValueAttribute(8080)]
+        [OptionAttribute('p', "port", DefaultValue = 8080)]
         public int Port { get; set; } = 8080;
 
         /// <summary>
@@ -44,15 +42,13 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 日志级别
         /// </summary>
-        [OptionAttribute('l', "log-level")]
-        [DefaultValueAttribute("Info")]
+        [OptionAttribute('l', "log-level", DefaultValue = "Info")]
         public string LogLevel { get; set; } = "Info";
 
         /// <summary>
         /// 超时时间（秒）
         /// </summary>
-        [OptionAttribute("timeout")]
-        [DefaultValueAttribute(30.0)]
+        [OptionAttribute("timeout", DefaultValue = 30.0)]
         public double Timeout { get; set; } = 30.0;
 
         /// <summary>

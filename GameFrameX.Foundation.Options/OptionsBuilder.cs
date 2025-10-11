@@ -249,27 +249,11 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         foreach (var property in properties)
         {
-            // 检查是否有默认值特性
-            var defaultValueAttr = property.GetCustomAttributes<DefaultValueAttribute>().FirstOrDefault();
-            if (defaultValueAttr != null && defaultValueAttr.Value != null)
-            {
-                try
-                {
-                    // 转换并设置默认值
-                    var convertedValue = Convert.ChangeType(defaultValueAttr.Value, property.PropertyType);
-                    property.SetValue(target, convertedValue);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"设置属性 {property.Name} 的默认值时发生错误: {ex.Message}");
-                }
-            }
-
             // 检查选项特性中的默认值
             var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
             foreach (var optionAttr in optionAttrs)
             {
-                if (optionAttr != null && optionAttr.DefaultValue != null && defaultValueAttr == null)
+                if (optionAttr != null && optionAttr.DefaultValue != null)
                 {
                     try
                     {

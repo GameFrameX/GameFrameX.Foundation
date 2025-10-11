@@ -15,8 +15,7 @@ public class AttributeOptionsTests
         [HelpText("应用程序监听的端口")]
         public int Port { get; set; }
 
-        [Option(LongName = "host", EnvironmentVariable = "TEST_HOST")]
-        [DefaultValue("localhost")]
+        [Option(LongName = "host", EnvironmentVariable = "TEST_HOST", DefaultValue = "localhost")]
         [HelpText("应用程序主机名")]
         public string Host { get; set; }
 

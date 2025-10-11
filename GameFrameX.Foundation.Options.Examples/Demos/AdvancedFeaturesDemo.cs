@@ -56,8 +56,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 服务器主机地址
         /// </summary>
-        [OptionAttribute('h', "host")]
-        [DefaultValueAttribute("localhost")]
+        [OptionAttribute('h', "host", DefaultValue = "localhost")]
         [EnvironmentVariableAttribute("SERVER_HOST")]
         [HelpTextAttribute("服务器主机地址，支持IP地址或域名")]
         public string Host { get; set; } = "localhost";
@@ -65,8 +64,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 服务器端口号
         /// </summary>
-        [OptionAttribute('p', "port")]
-        [DefaultValueAttribute(8080)]
+        [OptionAttribute('p', "port", DefaultValue = 8080)]
         [EnvironmentVariableAttribute("SERVER_PORT")]
         [HelpTextAttribute("服务器监听端口号，范围1-65535")]
         public int Port { get; set; } = 8080;
@@ -82,8 +80,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 日志级别（枚举类型）
         /// </summary>
-        [OptionAttribute('l', "log-level")]
-        [DefaultValueAttribute(LogLevel.Info)]
+        [OptionAttribute('l', "log-level", DefaultValue = LogLevel.Info)]
         [EnvironmentVariableAttribute("LOG_LEVEL")]
         [HelpTextAttribute("日志记录级别：Debug, Info, Warning, Error, Fatal")]
         public LogLevel LogLevel { get; set; } = LogLevel.Info;
@@ -91,8 +88,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 超时时间（浮点数类型）
         /// </summary>
-        [OptionAttribute("timeout")]
-        [DefaultValueAttribute(30.5)]
+        [OptionAttribute("timeout", DefaultValue = 30.5)]
         [EnvironmentVariableAttribute("REQUEST_TIMEOUT")]
         [HelpTextAttribute("请求超时时间，单位为秒，支持小数")]
         public double Timeout { get; set; } = 30.5;
@@ -132,8 +128,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 最大连接数（可空整数）
         /// </summary>
-        [OptionAttribute("max-connections")]
-        [DefaultValueAttribute(100)]
+        [OptionAttribute("max-connections", DefaultValue = 100)]
         [EnvironmentVariableAttribute("MAX_CONNECTIONS")]
         [HelpTextAttribute("最大并发连接数，默认100")]
         public int? MaxConnections { get; set; } = 100;
@@ -141,8 +136,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 缓存大小（十进制数）
         /// </summary>
-        [OptionAttribute("cache-size")]
-        [DefaultValueAttribute(256.5)]
+        [OptionAttribute("cache-size", DefaultValue = 256.5)]
         [EnvironmentVariableAttribute("CACHE_SIZE")]
         [HelpTextAttribute("缓存大小，单位MB，支持小数")]
         public decimal CacheSize { get; set; } = 256.5m;
