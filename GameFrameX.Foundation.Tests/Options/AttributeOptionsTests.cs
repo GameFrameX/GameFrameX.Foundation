@@ -232,4 +232,116 @@ public class AttributeOptionsTests
             Environment.SetEnvironmentVariable("TEST_CONNECTION", null);
         }
     }
+
+    [Fact]
+    public void Build_WithEmptyEnvironmentVariableValue_ShouldUseDefaultValue()
+    {
+        // 安排 - 测试空环境变量值不会导致IndexOutOfRangeException
+        var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
+        
+        // 设置空的环境变量值
+        Environment.SetEnvironmentVariable("TEST_PORT", "");
+        Environment.SetEnvironmentVariable("TEST_HOST", "");
+        
+        var builder = new OptionsBuilder<TestOptions>(args);
+
+        try
+        {
+            // 执行 - 这里不应该抛出IndexOutOfRangeException
+            var options = builder.Build();
+
+            // 断言 - 应该使用默认值，而不是空值
+            Assert.Equal(8080, options.Port); // 使用默认值
+            Assert.Equal("localhost", options.Host); // 使用默认值
+            Assert.Equal("test-key", options.ApiKey);
+        }
+        finally
+        {
+            // 清理环境变量
+            Environment.SetEnvironmentVariable("TEST_PORT", null);
+            Environment.SetEnvironmentVariable("TEST_HOST", null);
+        }
+    }
+
+    [Fact]
+    public void Build_WithUndefinedEnvironmentVariableValue_ShouldUseDefaultValue()
+    {
+        // 安排 - 测试"undefined"环境变量值不会导致IndexOutOfRangeException
+        var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
+        
+        // 设置"undefined"的环境变量值（模拟某些系统中的情况）
+        Environment.SetEnvironmentVariable("TEST_PORT", "undefined");
+        Environment.SetEnvironmentVariable("TEST_HOST", "undefined");
+        
+        var builder = new OptionsBuilder<TestOptions>(args);
+
+        try
+        {
+            // 执行 - 这里不应该抛出IndexOutOfRangeException
+            var options = builder.Build();
+
+            // 断言 - 对于字符串类型，"undefined"会被当作有效值使用
+            // 对于数字类型，"undefined"无法解析，应该使用默认值
+            Assert.Equal(8080, options.Port); // 无法解析"undefined"为int，使用默认值
+            Assert.Equal("undefined", options.Host); // 字符串类型直接使用"undefined"
+            Assert.Equal("test-key", options.ApiKey);
+        }
+        finally
+        {
+            // 清理环境变量
+            Environment.SetEnvironmentVariable("TEST_PORT", null);
+            Environment.SetEnvironmentVariable("TEST_HOST", null);
+        }
+    }
+
+    [Fact]
+    public void Build_WithNullEnvironmentVariableValue_ShouldUseDefaultValue()
+    {
+        // 安排 - 测试null环境变量值（通过显式设置为null）
+        var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
+        
+        // 显式设置环境变量为null（清除）
+        Environment.SetEnvironmentVariable("TEST_PORT", null);
+        Environment.SetEnvironmentVariable("TEST_HOST", null);
+        
+        var builder = new OptionsBuilder<TestOptions>(args);
+
+        // 执行 - 这里不应该抛出任何异常
+        var options = builder.Build();
+
+        // 断言 - 应该使用默认值
+        Assert.Equal(8080, options.Port); // 使用默认值
+        Assert.Equal("localhost", options.Host); // 使用默认值
+        Assert.Equal("test-key", options.ApiKey);
+    }
+
+    [Fact]
+    public void Build_WithMixedEmptyAndValidEnvironmentVariables_ShouldHandleCorrectly()
+    {
+        // 安排 - 测试混合的空值和有效值环境变量
+        var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
+        
+        // 设置混合的环境变量值
+        Environment.SetEnvironmentVariable("TEST_PORT", "9999"); // 有效值
+        Environment.SetEnvironmentVariable("TEST_HOST", ""); // 空值
+        
+        var builder = new OptionsBuilder<TestOptions>(args);
+
+        try
+        {
+            // 执行 - 这里不应该抛出IndexOutOfRangeException
+            var options = builder.Build();
+
+            // 断言
+            Assert.Equal(9999, options.Port); // 使用环境变量值
+            Assert.Equal("localhost", options.Host); // 空值被忽略，使用默认值
+            Assert.Equal("test-key", options.ApiKey);
+        }
+        finally
+        {
+            // 清理环境变量
+            Environment.SetEnvironmentVariable("TEST_PORT", null);
+            Environment.SetEnvironmentVariable("TEST_HOST", null);
+        }
+    }
 }
