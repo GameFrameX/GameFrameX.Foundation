@@ -61,6 +61,7 @@ namespace GameFrameX.Foundation.Options
                     catch (Exception ex)
                     {
                         Console.WriteLine($"  {property.Name,-20} : <获取值时出错: {ex.Message}>");
+                        Console.WriteLine(ex);
                     }
                 }
 
@@ -69,6 +70,7 @@ namespace GameFrameX.Foundation.Options
             catch (Exception ex)
             {
                 Console.WriteLine($"打印配置对象时出错: {ex.Message}");
+                Console.WriteLine(ex);
             }
 
             Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
