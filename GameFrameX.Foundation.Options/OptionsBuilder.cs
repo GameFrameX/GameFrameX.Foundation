@@ -265,6 +265,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     catch (Exception ex)
                     {
                         Console.WriteLine($"设置属性 {property.Name} 的默认值时发生错误: {ex.Message}");
+                        Console.WriteLine(ex);
                     }
                 }
             }
@@ -427,10 +428,10 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     }
                 }
             }
-        }
         catch (Exception ex)
         {
             Console.WriteLine($"获取环境变量时发生错误: {ex.Message}");
+            Console.WriteLine(ex);
         }
 
         return result;
@@ -793,6 +794,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 catch (Exception ex)
                 {
                     Console.WriteLine($"设置属性 {property.Name} 时发生错误: {ex.Message}");
+                    Console.WriteLine(ex);
                 }
             }
         }
