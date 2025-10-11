@@ -391,43 +391,61 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 var keyStr = key.ToString();
                 var value = envVars[key]?.ToString();
 
-                if (!string.IsNullOrEmpty(value))
+                // 即使值为空也要处理，因为空值可能是有意义的
+                // 检查是否有映射
+                if (envVarMappings.TryGetValue(keyStr, out var property))
                 {
-                    // 检查是否有映射
-                    if (envVarMappings.TryGetValue(keyStr, out var property))
+                    // 如果值为空或null，跳过处理，让属性保持默认值
+                    if (string.IsNullOrEmpty(value))
                     {
-                        // 处理布尔值
-                        if (property.PropertyType == typeof(bool) && IsBooleanValue(value))
-                        {
-                            result[property.Name] = ParseBooleanValue(value);
-                        }
-                        else
-                        {
-                            result[property.Name] = value;
-                        }
+                        continue;
+                    }
+
+                    // 处理布尔值
+                    if (property.PropertyType == typeof(bool) && IsBooleanValue(value))
+                    {
+                        result[property.Name] = ParseBooleanValue(value);
                     }
                     else
                     {
-                        // 尝试直接匹配属性名
-                        var normalizedKey = NormalizePropertyName(keyStr);
-                        var matchedProperty = properties.FirstOrDefault(p =>
-                                                                            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+                        result[property.Name] = value;
+                    }
+                }
+                else
+                {
+                    // 如果值为空或null，跳过处理
+                    if (string.IsNullOrEmpty(value))
+                    {
+                        continue;
+                    }
 
-                        if (matchedProperty != null)
+                    // 尝试直接匹配属性名
+                    var normalizedKey = NormalizePropertyName(keyStr);
+
+                    // 如果标准化后的键为空，跳过处理
+                    if (string.IsNullOrEmpty(normalizedKey))
+                    {
+                        continue;
+                    }
+
+                    var matchedProperty = properties.FirstOrDefault(p =>
+                                                                        string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+
+                    if (matchedProperty != null)
+                    {
+                        // 处理布尔值
+                        if (matchedProperty.PropertyType == typeof(bool) && IsBooleanValue(value))
                         {
-                            // 处理布尔值
-                            if (matchedProperty.PropertyType == typeof(bool) && IsBooleanValue(value))
-                            {
-                                result[matchedProperty.Name] = ParseBooleanValue(value);
-                            }
-                            else
-                            {
-                                result[matchedProperty.Name] = value;
-                            }
+                            result[matchedProperty.Name] = ParseBooleanValue(value);
+                        }
+                        else
+                        {
+                            result[matchedProperty.Name] = value;
                         }
                     }
                 }
             }
+        }
         catch (Exception ex)
         {
             Console.WriteLine($"获取环境变量时发生错误: {ex.Message}");
@@ -807,6 +825,12 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// <returns>标准化后的属性名</returns>
     private string NormalizePropertyName(string key)
     {
+        // 检查输入参数
+        if (string.IsNullOrEmpty(key))
+        {
+            return string.Empty;
+        }
+
         // 移除前缀
         if (key.StartsWith("--"))
         {
@@ -817,15 +841,28 @@ public sealed class OptionsBuilder<T> where T : class, new()
             key = key.Substring(1);
         }
 
+        // 再次检查处理后的key是否为空
+        if (string.IsNullOrEmpty(key))
+        {
+            return string.Empty;
+        }
+
         // 处理连字符和下划线
         if (key.Contains("-") || key.Contains("_"))
         {
             var parts = key.Split(new[] { '-', '_' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // 如果分割后没有有效部分，返回空字符串
+            if (parts.Length == 0)
+            {
+                return string.Empty;
+            }
+
             key = parts[0];
 
             for (int i = 1; i < parts.Length; i++)
             {
-                if (!string.IsNullOrEmpty(parts[i]))
+                if (!string.IsNullOrEmpty(parts[i]) && parts[i].Length > 0)
                 {
                     key += char.ToUpper(parts[i][0]) + (parts[i].Length > 1 ? parts[i].Substring(1) : "");
                 }
