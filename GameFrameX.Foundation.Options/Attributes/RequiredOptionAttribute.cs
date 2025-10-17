@@ -34,7 +34,7 @@ public class RequiredOptionAttribute : OptionAttribute
     /// </summary>
     /// <param name="shortName">选项的短名称（单个字符）</param>
     /// <param name="longName">选项的长名称</param>
-    public RequiredOptionAttribute(char shortName, string longName) : base(shortName, longName)
+    public RequiredOptionAttribute(char shortName, string longName) : base(longName)
     {
         Required = true;
     }

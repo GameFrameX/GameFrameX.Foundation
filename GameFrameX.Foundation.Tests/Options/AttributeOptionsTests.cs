@@ -11,7 +11,7 @@ public class AttributeOptionsTests
 
     private class TestOptions
     {
-        [Option('p', "port", DefaultValue = 8080, EnvironmentVariable = "TEST_PORT")]
+        [Option("port", DefaultValue = 8080, EnvironmentVariable = "TEST_PORT")]
         [HelpText("应用程序监听的端口")]
         public int Port { get; set; }
 
@@ -32,7 +32,7 @@ public class AttributeOptionsTests
 
     private class TestOptionsWithMultipleAttributes
     {
-        [Option('c', "connection-string", EnvironmentVariable = "TEST_CONNECTION")]
+        [Option("connection-string", EnvironmentVariable = "TEST_CONNECTION")]
         [RequiredOption(Required = true)]
         [HelpText("数据库连接字符串")]
         public string ConnectionString { get; set; }

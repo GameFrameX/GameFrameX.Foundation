@@ -56,7 +56,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 服务器主机地址
         /// </summary>
-        [OptionAttribute('h', "host", DefaultValue = "localhost")]
+        [OptionAttribute("host", DefaultValue = "localhost")]
         [EnvironmentVariableAttribute("SERVER_HOST")]
         [HelpTextAttribute("服务器主机地址，支持IP地址或域名")]
         public string Host { get; set; } = "localhost";
@@ -64,7 +64,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 服务器端口号
         /// </summary>
-        [OptionAttribute('p', "port", DefaultValue = 8080)]
+        [OptionAttribute("port", DefaultValue = 8080)]
         [EnvironmentVariableAttribute("SERVER_PORT")]
         [HelpTextAttribute("服务器监听端口号，范围1-65535")]
         public int Port { get; set; } = 8080;
@@ -72,7 +72,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 是否启用SSL
         /// </summary>
-        [FlagOptionAttribute('s', "ssl")]
+        [FlagOptionAttribute("ssl")]
         [EnvironmentVariableAttribute("ENABLE_SSL")]
         [HelpTextAttribute("启用SSL/TLS加密连接")]
         public bool EnableSsl { get; set; } = false;
@@ -80,7 +80,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 日志级别（枚举类型）
         /// </summary>
-        [OptionAttribute('l', "log-level", DefaultValue = LogLevel.Info)]
+        [OptionAttribute("log-level", DefaultValue = LogLevel.Info)]
         [EnvironmentVariableAttribute("LOG_LEVEL")]
         [HelpTextAttribute("日志记录级别：Debug, Info, Warning, Error, Fatal")]
         public LogLevel LogLevel { get; set; } = LogLevel.Info;
@@ -144,7 +144,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 是否启用调试模式（可空布尔值）
         /// </summary>
-        [FlagOptionAttribute('d', "debug")]
+        [FlagOptionAttribute("debug")]
         [EnvironmentVariableAttribute("DEBUG")]
         [HelpTextAttribute("启用调试模式，显示详细日志")]
         public bool? Debug { get; set; }

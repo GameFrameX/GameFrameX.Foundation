@@ -28,14 +28,4 @@ public class FlagOptionAttribute : OptionAttribute
     {
         DefaultValue = false;
     }
-
-    /// <summary>
-    /// 使用指定的短名称和长名称初始化 <see cref="FlagOptionAttribute"/> 类的新实例
-    /// </summary>
-    /// <param name="shortName">选项的短名称（单个字符）</param>
-    /// <param name="longName">选项的长名称</param>
-    public FlagOptionAttribute(char shortName, string longName) : base(shortName, longName)
-    {
-        DefaultValue = false;
-    }
 }

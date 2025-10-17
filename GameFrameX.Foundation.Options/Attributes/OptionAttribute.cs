@@ -13,11 +13,6 @@ namespace GameFrameX.Foundation.Options.Attributes;
 public class OptionAttribute : Attribute
 {
     /// <summary>
-    /// 获取或设置选项的短名称（单个字符）
-    /// </summary>
-    public char ShortName { get; set; }
-
-    /// <summary>
     /// 获取或设置选项的长名称
     /// </summary>
     public string LongName { get; set; }
@@ -57,20 +52,4 @@ public class OptionAttribute : Attribute
     {
         LongName = longName;
     }
-
-    /// <summary>
-    /// 使用指定的短名称和长名称初始化 <see cref="OptionAttribute"/> 类的新实例
-    /// </summary>
-    /// <param name="shortName">选项的短名称（单个字符）</param>
-    /// <param name="longName">选项的长名称</param>
-    public OptionAttribute(char shortName, string longName)
-    {
-        ShortName = shortName;
-        LongName = longName;
-    }
-
-    /// <summary>
-    /// 检查是否设置了短名称
-    /// </summary>
-    public bool HasShortName => ShortName != '\0';
 }

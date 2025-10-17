@@ -599,12 +599,6 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 {
                     result[optionAttr.LongName] = property.Name;
                 }
-
-                // 添加短名称映射
-                if (optionAttr.HasShortName)
-                {
-                    result[optionAttr.ShortName.ToString()] = property.Name;
-                }
             }
 
             // 默认使用属性名作为选项名

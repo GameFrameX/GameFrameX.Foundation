@@ -25,25 +25,25 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 服务器主机地址
         /// </summary>
-        [OptionAttribute('h', "host", DefaultValue = "localhost")]
+        [OptionAttribute("host", DefaultValue = "localhost")]
         public string Host { get; set; } = "localhost";
 
         /// <summary>
         /// 服务器端口号
         /// </summary>
-        [OptionAttribute('p', "port", DefaultValue = 8080)]
+        [OptionAttribute("port", DefaultValue = 8080)]
         public int Port { get; set; } = 8080;
 
         /// <summary>
         /// 是否启用调试模式
         /// </summary>
-        [FlagOptionAttribute('d', "debug")]
+        [FlagOptionAttribute("debug")]
         public bool Debug { get; set; } = false;
 
         /// <summary>
         /// 日志级别
         /// </summary>
-        [OptionAttribute('l', "log-level", DefaultValue = "Info")]
+        [OptionAttribute("log-level", DefaultValue = "Info")]
         public string LogLevel { get; set; } = "Info";
 
         /// <summary>
