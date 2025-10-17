@@ -23,7 +23,7 @@ public sealed class LogOptions
             logPathName = "logs";
         }
 
-        LogSavePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, logPathName);
+        LogSavePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "data", logPathName);
     }
 
     /// <summary>
