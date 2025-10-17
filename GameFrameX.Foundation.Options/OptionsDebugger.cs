@@ -56,11 +56,11 @@ namespace GameFrameX.Foundation.Options
                         var displayValue = FormatPropertyValue(value);
                         var propertyType = property.PropertyType;
 
-                        Console.WriteLine($"  {property.Name,-20} : {displayValue,-30}  ({GetFriendlyTypeName(propertyType)})");
+                        Console.WriteLine($"  {property.Name,-40} :({GetFriendlyTypeName(propertyType),-20}) {displayValue,-40}");
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"  {property.Name,-20} : <获取值时出错: {ex.Message}>");
+                        Console.WriteLine($"  {property.Name,-40} : <获取值时出错: {ex.Message}>");
                         Console.WriteLine(ex);
                     }
                 }
@@ -120,7 +120,7 @@ namespace GameFrameX.Foundation.Options
                 if (optionAttribute != null)
                 {
                     var shortName = optionAttribute.HasShortName ? optionAttribute.ShortName.ToString() : "";
-                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : 必需: {(optionAttribute.Required ? "是" : "否")}, 类型: {GetFriendlyTypeName(property.PropertyType)}, 描述: {optionAttribute.Description ?? "无描述"}  {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : string.Empty)}  {(helpTextAttribute != null ? $"帮助文本: {helpTextAttribute.HelpText}" : string.Empty)}");
+                    Console.WriteLine($"   {displayName.PadRight(maxWidth, ' ')} {(optionAttribute.HasShortName ? $"(-{shortName})" : "")} : 必需: {(optionAttribute.Required ? "是" : "否")}, 类型: {GetFriendlyTypeName(property.PropertyType),-20}, 描述: {optionAttribute.Description ?? "无描述"}  {(optionAttribute.DefaultValue != null ? $"默认值: {optionAttribute.DefaultValue}" : string.Empty)}  {(helpTextAttribute != null ? $"帮助文本: {helpTextAttribute.HelpText}" : string.Empty)}");
                 }
                 else
                 {
