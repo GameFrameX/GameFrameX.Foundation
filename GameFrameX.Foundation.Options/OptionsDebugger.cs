@@ -56,7 +56,7 @@ namespace GameFrameX.Foundation.Options
                         var displayValue = FormatPropertyValue(value);
                         var propertyType = property.PropertyType;
 
-                        Console.WriteLine($"  {property.Name,-40} :{GetFriendlyTypeName(propertyType),-10} {displayValue,-40}");
+                        Console.WriteLine($"  {property.Name,-40} :{GetFriendlyTypeName(propertyType),-10} :{displayValue,-40}");
                     }
                     catch (Exception ex)
                     {
