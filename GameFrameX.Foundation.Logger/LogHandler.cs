@@ -50,12 +50,14 @@ public static class LogHandler
             // 日志文件存储的路径
             var logFileName = $"{(logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName).ToLower()}_.log";
             var logSavePath = logOptions.LogSavePath ?? "./logs/";
-            if (!Directory.Exists(logSavePath))
-            {
-                Directory.CreateDirectory(logSavePath);
-            }
-
+            // 计算最终日志文件路径
             var logPath = Path.Combine(logSavePath, logFileName);
+            // 兼容可能的层级目录：始终创建文件所在的目录
+            var logFolderPath = Path.GetDirectoryName(logPath) ?? logSavePath;
+            if (!Directory.Exists(logFolderPath))
+            {
+                Directory.CreateDirectory(logFolderPath);
+            }
 
             Console.WriteLine("the following is the log configuration information");
             Console.WriteLine("╔═════════════════════════════════════════════════════════╗");
