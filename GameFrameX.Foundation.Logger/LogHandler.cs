@@ -57,7 +57,7 @@ public static class LogHandler
 
             var logPath = Path.Combine(logSavePath, logFileName);
 
-            Console.WriteLine("以下为日志配置信息");
+            Console.WriteLine("the following is the log configuration information");
             Console.WriteLine("╔═════════════════════════════════════════════════════════╗");
             Console.WriteLine(logOptions);
             Console.WriteLine("╚═════════════════════════════════════════════════════════╝");
