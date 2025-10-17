@@ -16,7 +16,7 @@ namespace GameFrameX.Foundation.Options
         {
             Console.WriteLine();
             Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║                    命令行参数解析调试信息                    ║");
+            Console.WriteLine("║  Command-line parameter parsing debugging information        ║");
             Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
             Console.WriteLine();
 
@@ -35,7 +35,7 @@ namespace GameFrameX.Foundation.Options
         {
             Console.WriteLine();
             Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║                    解析后的配置对象信息                      ║");
+            Console.WriteLine("║  parsed configuration object information                     ║");
             Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
             Console.WriteLine();
 
@@ -82,7 +82,7 @@ namespace GameFrameX.Foundation.Options
         /// </summary>
         private static void PrintAvailableOptions(Type optionsType)
         {
-            Console.WriteLine("⚙  可用选项定义:");
+            Console.WriteLine("⚙  available options to define:");
 
             var properties = optionsType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
