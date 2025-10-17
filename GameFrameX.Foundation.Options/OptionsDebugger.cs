@@ -198,7 +198,17 @@ namespace GameFrameX.Foundation.Options
                 return "字符串";
             }
 
-            if (type == typeof(int))
+            if (type == typeof(byte))
+            {
+                return "字节";
+            }
+
+            if (type == typeof(short) || type == typeof(ushort))
+            {
+                return "短整数";
+            }
+
+            if (type == typeof(int) || type == typeof(uint))
             {
                 return "整数";
             }
@@ -218,7 +228,7 @@ namespace GameFrameX.Foundation.Options
                 return "单精度浮点数";
             }
 
-            if (type == typeof(long))
+            if (type == typeof(long) || type == typeof(ulong))
             {
                 return "长整数";
             }
