@@ -34,6 +34,26 @@ public static class LogHandler
     }
 
     /// <summary>
+    /// 创建并返回一个基础的 Serilog 日志配置。
+    /// </summary>
+    /// <remarks>
+    /// - 启用上下文丰富（Enrich.FromLogContext），便于在日志中附带请求或业务上下文信息。
+    /// - 下调框架日志噪声：将 Microsoft 组件日志级别设为 Information，将 ASP.NET Core 设为 Warning，减少不必要的输出。
+    /// 该基础配置可在后续继续追加写入目标、丰富属性、最小日志级别等。
+    /// </remarks>
+    /// <returns>用于后续扩展的基础 LoggerConfiguration。</returns>
+    public static LoggerConfiguration CreateLoggerConfiguration()
+    {
+        return new LoggerConfiguration()
+               // 启用上下文丰富，自动附加 LogContext 中的属性到日志事件
+               .Enrich.FromLogContext()
+               // 降低框架日志噪声：Microsoft 组件默认输出为 Information
+               .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+               // ASP.NET Core 默认仅记录 Warning 及以上级别
+               .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning);
+    }
+
+    /// <summary>
     /// 启动并配置日志系统
     /// </summary>
     /// <param name="logOptions">日志配置选项，包含日志级别、存储路径等配置信息</param>
@@ -64,11 +84,7 @@ public static class LogHandler
             Console.WriteLine(logOptions);
             Console.WriteLine("╚═════════════════════════════════════════════════════════╝");
             Console.WriteLine();
-            var logger = new LoggerConfiguration()
-                         .Enrich.FromLogContext()
-                         .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                         .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-                         .Enrich.WithProperty("AppType", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName);
+            var logger = CreateLoggerConfiguration().Enrich.WithProperty("AppType", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName);
             if (!string.IsNullOrEmpty(logOptions.LogTagName))
             {
                 logger.Enrich.WithProperty("TagName", logOptions.LogTagName ?? "");
