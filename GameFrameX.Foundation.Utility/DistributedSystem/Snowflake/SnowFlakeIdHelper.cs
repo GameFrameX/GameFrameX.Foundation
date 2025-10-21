@@ -45,7 +45,7 @@ public static class SnowFlakeIdHelper
     /// <value>
     /// 以毫秒为单位的时间戳起始点
     /// </value>
-    public static long BaseTime = (UtcTimeStart - EpochTime).Milliseconds;
+    public static long BaseTime = (long)(UtcTimeStart - EpochTime).TotalMilliseconds;
 
     /// <summary>
     /// 内部的 IdWorker 实例
