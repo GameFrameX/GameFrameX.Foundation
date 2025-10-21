@@ -44,5 +44,12 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="SqlSugar.MongoDbCore" Version="5.1.4.266"/>
+        <PackageReference Include="SqlSugarCore" Version="5.1.4.205"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj"/>
+    </ItemGroup>
 
 </Project>
