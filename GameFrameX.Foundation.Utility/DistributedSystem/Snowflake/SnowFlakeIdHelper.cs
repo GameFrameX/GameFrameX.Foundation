@@ -24,9 +24,28 @@ namespace GameFrameX.Foundation.Utility.DistributedSystem.Snowflake;
 public static class SnowFlakeIdHelper
 {
     /// <summary>
+    /// 全局UTC起始时间，用作计数器的基准时间点
+    /// 设置为2025年1月1日0时0分0秒(UTC)
+    /// </summary>
+    public static readonly DateTime UtcTimeStart = new(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+    /// <summary>
+    /// 1970-01-01 00:00:00 UTC 时间
+    /// </summary>
+    public static readonly DateTime EpochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+    /// <summary>
     /// 用于线程同步的锁对象
     /// </summary>
     private static readonly object LockObject = new object();
+
+    /// <summary>
+    /// 时间戳起始点（2010-11-04 09:42:54），Twitter雪花算法的起始时间
+    /// </summary>
+    /// <value>
+    /// 以毫秒为单位的时间戳起始点
+    /// </value>
+    public static long BaseTime = (UtcTimeStart - EpochTime).Milliseconds;
 
     /// <summary>
     /// 内部的 IdWorker 实例
@@ -96,7 +115,7 @@ public static class SnowFlakeIdHelper
                 {
                     if (_worker == null)
                     {
-                        _worker = new IdWorker(WorkId, DatacenterId);
+                        _worker = new IdWorker(WorkId, DatacenterId, BaseTime);
                     }
                 }
             }

@@ -45,14 +45,6 @@ namespace GameFrameX.Foundation.Utility.DistributedSystem.Snowflake;
 public class IdWorker
 {
     /// <summary>
-    /// 时间戳起始点（2010-11-04 09:42:54），Twitter雪花算法的起始时间
-    /// </summary>
-    /// <value>
-    /// 以毫秒为单位的时间戳起始点
-    /// </value>
-    public const long Twepoch = 1288834974657L;
-
-    /// <summary>
     /// 工作节点ID占用的位数
     /// </summary>
     const int WorkerIdBits = 5;
@@ -113,6 +105,7 @@ public class IdWorker
     /// <param name="workerId">工作节点ID，取值范围为 0 到 31</param>
     /// <param name="dataCenterId">数据中心ID，取值范围为 0 到 31</param>
     /// <param name="sequence">初始序列号，默认为 0</param>
+    /// <param name="baseTime">开始时间</param>
     /// <exception cref="ArgumentException">
     /// 当 <paramref name="workerId"/> 超出有效范围（0-31）时抛出
     /// </exception>
@@ -132,10 +125,11 @@ public class IdWorker
     /// var idWorkerWithSequence = new IdWorker(2, 1, 100);
     /// </code>
     /// </example>
-    public IdWorker(long workerId, long dataCenterId, long sequence = 0L)
+    public IdWorker(long workerId, long dataCenterId, long baseTime = 1288834974657L, long sequence = 0L)
     {
         WorkerId = workerId;
         DataCenterId = dataCenterId;
+        BaseTime = baseTime;
         _sequence = sequence;
 
         // sanity check for workerId
@@ -171,6 +165,11 @@ public class IdWorker
     /// 数据中心ID在实例创建后不可更改，用于标识不同的数据中心
     /// </remarks>
     public long DataCenterId { get; protected set; }
+
+    /// <summary>
+    /// 起始时间
+    /// </summary>
+    public long BaseTime { get; }
 
     /// <summary>
     /// 获取或设置当前序列号
@@ -252,7 +251,7 @@ public class IdWorker
             }
 
             _lastTimestamp = timestamp;
-            var id = ((timestamp - Twepoch) << TimestampLeftShift) |
+            var id = ((timestamp - BaseTime) << TimestampLeftShift) |
                      (DataCenterId << DatacenterIdShift) |
                      (WorkerId << WorkerIdShift) | _sequence;
 
