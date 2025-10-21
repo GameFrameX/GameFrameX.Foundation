@@ -74,7 +74,7 @@ public static class SnowFlakeIdHelper
     /// 该值在创建 <see cref="IdWorker"/> 实例之前可以修改。
     /// 一旦实例创建后，修改此值不会影响已创建的实例。
     /// </remarks>
-    public static int DatacenterId = 1;
+    public static int DataCenterId = 1;
 
     /// <summary>
     /// 静态构造函数
@@ -94,7 +94,7 @@ public static class SnowFlakeIdHelper
     /// </value>
     /// <remarks>
     /// 使用双重检查锁定模式实现线程安全的单例模式。
-    /// 实例使用当前的 <see cref="WorkId"/> 和 <see cref="DatacenterId"/> 值进行初始化。
+    /// 实例使用当前的 <see cref="WorkId"/> 和 <see cref="DataCenterId"/> 值进行初始化。
     /// </remarks>
     /// <returns>
     /// 返回 <see cref="IdWorker"/> 的单例实例
@@ -115,7 +115,7 @@ public static class SnowFlakeIdHelper
                 {
                     if (_worker == null)
                     {
-                        _worker = new IdWorker(WorkId, DatacenterId, BaseTime);
+                        _worker = new IdWorker(WorkId, DataCenterId, BaseTime);
                     }
                 }
             }
