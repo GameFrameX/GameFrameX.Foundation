@@ -111,16 +111,38 @@ public static class SqlSugarHelper
             // 自动填充创建时间
             if (entityInfo.PropertyName == nameof(EntityBase.CreateTime))
             {
-                entityInfo.SetValue(DateTime.UtcNow);
+                if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(DateTime))
+                {
+                    entityInfo.SetValue(DateTime.UtcNow);
+                }
+                else if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
+                {
+                    entityInfo.SetValue(TimerHelper.UnixTimeMilliseconds());
+                }
+                else if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(string))
+                {
+                    entityInfo.SetValue(DateTime.UtcNow.ToString("O"));
+                }
             }
         }
 
         if (entityInfo.OperationType == DataFilterType.UpdateByObject)
         {
-            // 自动填充更新时间
             if (entityInfo.PropertyName == nameof(EntityBase.UpdateTime))
             {
-                entityInfo.SetValue(DateTime.UtcNow);
+                // 自动填充更新时间
+                if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(DateTime))
+                {
+                    entityInfo.SetValue(DateTime.UtcNow);
+                }
+                else if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(long))
+                {
+                    entityInfo.SetValue(TimerHelper.UnixTimeMilliseconds());
+                }
+                else if (entityInfo.EntityColumnInfo.PropertyInfo.PropertyType == typeof(string))
+                {
+                    entityInfo.SetValue(DateTime.UtcNow.ToString("O"));
+                }
             }
         }
 
