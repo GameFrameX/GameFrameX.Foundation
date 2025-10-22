@@ -32,6 +32,7 @@
     <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj" />
       <ProjectReference Include="..\GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj"/>
+      <ProjectReference Include="..\GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
