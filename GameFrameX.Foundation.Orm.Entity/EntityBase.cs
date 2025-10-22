@@ -127,6 +127,5 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, I
     /// 版本号（用于乐观锁）
     /// </summary>
     [Description("版本号（用于乐观锁）")]
-    [SqlSugar.SugarColumn(IsEnableUpdateVersionValidation = true)] //标识版本字段
     public virtual long? Version { get; set; } = 0;
 }
