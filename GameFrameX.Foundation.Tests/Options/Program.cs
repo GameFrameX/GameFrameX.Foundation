@@ -18,7 +18,7 @@ namespace GameFrameX.Foundation.Options.Examples
         /// 程序主入口点
         /// </summary>
         /// <param name="args">命令行参数</param>
-        static void Main(string[] args)
+        static void Entry(string[] args)
         {
             Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
             Console.WriteLine("║            GameFrameX Foundation Options 示例程序             ║");

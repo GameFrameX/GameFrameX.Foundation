@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Exten
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Options", "GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj", "{F53AEC90-B181-4513-925B-820A3E4CE1F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Options.Examples", "GameFrameX.Foundation.Options.Examples\GameFrameX.Foundation.Options.Examples.csproj", "{860A6E42-3117-42C9-A977-A5AD1F4EFC86}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Orm.Attribute", "GameFrameX.Foundation.Orm.Attribute\GameFrameX.Foundation.Orm.Attribute.csproj", "{7B039E81-BF98-413B-B765-2513FE167A5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Orm.Entity", "GameFrameX.Foundation.Orm.Entity\GameFrameX.Foundation.Orm.Entity.csproj", "{E3CCD2E6-459E-4EF8-8D65-F4793366407D}"
@@ -144,18 +142,6 @@ Global
 		{F53AEC90-B181-4513-925B-820A3E4CE1F4}.Release|x64.Build.0 = Release|Any CPU
 		{F53AEC90-B181-4513-925B-820A3E4CE1F4}.Release|x86.ActiveCfg = Release|Any CPU
 		{F53AEC90-B181-4513-925B-820A3E4CE1F4}.Release|x86.Build.0 = Release|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Debug|x64.Build.0 = Debug|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Debug|x86.Build.0 = Debug|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Release|x64.ActiveCfg = Release|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Release|x64.Build.0 = Release|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Release|x86.ActiveCfg = Release|Any CPU
-		{860A6E42-3117-42C9-A977-A5AD1F4EFC86}.Release|x86.Build.0 = Release|Any CPU
 		{7B039E81-BF98-413B-B765-2513FE167A5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B039E81-BF98-413B-B765-2513FE167A5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B039E81-BF98-413B-B765-2513FE167A5E}.Debug|x64.ActiveCfg = Debug|Any CPU
