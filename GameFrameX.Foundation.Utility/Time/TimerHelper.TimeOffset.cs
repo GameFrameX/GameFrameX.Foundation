@@ -31,7 +31,7 @@
 
 namespace GameFrameX.Foundation.Utility;
 
-public class TimerHelper_TimeOffset
+public partial class TimerHelper
 {
     /// <summary>
     /// 时区偏移秒数。用于调整时间计算的偏移量。
@@ -85,7 +85,7 @@ public class TimerHelper_TimeOffset
     /// 3. 加上TimeOffsetSeconds偏移量
     /// 主要用于需要UTC时间戳的场景,如跨时区业务
     /// </remarks>
-    public static long UnixTimeSeconds()
+    public static long UnixTimeSecondsWithOffset()
     {
         return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds() + TimeOffsetSeconds;
     }
@@ -101,7 +101,7 @@ public class TimerHelper_TimeOffset
     /// 3. 加上TimeOffsetMilliseconds偏移量
     /// 相比秒级时间戳提供更高的精度,适用于需要精确时间计算的场景
     /// </remarks>
-    public static long UnixTimeMilliseconds()
+    public static long UnixTimeMillisecondsWithOffset()
     {
         return new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
     }
@@ -117,7 +117,7 @@ public class TimerHelper_TimeOffset
     /// 3. 加上TimeOffsetSeconds偏移量
     /// 主要用于需要本地时区时间戳的场景
     /// </remarks>
-    public static long TimeSeconds()
+    public static long TimeSecondsWithOffset()
     {
         return new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds() + TimeOffsetSeconds;
     }
@@ -133,7 +133,7 @@ public class TimerHelper_TimeOffset
     /// 3. 加上TimeOffsetMilliseconds偏移量
     /// 相比秒级时间戳提供更高的精度,适用于需要精确时间计算的场景
     /// </remarks>
-    public static long TimeMilliseconds()
+    public static long TimeMillisecondsWithOffset()
     {
         return new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
     }
