@@ -29,7 +29,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
-namespace GameFrameX.Foundation.Orm.Entity;
+namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
 /// 实体索引特性，用于标记需要建立索引的实体属性。
@@ -67,7 +67,7 @@ namespace GameFrameX.Foundation.Orm.Entity;
 /// <seealso cref="System.Attribute"/>
 /// <seealso cref="System.AttributeUsageAttribute"/>
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-public sealed class EntityIndexAttribute : Attribute
+public sealed class EntityIndexAttribute : System.Attribute
 {
     /// <summary>
     /// 获取或设置该索引是否为唯一索引。
