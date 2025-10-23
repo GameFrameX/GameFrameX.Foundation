@@ -62,7 +62,7 @@ public class LookupX<TKey, TElement> : IEnumerable<List<TElement>>
         get
         {
             ArgumentNullException.ThrowIfNull(key, nameof(key));
-            return _dictionary.TryGetValue(key, out var value) ? value : new List<TElement> { };
+            return _dictionary.TryGetValue(key, out var value) ? value : new List<TElement>();
         }
     }
 
