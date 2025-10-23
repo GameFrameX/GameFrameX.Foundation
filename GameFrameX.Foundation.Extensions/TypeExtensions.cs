@@ -50,9 +50,9 @@ public static partial class TypeExtensions
         return false;
 
         // 判断逻辑
-        bool IsTheRawGenericType(Type type)
+        bool IsTheRawGenericType(Type rawGenericType)
         {
-            return generic == (type.IsGenericType ? type.GetGenericTypeDefinition() : type);
+            return generic == (rawGenericType.IsGenericType ? rawGenericType.GetGenericTypeDefinition() : rawGenericType);
         }
     }
 
