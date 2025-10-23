@@ -59,7 +59,7 @@ public static class TimerExtension
     public static void Reset(this Timer timer)
     {
         ArgumentNullException.ThrowIfNull(timer, nameof(timer));
-        
+
         timer.Stop();
         timer.Start();
     }
