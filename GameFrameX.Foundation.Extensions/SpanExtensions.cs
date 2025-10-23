@@ -322,7 +322,7 @@ public static class SpanExtensions
     /// <param name="offset">字节写入的起始偏移量，写入后更新。</param>
     /// <exception cref="ArgumentNullException">当 value 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteStringValue(this Span<byte> buffer, string value, ref int offset)
+    public static void WriteStringValue(this Span<byte> buffer, string value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
