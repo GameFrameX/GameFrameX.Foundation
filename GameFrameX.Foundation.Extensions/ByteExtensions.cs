@@ -661,7 +661,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteBoolValue(this byte[] buffer, bool value, ref int offset)
+    public static void WriteBoolValue(this byte[] buffer, bool value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -672,11 +672,8 @@ public static class ByteExtensions
             return;
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(bool*)(ptr + offset) = value;
-            offset += ConstBaseTypeSize.BoolSize;
-        }
+        buffer[offset] = value ? (byte)1 : (byte)0;
+        offset += ConstBaseTypeSize.BoolSize;
     }
 
     #endregion
