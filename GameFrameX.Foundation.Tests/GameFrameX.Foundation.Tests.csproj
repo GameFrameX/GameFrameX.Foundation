@@ -37,7 +37,6 @@
 
   <ItemGroup>
     <Folder Include="Encryption\" />
-    <Folder Include="Extensions\"/>
     <Folder Include="Hash\" />
     <Folder Include="Http.Extension\" />
     <Folder Include="Logger\" />
