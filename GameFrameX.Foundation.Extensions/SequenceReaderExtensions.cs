@@ -598,7 +598,7 @@ public static class SequenceReaderExtensions
         }
 
         long num1 = 0;
-        var num2 = (long)System.Math.Pow(256.0, 7.0);
+        var num2 = (long)Math.Pow(256.0, 7.0);
         for (var index = 0; index < 8; ++index)
         {
             if (!reader.TryPeek(index, out var num3))
