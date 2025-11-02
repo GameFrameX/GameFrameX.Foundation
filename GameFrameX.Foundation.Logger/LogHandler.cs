@@ -5,6 +5,7 @@
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
 using System.IO.Compression;
+using GameFrameX.Foundation.Extensions;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Grafana.Loki;
@@ -79,10 +80,16 @@ public static class LogHandler
                 Directory.CreateDirectory(logFolderPath);
             }
 
-            Console.WriteLine("the following is the log configuration information");
-            Console.WriteLine("╔═════════════════════════════════════════════════════════╗");
-            Console.WriteLine(logOptions);
-            Console.WriteLine("╚═════════════════════════════════════════════════════════╝");
+
+            // Console.WriteLine("the following is the log configuration information");
+            if (isDefault)
+            {
+                LogHelper.ShowOption("log configuration information", logOptions);
+            }
+
+            // Console.WriteLine("╔═════════════════════════════════════════════════════════╗");
+            // Console.WriteLine(logOptions);
+            // Console.WriteLine("╚═════════════════════════════════════════════════════════╝");
             Console.WriteLine();
             var logger = CreateLoggerConfiguration().Enrich.WithProperty("AppType", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName);
             if (!string.IsNullOrEmpty(logOptions.LogTagName))
@@ -90,7 +97,7 @@ public static class LogHandler
                 logger.Enrich.WithProperty("TagName", logOptions.LogTagName ?? "");
             }
 
-            logger.WriteTo.File(logPath, rollingInterval: logOptions.RollingInterval, rollOnFileSizeLimit: logOptions.IsFileSizeLimit, fileSizeLimitBytes: logOptions.FileSizeLimitBytes, retainedFileCountLimit: logOptions.RetainedFileCountLimit);
+
             if (logOptions.IsGrafanaLoki)
             {
                 var grafanaLokiLabels = new List<LokiLabel>();
@@ -149,6 +156,31 @@ public static class LogHandler
             }
 
             configurationAction?.Invoke(logger);
+
+            string consoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
+            string fileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{FriendlyName}] {Message:lj}{NewLine}{Exception}";
+
+            if (logOptions.ConsoleOutputTemplate.IsNotNullOrEmptyOrWhiteSpace())
+            {
+                consoleOutputTemplate = logOptions.ConsoleOutputTemplate;
+            }
+
+            if (logOptions.FileOutputTemplate.IsNotNullOrEmptyOrWhiteSpace())
+            {
+                fileOutputTemplate = logOptions.FileOutputTemplate;
+            }
+            if (logOptions.IsWriteToFile)
+            {
+                logger.WriteTo.File(logPath,
+                                    shared: true,
+                                    restrictedToMinimumLevel: logOptions.LogEventLevel,
+                                    outputTemplate: fileOutputTemplate,
+                                    rollingInterval: logOptions.RollingInterval,
+                                    rollOnFileSizeLimit: logOptions.FileSizeLimitBytes > 0,
+                                    fileSizeLimitBytes: logOptions.FileSizeLimitBytes
+                );
+            }
+
             switch (logOptions.LogEventLevel)
             {
                 case LogEventLevel.Verbose:
@@ -185,7 +217,9 @@ public static class LogHandler
 
             if (logOptions.IsConsole)
             {
-                logger.WriteTo.Console();
+                logger.WriteTo.Console(outputTemplate: consoleOutputTemplate,
+                                       restrictedToMinimumLevel: logOptions.LogEventLevel,
+                                       theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Literate);
             }
 
             var serilog = logger.CreateLogger();

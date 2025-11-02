@@ -35,6 +35,11 @@ public sealed class LogOptions
     public static readonly LogOptions Default = new LogOptions();
 
     /// <summary>
+    /// 是否写入文件，默认为 true。
+    /// </summary>
+    public bool IsWriteToFile { get; set; } = true;
+
+    /// <summary>
     /// 服务器类型，用于标识日志来源的服务器类型。
     /// </summary>
     /// <remarks>
@@ -49,6 +54,29 @@ public sealed class LogOptions
     /// 可以用来区分不同服务器产生的日志，便于日志的分类和管理。
     /// </remarks>
     public string LogTagName { get; set; } = "";
+
+    /// <summary>
+    /// 是否写入数据库，默认为 false。
+    /// </summary>
+    public bool IsWriteToMongoDb { get; set; } = false;
+
+    /// <summary>
+    /// mongodb 地址 用于保存日志
+    /// </summary>
+    /// <remarks>
+    /// 如果配置了Type = Db 必须要配置 databaseUrl
+    /// </remarks>
+    public string DatabaseUrl { get; set; } = "mongodb://127.0.0.1:27017/gameserver?authSource=admin";
+
+    /// <summary>
+    /// mongodb 创建的上限集合的最大总大小（MB）
+    /// </summary>
+    public int CappedMaxSizeMb { get; set; } = 50;
+
+    /// <summary>
+    /// mongodb 创建的上限集合的最大文档数。
+    /// </summary>
+    public int CappedMaxDocuments { get; set; } = 50000;
 
     /// <summary>
     /// 日志存储路径，为 应用程序运行目录下的子目录/logs。
@@ -145,6 +173,35 @@ public sealed class LogOptions
     /// 用于控制历史日志文件的数量，防止占用过多磁盘空间。
     /// </remarks>
     public int? RetainedFileCountLimit { get; set; } = 31;
+
+
+    /// <summary>
+    /// 控制台日志输出格式模板，默认格式为 "[时:分:秒 级别][标签名]消息内容"。
+    /// </summary>
+    /// <remarks>
+    /// 支持的占位符包括：
+    /// - {Timestamp:HH:mm:ss} - 时间戳（时:分:秒格式）
+    /// - {Level:u3} - 日志级别（3个字符大写）
+    /// - {TagName} - 日志标签名称
+    /// - {Message:lj} - 日志消息内容（左对齐）
+    /// - {NewLine} - 换行符
+    /// - {Exception} - 异常信息
+    /// </remarks>
+    public string ConsoleOutputTemplate { get; set; } = "[{Timestamp:HH:mm:ss} {Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
+
+    /// <summary>
+    /// 文件日志输出格式模板，默认格式为 "完整时间戳 [级别][友好名称] 消息内容"。
+    /// </summary>
+    /// <remarks>
+    /// 支持的占位符包括：
+    /// - {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} - 完整时间戳（包含毫秒和时区）
+    /// - {Level:u3} - 日志级别（3个字符大写）
+    /// - {FriendlyName} - 友好名称
+    /// - {Message:lj} - 日志消息内容（左对齐）
+    /// - {NewLine} - 换行符
+    /// - {Exception} - 异常信息
+    /// </remarks>
+    public string FileOutputTemplate { get; set; } = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{FriendlyName}] {Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 返回日志配置对象的 JSON 字符串表示形式。
