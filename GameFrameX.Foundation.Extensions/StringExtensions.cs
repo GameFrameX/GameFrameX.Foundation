@@ -424,34 +424,6 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// 根据路径创建目录，支持递归创建。
-    /// </summary>
-    /// <param name="path">目录路径。</param>
-    /// <param name="isFile">是否为文件路径，如果为true，则创建文件所在的目录。默认为false。</param>
-    /// <exception cref="ArgumentNullException">当path为null时抛出。</exception>
-    /// <remarks>
-    /// 如果路径不存在，会递归创建所有必需的父目录
-    /// 当isFile为true时，会自动获取文件所在目录路径
-    /// 支持相对路径和绝对路径
-    /// 如果目录已存在，则不会进行任何操作
-    /// </remarks>
-    public static void CreateAsDirectory(this string path, bool isFile = false)
-    {
-        ArgumentNullException.ThrowIfNull(path, nameof(path));
-
-        if (isFile)
-        {
-            path = Path.GetDirectoryName(path);
-        }
-
-        if (!Directory.Exists(path))
-        {
-            CreateAsDirectory(path, true);
-            Directory.CreateDirectory(path);
-        }
-    }
-
-    /// <summary>
     /// 将驼峰命名法字符串转换为蛇形命名法（下划线分隔的小写形式）。
     /// </summary>
     /// <param name="input">要转换的字符串。</param>
