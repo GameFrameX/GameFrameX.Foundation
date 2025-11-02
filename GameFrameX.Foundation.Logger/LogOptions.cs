@@ -117,7 +117,7 @@ public sealed class LogOptions
     /// <summary>
     /// GrafanaLoki 用户名
     /// </summary>
-    public string GrafanaLokiUsername { get; set; }
+    public string GrafanaLokiUserName { get; set; }
 
     /// <summary>
     /// GrafanaLoki 密码

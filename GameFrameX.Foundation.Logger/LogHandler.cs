@@ -130,11 +130,11 @@ public static class LogHandler
                 }
 
                 LokiCredentials lokiCredentials = null;
-                if (!string.IsNullOrWhiteSpace(logOptions.GrafanaLokiUsername) && !string.IsNullOrWhiteSpace(logOptions.GrafanaLokiPassword))
+                if (!string.IsNullOrWhiteSpace(logOptions.GrafanaLokiUserName) && !string.IsNullOrWhiteSpace(logOptions.GrafanaLokiPassword))
                 {
                     lokiCredentials = new LokiCredentials
                     {
-                        Login = logOptions.GrafanaLokiUsername,
+                        Login = logOptions.GrafanaLokiUserName,
                         Password = logOptions.GrafanaLokiPassword,
                     };
                 }
