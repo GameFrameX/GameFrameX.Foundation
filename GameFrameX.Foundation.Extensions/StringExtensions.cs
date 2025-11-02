@@ -114,6 +114,31 @@ public static class StringExtensions
     private static readonly Regex CnReg = new(@"[\u4e00-\u9fa5]");
 
     /// <summary>
+    /// 计算字符串的显示宽度，汉字等宽字符算作2个单位宽度，其他字符算作1个单位宽度。
+    /// </summary>
+    /// <param name="text">要计算宽度的字符串。</param>
+    /// <returns>字符串的显示宽度。汉字等宽字符计为2，其他字符计为1。</returns>
+    /// <remarks>
+    /// 此方法主要用于控制台或等宽字体环境下的文本对齐。
+    /// 支持的中文字符范围包括：
+    /// - 基本汉字区(\u4e00-\u9fff)
+    /// - 扩展A区汉字(\u3400-\u4dbf)
+    /// - 扩展B区汉字(\u20000-\u2a6df)，但在C#中由于char是16位，高位部分需要代理对表示，此处简化处理
+    /// 其他字符（英文、数字、标点等）均按1个单位宽度计算。
+    /// </remarks>
+    public static int GetDisplayWidth(this string text)
+    {
+        int total = 0;
+        foreach (var c in text)
+        {
+            var isChineseChar =  (c >= '\u4e00' && c <= '\u9fff') || (c >= '\u3400' && c <= '\u4dbf') || (c >= '\u2000' && c <= '\u2a6d');
+            total += isChineseChar ? 2 : 1;
+        }
+
+        return total;
+    }
+
+    /// <summary>
     /// 重复指定字符指定次数。
     /// </summary>
     /// <param name="c">要重复的字符。</param>
