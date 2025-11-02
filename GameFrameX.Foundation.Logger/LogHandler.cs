@@ -18,7 +18,7 @@ namespace GameFrameX.Foundation.Logger;
 /// </summary>
 public static class LogHandler
 {
-    private static bool _isInitSerilogDiagnosis = false;
+    private static bool _isInitSerilogDiagnosis;
 
     /// <summary>
     /// 启用 Serilog 的自动诊断
@@ -55,6 +55,16 @@ public static class LogHandler
     }
 
     /// <summary>
+    /// 控制台输出模板，用于格式化控制台日志输出。
+    /// </summary>
+    const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
+
+    /// <summary>
+    /// 文件输出模板，用于格式化文件日志输出。
+    /// </summary>
+    const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}-{TagName}] {Message:lj}{NewLine}{Exception}";
+
+    /// <summary>
     /// 启动并配置日志系统
     /// </summary>
     /// <param name="logOptions">日志配置选项，包含日志级别、存储路径等配置信息</param>
@@ -68,9 +78,20 @@ public static class LogHandler
         SerilogDiagnosis();
         try
         {
-            // 日志文件存储的路径
+            // 文件名
             var logFileName = $"{(logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName).ToLower()}_.log";
+            // 日志文件存储的路径
             var logSavePath = logOptions.LogSavePath ?? "./logs/";
+            if (!logSavePath.EndsWithFast("/"))
+            {
+                logSavePath += "/";
+            }
+
+            if (!string.IsNullOrEmpty(logOptions.LogTagName))
+            {
+                logSavePath += logOptions.LogTagName + "/";
+            }
+
             // 计算最终日志文件路径
             var logPath = Path.Combine(logSavePath, logFileName);
             // 兼容可能的层级目录：始终创建文件所在的目录
@@ -80,23 +101,15 @@ public static class LogHandler
                 Directory.CreateDirectory(logFolderPath);
             }
 
-
-            // Console.WriteLine("the following is the log configuration information");
             if (isDefault)
             {
                 LogHelper.ShowOption("log configuration information", logOptions);
             }
 
-            // Console.WriteLine("╔═════════════════════════════════════════════════════════╗");
-            // Console.WriteLine(logOptions);
-            // Console.WriteLine("╚═════════════════════════════════════════════════════════╝");
-            Console.WriteLine();
-            var logger = CreateLoggerConfiguration().Enrich.WithProperty("AppType", logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName);
-            if (!string.IsNullOrEmpty(logOptions.LogTagName))
-            {
-                logger.Enrich.WithProperty("TagName", logOptions.LogTagName ?? "");
-            }
-
+            var logger = CreateLoggerConfiguration();
+            logger.Enrich.WithProperty("LogType", logOptions.LogType);
+            logger.Enrich.WithProperty("FriendlyName", AppDomain.CurrentDomain.FriendlyName);
+            logger.Enrich.WithProperty("TagName", logOptions.LogTagName ?? "");
 
             if (logOptions.IsGrafanaLoki)
             {
@@ -156,15 +169,14 @@ public static class LogHandler
             }
 
             configurationAction?.Invoke(logger);
-
-            string consoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
-            string fileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{FriendlyName}] {Message:lj}{NewLine}{Exception}";
+            string consoleOutputTemplate = ConsoleOutputTemplate;
 
             if (logOptions.ConsoleOutputTemplate.IsNotNullOrEmptyOrWhiteSpace())
             {
                 consoleOutputTemplate = logOptions.ConsoleOutputTemplate;
             }
 
+            string fileOutputTemplate = FileOutputTemplate;
             if (logOptions.FileOutputTemplate.IsNotNullOrEmptyOrWhiteSpace())
             {
                 fileOutputTemplate = logOptions.FileOutputTemplate;
@@ -225,7 +237,7 @@ public static class LogHandler
             var serilog = logger.CreateLogger();
             if (isDefault)
             {
-                Serilog.Log.Logger = serilog;
+                Log.Logger = serilog;
                 LogHelper.SetLogger(serilog);
             }
 
@@ -233,7 +245,7 @@ public static class LogHandler
         }
         catch (Exception e)
         {
-            Serilog.Log.Error($"配置日志系统过程中发生错误,异常:{e}");
+            Log.Error($"配置日志系统过程中发生错误,异常:{e}");
             throw;
         }
     }

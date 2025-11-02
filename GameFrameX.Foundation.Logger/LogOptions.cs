@@ -61,22 +61,41 @@ public sealed class LogOptions
     public bool IsWriteToMongoDb { get; set; } = false;
 
     /// <summary>
-    /// mongodb 地址 用于保存日志
+    /// MongoDB 数据库连接地址，用于保存日志数据
     /// </summary>
     /// <remarks>
-    /// 如果配置了Type = Db 必须要配置 databaseUrl
+    /// <para>
+    /// 当 <see cref="IsWriteToMongoDb"/> 设置为 true 时，此属性必须配置有效的 MongoDB 连接字符串。
+    /// 连接字符串应包含数据库服务器地址、端口、数据库名称和认证信息。
+    /// </para>
+    /// <para>
+    /// 连接字符串格式：mongodb://[username:password@]host[:port]/database[?options]
+    /// </para>
+    /// <para>
+    /// 常用配置示例：
+    /// <list type="bullet">
+    /// <item><description>本地无认证：mongodb://localhost:27017/gameserver</description></item>
+    /// <item><description>本地有认证：mongodb://user:password@localhost:27017/gameserver?authSource=admin</description></item>
+    /// <item><description>远程服务器：mongodb://user:password@192.168.1.100:27017/gameserver?authSource=admin</description></item>
+    /// <item><description>副本集：mongodb://user:password@host1:27017,host2:27017/gameserver?replicaSet=rs0&amp;authSource=admin</description></item>
+    /// </list>
+    /// </para>
+    /// <para>
+    /// 注意：确保 MongoDB 服务器已启动且网络连接正常，否则日志写入将失败。
+    /// </para>
     /// </remarks>
-    public string DatabaseUrl { get; set; } = "mongodb://127.0.0.1:27017/gameserver?authSource=admin";
+    /// <value>默认值为本地 MongoDB 实例：mongodb://127.0.0.1:27017/gameserver?authSource=admin</value>
+    public string MongoDbDatabaseUrl { get; set; } = "mongodb://127.0.0.1:27017/gameserver?authSource=admin";
 
     /// <summary>
     /// mongodb 创建的上限集合的最大总大小（MB）
     /// </summary>
-    public int CappedMaxSizeMb { get; set; } = 50;
+    public int MongoDbCappedMaxSizeMb { get; set; } = 50;
 
     /// <summary>
     /// mongodb 创建的上限集合的最大文档数。
     /// </summary>
-    public int CappedMaxDocuments { get; set; } = 50000;
+    public int MongoDbCappedMaxDocuments { get; set; } = 50000;
 
     /// <summary>
     /// 日志存储路径，为 应用程序运行目录下的子目录/logs。
@@ -173,7 +192,6 @@ public sealed class LogOptions
     /// 用于控制历史日志文件的数量，防止占用过多磁盘空间。
     /// </remarks>
     public int? RetainedFileCountLimit { get; set; } = 31;
-
 
     /// <summary>
     /// 控制台日志输出格式模板，默认格式为 "[时:分:秒 级别][标签名]消息内容"。
