@@ -181,6 +181,18 @@ public static class LogHandler
             {
                 fileOutputTemplate = logOptions.FileOutputTemplate;
             }
+
+            if (logOptions.IsWriteToMongoDb)
+            {
+                logger.WriteTo.MongoDBBson(
+                    databaseUrl: logOptions.MongoDbDatabaseUrl,
+                    collectionName: logOptions.LogSavePath,
+                    cappedMaxSizeMb: logOptions.MongoDbCappedMaxSizeMb,
+                    cappedMaxDocuments: logOptions.MongoDbCappedMaxDocuments,
+                    rollingInterval: (Serilog.Sinks.MongoDB.RollingInterval)logOptions.RollingInterval,
+                    restrictedToMinimumLevel: logOptions.LogEventLevel);
+            }
+
             if (logOptions.IsWriteToFile)
             {
                 logger.WriteTo.File(logPath,
