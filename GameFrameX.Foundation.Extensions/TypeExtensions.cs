@@ -14,6 +14,30 @@ namespace GameFrameX.Foundation.Extensions;
 public static partial class TypeExtensions
 {
     /// <summary>
+    /// 判断类型是否实现了指定的接口
+    /// </summary>
+    /// <param name="targetType">要检查的类型，不能为null</param>
+    /// <param name="interfaceType">目标接口类型，不能为null</param>
+    /// <returns>
+    /// 如果类型实现了指定的接口，则返回true；
+    /// 否则返回false
+    /// </returns>
+    /// <remarks>
+    /// 此方法会检查类型是否直接或间接地实现了指定的接口。
+    /// 它会递归检查类型的继承链和接口实现。
+    /// </remarks>
+    /// <exception cref="ArgumentNullException">当<paramref name="targetType"/>或<paramref name="interfaceType"/>为null时抛出</exception>
+    public static bool HasInterface(Type targetType, Type interfaceType)
+    {
+        if (targetType == null || interfaceType == null || !interfaceType.IsInterface)
+        {
+            return false;
+        }
+
+        return interfaceType.IsAssignableFrom(targetType);
+    }
+
+    /// <summary>
     /// 判断类型是否实现某个泛型接口或继承自某个泛型类
     /// </summary>
     /// <param name="type">要检查的类型，不能为null</param>
