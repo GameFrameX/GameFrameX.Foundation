@@ -50,7 +50,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// 应用程序名称（必需）
         /// </summary>
         [OptionAttribute("app-name", Required = true)]
-        [HelpTextAttribute("应用程序的名称，用于标识应用")]
         public string AppName { get; set; } = string.Empty;
 
         /// <summary>
@@ -58,7 +57,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("host", DefaultValue = "localhost")]
         [EnvironmentVariableAttribute("SERVER_HOST")]
-        [HelpTextAttribute("服务器主机地址，支持IP地址或域名")]
         public string Host { get; set; } = "localhost";
 
         /// <summary>
@@ -66,7 +64,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("port", DefaultValue = 8080)]
         [EnvironmentVariableAttribute("SERVER_PORT")]
-        [HelpTextAttribute("服务器监听端口号，范围1-65535")]
         public int Port { get; set; } = 8080;
 
         /// <summary>
@@ -74,7 +71,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [FlagOptionAttribute("ssl")]
         [EnvironmentVariableAttribute("ENABLE_SSL")]
-        [HelpTextAttribute("启用SSL/TLS加密连接")]
         public bool EnableSsl { get; set; } = false;
 
         /// <summary>
@@ -82,7 +78,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("log-level", DefaultValue = LogLevel.Info)]
         [EnvironmentVariableAttribute("LOG_LEVEL")]
-        [HelpTextAttribute("日志记录级别：Debug, Info, Warning, Error, Fatal")]
         public LogLevel LogLevel { get; set; } = LogLevel.Info;
 
         /// <summary>
@@ -90,7 +85,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("timeout", DefaultValue = 30.5)]
         [EnvironmentVariableAttribute("REQUEST_TIMEOUT")]
-        [HelpTextAttribute("请求超时时间，单位为秒，支持小数")]
         public double Timeout { get; set; } = 30.5;
 
         /// <summary>
@@ -98,7 +92,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("start-time")]
         [EnvironmentVariableAttribute("START_TIME")]
-        [HelpTextAttribute("应用启动时间，格式：yyyy-MM-dd HH:mm:ss")]
         public DateTime? StartTime { get; set; }
 
         /// <summary>
@@ -106,7 +99,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("app-id")]
         [EnvironmentVariableAttribute("APP_ID")]
-        [HelpTextAttribute("应用程序唯一标识符（GUID格式）")]
         public Guid? AppId { get; set; }
 
         /// <summary>
@@ -114,7 +106,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("database-url", Required = true)]
         [EnvironmentVariableAttribute("DATABASE_URL")]
-        [HelpTextAttribute("数据库连接字符串，必须提供")]
         public string DatabaseUrl { get; set; } = string.Empty;
 
         /// <summary>
@@ -122,7 +113,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("api-key")]
         [EnvironmentVariableAttribute("API_KEY")]
-        [HelpTextAttribute("第三方API访问密钥，可选")]
         public string? ApiKey { get; set; }
 
         /// <summary>
@@ -130,7 +120,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("max-connections", DefaultValue = 100)]
         [EnvironmentVariableAttribute("MAX_CONNECTIONS")]
-        [HelpTextAttribute("最大并发连接数，默认100")]
         public int? MaxConnections { get; set; } = 100;
 
         /// <summary>
@@ -138,7 +127,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("cache-size", DefaultValue = 256.5)]
         [EnvironmentVariableAttribute("CACHE_SIZE")]
-        [HelpTextAttribute("缓存大小，单位MB，支持小数")]
         public decimal CacheSize { get; set; } = 256.5m;
 
         /// <summary>
@@ -146,7 +134,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [FlagOptionAttribute("debug")]
         [EnvironmentVariableAttribute("DEBUG")]
-        [HelpTextAttribute("启用调试模式，显示详细日志")]
         public bool? Debug { get; set; }
     }
 

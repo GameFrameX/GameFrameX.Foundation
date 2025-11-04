@@ -39,13 +39,13 @@ namespace GameFrameX.Foundation.Options
 
                 // 计算最大显示宽度
                 int maxWidth = 0;
-                var optionInfos = new List<(PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute, Attributes.HelpTextAttribute helpTextAttribute)>();
+            var optionInfos = new List<(PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute)>();
 
                 foreach (var property in properties.OrderBy(p => p.Name))
                 {
                     var attributes = property.GetCustomAttributes(true);
                     var optionAttribute = attributes.OfType<Attributes.OptionAttribute>().FirstOrDefault();
-                    var helpTextAttribute = attributes.OfType<Attributes.HelpTextAttribute>().FirstOrDefault();
+                
 
                     string displayName;
                     if (optionAttribute != null)
@@ -59,7 +59,7 @@ namespace GameFrameX.Foundation.Options
                     }
 
                     maxWidth = Math.Max(maxWidth, displayName.Length);
-                    optionInfos.Add((property, displayName, optionAttribute, helpTextAttribute));
+                optionInfos.Add((property, displayName, optionAttribute));
                 }
 
                 // 添加2个字符的缓冲空间
@@ -75,7 +75,7 @@ namespace GameFrameX.Foundation.Options
                 int defaultWidth = DefaultValueHeader.Length;
                 int helpWidth = HelpTextHeader.Length;
 
-                foreach (var (property, displayName, optionAttribute, helpTextAttribute) in optionInfos)
+            foreach (var (property, displayName, optionAttribute) in optionInfos)
                 {
                     var value = property.GetValue(options);
                     var displayValue = FormatPropertyValue(value) ?? string.Empty;
@@ -83,7 +83,7 @@ namespace GameFrameX.Foundation.Options
                     var required = optionAttribute != null ? (optionAttribute.Required ? RequiredYesLabel : RequiredNoLabel) : string.Empty;
                     var description = optionAttribute != null ? (optionAttribute.Description ?? NoDescriptionLabel) : NoOptionAttributeLabel;
                     var defaultVal = optionAttribute?.DefaultValue?.ToString() ?? string.Empty;
-                    var helpText = helpTextAttribute?.HelpText ?? string.Empty;
+                var helpText = string.Empty;
 
                     nameWidth = Math.Max(nameWidth, displayName.Length);
                     valueWidth = Math.Max(valueWidth, displayValue.Length);

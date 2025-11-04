@@ -12,19 +12,15 @@ public class AttributeOptionsTests
     private class TestOptions
     {
         [Option("port", DefaultValue = 8080, EnvironmentVariable = "TEST_PORT")]
-        [HelpText("应用程序监听的端口")]
         public int Port { get; set; }
 
         [Option(LongName = "host", EnvironmentVariable = "TEST_HOST", DefaultValue = "localhost")]
-        [HelpText("应用程序主机名")]
         public string Host { get; set; }
 
         [FlagOption(LongName = "verbose")]
-        [HelpText("是否启用详细日志")]
         public bool Verbose { get; set; }
 
         [Option(LongName = "api-key", Required = true)]
-        [HelpText("API密钥")]
         public string ApiKey { get; set; }
 
         public string NoAttributeProperty { get; set; } = "默认值";
@@ -33,7 +29,6 @@ public class AttributeOptionsTests
     private class TestOptionsWithMultipleAttributes
     {
         [Option("connection-string", EnvironmentVariable = "TEST_CONNECTION", Required = true)]
-        [HelpText("数据库连接字符串")]
         public string ConnectionString { get; set; }
     }
 

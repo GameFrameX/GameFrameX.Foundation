@@ -56,7 +56,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// </summary>
         [OptionAttribute("database-url", Description = "xxxxxxxxxxxxxxxxxdsakfjhjhjakfhj 温热欻穿oquikocxkzuisaanmsaioajkdjsa开双冲akjhjkfjaok返矿卡健康返矿桑吉很但恐韩克很检控方炯看就肯斯的就看妇科琅丹福斯翻看东街口翻开三即可"
         )]
-        [HelpText("数据库连接字符串, 例如: \"Server=localhost;Port=3306;Database=test;Uid=root;Pwd=123456;\"")]
         [EnvironmentVariableAttribute("DATABASE_URL")]
         public string? DatabaseUrl { get; set; }
     }
