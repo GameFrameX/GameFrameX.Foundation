@@ -65,9 +65,9 @@ namespace GameFrameX.Foundation.Logger;
 internal sealed class LogConsole
 {
     /// <summary>
-    /// 输出框线的长度，默认为76个字符
+    /// 输出框线的长度，默认为108个字符
     /// </summary>
-    private int _frameLength = 76;
+    private int _frameLength = 108;
 
     /// <summary>
     /// 设置输出框架的宽度
