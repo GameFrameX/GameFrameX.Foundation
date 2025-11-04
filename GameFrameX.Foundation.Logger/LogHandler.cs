@@ -65,32 +65,45 @@ public static class LogHandler
     const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
-    /// 启动并配置日志系统
+    /// 启动并配置日志系统。
     /// </summary>
-    /// <param name="logOptions">日志配置选项，包含日志级别、存储路径等配置信息</param>
-    /// <param name="isDefault">是否设置为默认配置</param>
-    /// <param name="configurationAction">自定义日志配置回调</param>
-    /// <exception cref="ArgumentNullException">当logOptions参数为null时抛出</exception>
-    /// <exception cref="Exception">初始化日志系统过程中发生的其他异常</exception>
+    /// <param name="logOptions">日志配置选项，包含日志级别、存储路径等配置信息。</param>
+    /// <param name="isDefault">是否设置为默认配置。</param>
+    /// <param name="configurationAction">自定义日志配置回调。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logOptions"/> 参数为 null 时抛出。</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="logOptions.LogTagName"/> 为空或仅包含空白字符时抛出。</exception>
+    /// <exception cref="DirectoryNotFoundException">日志文件目录不存在且无法创建时抛出。</exception>
+    /// <exception cref="UnauthorizedAccessException">没有权限创建日志目录或写入日志文件时抛出。</exception>
+    /// <exception cref="Exception">初始化日志系统过程中发生的其他异常。</exception>
+    /// <remarks>
+    /// <para>该方法会根据传入的 <paramref name="logOptions"/> 配置初始化日志系统，支持文件、控制台、MongoDB 及 Grafana Loki 等多种输出方式。</para>
+    /// <para>异常类型涵盖参数校验、目录创建、权限不足及日志系统初始化过程中的所有可能异常。</para>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// var options = new LogOptions { LogTagName = "App", LogSavePath = "./logs/", IsConsole = true };
+    /// ILogger logger = LogHandler.Create(options);
+    /// </code>
+    /// </example>
+    /// <seealso cref="LogOptions"/>
+    /// <seealso cref="ILogger"/>
     public static ILogger Create(LogOptions logOptions, bool isDefault = true, Action<LoggerConfiguration> configurationAction = null)
     {
         ArgumentNullException.ThrowIfNull(logOptions);
+        ArgumentException.ThrowIfNullOrWhiteSpace(logOptions.LogTagName, nameof(logOptions.LogTagName));
         SerilogDiagnosis();
         try
         {
             // 文件名
-            var logFileName = $"{(logOptions.LogType ?? AppDomain.CurrentDomain.FriendlyName).ToLower()}_.log";
+            var logFileName = $"{logOptions.LogTagName}_.log";
             // 日志文件存储的路径
             var logSavePath = logOptions.LogSavePath ?? "./logs/";
-            if (!logSavePath.EndsWithFast("/"))
+            if (!logSavePath.EndsWith(Path.DirectorySeparatorChar))
             {
-                logSavePath += "/";
+                logSavePath += Path.DirectorySeparatorChar;
             }
 
-            if (!string.IsNullOrEmpty(logOptions.LogTagName))
-            {
-                logSavePath += logOptions.LogTagName + "/";
-            }
+            logSavePath += logOptions.LogTagName + Path.DirectorySeparatorChar;
 
             // 计算最终日志文件路径
             var logPath = Path.Combine(logSavePath, logFileName);
