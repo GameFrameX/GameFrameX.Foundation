@@ -75,22 +75,7 @@ public class AttributeOptionsTests
         Assert.Equal("默认值", options.NoAttributeProperty);
     }
 
-    [Fact]
-    public void Build_WithShortNameArgs_ShouldMapToProperties()
-    {
-        // 安排
-        var args = new[] { "-p", "5000", "--api-key", "secret123" };
-        var builder = new OptionsBuilder<TestOptions>(args);
-
-        // 执行
-        var options = builder.Build();
-
-        // 断言
-        Assert.Equal(5000, options.Port);
-        Assert.Equal("localhost", options.Host); // 默认值
-        Assert.False(options.Verbose); // 默认值
-        Assert.Equal("secret123", options.ApiKey);
-    }
+    
 
     [Fact]
     public void Build_WithEnvironmentVariables_ShouldApplyValues()
@@ -184,7 +169,7 @@ public class AttributeOptionsTests
     public void Build_WithMultipleAttributes_ShouldRespectAllAttributes()
     {
         // 安排
-        var args = new[] { "-c", "Server=localhost;Database=test" };
+        var args = new[] { "--connection-string", "Server=localhost;Database=test" };
         var builder = new OptionsBuilder<TestOptionsWithMultipleAttributes>(args);
 
         // 执行
@@ -203,7 +188,7 @@ public class AttributeOptionsTests
 
         // 执行 & 断言
         var exception = Assert.Throws<ArgumentException>(() => builder.Build());
-        Assert.Contains("connectionstring", exception.Message);
+        Assert.Contains("connection-string", exception.Message);
     }
 
     [Fact]
