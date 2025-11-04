@@ -291,38 +291,18 @@ public sealed class OptionsBuilder<T> where T : class, new()
             bool isRequired = false;
             string optionName = property.Name.ToLowerInvariant().Replace("_", "-");
 
-            // 检查是否有必需选项特性
-            var requiredOptionAttrs = property.GetCustomAttributes<RequiredOptionAttribute>().ToList();
-            foreach (var requiredOptionAttr in requiredOptionAttrs)
+            // 仅基于 OptionAttribute 的 Required 标志进行校验
+            var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
+            foreach (var optionAttr in optionAttrs)
             {
-                if (requiredOptionAttr.Required)
+                if (optionAttr.Required)
                 {
                     isRequired = true;
-                    if (!string.IsNullOrEmpty(requiredOptionAttr.LongName))
+                    if (!string.IsNullOrEmpty(optionAttr.LongName))
                     {
-                        optionName = requiredOptionAttr.LongName;
+                        optionName = optionAttr.LongName;
                     }
-
                     break;
-                }
-            }
-
-            // 检查选项特性中的必需标志
-            if (!isRequired)
-            {
-                var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
-                foreach (var optionAttr in optionAttrs)
-                {
-                    if (optionAttr.Required && !(optionAttr is RequiredOptionAttribute))
-                    {
-                        isRequired = true;
-                        if (!string.IsNullOrEmpty(optionAttr.LongName))
-                        {
-                            optionName = optionAttr.LongName;
-                        }
-
-                        break;
-                    }
                 }
             }
 
