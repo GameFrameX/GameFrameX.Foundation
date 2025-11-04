@@ -14,7 +14,6 @@ namespace GameFrameX.Foundation.Options
         const string TypeNameHeader = "类型 (Type)";
         const string DescriptionHeader = "描述 (Description)";
         const string DefaultValueHeader = "默认值 (Default)";
-        const string HelpTextHeader = "帮助文本 (Help)";
         const string RequiredYesLabel = "是 (Yes)";
         const string RequiredNoLabel = "否 (No)";
         const string NoDescriptionLabel = "无描述 (No Description)";
@@ -66,14 +65,13 @@ namespace GameFrameX.Foundation.Options
                 maxWidth += 2;
 
                 // 使用计算出的最大宽度进行格式化输出（表格样式）
-                var rows = new List<(string Name, string Value, string Required, string TypeName, string Description, string DefaultValue, string HelpText)>();
+                var rows = new List<(string Name, string Value, string Required, string TypeName, string Description, string DefaultValue)>();
                 int nameWidth = Math.Max(OptionHeader.Length, maxWidth);
                 int valueWidth = ValueHeader.Length;
                 int requiredWidth = RequiredHeader.Length;
                 int typeWidth = TypeNameHeader.Length;
                 int descWidth = DescriptionHeader.Length;
                 int defaultWidth = DefaultValueHeader.Length;
-                int helpWidth = HelpTextHeader.Length;
 
             foreach (var (property, displayName, optionAttribute) in optionInfos)
                 {
@@ -83,7 +81,6 @@ namespace GameFrameX.Foundation.Options
                     var required = optionAttribute != null ? (optionAttribute.Required ? RequiredYesLabel : RequiredNoLabel) : string.Empty;
                     var description = optionAttribute != null ? (optionAttribute.Description ?? NoDescriptionLabel) : NoOptionAttributeLabel;
                     var defaultVal = optionAttribute?.DefaultValue?.ToString() ?? string.Empty;
-                var helpText = string.Empty;
 
                     nameWidth = Math.Max(nameWidth, displayName.Length);
                     valueWidth = Math.Max(valueWidth, displayValue.Length);
@@ -91,9 +88,8 @@ namespace GameFrameX.Foundation.Options
                     typeWidth = Math.Max(typeWidth, typeName.Length);
                     descWidth = Math.Max(descWidth, description.Length);
                     defaultWidth = Math.Max(defaultWidth, defaultVal.Length);
-                    helpWidth = Math.Max(helpWidth, helpText.Length);
-
-                    rows.Add((displayName, displayValue, required, typeName, description, defaultVal, helpText));
+                    
+                    rows.Add((displayName, displayValue, required, typeName, description, defaultVal));
                 }
 
                 // 重新基于“显示宽度”计算各列宽度，中文字符按双列宽
@@ -103,7 +99,6 @@ namespace GameFrameX.Foundation.Options
                 int hdType = GetDisplayWidth(TypeNameHeader);
                 int hdDesc = GetDisplayWidth(DescriptionHeader);
                 int hdDefault = GetDisplayWidth(DefaultValueHeader);
-                int hdHelp = GetDisplayWidth(HelpTextHeader);
 
                 nameWidth = Math.Max(hdName, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Name)) : 0);
                 valueWidth = Math.Max(hdValue, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Value)) : 0);
@@ -111,7 +106,6 @@ namespace GameFrameX.Foundation.Options
                 typeWidth = Math.Max(hdType, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.TypeName)) : 0);
                 descWidth = Math.Max(hdDesc, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Description)) : 0);
                 defaultWidth = Math.Max(hdDefault, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.DefaultValue)) : 0);
-                helpWidth = Math.Max(hdHelp, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.HelpText)) : 0);
 
                 // 限制每列最大宽度，但不得小于表头显示宽度
                 int Limit(int width, int max) => Math.Min(width, max);
@@ -121,7 +115,6 @@ namespace GameFrameX.Foundation.Options
                 int typeMax = Math.Max(18, hdType);
                 int descMax = Math.Max(40, hdDesc);
                 int defaultMax = Math.Max(20, hdDefault);
-                int helpMax = Math.Max(30, hdHelp);
 
                 nameWidth = Limit(nameWidth, nameMax);
                 valueWidth = Limit(valueWidth, valueMax);
@@ -129,7 +122,6 @@ namespace GameFrameX.Foundation.Options
                 typeWidth = Limit(typeWidth, typeMax);
                 descWidth = Limit(descWidth, descMax);
                 defaultWidth = Limit(defaultWidth, defaultMax);
-                helpWidth = Limit(helpWidth, helpMax);
 
                 // 记录各列最小宽度（不得压缩到小于表头显示宽度）
                 int minNameWidth = hdName;
@@ -138,11 +130,10 @@ namespace GameFrameX.Foundation.Options
                 int minTypeWidth = hdType;
                 int minDescWidth = hdDesc;
                 int minDefaultWidth = hdDefault;
-                int minHelpWidth = hdHelp;
 
                 // 根据控制台宽度自适应整体表格宽度，确保整齐对齐
-                int columnsCount = 7;
-                int CalculateTotalWidth() => nameWidth + valueWidth + requiredWidth + typeWidth + descWidth + defaultWidth + helpWidth + (2 * columnsCount) + (columnsCount + 1);
+                int columnsCount = 6;
+                int CalculateTotalWidth() => nameWidth + valueWidth + requiredWidth + typeWidth + descWidth + defaultWidth + (2 * columnsCount) + (columnsCount + 1);
                 int consoleWidth = 0;
                 try
                 {
@@ -162,11 +153,6 @@ namespace GameFrameX.Foundation.Options
                         continue;
                     }
 
-                    if (helpWidth > minHelpWidth)
-                    {
-                        helpWidth--;
-                        continue;
-                    }
 
                     if (valueWidth > minValueWidth)
                     {
@@ -205,8 +191,7 @@ namespace GameFrameX.Foundation.Options
                         new string(fill, requiredWidth + 2), sep,
                         new string(fill, typeWidth + 2), sep,
                         new string(fill, descWidth + 2), sep,
-                        new string(fill, defaultWidth + 2), sep,
-                        new string(fill, helpWidth + 2),
+                        new string(fill, defaultWidth + 2),
                         right
                     );
                 }
@@ -214,7 +199,7 @@ namespace GameFrameX.Foundation.Options
 
                 // 打印表头
                 Console.WriteLine(BuildBorder('┌', '┬', '┐', '─'));
-                Console.WriteLine($"│ {TruncPadDisplay(OptionHeader, nameWidth)} │ {TruncPadDisplay(ValueHeader, valueWidth)} │ {CenterPadDisplay(RequiredHeader, requiredWidth)} │ {TruncPadDisplay(TypeNameHeader, typeWidth)} │ {TruncPadDisplay(DescriptionHeader, descWidth)} │ {TruncPadDisplay(DefaultValueHeader, defaultWidth)} │ {TruncPadDisplay(HelpTextHeader, helpWidth)} │");
+                Console.WriteLine($"│ {TruncPadDisplay(OptionHeader, nameWidth)} │ {TruncPadDisplay(ValueHeader, valueWidth)} │ {CenterPadDisplay(RequiredHeader, requiredWidth)} │ {TruncPadDisplay(TypeNameHeader, typeWidth)} │ {TruncPadDisplay(DescriptionHeader, descWidth)} │ {TruncPadDisplay(DefaultValueHeader, defaultWidth)} │");
                 Console.WriteLine(BuildBorder('├', '┼', '┤', '─'));
 
                 // 打印数据行
@@ -226,7 +211,6 @@ namespace GameFrameX.Foundation.Options
                     var typeLines = WrapToDisplayLines(row.TypeName, typeWidth);
                     var descLines = WrapToDisplayLines(row.Description, descWidth);
                     var defLines = WrapToDisplayLines(row.DefaultValue, defaultWidth);
-                    var helpLines = WrapToDisplayLines(row.HelpText, helpWidth);
 
                     int lineCount = new[]
                     {
@@ -235,8 +219,7 @@ namespace GameFrameX.Foundation.Options
                         1,
                         typeLines.Count,
                         descLines.Count,
-                        defLines.Count,
-                        helpLines.Count
+                        defLines.Count
                     }.Max();
 
                     for (int i = 0; i < lineCount; i++)
@@ -247,9 +230,8 @@ namespace GameFrameX.Foundation.Options
                         string typeLine = i < typeLines.Count ? typeLines[i] : new string(' ', typeWidth);
                         string descLine = i < descLines.Count ? descLines[i] : new string(' ', descWidth);
                         string defLine = i < defLines.Count ? defLines[i] : new string(' ', defaultWidth);
-                        string helpLine = i < helpLines.Count ? helpLines[i] : new string(' ', helpWidth);
 
-                        Console.WriteLine($"│ {nameLine} │ {valueLine} │ {reqLine} │ {typeLine} │ {descLine} │ {defLine} │ {helpLine} │");
+                        Console.WriteLine($"│ {nameLine} │ {valueLine} │ {reqLine} │ {typeLine} │ {descLine} │ {defLine} │");
                     }
                 }
 
