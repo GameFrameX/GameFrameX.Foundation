@@ -119,9 +119,6 @@ public class OptionsBuilder
     /// <returns>构建的配置选项对象</returns>
     public static TOptions CreateWithDebug<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
     {
-        // 先打印调试信息
-        OptionsDebugger.PrintStructuredArguments(args, typeof(TOptions));
-
         // 创建配置选项
         var result = Create<TOptions>(args, skipValidation);
 

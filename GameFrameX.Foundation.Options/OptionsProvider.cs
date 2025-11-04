@@ -93,12 +93,6 @@ public static class OptionsProvider
         var type = typeof(T);
         var shouldDebug = ShouldEnableDebugOutput(enableDebugOutput);
 
-        // 如果启用调试输出，先打印原始参数信息
-        if (shouldDebug)
-        {
-            OptionsDebugger.PrintStructuredArguments(_args ?? Array.Empty<string>(), typeof(T));
-        }
-
         // 如果缓存中已存在，直接返回
         if (OptionsCache.TryGetValue(type, out var cachedOptions))
         {
@@ -183,16 +177,6 @@ public static class OptionsProvider
         
         // 获取选项并禁用调试输出
         return GetOptions<T>(skipValidation, enableDebugOutput: false);
-    }
-
-    /// <summary>
-    /// 仅打印参数结构化信息，不进行解析
-    /// </summary>
-    /// <typeparam name="T">选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    public static void PrintArgumentsInfo<T>(string[] args) where T : class, new()
-    {
-        OptionsDebugger.PrintStructuredArguments(args, typeof(T));
     }
 
     /// <summary>
