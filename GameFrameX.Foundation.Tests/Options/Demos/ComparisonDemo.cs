@@ -19,7 +19,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 应用程序名称
         /// </summary>
-        [RequiredOptionAttribute("app-name")]
+        [OptionAttribute("app-name", Required = true)]
         public string AppName { get; set; } = string.Empty;
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 数据库连接字符串
         /// </summary>
-        [RequiredOptionAttribute("database-url")]
+        [OptionAttribute("database-url", Required = true)]
         public string DatabaseUrl { get; set; } = string.Empty;
     }
 

@@ -18,7 +18,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 应用程序名称
         /// </summary>
-        [RequiredOptionAttribute("app-name")]
+        [OptionAttribute("app-name", Required = true)]
         public string AppName { get; set; } = string.Empty;
 
         /// <summary>

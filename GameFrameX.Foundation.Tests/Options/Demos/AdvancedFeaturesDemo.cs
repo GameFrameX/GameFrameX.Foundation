@@ -49,7 +49,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 应用程序名称（必需）
         /// </summary>
-        [RequiredOptionAttribute("app-name")]
+        [OptionAttribute("app-name", Required = true)]
         [HelpTextAttribute("应用程序的名称，用于标识应用")]
         public string AppName { get; set; } = string.Empty;
 
@@ -112,7 +112,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 数据库连接字符串（必需）
         /// </summary>
-        [RequiredOptionAttribute("database-url")]
+        [OptionAttribute("database-url", Required = true)]
         [EnvironmentVariableAttribute("DATABASE_URL")]
         [HelpTextAttribute("数据库连接字符串，必须提供")]
         public string DatabaseUrl { get; set; } = string.Empty;

@@ -23,7 +23,7 @@ public class AttributeOptionsTests
         [HelpText("是否启用详细日志")]
         public bool Verbose { get; set; }
 
-        [RequiredOption(LongName = "api-key", Required = true)]
+        [Option(LongName = "api-key", Required = true)]
         [HelpText("API密钥")]
         public string ApiKey { get; set; }
 
@@ -32,8 +32,7 @@ public class AttributeOptionsTests
 
     private class TestOptionsWithMultipleAttributes
     {
-        [Option("connection-string", EnvironmentVariable = "TEST_CONNECTION")]
-        [RequiredOption(Required = true)]
+        [Option("connection-string", EnvironmentVariable = "TEST_CONNECTION", Required = true)]
         [HelpText("数据库连接字符串")]
         public string ConnectionString { get; set; }
     }
