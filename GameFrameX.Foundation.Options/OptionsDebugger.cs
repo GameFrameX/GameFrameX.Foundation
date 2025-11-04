@@ -175,62 +175,62 @@ namespace GameFrameX.Foundation.Options
         {
             if (type == typeof(string))
             {
-                return "字符串";
+                return nameof(String);
             }
 
             if (type == typeof(byte))
             {
-                return "字节";
+                return nameof(Byte);
             }
 
             if (type == typeof(short) || type == typeof(ushort))
             {
-                return "短整数";
+                return nameof(Int16);
             }
 
             if (type == typeof(int) || type == typeof(uint))
             {
-                return "整数";
+                return nameof(Int32);
             }
 
             if (type == typeof(bool))
             {
-                return "布尔值";
+                return nameof(Boolean);
             }
 
             if (type == typeof(double))
             {
-                return "浮点数";
+                return nameof(Double);
             }
 
             if (type == typeof(float))
             {
-                return "单精度浮点数";
+                return nameof(Single);
             }
 
             if (type == typeof(long) || type == typeof(ulong))
             {
-                return "长整数";
+                return nameof(Int64);
             }
 
             if (type == typeof(DateTime))
             {
-                return "日期时间";
+                return nameof(DateTime);
             }
 
             if (type.IsArray)
             {
-                return $"{GetFriendlyTypeName(type.GetElementType())}数组";
+                return $"Array of {GetFriendlyTypeName(type.GetElementType())} ";
             }
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
-                return $"{GetFriendlyTypeName(type.GetGenericArguments()[0])}列表";
+                return $"{GetFriendlyTypeName(type.GetGenericArguments()[0])} list";
             }
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                return $"可空{GetFriendlyTypeName(type.GetGenericArguments()[0])}";
+                return $"Nullable<{GetFriendlyTypeName(type.GetGenericArguments()[0])}>";
             }
 
             return type.Name;
