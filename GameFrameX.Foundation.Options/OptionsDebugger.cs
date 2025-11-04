@@ -8,17 +8,17 @@ namespace GameFrameX.Foundation.Options
     /// </summary>
     public static class OptionsDebugger
     {
-        const string OptionHeader = "选项";
-        const string ValueHeader = "值";
-        const string RequiredHeader = "必需";
-        const string TypeNameHeader = "类型";
-        const string DescriptionHeader = "描述";
-        const string DefaultValueHeader = "默认值";
-        const string HelpTextHeader = "帮助文本";
-        const string RequiredYesLabel = "是";
-        const string RequiredNoLabel = "否";
-        const string NoDescriptionLabel = "无描述";
-        const string NoOptionAttributeLabel = "无选项特性";
+        const string OptionHeader = "选项 (Option)";
+        const string ValueHeader = "值 (Value)";
+        const string RequiredHeader = "必需 (Required)";
+        const string TypeNameHeader = "类型 (Type)";
+        const string DescriptionHeader = "描述 (Description)";
+        const string DefaultValueHeader = "默认值 (Default)";
+        const string HelpTextHeader = "帮助文本 (Help)";
+        const string RequiredYesLabel = "是 (Yes)";
+        const string RequiredNoLabel = "否 (No)";
+        const string NoDescriptionLabel = "无描述 (No Description)";
+        const string NoOptionAttributeLabel = "无选项特性 (No Option Attribute)";
 
         /// <summary>
         /// 打印解析完成后的选项对象
@@ -99,29 +99,48 @@ namespace GameFrameX.Foundation.Options
                 }
 
                 // 重新基于“显示宽度”计算各列宽度，中文字符按双列宽
-                nameWidth = Math.Max(GetDisplayWidth(OptionHeader), rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Name)) : 0);
-                valueWidth = Math.Max(GetDisplayWidth(ValueHeader), rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Value)) : 0);
-                requiredWidth = Math.Max(GetDisplayWidth(RequiredHeader), rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Required)) : 0);
-                typeWidth = Math.Max(GetDisplayWidth(TypeNameHeader), rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.TypeName)) : 0);
-                descWidth = Math.Max(GetDisplayWidth(DescriptionHeader), rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Description)) : 0);
-                defaultWidth = Math.Max(GetDisplayWidth(DefaultValueHeader), rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.DefaultValue)) : 0);
-                helpWidth = Math.Max(GetDisplayWidth(HelpTextHeader), rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.HelpText)) : 0);
+                int hdName = GetDisplayWidth(OptionHeader);
+                int hdValue = GetDisplayWidth(ValueHeader);
+                int hdRequired = GetDisplayWidth(RequiredHeader);
+                int hdType = GetDisplayWidth(TypeNameHeader);
+                int hdDesc = GetDisplayWidth(DescriptionHeader);
+                int hdDefault = GetDisplayWidth(DefaultValueHeader);
+                int hdHelp = GetDisplayWidth(HelpTextHeader);
 
-                // 限制每列最大宽度，防止控制台过宽
+                nameWidth = Math.Max(hdName, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Name)) : 0);
+                valueWidth = Math.Max(hdValue, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Value)) : 0);
+                requiredWidth = Math.Max(hdRequired, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Required)) : 0);
+                typeWidth = Math.Max(hdType, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.TypeName)) : 0);
+                descWidth = Math.Max(hdDesc, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Description)) : 0);
+                defaultWidth = Math.Max(hdDefault, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.DefaultValue)) : 0);
+                helpWidth = Math.Max(hdHelp, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.HelpText)) : 0);
+
+                // 限制每列最大宽度，但不得小于表头显示宽度
                 int Limit(int width, int max) => Math.Min(width, max);
-                nameWidth = Limit(nameWidth, 24);
-                valueWidth = Limit(valueWidth, 30);
-                requiredWidth = Limit(requiredWidth, 2);
-                // 允许中文表头“必需”完整显示（2字=4列宽）
-                if (requiredWidth < GetDisplayWidth(RequiredHeader))
-                {
-                    requiredWidth = Math.Min(GetDisplayWidth(RequiredHeader), 4);
-                }
+                int nameMax = Math.Max(24, hdName);
+                int valueMax = Math.Max(30, hdValue);
+                int requiredMax = Math.Max(2, hdRequired);
+                int typeMax = Math.Max(18, hdType);
+                int descMax = Math.Max(40, hdDesc);
+                int defaultMax = Math.Max(20, hdDefault);
+                int helpMax = Math.Max(30, hdHelp);
 
-                typeWidth = Limit(typeWidth, 18);
-                descWidth = Limit(descWidth, 40);
-                defaultWidth = Limit(defaultWidth, 20);
-                helpWidth = Limit(helpWidth, 30);
+                nameWidth = Limit(nameWidth, nameMax);
+                valueWidth = Limit(valueWidth, valueMax);
+                requiredWidth = Limit(requiredWidth, requiredMax);
+                typeWidth = Limit(typeWidth, typeMax);
+                descWidth = Limit(descWidth, descMax);
+                defaultWidth = Limit(defaultWidth, defaultMax);
+                helpWidth = Limit(helpWidth, helpMax);
+
+                // 记录各列最小宽度（不得压缩到小于表头显示宽度）
+                int minNameWidth = hdName;
+                int minValueWidth = hdValue;
+                int minRequiredWidth = hdRequired;
+                int minTypeWidth = hdType;
+                int minDescWidth = hdDesc;
+                int minDefaultWidth = hdDefault;
+                int minHelpWidth = hdHelp;
 
                 // 根据控制台宽度自适应整体表格宽度，确保整齐对齐
                 int columnsCount = 7;
@@ -139,42 +158,43 @@ namespace GameFrameX.Foundation.Options
                 int maxTableWidth = Math.Max(60, consoleWidth - 1);
                 while (CalculateTotalWidth() > maxTableWidth)
                 {
-                    if (descWidth > 16)
+                    if (descWidth > minDescWidth)
                     {
                         descWidth--;
                         continue;
                     }
 
-                    if (helpWidth > 14)
+                    if (helpWidth > minHelpWidth)
                     {
                         helpWidth--;
                         continue;
                     }
 
-                    if (valueWidth > 14)
+                    if (valueWidth > minValueWidth)
                     {
                         valueWidth--;
                         continue;
                     }
 
-                    if (nameWidth > 12)
+                    if (nameWidth > minNameWidth)
                     {
                         nameWidth--;
                         continue;
                     }
 
-                    if (typeWidth > 12)
+                    if (typeWidth > minTypeWidth)
                     {
                         typeWidth--;
                         continue;
                     }
 
-                    if (defaultWidth > 10)
+                    if (defaultWidth > minDefaultWidth)
                     {
                         defaultWidth--;
                         continue;
                     }
 
+                    // 已无法继续压缩而不破坏表头完整展示，退出
                     break;
                 }
 
