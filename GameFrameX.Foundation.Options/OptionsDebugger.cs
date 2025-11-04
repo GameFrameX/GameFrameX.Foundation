@@ -27,7 +27,6 @@ namespace GameFrameX.Foundation.Options
         /// <param name="options">解析后的选项对象</param>
         public static void PrintParsedOptions<T>(T options) where T : class
         {
-            Console.WriteLine();
             Console.WriteLine("╔══════════════════════════════════════════════════════════════════════╗");
             Console.WriteLine("║  Command-line parameter and parsed configuration object information  ║");
             Console.WriteLine("╚══════════════════════════════════════════════════════════════════════╝");
@@ -262,11 +261,10 @@ namespace GameFrameX.Foundation.Options
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"打印配置对象时出错: {ex.Message}");
+                Console.WriteLine($"An error occurred when printing a configuration object: {ex.Message}");
                 Console.WriteLine(ex);
             }
 
-            Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
             Console.WriteLine();
         }
 
