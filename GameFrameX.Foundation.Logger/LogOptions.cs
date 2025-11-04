@@ -206,12 +206,12 @@ public sealed class LogOptions
     /// 支持的占位符包括：
     /// - {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} - 完整时间戳（包含毫秒和时区）
     /// - {Level:u3} - 日志级别（3个字符大写）
-    /// - {FriendlyName} - 友好名称
+    /// - {TagName} - 日志标签名称
     /// - {Message:lj} - 日志消息内容（左对齐）
     /// - {NewLine} - 换行符
     /// - {Exception} - 异常信息
     /// </remarks>
-    public string FileOutputTemplate { get; set; } = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{FriendlyName}] {Message:lj}{NewLine}{Exception}";
+    public string FileOutputTemplate { get; set; } = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 返回日志配置对象的 JSON 字符串表示形式。
