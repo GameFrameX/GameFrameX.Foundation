@@ -40,14 +40,6 @@ public sealed class LogOptions
     public bool IsWriteToFile { get; set; } = true;
 
     /// <summary>
-    /// 服务器类型，用于标识日志来源的服务器类型。
-    /// </summary>
-    /// <remarks>
-    /// 可以用来区分不同服务器产生的日志，便于日志的分类和管理。
-    /// </remarks>
-    public string LogType { get; set; }
-
-    /// <summary>
     /// 日志标签名，用于标识日志的名称或描述。
     /// </summary>
     /// <remarks>
