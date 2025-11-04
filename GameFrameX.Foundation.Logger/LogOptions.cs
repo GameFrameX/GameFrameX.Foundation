@@ -40,6 +40,14 @@ public sealed class LogOptions
     public bool IsWriteToFile { get; set; } = true;
 
     /// <summary>
+    /// 服务器类型，用于标识日志来源的服务器类型。
+    /// </summary>
+    /// <remarks>
+    /// 可以用来区分不同服务器产生的日志，便于日志的分类和管理。
+    /// </remarks>
+    public string LogType { get; set; }
+
+    /// <summary>
     /// 日志标签名，用于标识日志的名称或描述。
     /// </summary>
     /// <remarks>
@@ -96,6 +104,11 @@ public sealed class LogOptions
     /// 日志文件的存储位置，是绝对路径。
     /// </remarks>
     public string LogSavePath { get; private set; }
+
+    /// <summary>
+    /// 日志文件名，为空时使用默认名称。
+    /// </summary>
+    public string LogFileName { get; set; } = string.Empty;
 
     /// <summary>
     /// 是否输出到控制台，默认为 true。

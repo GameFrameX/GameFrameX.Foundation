@@ -90,20 +90,21 @@ public static class LogHandler
     public static ILogger Create(LogOptions logOptions, bool isDefault = true, Action<LoggerConfiguration> configurationAction = null)
     {
         ArgumentNullException.ThrowIfNull(logOptions);
-        ArgumentException.ThrowIfNullOrWhiteSpace(logOptions.LogTagName, nameof(logOptions.LogTagName));
+        ArgumentException.ThrowIfNullOrWhiteSpace(logOptions.LogType, nameof(logOptions.LogType));
         SerilogDiagnosis();
         try
         {
             // 文件名
-            var logFileName = $"{logOptions.LogTagName}_.log";
-            // 日志文件存储的路径
+            var logFileName = logOptions.LogFileName.IsNotNullOrEmptyOrWhiteSpace() ? logOptions.LogFileName : $"{logOptions.LogTagName ?? logOptions.LogType}_.log";
+
+            // 日志文件存储的路径，默认在应用程序运行目录下的子目录/logs
             var logSavePath = logOptions.LogSavePath ?? "./logs/";
             if (!logSavePath.EndsWith(Path.DirectorySeparatorChar))
             {
                 logSavePath += Path.DirectorySeparatorChar;
             }
 
-            logSavePath += logOptions.LogTagName + Path.DirectorySeparatorChar;
+            logSavePath += logOptions.LogType + Path.DirectorySeparatorChar;
 
             // 计算最终日志文件路径
             var logPath = Path.Combine(logSavePath, logFileName);
