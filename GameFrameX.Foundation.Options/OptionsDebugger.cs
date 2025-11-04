@@ -27,6 +27,10 @@ namespace GameFrameX.Foundation.Options
         /// <param name="options">解析后的选项对象</param>
         public static void PrintParsedOptions<T>(T options) where T : class
         {
+            Console.WriteLine("╔══════════════════════════════════════════════════════════════════════╗");
+            Console.WriteLine("║  Command-line parameter and parsed configuration object information  ║");
+            Console.WriteLine("╚══════════════════════════════════════════════════════════════════════╝");
+            Console.WriteLine();
             try
             {
                 // 使用反射获取所有属性
@@ -150,19 +154,6 @@ namespace GameFrameX.Foundation.Options
                 }
 
                 int maxTableWidth = Math.Max(60, consoleWidth - 1);
-
-                // 计算最终表格宽度，用于上方/下方的双线边框和居中标题
-                int tableWidth = CalculateTotalWidth();
-                string topDouble = "╔" + new string('═', Math.Max(0, tableWidth - 2)) + "╗";
-                string bottomDouble = "╚" + new string('═', Math.Max(0, tableWidth - 2)) + "╝";
-                string headerText = "Command-line parameter and parsed configuration object information";
-                string centeredHeader = CenterPadDisplay(headerText, Math.Max(0, tableWidth - 2));
-
-                Console.WriteLine(topDouble);
-                Console.WriteLine($"║{centeredHeader}║");
-                Console.WriteLine(bottomDouble);
-                Console.WriteLine();
-
                 while (CalculateTotalWidth() > maxTableWidth)
                 {
                     if (descWidth > minDescWidth)
