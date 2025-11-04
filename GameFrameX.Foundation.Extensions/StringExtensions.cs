@@ -131,11 +131,39 @@ public static class StringExtensions
         int total = 0;
         foreach (var c in text)
         {
-            var isChineseChar =  (c >= '\u4e00' && c <= '\u9fff') || (c >= '\u3400' && c <= '\u4dbf') || (c >= '\u2000' && c <= '\u2a6d');
+            var isChineseChar = (c >= '\u4e00' && c <= '\u9fff') || (c >= '\u3400' && c <= '\u4dbf') || (c >= '\u2000' && c <= '\u2a6d');
             total += isChineseChar ? 2 : 1;
         }
 
         return total;
+    }
+
+    /// <summary>
+    /// 将字符串转换为下划线命名法。
+    /// </summary>
+    /// <param name="str">要转换的字符串。</param>
+    /// <param name="isToUpper">是否将下划线转换为大写。默认值为false。</param>
+    /// <returns>下划线命名法的字符串。</returns>
+    /// <exception cref="ArgumentNullException">当str为null时抛出。</exception>
+    /// <remarks>
+    /// 此方法将字符串中的每个大写字母前添加下划线，并根据isToUpper参数转换为大写或小写。
+    /// 例如："HelloWorld"转换为"hello_world"，"IsValid"转换为"is_valid"。
+    /// 当字符串中已包含下划线时，直接返回原字符串。
+    /// </remarks>
+    public static string ConvertToUnderLine(string str, bool isToUpper = false)
+    {
+        ArgumentNullException.ThrowIfNull(str, nameof(str));
+        if (str.Contains('_'))
+        {
+            return str;
+        }
+
+        if (isToUpper)
+        {
+            return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? $"_{x}" : x.ToString())).ToUpper();
+        }
+
+        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? $"_{x}" : x.ToString())).ToLower();
     }
 
     /// <summary>
