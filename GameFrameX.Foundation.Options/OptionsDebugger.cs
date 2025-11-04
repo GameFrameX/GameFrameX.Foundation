@@ -8,25 +8,6 @@ namespace GameFrameX.Foundation.Options
     public static class OptionsDebugger
     {
         /// <summary>
-        /// 打印结构化的命令行参数信息
-        /// </summary>
-        /// <param name="args">原始命令行参数</param>
-        /// <param name="optionsType">选项类型</param>
-        public static void PrintStructuredArguments(string[] args, Type optionsType)
-        {
-            Console.WriteLine();
-            Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
-            Console.WriteLine("║  Command-line parameter parsing debugging information        ║");
-            Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
-            Console.WriteLine();
-
-            // 打印可用选项定义
-            PrintAvailableOptions(optionsType);
-
-            Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        }
-
-        /// <summary>
         /// 打印解析完成后的选项对象
         /// </summary>
         /// <typeparam name="T">选项类型</typeparam>
