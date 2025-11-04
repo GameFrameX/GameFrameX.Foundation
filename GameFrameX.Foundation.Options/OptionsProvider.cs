@@ -101,7 +101,7 @@ public static class OptionsProvider
             // 如果启用调试输出，打印缓存的选项对象
             if (shouldDebug)
             {
-                Console.WriteLine("⚠️  使用缓存的配置对象");
+                Console.WriteLine("⚠️  使用缓存的配置对象 (Using cached configuration object)");
                 OptionsDebugger.PrintParsedOptions(cachedResult);
             }
             

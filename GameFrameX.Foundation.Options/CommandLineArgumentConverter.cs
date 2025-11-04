@@ -196,7 +196,7 @@ public class CommandLineArgumentConverter
         }
         catch (Exception ex)
         {
-            throw new ArgumentException($"处理命令行参数时发生错误: {ex.Message}", ex);
+            throw new ArgumentException($"处理命令行参数时发生错误 (An error occurred while processing command-line arguments): {ex.Message}", ex);
         }
     }
     

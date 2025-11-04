@@ -212,7 +212,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException($"处理命令行参数时发生错误: {ex.Message}", ex);
+                    throw new ArgumentException($"处理命令行参数时发生错误 (An error occurred while processing command-line arguments): {ex.Message}", ex);
                 }
             }
 
@@ -230,7 +230,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
         catch (Exception ex)
         {
             // 发生异常时抛出异常
-            throw new ArgumentException($"构建选项时发生错误: {ex.Message}", ex);
+            throw new ArgumentException($"构建选项时发生错误 (An error occurred while building options): {ex.Message}", ex);
         }
     }
 
@@ -261,7 +261,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"设置属性 {property.Name} 的默认值时发生错误: {ex.Message}");
+                        Console.WriteLine($"设置属性 {property.Name} 的默认值时发生错误 (An error occurred while setting default value for property {property.Name}): {ex.Message}");
                         Console.WriteLine(ex);
                     }
                 }
@@ -319,7 +319,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         if (missingOptions.Count > 0)
         {
-            throw new ArgumentException($"缺少必需的选项: {string.Join(", ", missingOptions)}");
+            throw new ArgumentException($"缺少必需的选项 (Missing required options): {string.Join(", ", missingOptions)}");
         }
     }
 
@@ -425,7 +425,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"获取环境变量时发生错误: {ex.Message}");
+            Console.WriteLine($"获取环境变量时发生错误 (An error occurred while retrieving environment variables): {ex.Message}");
             Console.WriteLine(ex);
         }
 
@@ -782,7 +782,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"设置属性 {property.Name} 时发生错误: {ex.Message}");
+                    Console.WriteLine($"设置属性 {property.Name} 时发生错误 (An error occurred while setting property {property.Name}): {ex.Message}");
                     Console.WriteLine(ex);
                 }
             }

@@ -438,7 +438,7 @@ namespace GameFrameX.Foundation.Options
                 var result = $"[{string.Join(", ", elements)}]";
                 if (array.Length > 5)
                 {
-                    result += $" (共{array.Length}个元素)";
+                    result += $" (Total {array.Length} elements / 共{array.Length}个元素)";
                 }
 
                 return result;
@@ -456,7 +456,7 @@ namespace GameFrameX.Foundation.Options
                 var result = $"[{string.Join(", ", elements)}]";
                 if (list.Count > 5)
                 {
-                    result += $" (共{list.Count}个元素)";
+                    result += $" (Total {list.Count} elements / 共{list.Count}个元素)";
                 }
 
                 return result;
