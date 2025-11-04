@@ -57,12 +57,12 @@ public static class LogHandler
     /// <summary>
     /// 控制台输出模板，用于格式化控制台日志输出。
     /// </summary>
-    const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
+    const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 文件输出模板，用于格式化文件日志输出。
     /// </summary>
-    const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}-{TagName}] {Message:lj}{NewLine}{Exception}";
+    const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 启动并配置日志系统
@@ -107,9 +107,7 @@ public static class LogHandler
             }
 
             var logger = CreateLoggerConfiguration();
-            logger.Enrich.WithProperty("LogType", logOptions.LogType);
-            logger.Enrich.WithProperty("FriendlyName", AppDomain.CurrentDomain.FriendlyName);
-            logger.Enrich.WithProperty("TagName", logOptions.LogTagName ?? "");
+            logger.Enrich.WithProperty("TagName", logOptions.LogTagName);
 
             if (logOptions.IsGrafanaLoki)
             {
