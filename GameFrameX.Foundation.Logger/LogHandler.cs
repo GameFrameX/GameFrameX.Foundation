@@ -57,12 +57,22 @@ public static class LogHandler
     /// <summary>
     /// 控制台输出模板，用于格式化控制台日志输出。
     /// </summary>
-    const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
+    const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
+
+    /// <summary>
+    /// 控制台输出模板，用于格式化控制台日志输出，包含标签名称。
+    /// </summary>
+    const string ConsoleOutputTagNameTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 文件输出模板，用于格式化文件日志输出。
     /// </summary>
-    const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
+    const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
+
+    /// <summary>
+    /// 文件输出模板，用于格式化文件日志输出，包含标签名称。
+    /// </summary>
+    const string FileOutputTagNameTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 启动并配置日志系统。
@@ -122,6 +132,7 @@ public static class LogHandler
 
             var logger = CreateLoggerConfiguration();
             logger.Enrich.WithProperty("TagName", logOptions.LogTagName);
+            logger.Enrich.WithProperty("LogType", logOptions.LogType);
 
             if (logOptions.IsGrafanaLoki)
             {
@@ -182,16 +193,11 @@ public static class LogHandler
 
             configurationAction?.Invoke(logger);
             string consoleOutputTemplate = ConsoleOutputTemplate;
-
-            if (logOptions.ConsoleOutputTemplate.IsNotNullOrEmptyOrWhiteSpace())
-            {
-                consoleOutputTemplate = logOptions.ConsoleOutputTemplate;
-            }
-
             string fileOutputTemplate = FileOutputTemplate;
-            if (logOptions.FileOutputTemplate.IsNotNullOrEmptyOrWhiteSpace())
+            if (logOptions.LogTagName.IsNotNullOrEmptyOrWhiteSpace())
             {
-                fileOutputTemplate = logOptions.FileOutputTemplate;
+                consoleOutputTemplate = ConsoleOutputTagNameTemplate;
+                fileOutputTemplate = FileOutputTagNameTemplate;
             }
 
             if (logOptions.IsWriteToMongoDb)

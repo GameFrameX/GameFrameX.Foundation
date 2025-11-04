@@ -199,34 +199,6 @@ public sealed class LogOptions
     public int? RetainedFileCountLimit { get; set; } = 31;
 
     /// <summary>
-    /// 控制台日志输出格式模板，默认格式为 "[时:分:秒 级别][标签名]消息内容"。
-    /// </summary>
-    /// <remarks>
-    /// 支持的占位符包括：
-    /// - {Timestamp:HH:mm:ss} - 时间戳（时:分:秒格式）
-    /// - {Level:u3} - 日志级别（3个字符大写）
-    /// - {TagName} - 日志标签名称
-    /// - {Message:lj} - 日志消息内容（左对齐）
-    /// - {NewLine} - 换行符
-    /// - {Exception} - 异常信息
-    /// </remarks>
-    public string ConsoleOutputTemplate { get; set; } = "[{Timestamp:HH:mm:ss} {Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
-
-    /// <summary>
-    /// 文件日志输出格式模板，默认格式为 "完整时间戳 [级别][友好名称] 消息内容"。
-    /// </summary>
-    /// <remarks>
-    /// 支持的占位符包括：
-    /// - {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} - 完整时间戳（包含毫秒和时区）
-    /// - {Level:u3} - 日志级别（3个字符大写）
-    /// - {TagName} - 日志标签名称
-    /// - {Message:lj} - 日志消息内容（左对齐）
-    /// - {NewLine} - 换行符
-    /// - {Exception} - 异常信息
-    /// </remarks>
-    public string FileOutputTemplate { get; set; } = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{TagName}]{Message:lj}{NewLine}{Exception}";
-
-    /// <summary>
     /// 返回日志配置对象的 JSON 字符串表示形式。
     /// </summary>
     /// <returns>JSON 字符串表示形式。</returns>
