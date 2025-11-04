@@ -54,7 +54,9 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// <summary>
         /// 数据库连接字符串
         /// </summary>
-        [OptionAttribute("database-url")]
+        [OptionAttribute("database-url", Description = "xxxxxxxxxxxxxxxxxdsakfjhjhjakfhj 温热欻穿oquikocxkzuisaanmsaioajkdjsa开双冲akjhjkfjaok返矿卡健康返矿桑吉很但恐韩克很检控方炯看就肯斯的就看妇科琅丹福斯翻看东街口翻开三即可"
+        )]
+        [HelpText("数据库连接字符串, 例如: \"Server=localhost;Port=3306;Database=test;Uid=root;Pwd=123456;\"")]
         [EnvironmentVariableAttribute("DATABASE_URL")]
         public string? DatabaseUrl { get; set; }
     }
@@ -77,7 +79,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             if (args.Length == 0)
             {
                 Console.WriteLine("📝 使用默认测试参数...");
-                args = new[] { "--app-name", "BasicDemo", "--host", "example.com", "--port", "9090", "--debug", "--log-level", "Debug" };
+                args = new[] { "--app-name", "BasxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxicDemo", "--host", "examaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaple.com", "--port", "9090", "--debug", "--log-level", "Debug" };
                 Console.WriteLine($"   参数: {string.Join(" ", args)}");
                 Console.WriteLine();
             }

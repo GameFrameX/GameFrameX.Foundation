@@ -4,21 +4,20 @@
 // 
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
-using System;
 using GameFrameX.Foundation.Options.Examples.Demos;
 
-namespace GameFrameX.Foundation.Options.Examples
+namespace GameFrameX.Foundation.Tests.Options
 {
     /// <summary>
     /// GameFrameX Foundation Options 示例程序主入口
     /// </summary>
-    class Program
+    public static class ProgramOptions
     {
         /// <summary>
         /// 程序主入口点
         /// </summary>
         /// <param name="args">命令行参数</param>
-        static void Entry(string[] args)
+        public static void Entry(string[] args)
         {
             Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
             Console.WriteLine("║            GameFrameX Foundation Options 示例程序             ║");
