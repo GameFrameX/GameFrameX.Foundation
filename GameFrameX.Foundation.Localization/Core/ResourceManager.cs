@@ -4,9 +4,8 @@
 //
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
+using System.Collections.Concurrent;
 using GameFrameX.Foundation.Localization.Providers;
-using System.Reflection;
-using System.Collections.Generic;
 
 namespace GameFrameX.Foundation.Localization.Core;
 
@@ -27,7 +26,7 @@ namespace GameFrameX.Foundation.Localization.Core;
 public class ResourceManager
 {
     private readonly List<IResourceProvider> _providers;
-    private readonly Lazy<AssemblyResourceProvider[]> _assemblyProviders;
+    private readonly Lazy<ConcurrentDictionary<string, AssemblyResourceProvider>> _assemblyProviders;
     private volatile bool _providersLoaded;
     private readonly object _loadLock;
 
@@ -41,7 +40,13 @@ public class ResourceManager
     public ResourceManager()
     {
         _providers = new List<IResourceProvider>();
-        _assemblyProviders = new Lazy<AssemblyResourceProvider[]>(DiscoverAssemblyProviders);
+        _assemblyProviders = new Lazy<ConcurrentDictionary<string, AssemblyResourceProvider>>();
+        var kvs = DiscoverAssemblyProviders();
+        foreach (var kv in kvs)
+        {
+            _assemblyProviders.Value.TryAdd(kv.Key, kv.Value);
+        }
+
         _loadLock = new object();
     }
 
@@ -145,7 +150,7 @@ public class ResourceManager
             var assemblyProviders = _assemblyProviders.Value;
             foreach (var provider in assemblyProviders)
             {
-                _providers.Insert(0, provider); // 插入到列表开头，优先级更高
+                _providers.Insert(0, provider.Value); // 插入到列表开头，优先级更高
             }
         }
         catch (Exception ex)
@@ -163,12 +168,11 @@ public class ResourceManager
     /// 查找包含本地化资源的程序集，并创建相应的资源提供者。
     /// 只处理已加载到内存中的程序集，不会主动加载额外的程序集。
     /// </remarks>
-    private static AssemblyResourceProvider[] DiscoverAssemblyProviders()
+    private static ConcurrentDictionary<string, AssemblyResourceProvider> DiscoverAssemblyProviders()
     {
+        var providers = new ConcurrentDictionary<string, AssemblyResourceProvider>();
         try
         {
-            var providers = new List<AssemblyResourceProvider>();
-
             // 获取当前应用程序域中已加载的所有 GameFrameX 程序集
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                                             .Where(assembly =>
@@ -181,12 +185,13 @@ public class ResourceManager
                 try
                 {
                     // 检查程序集是否包含本地化资源
-                    var hasResources = assembly.GetManifestResourceNames()
-                                               .Any(name => name.Contains(".Localization.") && name.EndsWith(".resources"));
-
+                    var hasResources = assembly.GetManifestResourceNames().Any(name => name.Contains(".Localization.") && name.EndsWith(".resources"));
                     if (hasResources)
                     {
-                        providers.Add(new AssemblyResourceProvider(assembly));
+                        if (!providers.TryAdd(assembly.FullName, new AssemblyResourceProvider(assembly)))
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Failed to add assembly provider for {assembly.FullName}");
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -194,14 +199,13 @@ public class ResourceManager
                     System.Diagnostics.Debug.WriteLine($"Failed to check loaded assembly {assembly.FullName}: {ex.Message}");
                 }
             }
-
-            return providers.ToArray();
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Failed to discover assembly providers: {ex.Message}");
-            return Array.Empty<AssemblyResourceProvider>();
         }
+
+        return providers;
     }
 
     /// <summary>

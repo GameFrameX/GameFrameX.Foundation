@@ -35,8 +35,16 @@ namespace GameFrameX.Foundation.Localization.Providers;
 /// </example>
 public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
 {
+    /// <summary>
+    /// 获取当前程序集的完整名称
+    /// </summary>
+    public string AssemblyName
+    {
+        get { return _assembly.FullName; }
+    }
+
     private readonly Assembly _assembly;
-    private readonly ConcurrentDictionary<string, System.Resources.ResourceManager> _resourceManagers;
+    private readonly List<System.Resources.ResourceManager> _resourceManagers;
     private volatile bool _isInitialized;
     private readonly object _initLock;
 
@@ -46,7 +54,10 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
     /// <value>
     /// 如果资源提供者已加载并准备好提供服务，则为 true；否则为 false。
     /// </value>
-    public bool IsInitialized => _isInitialized;
+    public bool IsInitialized
+    {
+        get { return _isInitialized; }
+    }
 
     /// <summary>
     /// 初始化 AssemblyResourceProvider 的新实例
@@ -66,7 +77,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
     public AssemblyResourceProvider(Assembly assembly)
     {
         _assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
-        _resourceManagers = new ConcurrentDictionary<string, System.Resources.ResourceManager>(StringComparer.OrdinalIgnoreCase);
+        _resourceManagers = new List<System.Resources.ResourceManager>();
         _initLock = new object();
     }
 
@@ -110,7 +121,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
                 var culture = CultureInfo.CurrentUICulture;
                 var value = resourceManager.GetString(key, culture);
 
-                
+
                 if (!string.IsNullOrEmpty(value))
                 {
                     return value;
@@ -120,7 +131,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
                 if (!Equals(culture, CultureInfo.InvariantCulture))
                 {
                     value = resourceManager.GetString(key, CultureInfo.InvariantCulture);
-                    
+
                     if (!string.IsNullOrEmpty(value))
                     {
                         return value;
@@ -215,8 +226,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
         {
             var resourceNames = _assembly.GetManifestResourceNames();
 
-            var list = resourceNames.Where(name => name.EndsWith(".resources"))
-                                    .ToList();
+            var list = resourceNames.Where(name => name.EndsWith(".resources")).ToList();
 
             foreach (var resourceName in list)
             {
@@ -234,7 +244,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
 
                     // 寻找文化标识符（如 zh-CN, en-US 等）
                     var secondLastPart = parts[^2]; // 可能是文化名或"Resources"
-                    string category, baseName;
+                    string baseName;
 
                     if (secondLastPart.Equals("Resources", StringComparison.OrdinalIgnoreCase))
                     {
@@ -242,19 +252,8 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
                         // 例如：GameFrameX.Foundation.Utility.Localization.Messages.Resources.resources
                         var pathParts = parts.Take(parts.Length - 1).ToList(); // 移除resources
                         baseName = string.Join(".", pathParts);
-
-                        // 使用程序集名作为类别，因为每个程序集只有一个Resources.resx文件
-                        // 例如：GameFrameX.Foundation.Utility → 类别为 "GameFrameX.Foundation.Utility"
-                        if (pathParts.Count >= 1)
-                        {
-                            category = pathParts[0]; // 使用程序集名作为完整的类别标识
-                        }
-                        else
-                        {
-                            category = "Default"; // 默认类别
-                        }
                     }
-                    else if (secondLastPart.Contains("-") && secondLastPart.Length >= 2) // 文化名 (zh-CN, en-US等)
+                    else if (secondLastPart.Contains('-') && secondLastPart.Length >= 2) // 文化名 (zh-CN, en-US等)
                     {
                         // 格式：程序集名.[路径].Resources.文化名.resources
                         // 例如：GameFrameX.Foundation.Utility.Localization.Messages.Resources.zh-CN.resources
@@ -264,16 +263,6 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
                         if (pathParts.Count >= 1 && pathParts.Last().Equals("Resources", StringComparison.OrdinalIgnoreCase))
                         {
                             baseName = string.Join(".", pathParts);
-
-                            // 使用程序集名作为类别，与默认资源保持一致
-                            if (pathParts.Count >= 1)
-                            {
-                                category = pathParts[0]; // 使用程序集名作为完整的类别标识
-                            }
-                            else
-                            {
-                                category = "Default";
-                            }
                         }
                         else
                         {
@@ -284,13 +273,12 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
                     else
                     {
                         // 其他格式：程序集名.类别.resources (保持向后兼容)
-                        category = secondLastPart;
                         baseName = string.Join(".", parts.Take(parts.Length - 1));
                     }
 
-                    if (!_resourceManagers.ContainsKey(category))
+                    if (_resourceManagers.All(x => x.BaseName != baseName))
                     {
-                                                _resourceManagers.TryAdd(category, new System.Resources.ResourceManager(baseName, _assembly));
+                        _resourceManagers.Add(new System.Resources.ResourceManager(baseName, _assembly));
                     }
                 }
                 catch (Exception ex)
@@ -318,38 +306,34 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
     /// </remarks>
     private bool TryGetResourceManager(string key, out System.Resources.ResourceManager resourceManager)
     {
-        var parts = key.Split('.');
-        if (parts.Length >= 3) // 至少需要：模块名.类别.具体键名
+        // 直接遍历所有已加载的ResourceManager，查找包含该键的资源管理器
+        foreach (var kvp in _resourceManagers)
         {
-            // 直接遍历所有已加载的ResourceManager，查找包含该键的资源管理器
-            foreach (var kvp in _resourceManagers)
+            var category = kvp.BaseName;
+            resourceManager = kvp;
+
+            try
             {
-                var category = kvp.Key;
-                resourceManager = kvp.Value;
-
-                try
+                // 尝试直接获取资源（让ResourceManager根据当前文化自动选择）
+                var testValue = resourceManager.GetString(key, CultureInfo.CurrentUICulture);
+                if (!string.IsNullOrEmpty(testValue) && testValue != key)
                 {
-                    // 尝试直接获取资源（让ResourceManager根据当前文化自动选择）
-                    var testValue = resourceManager.GetString(key, CultureInfo.CurrentUICulture);
-                    if (!string.IsNullOrEmpty(testValue) && testValue != key)
-                    {
-                        // 找到了有效的本地化值
-                        return true;
-                    }
+                    // 找到了有效的本地化值
+                    return true;
+                }
 
-                    // 如果特定文化没有找到，尝试使用默认文化
-                    var defaultValue = resourceManager.GetString(key, CultureInfo.InvariantCulture);
-                    if (!string.IsNullOrEmpty(defaultValue) && defaultValue != key)
-                    {
-                        // 找到了默认值
-                        return true;
-                    }
-                }
-                catch (Exception ex)
+                // 如果特定文化没有找到，尝试使用默认文化
+                var defaultValue = resourceManager.GetString(key, CultureInfo.InvariantCulture);
+                if (!string.IsNullOrEmpty(defaultValue) && defaultValue != key)
                 {
-                    // 忽略错误，继续尝试下一个ResourceManager
-                    System.Diagnostics.Debug.WriteLine($"Failed to check resource in manager '{category}': {ex.Message}");
+                    // 找到了默认值
+                    return true;
                 }
+            }
+            catch (Exception ex)
+            {
+                // 忽略错误，继续尝试下一个ResourceManager
+                System.Diagnostics.Debug.WriteLine($"Failed to check resource in manager '{category}': {ex.Message}");
             }
         }
 
@@ -377,7 +361,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
     /// </example>
     public IReadOnlyCollection<string> GetLoadedCategories()
     {
-        return _resourceManagers.Keys.ToList().AsReadOnly();
+        return _resourceManagers.Select(x => x.BaseName).ToList().AsReadOnly();
     }
 
     /// <summary>
@@ -394,7 +378,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
             IsInitialized = _isInitialized,
             AssemblyName = _assembly.GetName().Name,
             LoadedCategoriesCount = _resourceManagers.Count,
-            LoadedCategories = _resourceManagers.Keys.ToList()
+            LoadedCategories = _resourceManagers.Select(x => x.BaseName).ToList()
         };
     }
 
@@ -409,7 +393,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
     {
         try
         {
-            foreach (var manager in _resourceManagers.Values)
+            foreach (var manager in _resourceManagers)
             {
                 manager?.ReleaseAllResources();
             }
