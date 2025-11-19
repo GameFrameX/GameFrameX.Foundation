@@ -69,7 +69,9 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     public NullableDictionary(int capacity) : base(capacity)
     {
         if (capacity < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity cannot be negative.");
+        }
     }
 
     /// <summary>
@@ -81,7 +83,10 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     public static NullableDictionary<TKey, TValue> WithCapacity(int capacity)
     {
         if (capacity < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity cannot be negative.");
+        }
+
         return new NullableDictionary<TKey, TValue>(capacity);
     }
 
@@ -133,7 +138,9 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     public NullableDictionary(int capacity, IEqualityComparer<NullObject<TKey>> comparer) : base(capacity, comparer)
     {
         if (capacity < 0)
+        {
             throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity cannot be negative.");
+        }
     }
 
     /// <summary>

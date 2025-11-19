@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Extensions 模块异常消息 -->
+  <data name="Extensions.Exceptions.OffsetCountExceedBufferLength" xml:space="preserve">
+    <value>偏移量和计数超出缓冲区长度。缓冲区长度：{0}，偏移量：{1}，计数：{2}。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.IndexCountExceedBufferLength" xml:space="preserve">
+    <value>索引和计数超出缓冲区长度。缓冲区长度：{0}，索引：{1}，计数：{2}。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.BufferWriteOutOfRange" xml:space="preserve">
+    <value>缓冲区写入位置超出范围。缓冲区长度：{0}，写入位置：{1}。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.StringLengthExceedMaxValue" xml:space="preserve">
+    <value>字符串长度超出最大值。实际长度：{0}，最大长度：{1}。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ByteArrayLengthMustEqual" xml:space="preserve">
+    <value>字节数组长度必须相等。第一个数组长度：{0}，第二个数组长度：{1}。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ListCannotBeEmpty" xml:space="preserve">
+    <value>列表不能为空。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.TargetTypeMustBeInterface" xml:space="preserve">
+    <value>目标类型必须是接口类型。目标类型：{0}。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ObjectTypeMismatch" xml:space="preserve">
+    <value>对象类型不匹配。对象类型：{0}，目标类型：{1}。</value>
+  </data>
+
+  <!-- 日志消息 -->
+  <data name="Extensions.Logs.CollectionProcessed" xml:space="preserve">
+    <value>集合处理完成。集合类型：{0}，元素数量：{1}。</value>
+  </data>
+
+  <data name="Extensions.Logs.ByteConversionCompleted" xml:space="preserve">
+    <value>字节转换完成。源格式：{0}，目标格式：{1}，字节数：{2}。</value>
+  </data>
+
+  <data name="Extensions.Logs.TypeConversionCompleted" xml:space="preserve">
+    <value>类型转换完成。源类型：{0}，目标类型：{1}。</value>
+  </data>
+
+  <!-- 状态消息 -->
+  <data name="Extensions.Status.ExtensionsInitialized" xml:space="preserve">
+    <value>{0}扩展方法模块初始化成功。</value>
+  </data>
+
+  <data name="Extensions.Status.BufferOperationSuccessful" xml:space="preserve">
+    <value>缓冲区操作成功完成。操作类型：{0}，字节数：{1}。</value>
+  </data>
+
+  <!-- 验证消息 -->
+  <data name="Extensions.Validation.NotNullRequired" xml:space="preserve">
+    <value>参数不能为null。参数名称：{0}。</value>
+  </data>
+
+  <data name="Extensions.Validation.RangeCheckFailed" xml:space="preserve">
+    <value>数值超出允许范围。值：{0}，最小值：{1}，最大值：{2}。</value>
+  </data>
+
+  <data name="Extensions.Validation.TypeCheckFailed" xml:space="preserve">
+    <value>类型验证失败。实际类型：{0}，期望类型：{1}。</value>
+  </data>
+
+  <!-- 性能消息 -->
+  <data name="Extensions.Performance.OperationExecutionTime" xml:space="preserve">
+    <value>操作执行时间。操作名称：{0}，执行时间：{1}毫秒。</value>
+  </data>
+
+  <data name="Extensions.Performance.MemoryUsage" xml:space="preserve">
+    <value>内存使用情况。操作名称：{0}，内存使用量：{1}字节。</value>
+  </data>
+</root>

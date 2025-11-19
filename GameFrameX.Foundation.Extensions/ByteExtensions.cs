@@ -1,6 +1,8 @@
 using System.Buffers.Binary;
 using System.Net;
 using System.Text;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Extensions.Localization;
 
 namespace GameFrameX.Foundation.Extensions;
 
@@ -94,7 +96,7 @@ public static class ByteExtensions
 
         if (offset + count > bytes.Length)
         {
-            throw new ArgumentException("The sum of offset and count is greater than the buffer length.", nameof(count));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetCountExceedBufferLength), nameof(count));
         }
 
         var stringBuilder = new StringBuilder();
@@ -135,7 +137,7 @@ public static class ByteExtensions
 
         if (index + count > bytes.Length)
         {
-            throw new ArgumentException("The sum of index and count is greater than the buffer length.", nameof(count));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength), nameof(count));
         }
 
         return Encoding.Default.GetString(bytes, index, count);
@@ -170,7 +172,7 @@ public static class ByteExtensions
 
         if (index + count > bytes.Length)
         {
-            throw new ArgumentException("The sum of index and count is greater than the buffer length.", nameof(count));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength), nameof(count));
         }
 
         return Encoding.UTF8.GetString(bytes, index, count);
@@ -583,7 +585,7 @@ public static class ByteExtensions
 
         if (offset + value.Length > buffer.Length)
         {
-            throw new ArgumentException($"buffer write out of index {offset + value.Length}, {buffer.Length}");
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.BufferWriteOutOfRange, offset + value.Length, buffer.Length));
         }
 
         fixed (byte* ptr = buffer, valPtr = value)
@@ -638,7 +640,7 @@ public static class ByteExtensions
 
         if (len > short.MaxValue)
         {
-            throw new ArgumentException($"string length exceed short.MaxValue {len}, {short.MaxValue}");
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.StringLengthExceedMaxValue, len, short.MaxValue));
         }
 
 
@@ -1086,7 +1088,7 @@ public static class ByteExtensions
 
         if (bytes1.Length != bytes2.Length)
         {
-            throw new ArgumentException("The length of bytes1 and bytes2 must be equal.");
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ByteArrayLengthMustEqual));
         }
 
         var result = new byte[bytes1.Length];

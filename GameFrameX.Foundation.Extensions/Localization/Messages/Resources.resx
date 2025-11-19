@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Extensions module exception messages -->
+  <data name="Extensions.Exceptions.OffsetCountExceedBufferLength" xml:space="preserve">
+    <value>Offset and count exceed buffer length. Buffer length: {0}, offset: {1}, count: {2}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.IndexCountExceedBufferLength" xml:space="preserve">
+    <value>Index and count exceed buffer length. Buffer length: {0}, index: {1}, count: {2}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.BufferWriteOutOfRange" xml:space="preserve">
+    <value>Buffer write position out of range. Buffer length: {0}, write position: {1}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.StringLengthExceedMaxValue" xml:space="preserve">
+    <value>String length exceeds maximum value. Actual length: {0}, maximum length: {1}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ByteArrayLengthMustEqual" xml:space="preserve">
+    <value>Byte array lengths must be equal. First array length: {0}, second array length: {1}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ListCannotBeEmpty" xml:space="preserve">
+    <value>List cannot be empty.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.TargetTypeMustBeInterface" xml:space="preserve">
+    <value>Target type must be an interface type. Target type: {0}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ObjectTypeMismatch" xml:space="preserve">
+    <value>Object type mismatch. Object type: {0}, target type: {1}.</value>
+  </data>
+
+  <!-- Log messages -->
+  <data name="Extensions.Logs.CollectionProcessed" xml:space="preserve">
+    <value>Collection processing completed. Collection type: {0}, element count: {1}.</value>
+  </data>
+
+  <data name="Extensions.Logs.ByteConversionCompleted" xml:space="preserve">
+    <value>Byte conversion completed. Source format: {0}, target format: {1}, byte count: {2}.</value>
+  </data>
+
+  <data name="Extensions.Logs.TypeConversionCompleted" xml:space="preserve">
+    <value>Type conversion completed. Source type: {0}, target type: {1}.</value>
+  </data>
+
+  <!-- Status messages -->
+  <data name="Extensions.Status.ExtensionsInitialized" xml:space="preserve">
+    <value>{0} extensions module initialized successfully.</value>
+  </data>
+
+  <data name="Extensions.Status.BufferOperationSuccessful" xml:space="preserve">
+    <value>Buffer operation completed successfully. Operation type: {0}, byte count: {1}.</value>
+  </data>
+
+  <!-- Validation messages -->
+  <data name="Extensions.Validation.NotNullRequired" xml:space="preserve">
+    <value>Parameter cannot be null. Parameter name: {0}.</value>
+  </data>
+
+  <data name="Extensions.Validation.RangeCheckFailed" xml:space="preserve">
+    <value>Value exceeds allowed range. Value: {0}, minimum value: {1}, maximum value: {2}.</value>
+  </data>
+
+  <data name="Extensions.Validation.TypeCheckFailed" xml:space="preserve">
+    <value>Type validation failed. Actual type: {0}, expected type: {1}.</value>
+  </data>
+
+  <!-- Performance messages -->
+  <data name="Extensions.Performance.OperationExecutionTime" xml:space="preserve">
+    <value>Operation execution time. Operation name: {0}, execution time: {1} ms.</value>
+  </data>
+
+  <data name="Extensions.Performance.MemoryUsage" xml:space="preserve">
+    <value>Memory usage. Operation name: {0}, memory usage: {1} bytes.</value>
+  </data>
+</root>
