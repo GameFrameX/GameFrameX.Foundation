@@ -7,6 +7,9 @@
  * per process
  */
 
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Utility.Localization;
+
 namespace GameFrameX.Foundation.Utility.DistributedSystem.Snowflake;
 
 /// <summary>
@@ -135,12 +138,12 @@ public class IdWorker
         // sanity check for workerId
         if (workerId > MaxWorkerId || workerId < 0)
         {
-            throw new ArgumentException($"worker Id can't be greater than {MaxWorkerId} or less than 0");
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.WorkerIdOutOfRange, MaxWorkerId));
         }
 
         if (dataCenterId > MaxDatacenterId || dataCenterId < 0)
         {
-            throw new ArgumentException($"datacenter Id can't be greater than {MaxDatacenterId} or less than 0");
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DatacenterIdOutOfRange, MaxDatacenterId));
         }
     }
 
@@ -234,7 +237,7 @@ public class IdWorker
             {
                 //exceptionCounter.incr(1);
                 //log.Error("clock is moving backwards.  Rejecting requests until %d.", _lastTimestamp);
-                throw new InvalidSystemClock($"服务器时间出现回退你可以使用StaticConfig.CustomSnowFlakeTimeErrorFunc=【自定义方法】处理让他不报错返回新ID,Clock moved backwards.  Refusing to generate id for {_lastTimestamp - timestamp} milliseconds");
+                throw new InvalidSystemClock(LocalizationService.GetString(LocalizationKeys.Exceptions.ClockMovedBackwards, _lastTimestamp - timestamp));
             }
 
             if (_lastTimestamp == timestamp)

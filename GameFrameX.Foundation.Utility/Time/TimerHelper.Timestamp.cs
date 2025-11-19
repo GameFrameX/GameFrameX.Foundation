@@ -29,6 +29,9 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Utility.Localization;
+
 namespace GameFrameX.Foundation.Utility;
 
 public partial class TimerHelper
@@ -128,7 +131,7 @@ public partial class TimerHelper
     {
         if (timestampSeconds < -62135596800L || timestampSeconds > 253402300799L)
         {
-            throw new ArgumentOutOfRangeException(nameof(timestampSeconds), "Timestamp is out of valid range for DateTime conversion.");
+            throw new ArgumentOutOfRangeException(nameof(timestampSeconds), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
         }
 
         // 将Unix时间戳转换为刻度数，每秒等于10000000刻度
@@ -203,7 +206,7 @@ public partial class TimerHelper
     {
         if (timestampMillisSeconds < -62135596800000L || timestampMillisSeconds > 253402300799999L)
         {
-            throw new ArgumentOutOfRangeException(nameof(timestampMillisSeconds), "Timestamp is out of valid range for DateTime conversion.");
+            throw new ArgumentOutOfRangeException(nameof(timestampMillisSeconds), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
         }
 
         // 将Unix毫秒时间戳转换为刻度数，每毫秒等于10000刻度
@@ -281,7 +284,7 @@ public partial class TimerHelper
     {
         if (timestamp < -62135596800L || timestamp > 253402300799L)
         {
-            throw new ArgumentOutOfRangeException(nameof(timestamp), "Timestamp is out of valid range for DateTime conversion.");
+            throw new ArgumentOutOfRangeException(nameof(timestamp), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
         }
 
         // 直接将秒数转换为TimeSpan
@@ -298,7 +301,7 @@ public partial class TimerHelper
     {
         if (timestamp < -62135596800L || timestamp > 253402300799L)
         {
-            throw new ArgumentOutOfRangeException(nameof(timestamp), "Timestamp is out of valid range for DateTime conversion.");
+            throw new ArgumentOutOfRangeException(nameof(timestamp), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
         }
 
         // 直接将秒数转换为TimeSpan

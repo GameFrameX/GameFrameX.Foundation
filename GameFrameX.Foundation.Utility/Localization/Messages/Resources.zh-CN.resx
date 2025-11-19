@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Utility 模块异常消息 -->
+  <data name="Utility.Exceptions.TimestampOutOfRange" xml:space="preserve">
+    <value>时间戳超出有效范围，无法转换为DateTime。</value>
+  </data>
+
+  <data name="Utility.Exceptions.ClockMovedBackwards" xml:space="preserve">
+    <value>系统时钟回退 {0} 毫秒，拒绝生成ID以防止重复。</value>
+  </data>
+
+  <data name="Utility.Exceptions.WorkerIdOutOfRange" xml:space="preserve">
+    <value>工作节点ID超出有效范围，可接受值为 0 到 {0}。</value>
+  </data>
+
+  <data name="Utility.Exceptions.DatacenterIdOutOfRange" xml:space="preserve">
+    <value>数据中心ID超出有效范围，可接受值为 0 到 {0}。</value>
+  </data>
+
+  <!-- 通用异常消息 -->
+  <data name="ArgumentNull" xml:space="preserve">
+    <value>参数不能为空。</value>
+  </data>
+
+  <data name="ArgumentOutOfRange" xml:space="preserve">
+    <value>参数超出有效范围。</value>
+  </data>
+
+  <data name="ArrayCannotBeEmpty" xml:space="preserve">
+    <value>数组不能为空。</value>
+  </data>
+
+  <data name="StringCannotBeNullOrEmpty" xml:space="preserve">
+    <value>字符串不能为空或空白。</value>
+  </data>
+
+  <!-- 通用状态消息 -->
+  <data name="Success" xml:space="preserve">
+    <value>操作成功</value>
+  </data>
+
+  <data name="Failure" xml:space="preserve">
+    <value>操作失败</value>
+  </data>
+
+  <data name="Loading" xml:space="preserve">
+    <value>加载中...</value>
+  </data>
+
+  <data name="NotAvailable" xml:space="preserve">
+    <value>不可用</value>
+  </data>
+</root>

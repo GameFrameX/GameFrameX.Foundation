@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Utility module exception messages -->
+  <data name="Utility.Exceptions.TimestampOutOfRange" xml:space="preserve">
+    <value>Timestamp is out of valid range and cannot be converted to DateTime.</value>
+  </data>
+
+  <data name="Utility.Exceptions.ClockMovedBackwards" xml:space="preserve">
+    <value>System clock moved backwards by {0} milliseconds, refusing to generate IDs to prevent duplicates.</value>
+  </data>
+
+  <data name="Utility.Exceptions.WorkerIdOutOfRange" xml:space="preserve">
+    <value>Worker ID out of range, acceptable values are 0 to {0}.</value>
+  </data>
+
+  <data name="Utility.Exceptions.DatacenterIdOutOfRange" xml:space="preserve">
+    <value>Datacenter ID out of range, acceptable values are 0 to {0}.</value>
+  </data>
+
+  <!-- Common exception messages -->
+  <data name="ArgumentNull" xml:space="preserve">
+    <value>Argument cannot be null.</value>
+  </data>
+
+  <data name="ArgumentOutOfRange" xml:space="preserve">
+    <value>Argument out of range.</value>
+  </data>
+
+  <data name="ArrayCannotBeEmpty" xml:space="preserve">
+    <value>Array cannot be empty.</value>
+  </data>
+
+  <data name="StringCannotBeNullOrEmpty" xml:space="preserve">
+    <value>String cannot be null or empty.</value>
+  </data>
+
+  <!-- Common status messages -->
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+
+  <data name="Failure" xml:space="preserve">
+    <value>Failure</value>
+  </data>
+
+  <data name="Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+
+  <data name="NotAvailable" xml:space="preserve">
+    <value>Not Available</value>
+  </data>
+</root>
