@@ -363,7 +363,10 @@ public sealed class OptionsBuilder<T> where T : class, new()
             // 处理环境变量
             foreach (var key in envVars.Keys)
             {
-                if (key == null) continue;
+                if (key == null)
+                {
+                    continue;
+                }
 
                 var keyStr = key.ToString();
                 var value = envVars[key]?.ToString();

@@ -286,7 +286,11 @@ namespace GameFrameX.Foundation.Options
                 int rw = wide ? 2 : 1;
                 if (w + rw > width)
                 {
-                    if (width > 1) sb.Append('…');
+                    if (width > 1)
+                    {
+                        sb.Append('…');
+                    }
+
                     break;
                 }
 
@@ -294,7 +298,11 @@ namespace GameFrameX.Foundation.Options
                 w += rw;
             }
 
-            while (GetDisplayWidth(sb.ToString()) < width) sb.Append(' ');
+            while (GetDisplayWidth(sb.ToString()) < width)
+            {
+                sb.Append(' ');
+            }
+
             return sb.ToString();
         }
 
@@ -329,7 +337,11 @@ namespace GameFrameX.Foundation.Options
 
                 if (w + rw > width)
                 {
-                    while (GetDisplayWidth(sb.ToString()) < width) sb.Append(' ');
+                    while (GetDisplayWidth(sb.ToString()) < width)
+                    {
+                        sb.Append(' ');
+                    }
+
                     lines.Add(sb.ToString());
                     sb.Clear();
                     w = 0;
@@ -340,7 +352,11 @@ namespace GameFrameX.Foundation.Options
             }
 
             // 收尾：加入最后一行，并填充到指定宽度
-            while (GetDisplayWidth(sb.ToString()) < width) sb.Append(' ');
+            while (GetDisplayWidth(sb.ToString()) < width)
+            {
+                sb.Append(' ');
+            }
+
             lines.Add(sb.ToString());
             if (lines.Count == 0)
             {
