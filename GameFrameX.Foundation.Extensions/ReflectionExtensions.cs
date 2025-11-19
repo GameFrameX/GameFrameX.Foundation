@@ -66,7 +66,10 @@ public static class ReflectionExtensions
     /// 获取类型的泛型参数集合。
     /// </summary>
     /// <param name="type">要检查的类型。</param>
-    /// <returns>包含泛型参数的 <see cref="System.Type[]"/>；非泛型类型返回空数组。</returns>
+    /// <returns>包含泛型参数的 <see>
+    ///     <cref>System.Type[]</cref>
+    /// </see>
+    /// ；非泛型类型返回空数组。</returns>
     /// <remarks>
     /// 示例：
     /// - 对 <see cref="System.Collections.Generic.List{T}"/>，其 {T} 将作为一个元素返回；
@@ -89,7 +92,10 @@ public static class ReflectionExtensions
     /// <param name="type">要检查的类型。</param>
     /// <returns>若为泛型类型返回 <see langword="true"/>，否则返回 <see langword="false"/>。</returns>
     /// <remarks>
-    /// 开放泛型与封闭泛型均视为泛型类型，例如 <see cref="System.Collections.Generic.List{T}"/> 与 <see cref="System.Collections.Generic.List{System.String}"/>。
+    /// 开放泛型与封闭泛型均视为泛型类型，例如 <see cref="System.Collections.Generic.List{T}"/> 与 <see>
+    ///     <cref>System.Collections.Generic.List{System.String}</cref>
+    /// </see>
+    /// 。
     /// </remarks>
     /// <exception cref="System.NullReferenceException">当 <paramref name="type"/> 为 <see langword="null"/> 时。</exception>
     /// <seealso cref="System.Type.IsGenericType"/>
@@ -103,9 +109,15 @@ public static class ReflectionExtensions
     /// 获取类型的公共实例属性集合。
     /// </summary>
     /// <param name="type">要检查的类型。</param>
-    /// <returns>属性数组 <see cref="System.Reflection.PropertyInfo[]"/>。</returns>
+    /// <returns>属性数组 <see>
+    ///     <cref>System.Reflection.PropertyInfo[]</cref>
+    /// </see>
+    /// 。</returns>
     /// <remarks>
-    /// 等价于 <see cref="System.Reflection.TypeInfo.GetProperties"/> 的行为。
+    /// 等价于 <see>
+    ///     <cref>System.Reflection.TypeInfo.GetProperties</cref>
+    /// </see>
+    /// 的行为。
     /// </remarks>
     /// <exception cref="System.NullReferenceException">当 <paramref name="type"/> 为 <see langword="null"/> 时。</exception>
     /// <seealso cref="System.Reflection.PropertyInfo"/>
@@ -123,10 +135,10 @@ public static class ReflectionExtensions
     /// <param name="name">属性名称，区分大小写。</param>
     /// <returns>匹配的 <see cref="System.Reflection.PropertyInfo"/>；未找到时返回 <see langword="null"/>。</returns>
     /// <remarks>
-    /// 当存在多个重名属性（极少见）时，可能产生 <see cref="System.AmbiguousMatchException"/>。
+    /// 当存在多个重名属性（极少见）时，可能产生 <see cref="AmbiguousMatchException"/>。
     /// </remarks>
     /// <exception cref="System.ArgumentNullException">当 <paramref name="name"/> 为 <see langword="null"/> 时。</exception>
-    /// <exception cref="System.AmbiguousMatchException">当找到多个具有相同名称的属性时。</exception>
+    /// <exception cref="AmbiguousMatchException">当找到多个具有相同名称的属性时。</exception>
     /// <seealso cref="System.Reflection.PropertyInfo"/>
     /// <seealso cref="System.Type.GetProperty(System.String)"/>
     public static PropertyInfo GetProperty(this Type type, string name)
@@ -142,10 +154,10 @@ public static class ReflectionExtensions
     /// <param name="name">字段名称，区分大小写。</param>
     /// <returns>匹配的 <see cref="System.Reflection.FieldInfo"/>；未找到时返回 <see langword="null"/>。</returns>
     /// <remarks>
-    /// 当存在多个重名字段时，可能产生 <see cref="System.AmbiguousMatchException"/>。
+    /// 当存在多个重名字段时，可能产生 <see cref="AmbiguousMatchException"/>。
     /// </remarks>
     /// <exception cref="System.ArgumentNullException">当 <paramref name="name"/> 为 <see langword="null"/> 时。</exception>
-    /// <exception cref="System.AmbiguousMatchException">当找到多个具有相同名称的字段时。</exception>
+    /// <exception cref="AmbiguousMatchException">当找到多个具有相同名称的字段时。</exception>
     /// <seealso cref="System.Reflection.FieldInfo"/>
     /// <seealso cref="System.Type.GetField(System.String)"/>
     public static FieldInfo GetField(this Type type, string name)
@@ -174,10 +186,10 @@ public static class ReflectionExtensions
     /// <param name="name">方法名称，区分大小写。</param>
     /// <returns>匹配的 <see cref="System.Reflection.MethodInfo"/>；未找到时返回 <see langword="null"/>。</returns>
     /// <remarks>
-    /// 当存在多个重名方法且无法唯一选择时会抛出 <see cref="System.AmbiguousMatchException"/>。
+    /// 当存在多个重名方法且无法唯一选择时会抛出 <see cref="AmbiguousMatchException"/>。
     /// </remarks>
     /// <exception cref="System.ArgumentNullException">当 <paramref name="name"/> 为 <see langword="null"/> 时。</exception>
-    /// <exception cref="System.AmbiguousMatchException">当找到多个具有相同名称的方法时。</exception>
+    /// <exception cref="AmbiguousMatchException">当找到多个具有相同名称的方法时。</exception>
     /// <seealso cref="System.Reflection.MethodInfo"/>
     /// <seealso cref="System.Type.GetMethod(System.String)"/>
     public static MethodInfo GetMethod(this Type type, string name)
@@ -191,15 +203,23 @@ public static class ReflectionExtensions
     /// </summary>
     /// <param name="type">要检查的类型。</param>
     /// <param name="name">方法名称。</param>
-    /// <param name="types">参数类型数组 <see cref="System.Type[]"/>。</param>
+    /// <param name="types">参数类型数组 <see>
+    ///     <cref>System.Type[]</cref>
+    /// </see>
+    /// 。</param>
     /// <returns>匹配的 <see cref="System.Reflection.MethodInfo"/>；未找到时返回 <see langword="null"/>。</returns>
     /// <remarks>
-    /// 传入 <paramref name="types"/> 可用于在重载中进行精确匹配；数组类型请使用 <see cref="System.Type[]"/>；
+    /// 传入 <paramref name="types"/> 可用于在重载中进行精确匹配；数组类型请使用 <see>
+    ///     <cref>System.Type[]</cref>
+    /// </see>
+    /// ；
     /// 引用参数类型请使用 <c>System.Type&amp;</c>；指针参数类型请使用 <c>System.Type*</c>。
     /// </remarks>
     /// <exception cref="System.ArgumentNullException">当 <paramref name="name"/> 或 <paramref name="types"/> 为 <see langword="null"/> 时。</exception>
-    /// <exception cref="System.AmbiguousMatchException">当找到多个具有相同签名的方法时。</exception>
-    /// <seealso cref="System.Type[]"/>
+    /// <exception cref="AmbiguousMatchException">当找到多个具有相同签名的方法时。</exception>
+    /// <seealso>
+    ///     <cref>System.Type[]</cref>
+    /// </seealso>
     /// <seealso cref="System.Type.GetMethod(System.String,System.Type[])"/>
     public static MethodInfo GetMethod(this Type type, string name, Type[] types)
     {
@@ -211,13 +231,16 @@ public static class ReflectionExtensions
     /// 使用参数类型签名获取类型的公共构造函数。
     /// </summary>
     /// <param name="type">要检查的类型。</param>
-    /// <param name="types">参数类型数组 <see cref="System.Type[]"/>。</param>
+    /// <param name="types">参数类型数组 <see>
+    ///     <cref>System.Type[]</cref>
+    /// </see>
+    /// 。</param>
     /// <returns>匹配的 <see cref="System.Reflection.ConstructorInfo"/>；未找到时返回 <see langword="null"/>。</returns>
     /// <remarks>
     /// 传入 <paramref name="types"/> 可用于在重载中精确选择构造函数；引用参数类型请使用 <c>System.Type&amp;</c>，指针参数类型请使用 <c>System.Type*</c>。
     /// </remarks>
     /// <exception cref="System.ArgumentNullException">当 <paramref name="types"/> 为 <see langword="null"/> 时。</exception>
-    /// <exception cref="System.AmbiguousMatchException">当找到多个具有相同签名的构造函数时。</exception>
+    /// <exception cref="AmbiguousMatchException">当找到多个具有相同签名的构造函数时。</exception>
     /// <seealso cref="System.Reflection.ConstructorInfo"/>
     /// <seealso cref="System.Type.GetConstructor(System.Type[])"/>
     public static ConstructorInfo GetConstructor(this Type type, Type[] types)
