@@ -34,6 +34,12 @@
         <OutputPath>..\bin\app</OutputPath>
     </PropertyGroup>
     <ItemGroup>
+        <Folder Include="Localization\Messages\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GameFrameX.Foundation.Localization\GameFrameX.Foundation.Localization.csproj" />
+    </ItemGroup>
+    <ItemGroup>
         <None Include="..\logo.png">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>

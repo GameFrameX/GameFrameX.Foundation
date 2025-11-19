@@ -1,3 +1,6 @@
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Hash.Localization;
+
 namespace GameFrameX.Foundation.Hash;
 
 /// <summary>
@@ -90,7 +93,7 @@ public static partial class CrcHelper
 
         if (offset < 0 || length < 0 || offset + length > bytes.Length)
         {
-            throw new ArgumentException("Offset or length is invalid.", nameof(offset));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Validation.InvalidDataLength), nameof(offset));
         }
 
         SAlgorithm.HashCore(bytes, offset, length);
@@ -168,7 +171,7 @@ public static partial class CrcHelper
 
         if (offset < 0 || offset + 4 > bytes.Length)
         {
-            throw new ArgumentException("Offset or length is invalid.", nameof(offset));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Validation.InvalidDataLength), nameof(offset));
         }
 
         bytes[offset] = (byte)((crc32 >> 24) & 0xff);
@@ -201,7 +204,7 @@ public static partial class CrcHelper
         var codeLength = code.Length;
         if (codeLength <= 0)
         {
-            throw new ArgumentException("Code length is invalid.", nameof(codeLength));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Validation.InvalidDataLength), nameof(codeLength));
         }
 
         var bytesLength = (int)stream.Length;
