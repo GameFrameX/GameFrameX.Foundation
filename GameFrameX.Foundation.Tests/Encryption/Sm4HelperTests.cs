@@ -311,7 +311,9 @@ public class Sm4HelperTests
     private static bool IsValidHexString(string hex)
     {
         if (string.IsNullOrEmpty(hex))
+        {
             return false;
+        }
 
         return hex.All(c => char.IsDigit(c) || (c >= 'A' && c <= 'F') || (c >= 'a' && c <= 'f'));
     }

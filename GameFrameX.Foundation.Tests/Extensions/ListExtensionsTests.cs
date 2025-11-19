@@ -87,8 +87,13 @@ public class ListExtensionsTests
             list.ForEachAsync(async item =>
             {
                 await Task.Delay(1);
-                if (item == 2)
+                if (item != 2)
+                {
+                }
+                else
+                {
                     throw expectedException;
+                }
             }));
         Assert.Equal(expectedException.Message, actualException.Message);
     }
@@ -171,7 +176,9 @@ public class ListExtensionsTests
             {
                 await Task.Delay(1);
                 if (item == 2)
+                {
                     throw expectedException;
+                }
             }));
         Assert.Equal(expectedException.Message, actualException.Message);
     }
