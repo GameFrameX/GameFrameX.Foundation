@@ -150,6 +150,11 @@ public class ResourceManager
             var assemblyProviders = _assemblyProviders.Value;
             foreach (var provider in assemblyProviders)
             {
+                if (_providers.Exists(m => m.AssemblyName == provider.Value.AssemblyName))
+                {
+                    continue;
+                }
+
                 _providers.Insert(0, provider.Value); // 插入到列表开头，优先级更高
             }
         }

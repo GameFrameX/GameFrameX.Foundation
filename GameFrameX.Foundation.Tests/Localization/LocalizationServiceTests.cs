@@ -271,6 +271,14 @@ public class LocalizationServiceTests
             _value = value;
         }
 
+        /// <summary>
+        /// 获取资源提供者的名称
+        /// </summary>
+        /// <value>
+        /// 资源提供者的名称，用于标识资源提供者
+        /// </value>
+        public string AssemblyName => GetType().Assembly.FullName;
+        
         public string GetString(string key)
         {
             return key == "Test.Key" ? _value : key;
