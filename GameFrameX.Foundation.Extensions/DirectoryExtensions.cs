@@ -31,6 +31,9 @@
 
 namespace GameFrameX.Foundation.Extensions;
 
+/// <summary>
+/// 目录扩展方法
+/// </summary>
 public static class DirectoryExtensions
 {
     /// <summary>
