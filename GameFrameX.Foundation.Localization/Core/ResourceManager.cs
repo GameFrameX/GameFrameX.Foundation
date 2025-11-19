@@ -141,9 +141,6 @@ public class ResourceManager
     {
         try
         {
-            // 1. 首先添加默认提供者（作为后备）
-            _providers.Add(new DefaultResourceProvider());
-
             // 2. 添加程序集资源提供者（优先级更高）
             var assemblyProviders = _assemblyProviders.Value;
             foreach (var provider in assemblyProviders)
@@ -153,12 +150,6 @@ public class ResourceManager
         }
         catch (Exception ex)
         {
-            // 如果加载失败，至少确保有默认提供者
-            if (!_providers.Any())
-            {
-                _providers.Add(new DefaultResourceProvider());
-            }
-
             System.Diagnostics.Debug.WriteLine($"Failed to load providers: {ex.Message}");
         }
     }
@@ -178,7 +169,7 @@ public class ResourceManager
         {
             var providers = new List<AssemblyResourceProvider>();
 
-            // 获取当前应用程序域中已加载的所有 GameFrameX.Foundation 程序集
+            // 获取当前应用程序域中已加载的所有 GameFrameX 程序集
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                                             .Where(assembly =>
                                                        assembly.FullName?.StartsWith("GameFrameX.") == true &&
@@ -291,7 +282,7 @@ public class ResourceManager
         {
             ProvidersLoaded = _providersLoaded,
             TotalProviderCount = _providers.Count,
-            DefaultProviderExists = _providers.Any(p => p is DefaultResourceProvider),
+            DefaultProviderExists = _providers.Any(p => p is AssemblyResourceProvider),
             AssemblyProviderCount = assemblyProviders.Count,
             AssemblyProviders = assemblyProviders.Select(p => p.GetStatistics()).ToList()
         };

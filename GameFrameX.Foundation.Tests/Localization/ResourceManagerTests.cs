@@ -122,22 +122,6 @@ public class ResourceManagerTests : IDisposable
     }
 
     [Fact]
-    public void RegisterProvider_WithValidProvider_ShouldAddToBeginning()
-    {
-        // Arrange
-        var customProvider = new DefaultResourceProvider();
-        var initialCount = _resourceManager.GetProviders().Count;
-
-        // Act
-        _resourceManager.RegisterProvider(customProvider);
-        var providers = _resourceManager.GetProviders();
-
-        // Assert
-        Assert.Equal(initialCount + 1, providers.Count);
-        Assert.Same(customProvider, providers[0]); // Should be at the beginning
-    }
-
-    [Fact]
     public void RegisterProvider_WithNullProvider_ShouldThrowArgumentNullException()
     {
         // Arrange

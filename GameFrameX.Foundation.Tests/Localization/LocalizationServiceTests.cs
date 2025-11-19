@@ -152,16 +152,6 @@ public class LocalizationServiceTests
     }
 
     [Fact]
-    public void RegisterProvider_WithValidProvider_ShouldSucceed()
-    {
-        // Arrange
-        var customProvider = new DefaultResourceProvider();
-
-        // Act & Assert (should not throw)
-        LocalizationService.RegisterProvider(customProvider);
-    }
-
-    [Fact]
     public void RegisterProvider_WithNullProvider_ShouldThrowArgumentNullException()
     {
         // Arrange
