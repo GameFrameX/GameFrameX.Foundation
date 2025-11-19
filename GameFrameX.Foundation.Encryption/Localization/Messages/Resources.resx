@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Encryption module exception messages -->
+  <data name="Encryption.Exceptions.KeyArrayCannotBeEmpty" xml:space="preserve">
+    <value>Key array cannot be empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PlainTextCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Plain text cannot be null or empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.EncryptionKeyCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Encryption key cannot be null or empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.CipherTextCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Cipher text cannot be null or empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.DecryptionKeyCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Decryption key cannot be null or empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.InvalidKeySize" xml:space="preserve">
+    <value>Invalid key size: {0}, expected size: {1}.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.KeyMustBe32Characters" xml:space="preserve">
+    <value>Key string must be 32 characters (16 bytes).</value>
+  </data>
+
+  <data name="Encryption.Exceptions.KeyMustBe16Characters" xml:space="preserve">
+    <value>Key string must be 16 characters (8 bytes).</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyCannotBeEmpty" xml:space="preserve">
+    <value>Public key cannot be empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyCannotBeEmpty" xml:space="preserve">
+    <value>Private key cannot be empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyStringCannotBeNull" xml:space="preserve">
+    <value>Public key string cannot be null.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyStringCannotBeEmpty" xml:space="preserve">
+    <value>Public key string cannot be null or empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyStringCannotBeNull" xml:space="preserve">
+    <value>Private key string cannot be null.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyStringCannotBeEmpty" xml:space="preserve">
+    <value>Private key string cannot be null or empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyByteArrayCannotBeNull" xml:space="preserve">
+    <value>Public key byte array cannot be null.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyByteArrayCannotBeEmpty" xml:space="preserve">
+    <value>Public key byte array cannot be empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyByteArrayCannotBeNull" xml:space="preserve">
+    <value>Private key byte array cannot be null.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyByteArrayCannotBeEmpty" xml:space="preserve">
+    <value>Private key byte array cannot be empty.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.IVMustBe32Characters" xml:space="preserve">
+    <value>Initialization Vector (IV) must be 32 hexadecimal characters (16 bytes).</value>
+  </data>
+
+  <data name="Encryption.Exceptions.IVMustBe16Characters" xml:space="preserve">
+    <value>Initialization Vector (IV) must be 16 hexadecimal characters (8 bytes).</value>
+  </data>
+
+  <!-- Log messages -->
+  <data name="Encryption.Logs.EncryptionCompleted" xml:space="preserve">
+    <value>{0} algorithm encryption completed, data length: {1} bytes.</value>
+  </data>
+
+  <data name="Encryption.Logs.DecryptionCompleted" xml:space="preserve">
+    <value>{0} algorithm decryption completed, data length: {1} bytes.</value>
+  </data>
+
+  <data name="Encryption.Logs.KeyGenerated" xml:space="preserve">
+    <value>{0} algorithm key generation completed, key length: {1} bytes.</value>
+  </data>
+
+  <!-- Status messages -->
+  <data name="Encryption.Status.AlgorithmInitialized" xml:space="preserve">
+    <value>{0} algorithm initialized successfully.</value>
+  </data>
+
+  <data name="Encryption.Status.KeyValidated" xml:space="preserve">
+    <value>Key validation passed, length: {0} bytes, meets {1} algorithm requirements.</value>
+  </data>
+
+  <!-- Validation messages -->
+  <data name="Encryption.Validation.InvalidKeyFormat" xml:space="preserve">
+    <value>Invalid key format, expected format: {0}.</value>
+  </data>
+
+  <data name="Encryption.Validation.InvalidDataLength" xml:space="preserve">
+    <value>Invalid data length, actual length: {0}, expected length: {1}.</value>
+  </data>
+</root>

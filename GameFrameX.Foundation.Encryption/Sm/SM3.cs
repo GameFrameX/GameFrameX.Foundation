@@ -43,9 +43,13 @@ internal sealed class SupportClass
     public static long URShift(long number, int bits)
     {
         if (number >= 0)
+        {
             return number >> bits;
+        }
         else
+        {
             return (number >> bits) + (2L << ~bits);
+        }
     }
 
     /// <summary>

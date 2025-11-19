@@ -1,5 +1,7 @@
 using GameFrameX.Foundation.Encryption.Sm;
 using System;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Encryption.Localization;
 
 namespace GameFrameX.Foundation.Encryption;
 
@@ -64,7 +66,7 @@ public static class Sm2Helper
         ArgumentNullException.ThrowIfNull(publicKey, nameof(publicKey));
         if (publicKey.Length == 0)
         {
-            throw new ArgumentException("Public key byte array cannot be empty", nameof(publicKey));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PublicKeyCannotBeEmpty), nameof(publicKey));
         }
 
         return Sm2Util.Encrypt(publicKey, data);
@@ -83,7 +85,7 @@ public static class Sm2Helper
         ArgumentNullException.ThrowIfNull(privateKey, nameof(privateKey));
         if (privateKey.Length == 0)
         {
-            throw new ArgumentException("Private key byte array cannot be empty", nameof(privateKey));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PrivateKeyCannotBeEmpty), nameof(privateKey));
         }
 
         return Sm2Util.Decrypt(privateKey, encryptedData);

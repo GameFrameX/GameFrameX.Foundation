@@ -1,4 +1,6 @@
 using GameFrameX.Foundation.Encryption.Sm;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Encryption.Localization;
 
 namespace GameFrameX.Foundation.Encryption;
 
@@ -27,11 +29,11 @@ public static class Sm4Helper
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
-            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(keyString));
         }
         else if (!hexString && keyString.Length != 16)
         {
-        throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+        throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
         
         Sm4Util sm4Util = new Sm4Util
@@ -73,11 +75,11 @@ public static class Sm4Helper
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
-            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(keyString));
         }
         else if (!hexString && keyString.Length != 16)
         {
-            throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
         
         Sm4Util sm4Util = new Sm4Util
@@ -119,11 +121,11 @@ public static class Sm4Helper
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
-            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(keyString));
         }
         else if (!hexString && keyString.Length != 16)
         {
-            throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
         
         Sm4Util sm4Util = new Sm4Util
@@ -160,11 +162,11 @@ public static class Sm4Helper
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
-            throw new ArgumentException("Key string must be 32 characters long when hexString is true (16 bytes in hex)", nameof(keyString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(keyString));
         }
         else if (!hexString && keyString.Length != 16)
         {
-            throw new ArgumentException("Key string must be 16 characters long when hexString is false", nameof(keyString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
         
         Sm4Util sm4Util = new Sm4Util

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Encryption 模块异常消息 -->
+  <data name="Encryption.Exceptions.KeyArrayCannotBeEmpty" xml:space="preserve">
+    <value>密钥数组不能为空。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PlainTextCannotBeNullOrEmpty" xml:space="preserve">
+    <value>明文不能为空或空白字符串。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.EncryptionKeyCannotBeNullOrEmpty" xml:space="preserve">
+    <value>加密密钥不能为空或空白字符串。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.CipherTextCannotBeNullOrEmpty" xml:space="preserve">
+    <value>密文不能为空或空白字符串。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.DecryptionKeyCannotBeNullOrEmpty" xml:space="preserve">
+    <value>解密密钥不能为空或空白字符串。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.InvalidKeySize" xml:space="preserve">
+    <value>无效的密钥长度：{0}，期望长度：{1}。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.KeyMustBe32Characters" xml:space="preserve">
+    <value>密钥字符串必须为32个字符（16字节）。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.KeyMustBe16Characters" xml:space="preserve">
+    <value>密钥字符串必须为16个字符（8字节）。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyCannotBeEmpty" xml:space="preserve">
+    <value>公钥不能为空。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyCannotBeEmpty" xml:space="preserve">
+    <value>私钥不能为空。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyStringCannotBeNull" xml:space="preserve">
+    <value>公钥字符串不能为null。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyStringCannotBeEmpty" xml:space="preserve">
+    <value>公钥字符串不能为空或空白。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyStringCannotBeNull" xml:space="preserve">
+    <value>私钥字符串不能为null。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyStringCannotBeEmpty" xml:space="preserve">
+    <value>私钥字符串不能为空或空白。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyByteArrayCannotBeNull" xml:space="preserve">
+    <value>公钥字节数组不能为null。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PublicKeyByteArrayCannotBeEmpty" xml:space="preserve">
+    <value>公钥字节数组不能为空数组。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyByteArrayCannotBeNull" xml:space="preserve">
+    <value>私钥字节数组不能为null。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.PrivateKeyByteArrayCannotBeEmpty" xml:space="preserve">
+    <value>私钥字节数组不能为空数组。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.IVMustBe32Characters" xml:space="preserve">
+    <value>初始化向量(IV)必须为32个十六进制字符（16字节）。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.IVMustBe16Characters" xml:space="preserve">
+    <value>初始化向量(IV)必须为16个十六进制字符（8字节）。</value>
+  </data>
+
+  <!-- 日志消息 -->
+  <data name="Encryption.Logs.EncryptionCompleted" xml:space="preserve">
+    <value>{0}算法加密完成，数据长度：{1}字节。</value>
+  </data>
+
+  <data name="Encryption.Logs.DecryptionCompleted" xml:space="preserve">
+    <value>{0}算法解密完成，数据长度：{1}字节。</value>
+  </data>
+
+  <data name="Encryption.Logs.KeyGenerated" xml:space="preserve">
+    <value>{0}算法密钥生成完成，密钥长度：{1}字节。</value>
+  </data>
+
+  <!-- 状态消息 -->
+  <data name="Encryption.Status.AlgorithmInitialized" xml:space="preserve">
+    <value>{0}算法初始化成功。</value>
+  </data>
+
+  <data name="Encryption.Status.KeyValidated" xml:space="preserve">
+    <value>密钥验证通过，长度：{0}字节，符合{1}算法要求。</value>
+  </data>
+
+  <!-- 验证消息 -->
+  <data name="Encryption.Validation.InvalidKeyFormat" xml:space="preserve">
+    <value>密钥格式无效，期望格式：{0}。</value>
+  </data>
+
+  <data name="Encryption.Validation.InvalidDataLength" xml:space="preserve">
+    <value>数据长度无效，实际长度：{0}，期望长度：{1}。</value>
+  </data>
+</root>

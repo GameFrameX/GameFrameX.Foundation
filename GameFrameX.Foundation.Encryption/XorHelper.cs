@@ -1,4 +1,7 @@
-﻿namespace GameFrameX.Foundation.Encryption;
+﻿using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Encryption.Localization;
+
+namespace GameFrameX.Foundation.Encryption;
 
 /// <summary>
 /// XOR加密解密工具类,提供异或运算相关的加密解密功能。
@@ -27,7 +30,7 @@ public static class XorHelper
         
         if (code.Length == 0)
         {
-            throw new ArgumentException("Code array cannot be empty", nameof(code));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
         
         // 取最小值以防止数组越界：当输入数据长度小于QuickEncryptLength时使用实际长度，
@@ -51,7 +54,7 @@ public static class XorHelper
         
         if (code.Length == 0)
         {
-            throw new ArgumentException("Code array cannot be empty", nameof(code));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
         
         // 取最小值以防止数组越界：当输入数据长度小于QuickEncryptLength时使用实际长度，
@@ -80,7 +83,7 @@ public static class XorHelper
         
         if (code.Length == 0)
         {
-            throw new ArgumentException("Code array cannot be empty", nameof(code));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
 
         return GetXorBytes(bytes, 0, bytes.Length, code);
@@ -105,7 +108,7 @@ public static class XorHelper
         
         if (code.Length == 0)
         {
-            throw new ArgumentException("Code array cannot be empty", nameof(code));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
 
         GetSelfXorBytes(bytes, 0, bytes.Length, code);
@@ -134,7 +137,7 @@ public static class XorHelper
         
         if (code.Length == 0)
         {
-            throw new ArgumentException("Code array cannot be empty", nameof(code));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
         
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
@@ -174,7 +177,7 @@ public static class XorHelper
 
         if (code.Length == 0)
         {
-            throw new ArgumentException("Code array cannot be empty", nameof(code));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
 
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));

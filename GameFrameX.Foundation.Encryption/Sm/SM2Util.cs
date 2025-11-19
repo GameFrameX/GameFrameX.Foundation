@@ -1,10 +1,11 @@
-using System;
 using System.Text;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Math.EC;
 using Org.BouncyCastle.Utilities.Encoders;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Encryption.Localization;
 
 namespace GameFrameX.Foundation.Encryption.Sm;
 
@@ -26,10 +27,15 @@ internal static class Sm2Util
     public static string Encrypt(string publicKeyString, string dataString)
     {
         if (publicKeyString == null)
-            throw new ArgumentNullException(nameof(publicKeyString), "公钥字符串不能为null");
+        {
+            throw new ArgumentNullException(nameof(publicKeyString), LocalizationService.GetString(LocalizationKeys.Exceptions.PublicKeyStringCannotBeNull));
+        }
+
         if (string.IsNullOrWhiteSpace(publicKeyString))
-            throw new ArgumentException("公钥字符串不能为空或仅包含空白字符", nameof(publicKeyString));
-        
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PublicKeyStringCannotBeEmpty), nameof(publicKeyString));
+        }
+
         var publicKey = Hex.Decode(publicKeyString);
         var data = Encoding.UTF8.GetBytes(dataString ?? string.Empty);
         return Encrypt(publicKey, data);
@@ -47,10 +53,15 @@ internal static class Sm2Util
     public static string Decrypt(string privateKeyString, string encryptedDataString)
     {
         if (privateKeyString == null)
-            throw new ArgumentNullException(nameof(privateKeyString), "私钥字符串不能为null");
+        {
+            throw new ArgumentNullException(nameof(privateKeyString), LocalizationService.GetString(LocalizationKeys.Exceptions.PrivateKeyStringCannotBeNull));
+        }
+
         if (string.IsNullOrWhiteSpace(privateKeyString))
-            throw new ArgumentException("私钥字符串不能为空或仅包含空白字符", nameof(privateKeyString));
-        
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PrivateKeyStringCannotBeEmpty), nameof(privateKeyString));
+        }
+
         if (encryptedDataString == string.Empty)
         {
             return string.Empty;
@@ -101,13 +112,18 @@ internal static class Sm2Util
     public static string Encrypt(byte[] publicKey, byte[] data)
     {
         if (publicKey == null)
-            throw new ArgumentNullException(nameof(publicKey), "公钥字节数组不能为null");
+        {
+            throw new ArgumentNullException(nameof(publicKey), LocalizationService.GetString(LocalizationKeys.Exceptions.PublicKeyByteArrayCannotBeNull));
+        }
+
         if (publicKey.Length == 0)
-            throw new ArgumentException("公钥字节数组不能为空", nameof(publicKey));
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PublicKeyByteArrayCannotBeEmpty), nameof(publicKey));
+        }
 
         if (data == null)
         {
-            data = new byte[0];
+            data = Array.Empty<byte>();
         }
         
         // 特殊处理空数据
@@ -148,18 +164,23 @@ internal static class Sm2Util
     public static byte[] Decrypt(byte[] privateKey, byte[] encryptedData)
     {
         if (privateKey == null)
-            throw new ArgumentNullException(nameof(privateKey), "私钥字节数组不能为null");
+        {
+            throw new ArgumentNullException(nameof(privateKey), LocalizationService.GetString(LocalizationKeys.Exceptions.PrivateKeyByteArrayCannotBeNull));
+        }
+
         if (privateKey.Length == 0)
-            throw new ArgumentException("私钥字节数组不能为空", nameof(privateKey));
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PrivateKeyByteArrayCannotBeEmpty), nameof(privateKey));
+        }
 
         if (encryptedData == null)
         {
-            return new byte[0];
+            return Array.Empty<byte>();
         }
         
         if (encryptedData.Length == 0)
         {
-            return new byte[0];
+            return Array.Empty<byte>();
         }
 
         string data = Encoding.ASCII.GetString(Hex.Encode(encryptedData));

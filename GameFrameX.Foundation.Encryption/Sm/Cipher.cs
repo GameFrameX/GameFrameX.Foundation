@@ -60,7 +60,9 @@ internal sealed class Cipher
     public static byte[] ByteConvert32Bytes(BigInteger n)
     {
         if (n == null)
+        {
             return null;
+        }
 
         byte[] tmpd;
         if (n.ToByteArray().Length == 33)

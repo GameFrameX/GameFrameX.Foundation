@@ -1,5 +1,7 @@
 using System.Text;
 using Org.BouncyCastle.Utilities.Encoders;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Encryption.Localization;
 
 namespace GameFrameX.Foundation.Encryption.Sm;
 
@@ -44,14 +46,14 @@ internal sealed class Sm4Util
         {
             if (secretKey?.Length != 32)
             {
-                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(secretKey));
             }
         }
         else
         {
             if (secretKey?.Length != 16)
             {
-                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
         }
         var ctx = new Sm4Context()
@@ -124,14 +126,14 @@ internal sealed class Sm4Util
         {
             if (secretKey?.Length != 32)
             {
-                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(secretKey));
             }
         }
         else
         {
             if (secretKey?.Length != 16)
             {
-                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
         }
         var ctx = new Sm4Context()
@@ -178,22 +180,22 @@ internal sealed class Sm4Util
         {
             if (secretKey?.Length != 32)
             {
-                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(secretKey));
             }
             if (iv?.Length != 32)
             {
-                throw new ArgumentException("IV must be 32 characters long when hexString is true (16 bytes in hex)", nameof(iv));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe32Characters), nameof(iv));
             }
         }
         else
         {
             if (secretKey?.Length != 16)
             {
-                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
             if (iv?.Length != 16)
             {
-                throw new ArgumentException("IV must be 16 characters long when hexString is false", nameof(iv));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe16Characters), nameof(iv));
             }
         }
         var ctx = new Sm4Context()
@@ -242,22 +244,22 @@ internal sealed class Sm4Util
         {
             if (secretKey?.Length != 32)
             {
-                throw new ArgumentException("Secret key must be 32 characters long when hexString is true (16 bytes in hex)", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(secretKey));
             }
             if (iv?.Length != 32)
             {
-                throw new ArgumentException("IV must be 32 characters long when hexString is true (16 bytes in hex)", nameof(iv));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe32Characters), nameof(iv));
             }
         }
         else
         {
             if (secretKey?.Length != 16)
             {
-                throw new ArgumentException("Secret key must be 16 characters long when hexString is false", nameof(secretKey));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
             if (iv?.Length != 16)
             {
-                throw new ArgumentException("IV must be 16 characters long when hexString is false", nameof(iv));
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe16Characters), nameof(iv));
             }
         }
         var ctx = new Sm4Context()

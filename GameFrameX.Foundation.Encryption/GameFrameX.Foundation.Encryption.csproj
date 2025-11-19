@@ -47,4 +47,10 @@
     <ItemGroup>
         <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.1" />
     </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Localization\Messages\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GameFrameX.Foundation.Localization\GameFrameX.Foundation.Localization.csproj" />
+    </ItemGroup>
 </Project>

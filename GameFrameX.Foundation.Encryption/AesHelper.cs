@@ -1,5 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Encryption.Localization;
 
 namespace GameFrameX.Foundation.Encryption;
 
@@ -24,12 +26,12 @@ public static class AesHelper
     {
         if (string.IsNullOrEmpty(encryptString))
         {
-            throw new ArgumentException("Plain text cannot be null or empty", nameof(encryptString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PlainTextCannotBeNullOrEmpty), nameof(encryptString));
         }
 
         if (string.IsNullOrEmpty(encryptKey))
         {
-            throw new ArgumentException("Encryption key cannot be null or empty", nameof(encryptKey));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.EncryptionKeyCannotBeNullOrEmpty), nameof(encryptKey));
         }
 
         return Convert.ToBase64String(Encrypt(Encoding.UTF8.GetBytes(encryptString), encryptKey));
@@ -64,7 +66,7 @@ public static class AesHelper
 
         if (string.IsNullOrEmpty(encryptKey))
         {
-            throw new ArgumentException("Encryption key cannot be null or empty", nameof(encryptKey));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.EncryptionKeyCannotBeNullOrEmpty), nameof(encryptKey));
         }
 
         byte[] encryptedBytes = null;
@@ -117,12 +119,12 @@ public static class AesHelper
     {
         if (string.IsNullOrEmpty(decryptString))
         {
-            throw new ArgumentException("Cipher text cannot be null or empty", nameof(decryptString));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.CipherTextCannotBeNullOrEmpty), nameof(decryptString));
         }
 
         if (string.IsNullOrEmpty(decryptKey))
         {
-            throw new ArgumentException("Decryption key cannot be null or empty", nameof(decryptKey));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DecryptionKeyCannotBeNullOrEmpty), nameof(decryptKey));
         }
 
         return Encoding.UTF8.GetString(AesDecrypt(Convert.FromBase64String(decryptString), decryptKey));
@@ -157,7 +159,7 @@ public static class AesHelper
 
         if (string.IsNullOrEmpty(decryptKey))
         {
-            throw new ArgumentException("Decryption key cannot be null or empty", nameof(decryptKey));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DecryptionKeyCannotBeNullOrEmpty), nameof(decryptKey));
         }
 
         byte[] decryptedBytes = null;
