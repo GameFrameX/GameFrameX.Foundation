@@ -59,11 +59,19 @@ public class SpecialFloatingPointConverter : JsonConverter<double>
             {
                 string propertyName = reader.GetString();
                 if (string.Equals(propertyName, "NaN", StringComparison.OrdinalIgnoreCase))
+                {
                     return double.NaN;
+                }
+
                 if (string.Equals(propertyName, "Infinity", StringComparison.OrdinalIgnoreCase))
+                {
                     return double.PositiveInfinity;
+                }
+
                 if (string.Equals(propertyName, "-Infinity", StringComparison.OrdinalIgnoreCase))
+                {
                     return double.NegativeInfinity;
+                }
             }
             catch
             {
