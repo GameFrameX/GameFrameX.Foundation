@@ -13,6 +13,7 @@
 | GameFrameX.Foundation.Http.Extension     | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension`     | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         |
 | GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化    | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
 | GameFrameX.Foundation.Json               | JSON 序列化工具    | `GameFrameX.Foundation.Json`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             |
+| GameFrameX.Foundation.Localization      | 本地化框架         | `GameFrameX.Foundation.Localization`      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)                 |
 | GameFrameX.Foundation.Logger             | Serilog 日志配置  | `GameFrameX.Foundation.Logger`             | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         |
 | GameFrameX.Foundation.Options            | 命令行参数处理       | `GameFrameX.Foundation.Options`            | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       |
 | GameFrameX.Foundation.Orm.Attribute      | ORM 特性标注      | `GameFrameX.Foundation.Orm.Attribute`      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           |
@@ -40,6 +41,9 @@ dotnet add package GameFrameX.Foundation.Hash
 # 安装 JSON 工具库
 dotnet add package GameFrameX.Foundation.Json
 
+# 安装本地化框架
+dotnet add package GameFrameX.Foundation.Localization
+
 # 安装日志工具库
 dotnet add package GameFrameX.Foundation.Logger
 
@@ -60,6 +64,7 @@ using GameFrameX.Foundation.Encryption;
 using GameFrameX.Foundation.Extensions;
 using GameFrameX.Foundation.Hash;
 using GameFrameX.Foundation.Json;
+using GameFrameX.Foundation.Localization.Core;
 using GameFrameX.Foundation.Logger;
 using GameFrameX.Foundation.Options;
 
@@ -104,6 +109,11 @@ string hash = Sha256Helper.ComputeHash("Hello World");
 // JSON 序列化
 string json = JsonHelper.Serialize(myObject);
 MyClass obj = JsonHelper.Deserialize<MyClass>(json);
+
+// 本地化字符串获取
+var successMessage = LocalizationService.GetString("Success");
+var errorMessage = LocalizationService.GetString("Utility.Exceptions.TimestampOutOfRange");
+var formattedMessage = LocalizationService.GetString("Encryption.InvalidKeySize", 128, 256);
 
 // 日志记录
 LogHandler.Create(LogOptions.Default);
@@ -438,6 +448,272 @@ if (JsonHelper.TryDeserialize<MyClass>(json, out var result))
     // 处理结果
 }
 ```
+
+### 🌐 本地化框架 (GameFrameX.Foundation.Localization)
+
+提供轻量级、高性能的本地化解决方案，支持零配置使用和懒加载机制，为整个 GameFrameX.Foundation 生态系统提供统一的本地化支持。
+
+#### 主要特性
+
+- **零配置使用**: 无需任何初始化配置，自动发现和加载本地化资源
+- **懒加载机制**: 首次使用时才加载资源，启动性能优异
+- **多语言支持**: 内置中文（简体）和英文支持，可扩展更多语言
+- **线程安全**: 支持并发访问，适用于多线程环境
+- **高度可扩展**: 支持自定义资源提供者，灵活的优先级管理
+- **优先级解析**: 自定义提供者 > 程序集资源 > 默认资源
+
+#### 核心组件
+
+| 组件 | 文件名 | 功能 |
+|------|--------|------|
+| **本地化服务** | `LocalizationService.cs` | 统一的本地化入口点，提供静态方法API |
+| **资源管理器** | `ResourceManager.cs` | 管理多个资源提供者，实现优先级解析 |
+| **默认提供者** | `DefaultResourceProvider.cs` | 提供英文默认消息，包含50+常用消息 |
+| **程序集提供者** | `AssemblyResourceProvider.cs` | 从.resx文件加载本地化资源 |
+
+#### 基础使用
+
+```csharp
+using GameFrameX.Foundation.Localization.Core;
+
+// 获取简单的本地化字符串
+var successMessage = LocalizationService.GetString("Success");
+Console.WriteLine(successMessage); // 根据当前文化显示 "Success" 或 "成功"
+
+// 带参数的格式化消息
+var errorMessage = LocalizationService.GetString("ArgumentNull", "username");
+Console.WriteLine(errorMessage); // "Value cannot be null. (Parameter 'username')"
+
+// 如果键不存在，返回键名本身
+var unknown = LocalizationService.GetString("Some.Unknown.Key");
+Console.WriteLine(unknown); // 输出: "Some.Unknown.Key"
+```
+
+#### 异常处理中的本地化
+
+```csharp
+using GameFrameX.Foundation.Utility.Localization;
+
+public class UserService
+{
+    public void ValidateUserInput(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            throw new ArgumentException(
+                LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange),
+                nameof(input));
+        }
+
+        // 其他验证逻辑...
+    }
+}
+```
+
+#### 模块集成本地化
+
+##### 1. 定义本地化键
+
+```csharp
+// YourModule/Localization/Keys.cs
+namespace GameFrameX.Foundation.YourModule.Localization;
+
+public static class LocalizationKeys
+{
+    public static class Validation
+    {
+        public const string EmailRequired = "YourModule.Validation.EmailRequired";
+        public const string EmailInvalid = "YourModule.Validation.EmailInvalid";
+    }
+
+    public static class Messages
+    {
+        public const string UserCreated = "YourModule.Messages.UserCreated";
+        public const string OperationFailed = "YourModule.Messages.OperationFailed";
+    }
+}
+```
+
+##### 2. 创建资源文件
+
+在项目中创建 `Localization/Messages/Resources.resx` 和 `Localization/Messages/Resources.zh-CN.resx`：
+
+```xml
+<!-- Resources.resx (默认英文) -->
+<root>
+  <data name="YourModule.Validation.EmailRequired" xml:space="preserve">
+    <value>Email address is required</value>
+  </data>
+  <data name="YourModule.Messages.UserCreated" xml:space="preserve">
+    <value>User '{0}' has been created successfully</value>
+  </data>
+</root>
+```
+
+```xml
+<!-- Resources.zh-CN.resx (中文) -->
+<root>
+  <data name="YourModule.Validation.EmailRequired" xml:space="preserve">
+    <value>邮箱地址是必填项</value>
+  </data>
+  <data name="YourModule.Messages.UserCreated" xml:space="preserve">
+    <value>用户 '{0}' 已成功创建</value>
+  </data>
+</root>
+```
+
+##### 3. 在业务逻辑中使用
+
+```csharp
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.YourModule.Localization;
+
+public class UserService
+{
+    public void CreateUser(UserDto userDto)
+    {
+        if (string.IsNullOrEmpty(userDto.Email))
+        {
+            throw new ValidationException(
+                LocalizationService.GetString(LocalizationKeys.Validation.EmailRequired));
+        }
+
+        // 创建用户逻辑...
+
+        var successMessage = LocalizationService.GetString(
+            LocalizationKeys.Messages.UserCreated, userDto.Username);
+        Console.WriteLine(successMessage);
+    }
+}
+```
+
+#### 自定义资源提供者
+
+```csharp
+public class DatabaseResourceProvider : IResourceProvider
+{
+    private readonly IDbConnection _connection;
+
+    public DatabaseResourceProvider(IDbConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public string GetString(string key)
+    {
+        var culture = CultureInfo.CurrentCulture.Name;
+        var sql = "SELECT localized_text FROM localization_strings WHERE key = @key AND culture = @culture";
+        return _connection.ExecuteScalar<string>(sql, new { key, culture });
+    }
+}
+
+// 注册自定义提供者（具有最高优先级）
+var dbProvider = new DatabaseResourceProvider(yourDbConnection);
+LocalizationService.RegisterProvider(dbProvider);
+```
+
+#### 预加载和性能优化
+
+```csharp
+// 应用启动时预加载所有本地化资源（可选）
+LocalizationService.EnsureLoaded();
+
+// 获取本地化系统统计信息
+var stats = LocalizationService.GetStatistics();
+Console.WriteLine($"提供者已加载: {stats.ProvidersLoaded}");
+Console.WriteLine($"总提供者数量: {stats.TotalProviderCount}");
+Console.WriteLine($"程序集提供者数量: {stats.AssemblyProviderCount}");
+
+// 获取所有提供者信息
+var providers = LocalizationService.GetProviders();
+foreach (var provider in providers)
+{
+    Console.WriteLine($"提供者: {provider.GetType().Name}");
+}
+```
+
+#### 资源命名约定
+
+- **模式**: `{模块名}.{类别}.{具体键名}`
+- **示例**:
+  - `Utility.Exceptions.TimestampOutOfRange`
+  - `Encryption.InvalidKeySize`
+  - `Authentication.UserNotFound`
+  - `Success`
+  - `ArgumentNull`
+
+#### 已集成的模块
+
+目前以下模块已完成本地化集成：
+
+| 模块 | 本地化键数量 | 状态 |
+|------|-------------|------|
+| GameFrameX.Foundation.Utility | 4 | ✅ 完成 |
+| GameFrameX.Foundation.Encryption | 20+ | ✅ 完成 |
+| GameFrameX.Foundation.Extensions | 7 | ✅ 完成 |
+| GameFrameX.Foundation.Hash | 2 | ✅ 完成 |
+
+#### 高级功能
+
+##### 动态语言切换
+
+```csharp
+public void SwitchLanguage(string cultureCode)
+{
+    Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
+    Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureCode);
+
+    // 可选：预加载新语言的资源
+    LocalizationService.EnsureLoaded();
+}
+```
+
+##### 监控和诊断
+
+```csharp
+public class LocalizationDiagnostics
+{
+    public void PrintStatus()
+    {
+        var stats = LocalizationService.GetStatistics();
+        Console.WriteLine("=== 本地化系统状态 ===");
+        Console.WriteLine($"提供者已加载: {stats.ProvidersLoaded}");
+        Console.WriteLine($"总提供者数量: {stats.TotalProviderCount}");
+
+        var providers = LocalizationService.GetProviders();
+        foreach (var provider in providers)
+        {
+            Console.WriteLine($"- {provider.GetType().Name}");
+        }
+    }
+}
+```
+
+#### 最佳实践
+
+1. **键命名规范**: 使用 `{模块名}.{类别}.{具体键名}` 的命名模式
+2. **参数化消息**: 使用 `string.Format` 格式支持参数替换
+3. **异常处理**: 在异常消息中集成本地化支持
+4. **性能优化**: 应用启动时可选择预加载资源
+5. **测试验证**: 为本地化功能编写单元测试
+
+#### 配置项目文件
+
+确保项目文件包含本地化资源文件：
+
+```xml
+<PropertyGroup>
+  <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+</PropertyGroup>
+
+<ItemGroup>
+  <EmbeddedResource Include="Localization\Messages\*.resx" />
+</ItemGroup>
+```
+
+更多详细信息请参考：
+- [本地化框架完整文档](GameFrameX.Foundation.Localization/README.Localization.md)
+- [使用示例和最佳实践](GameFrameX.Foundation.Localization/USAGE_EXAMPLES.md)
 
 ### �️ ORM 实体基类 (GameFrameX.Foundation.Orm.Entity)
 
@@ -2398,6 +2674,24 @@ namespace MyApplication
 - **Sm4HelperTests**: SM4国密算法测试
 - **XorHelperTests**: XOR异或加密测试
 
+#### 🌐 本地化框架测试 (Localization)
+
+- **LocalizationServiceTests**: 本地化服务核心功能测试
+  - 单例模式验证测试
+  - 本地化字符串获取测试
+  - 参数化消息格式化测试
+  - 未知键处理测试
+  - 线程安全并发测试
+- **ResourceManagerTests**: 资源管理器测试
+  - 提供者优先级测试
+  - 懒加载机制测试
+  - 统计信息验证测试
+- **DefaultResourceProviderTests**: 默认资源提供者测试
+- **AssemblyResourceProviderTests**: 程序集资源提供者测试
+  - .resx文件加载测试
+  - 多文化支持测试
+  - 资源缓存机制测试
+
 #### 🔗 哈希工具库测试 (Hash)
 
 - **CrcHelperTests**: CRC校验算法测试
@@ -2450,11 +2744,13 @@ dotnet test
 dotnet test --filter "FullyQualifiedName~Extensions"
 dotnet test --filter "FullyQualifiedName~Encryption"
 dotnet test --filter "FullyQualifiedName~Hash"
+dotnet test --filter "FullyQualifiedName~Localization"
 dotnet test --filter "FullyQualifiedName~Options"
 
 # 运行特定测试类
 dotnet test --filter "ClassName=XxHashHelperTests"
 dotnet test --filter "ClassName=StringExtensionsTests"
+dotnet test --filter "ClassName=LocalizationServiceTests"
 dotnet test --filter "ClassName=CommandLineArgumentConverterTests"
 
 # 生成测试覆盖率报告
