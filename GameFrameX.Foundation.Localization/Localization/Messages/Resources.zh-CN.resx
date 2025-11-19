@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <!-- Common Messages -->
+  <data name="ArgumentNull" xml:space="preserve">
+    <value>值不能为空。</value>
+    <comment>通用空参数异常消息</comment>
+  </data>
+  <data name="ArgumentOutOfRange" xml:space="preserve">
+    <value>指定的参数超出有效值的范围。</value>
+    <comment>通用参数超出范围异常消息</comment>
+  </data>
+  <data name="ArrayCannotBeEmpty" xml:space="preserve">
+    <value>数组不能为空。</value>
+    <comment>空数组验证错误消息</comment>
+  </data>
+  <data name="StringCannotBeNullOrEmpty" xml:space="preserve">
+    <value>字符串不能为空或空字符串。</value>
+    <comment>空字符串验证错误消息</comment>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>操作成功完成。</value>
+    <comment>通用成功消息</comment>
+  </data>
+  <data name="Failure" xml:space="preserve">
+    <value>操作失败。</value>
+    <comment>通用失败消息</comment>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>加载中...</value>
+    <comment>加载状态消息</comment>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>不可用</value>
+    <comment>不可用状态消息</comment>
+  </data>
+
+  <!-- Utility Module Messages -->
+  <data name="Utility.TimestampOutOfRange" xml:space="preserve">
+    <value>时间戳超出有效范围。</value>
+    <comment>TimeHelper时间戳验证错误</comment>
+  </data>
+  <data name="Utility.ClockMovedBackwards" xml:space="preserve">
+    <value>系统时钟出现回退，拒绝生成 ID {0} 毫秒。</value>
+    <comment>雪花ID生成时钟错误</comment>
+  </data>
+  <data name="Utility.WorkerIdOutOfRange" xml:space="preserve">
+    <value>Worker ID 不能大于 {0} 或小于 0。</value>
+    <comment>雪花Worker ID验证错误</comment>
+  </data>
+  <data name="Utility.DatacenterIdOutOfRange" xml:space="preserve">
+    <value>Datacenter ID 不能大于 {0} 或小于 0。</value>
+    <comment>雪花Datacenter ID验证错误</comment>
+  </data>
+
+  <!-- Encryption Module Messages -->
+  <data name="Encryption.KeyArrayCannotBeEmpty" xml:space="preserve">
+    <value>密钥数组不能为空。</value>
+    <comment>空密钥数组验证错误</comment>
+  </data>
+  <data name="Encryption.PlainTextCannotBeNullOrEmpty" xml:space="preserve">
+    <value>明文不能为空或空字符串。</value>
+    <comment>AES明文验证错误</comment>
+  </data>
+  <data name="Encryption.EncryptionKeyCannotBeNullOrEmpty" xml:space="preserve">
+    <value>加密密钥不能为空或空字符串。</value>
+    <comment>AES加密密钥验证错误</comment>
+  </data>
+  <data name="Encryption.CipherTextCannotBeNullOrEmpty" xml:space="preserve">
+    <value>密文不能为空或空字符串。</value>
+    <comment>AES密文验证错误</comment>
+  </data>
+  <data name="Encryption.DecryptionKeyCannotBeNullOrEmpty" xml:space="preserve">
+    <value>解密密钥不能为空或空字符串。</value>
+    <comment>AES解密密钥验证错误</comment>
+  </data>
+  <data name="Encryption.InvalidKeySize" xml:space="preserve">
+    <value>无效的密钥长度：{0}。期望长度：{1}。</value>
+    <comment>无效的加密密钥长度错误</comment>
+  </data>
+  <data name="Encryption.KeyMustBe32Characters" xml:space="preserve">
+    <value>当 hexString 为 true 时，密钥字符串必须为 32 个字符长度（16 字节的十六进制）。</value>
+    <comment>SM4/SM2十六进制字符串密钥长度验证</comment>
+  </data>
+  <data name="Encryption.KeyMustBe16Characters" xml:space="preserve">
+    <value>当 hexString 为 false 时，密钥字符串必须为 16 个字符长度。</value>
+    <comment>SM4/SM2明文字符串密钥长度验证</comment>
+  </data>
+  <data name="Encryption.PublicKeyCannotBeEmpty" xml:space="preserve">
+    <value>公钥字节数组不能为空。</value>
+    <comment>SM2公钥验证错误</comment>
+  </data>
+  <data name="Encryption.PrivateKeyCannotBeEmpty" xml:space="preserve">
+    <value>私钥字节数组不能为空。</value>
+    <comment>SM2私钥验证错误</comment>
+  </data>
+
+  <!-- Extensions Module Messages -->
+  <data name="Extensions.OffsetCountExceedBufferLength" xml:space="preserve">
+    <value>偏移量和计数之和大于缓冲区长度。</value>
+    <comment>字节数组偏移量/计数验证错误</comment>
+  </data>
+  <data name="Extensions.IndexCountExceedBufferLength" xml:space="preserve">
+    <value>索引和计数之和大于缓冲区长度。</value>
+    <comment>字节数组索引/计数验证错误</comment>
+  </data>
+  <data name="Extensions.BufferWriteOutOfRange" xml:space="preserve">
+    <value>缓冲区写入超出范围：偏移量 {0}，缓冲区长度 {1}。</value>
+    <comment>缓冲区写入索引错误</comment>
+  </data>
+  <data name="Extensions.StringLengthExceedMaxValue" xml:space="preserve">
+    <value>字符串长度超过最大值：{0}，允许的最大值：{1}。</value>
+    <comment>字符串长度验证错误</comment>
+  </data>
+  <data name="Extensions.ByteArrayLengthMustEqual" xml:space="preserve">
+    <value>两个字节数组的长度必须相等。</value>
+    <comment>字节数组长度比较错误</comment>
+  </data>
+  <data name="Extensions.ListCannotBeEmpty" xml:space="preserve">
+    <value>列表不能为空。</value>
+    <comment>空列表验证错误</comment>
+  </data>
+  <data name="Extensions.TargetTypeMustBeInterface" xml:space="preserve">
+    <value>目标类型必须是接口类型。</value>
+    <comment>类型接口验证错误</comment>
+  </data>
+
+  <!-- Hash Module Messages -->
+  <data name="Hash.OffsetOrLengthInvalid" xml:space="preserve">
+    <value>偏移量或长度无效。</value>
+    <comment>CRC计算参数错误</comment>
+  </data>
+  <data name="Hash.CodeLengthInvalid" xml:space="preserve">
+    <value>校验码长度无效。</value>
+    <comment>CRC校验码长度验证错误</comment>
+  </data>
+
+  <!-- Options Module Messages -->
+  <data name="Options.CommandLineProcessingError" xml:space="preserve">
+    <value>处理命令行参数时发生错误：{0}</value>
+    <comment>命令行处理错误消息</comment>
+  </data>
+  <data name="Options.OptionsBuildingError" xml:space="preserve">
+    <value>构建选项时发生错误：{0}</value>
+    <comment>选项构建错误消息</comment>
+  </data>
+  <data name="Options.MissingRequiredOptions" xml:space="preserve">
+    <value>缺少必需的选项：{0}</value>
+    <comment>缺少必需选项错误消息</comment>
+  </data>
+  <data name="Options.SettingPropertyDefaultError" xml:space="preserve">
+    <value>为属性 {0} 设置默认值时发生错误：{1}</value>
+    <comment>属性默认值设置错误</comment>
+  </data>
+  <data name="Options.GettingEnvironmentVariableError" xml:space="preserve">
+    <value>获取环境变量时发生错误：{0}</value>
+    <comment>环境变量获取错误</comment>
+  </data>
+  <data name="Options.SettingPropertyError" xml:space="preserve">
+    <value>设置属性 {0} 时发生错误：{1}</value>
+    <comment>属性设置错误消息</comment>
+  </data>
+  <data name="Options.UsingCachedConfiguration" xml:space="preserve">
+    <value>⚠️  使用缓存的配置对象</value>
+    <comment>缓存配置使用警告</comment>
+  </data>
+
+  <!-- Logger Module Messages -->
+  <data name="Logger.SerilogSelfLog" xml:space="preserve">
+    <value>Serilog:SelfLog:{0}</value>
+    <comment>Serilog自记录日志格式</comment>
+  </data>
+
+  <!-- HTTP Module Messages -->
+  <data name="Http.RequestFailed" xml:space="preserve">
+    <value>HTTP 请求失败：{0}</value>
+    <comment>HTTP请求失败消息</comment>
+  </data>
+  <data name="Http.InvalidResponse" xml:space="preserve">
+    <value>接收到无效的HTTP响应</value>
+    <comment>无效响应错误消息</comment>
+  </data>
+
+  <!-- JSON Module Messages -->
+  <data name="Json.DeserializationFailed" xml:space="preserve">
+    <value>JSON 反序列化失败：{0}</value>
+    <comment>JSON反序列化错误消息</comment>
+  </data>
+  <data name="Json.SerializationFailed" xml:space="preserve">
+    <value>JSON 序列化失败：{0}</value>
+    <comment>JSON序列化错误消息</comment>
+  </data>
+</root>

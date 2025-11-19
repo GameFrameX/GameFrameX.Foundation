@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Orm.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Utility", "GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj", "{3F113FBF-73D6-4FE3-AA83-2F36EA8DCC46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFrameX.Foundation.Localization", "GameFrameX.Foundation.Localization\GameFrameX.Foundation.Localization.csproj", "{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -178,6 +180,18 @@ Global
 		{3F113FBF-73D6-4FE3-AA83-2F36EA8DCC46}.Release|x64.Build.0 = Release|Any CPU
 		{3F113FBF-73D6-4FE3-AA83-2F36EA8DCC46}.Release|x86.ActiveCfg = Release|Any CPU
 		{3F113FBF-73D6-4FE3-AA83-2F36EA8DCC46}.Release|x86.Build.0 = Release|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Debug|x64.Build.0 = Debug|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Debug|x86.Build.0 = Debug|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Release|x64.ActiveCfg = Release|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Release|x64.Build.0 = Release|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Release|x86.ActiveCfg = Release|Any CPU
+		{5836E652-2B4B-47D1-BF99-1E53E0A2EE3D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

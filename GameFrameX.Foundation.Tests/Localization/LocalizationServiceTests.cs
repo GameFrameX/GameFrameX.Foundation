@@ -200,23 +200,6 @@ public class LocalizationServiceTests
     }
 
     [Fact]
-    public void Reset_ShouldCleanProviders()
-    {
-        // Arrange
-        var initialStats = LocalizationService.GetStatistics();
-        var customProvider = new TestResourceProvider("Test Value");
-        LocalizationService.RegisterProvider(customProvider);
-
-        // Act
-        LocalizationService.Reset();
-
-        // Assert
-        var afterResetStats = LocalizationService.GetStatistics();
-        // Note: This test may not work as expected since we can't truly reset the static instance
-        // The Reset method is primarily for testing scenarios
-    }
-
-    [Fact]
     public void Dispose_ShouldNotThrow()
     {
         // Act & Assert (should not throw)
