@@ -7,12 +7,12 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 软删除接口过滤器
+/// 数据启用状态接口过滤器
 /// </summary>
-public interface IDeletedFilter
+public interface ISafeEnabledFilter
 {
     /// <summary>
-    /// 软删除
+    /// 是否启用,true:启用，false:禁用，null:未设置(启用)
     /// </summary>
-    bool? IsDelete { get; set; }
+    bool? IsEnabled { get; set; }
 }

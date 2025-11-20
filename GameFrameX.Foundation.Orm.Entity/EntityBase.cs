@@ -13,7 +13,7 @@ namespace GameFrameX.Foundation.Orm.Entity;
 /// <summary>
 /// 框架实体基类
 /// </summary>
-public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilter, IVersionedEntity, IEnabledFilter
+public abstract class EntityBase : EntityBaseId, IAuditableEntity, ISafeDeletedFilter, IVersionedEntity, ISafeEnabledFilter, ISafeCreatedFilter
 {
     /// <summary>
     /// 创建时间
@@ -56,7 +56,13 @@ public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilte
     /// 软删除
     /// </summary>
     [Description("软删除标记,true:删除,false:未删除,null:未设置(未删除)")]
-    public virtual bool? IsDelete { get; set; } = false;
+    public virtual bool? IsDeleted { get; set; } = false;
+
+    /// <summary>
+    /// 删除时间
+    /// </summary>
+    [Description("删除时间")]
+    public virtual long DeleteTime { get; set; }
 
     /// <summary>
     /// 版本号（用于乐观锁）
@@ -72,14 +78,38 @@ public abstract class EntityBase : EntityBaseId, IAuditableEntity, IDeletedFilte
     /// </value>
     [Description("是否启用,true:启用，false:禁用，null:未设置(启用)")]
     public virtual bool? IsEnabled { get; set; }
+
+    /// <summary>
+    /// 创建人
+    /// </summary>
+    [Description("创建人")]
+    public virtual long CreatedId { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    [Description("创建时间")]
+    public virtual long CreatedTime { get; set; }
 }
 
 /// <summary>
 /// 泛型框架实体基类
 /// </summary>
 /// <typeparam name="TKey">主键类型</typeparam>
-public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, IDeletedFilter, IVersionedEntity
+public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, ISafeDeletedFilter, IVersionedEntity, ISafeEnabledFilter, ISafeCreatedFilter
 {
+    /// <summary>
+    /// 创建人
+    /// </summary>
+    [Description("创建人")]
+    public virtual long CreatedId { get; set; }
+
+    /// <summary>
+    /// 创建时间
+    /// </summary>
+    [Description("创建时间")]
+    public virtual long CreatedTime { get; set; }
+
     /// <summary>
     /// 创建时间
     /// </summary>
@@ -121,11 +151,26 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, IAuditableEntity, I
     /// 软删除
     /// </summary>
     [Description("软删除标记,true:删除,false:未删除,null:未设置(未删除)")]
-    public virtual bool? IsDelete { get; set; } = false;
+    public virtual bool? IsDeleted { get; set; } = false;
+
+    /// <summary>
+    /// 删除时间
+    /// </summary>
+    [Description("删除时间")]
+    public virtual long DeleteTime { get; set; }
 
     /// <summary>
     /// 版本号（用于乐观锁）
     /// </summary>
     [Description("版本号（用于乐观锁）")]
     public virtual long? Version { get; set; } = 0;
+
+    /// <summary>
+    /// 是否启用该实体或功能的标识
+    /// </summary>
+    /// <value>
+    /// true表示启用，false表示禁用，null表示未设置
+    /// </value>
+    [Description("是否启用,true:启用，false:禁用，null:未设置(启用)")]
+    public virtual bool? IsEnabled { get; set; }
 }
