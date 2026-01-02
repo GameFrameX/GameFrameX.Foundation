@@ -216,7 +216,7 @@ export ASPNETCORE_ENVIRONMENT=Production   # 默认禁用调试
 ### 编译错误
 
 如果遇到编译错误，请确保：
-1. 已安装 .NET 8.0 SDK
+1. 已安装 .NET 10.0 SDK
 2. 已正确引用 GameFrameX.Foundation.Options 项目
 3. 所有依赖项都已还原
 

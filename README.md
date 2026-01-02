@@ -1,7 +1,7 @@
 # GameFrameX.Foundation
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![.NET](https://img.shields.io/badge/.NET-6.0%2B-purple.svg)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/)
 
 ### 📦 程序集概览
 
@@ -2795,8 +2795,8 @@ GameFrameX.Foundation.Extensions (核心扩展)
 
 ### 环境要求
 
-- .NET 6.0 或更高版本
-- C# 10.0 或更高版本
+- .NET 10.0 或更高版本
+- C# 12.0 或更高版本
 
 ### 构建项目
 
@@ -2854,7 +2854,7 @@ dotnet test
 
 ## 📋 系统要求
 
-- .NET 6.0 或更高版本
+- .NET 10.0 或更高版本
 - 支持 Windows、Linux、macOS
 
 ## 🤝 贡献
