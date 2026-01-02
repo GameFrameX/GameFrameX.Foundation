@@ -40,7 +40,6 @@
     <Folder Include="Encryption\" />
     <Folder Include="Hash\" />
     <Folder Include="Http.Extension\" />
-    <Folder Include="Logger\" />
   </ItemGroup>
 
 </Project>
