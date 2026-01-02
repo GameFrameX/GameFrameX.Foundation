@@ -106,16 +106,16 @@ public class CountryCode
 }
 ```
 
-#### IndexAttribute
+#### EntityIndexAttribute
 索引特性，标记属性或字段需要创建数据库索引。
 
 ```csharp
 public class User
 {
-    [Index("IX_User_Email", IsUnique = true)]
+    [EntityIndex("IX_User_Email", Unique = true)]
     public string Email { get; set; }
     
-    [Index("IX_User_Status_CreateTime", Order = 1)]
+    [EntityIndex("IX_User_Status_CreateTime", IsAscending = true)]
     public string Status { get; set; }
 }
 ```
@@ -180,12 +180,12 @@ public class Document
 ```csharp
 [CacheTable("Redis", 60)]
 [ReadOnlyTable(EnableCache = true)]
-[Index("IX_Product_Category")]
+[EntityIndex("IX_Product_Category")]
 public class Product
 {
     public int Id { get; set; }
     
-    [Index("IX_Product_Category")]
+    [EntityIndex("IX_Product_Category")]
     public string Category { get; set; }
     
     public string Name { get; set; }
@@ -233,7 +233,7 @@ public class SystemUser
 - `ReadOnlyTableAttribute` - 只读优化
 
 **中优先级**（特定场景有用）：
-- `IndexAttribute` - 索引管理
+- `EntityIndexAttribute` - 索引管理
 - `PartitionTableAttribute` - 分区表
 - `VersionControlAttribute` - 版本控制
 
@@ -250,7 +250,7 @@ public class SystemUser
 **性能优化类**：
 - `CacheTableAttribute`
 - `ReadOnlyTableAttribute`
-- `IndexAttribute`
+- `EntityIndexAttribute`
 - `PartitionTableAttribute`
 
 **数据管理类**：

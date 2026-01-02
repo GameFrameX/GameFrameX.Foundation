@@ -37,7 +37,7 @@
 - 支持多租户架构
 - 包含租户ID字段
 
-#### EntityBaseSelect
+#### EntitySelectBase
 - 继承自 EntityBase
 - 实现 ISelectFilter 接口
 - 包含名称和描述字段，适用于需要搜索的实体
@@ -77,7 +77,7 @@ public class Order : EntityTenantBase
 ### 可搜索实体
 
 ```csharp
-public class Category : EntityBaseSelect
+public class Category : EntitySelectBase
 {
     public int SortOrder { get; set; }
 }
