@@ -34,7 +34,7 @@ public static class JsonHelper
         // 忽略注释
         ReadCommentHandling = JsonCommentHandling.Skip,
         // 使用 JavaScriptEncoder.UnsafeRelaxedJsonEscaping 进行编码
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        Encoder = UnicodeJsonEncoder.Singleton,
         // 不使用属性名称转换
         PropertyNamingPolicy = null,
         // 允许以逗号结尾
@@ -82,7 +82,7 @@ public static class JsonHelper
         // 忽略注释
         ReadCommentHandling = JsonCommentHandling.Skip,
         // 使用 JavaScriptEncoder.UnsafeRelaxedJsonEscaping 进行编码
-        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        Encoder = UnicodeJsonEncoder.Singleton,
         // 不使用属性名称转换
         PropertyNamingPolicy = null,
         // 允许以逗号结尾
