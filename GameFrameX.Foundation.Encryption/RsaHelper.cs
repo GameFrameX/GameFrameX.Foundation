@@ -12,6 +12,139 @@ namespace GameFrameX.Foundation.Encryption;
 public sealed class RsaHelper
 {
     /// <summary>
+    /// 使用公钥加密数据（支持Base64格式公钥）
+    /// </summary>
+    /// <remarks>
+    /// 本方法支持以下两种公钥格式：
+    /// 1. SubjectPublicKeyInfo（PKCS#8）格式
+    /// 2. RSAPublicKey（PKCS#1）格式
+    /// 当数据长度超过密钥长度限制时，自动采用分块加密。
+    /// 加密后的结果采用Base64编码返回，便于网络传输和存储。
+    /// </remarks>
+    /// <param name="publicKey">Base64 格式的公钥字符串，支持 PKCS#1 与 PKCS#8 两种编码</param>
+    /// <param name="content">待加密的明文字符串，将使用 UTF-8 编码转换为字节数组</param>
+    /// <returns>Base64 格式的加密结果，可直接用于网络传输或持久化存储</returns>
+    /// <exception cref="ArgumentException">当 publicKey 或 content 为 null 或空字符串时抛出</exception>
+    /// <exception cref="CryptographicException">当公钥格式非法或加密过程失败时抛出</exception>
+    public static string EncryptBase64(string publicKey, string content)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(publicKey, nameof(publicKey));
+        ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
+
+        using var rsa = RSA.Create();
+        try
+        {
+            // 导入公钥
+            // 注意：这里假设公钥是 PKCS#8 或 SubjectPublicKeyInfo 格式
+            rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(publicKey), out _);
+
+            // 将内容转换为字节数组
+            var dataToEncrypt = Encoding.UTF8.GetBytes(content);
+
+            // 计算最大加密块大小 (KeySize / 8 - 11 for PKCS1)
+            // 1024位密钥 -> 128字节 -> max 117字节
+            int bufferSize = (rsa.KeySize / 8) - 11;
+
+            // 使用内存流存储加密后的数据
+            using var outputStream = new MemoryStream();
+
+            int offset = 0;
+            while (offset < dataToEncrypt.Length)
+            {
+                int currentBlockSize = Math.Min(bufferSize, dataToEncrypt.Length - offset);
+                var chunk = new byte[currentBlockSize];
+                Array.Copy(dataToEncrypt, offset, chunk, 0, currentBlockSize);
+
+                var encryptedChunk = rsa.Encrypt(chunk, RSAEncryptionPadding.Pkcs1);
+                outputStream.Write(encryptedChunk, 0, encryptedChunk.Length);
+
+                offset += currentBlockSize;
+            }
+
+            return Convert.ToBase64String(outputStream.ToArray());
+        }
+        catch (CryptographicException ex)
+        {
+            // 如果导入失败，尝试作为 RSAPublicKey (PKCS#1) 导入
+            rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKey), out _);
+            var dataToEncrypt = Encoding.UTF8.GetBytes(content);
+
+            int bufferSize = (rsa.KeySize / 8) - 11;
+            using var outputStream = new MemoryStream();
+
+            int offset = 0;
+            while (offset < dataToEncrypt.Length)
+            {
+                int currentBlockSize = Math.Min(bufferSize, dataToEncrypt.Length - offset);
+                var chunk = new byte[currentBlockSize];
+                Array.Copy(dataToEncrypt, offset, chunk, 0, currentBlockSize);
+
+                var encryptedChunk = rsa.Encrypt(chunk, RSAEncryptionPadding.Pkcs1);
+                outputStream.Write(encryptedChunk, 0, encryptedChunk.Length);
+
+                offset += currentBlockSize;
+            }
+
+            return Convert.ToBase64String(outputStream.ToArray());
+        }
+    }
+
+    /// <summary>
+    /// 使用私钥解密数据（支持Base64格式私钥）
+    /// </summary>
+    /// <remarks>
+    /// 本方法支持以下两种私钥格式：
+    /// 1. PKCS#8 格式私钥
+    /// 2. PKCS#1 格式私钥
+    /// 当密文长度超过密钥长度时，自动采用分块解密。
+    /// 输入的密文需为Base64编码，解密后返回明文字符串。
+    /// </remarks>
+    /// <param name="privateKey">Base64 格式的私钥字符串，支持 PKCS#1 与 PKCS#8 两种编码</param>
+    /// <param name="content">Base64 格式的加密内容，需与 EncryptBase64 方法生成的格式保持一致</param>
+    /// <returns>解密后的明文字符串，使用 UTF-8 编码还原</returns>
+    /// <exception cref="ArgumentException">当 privateKey 或 content 为 null 或空字符串时抛出</exception>
+    /// <exception cref="FormatException">当 content 不是合法的 Base64 字符串时抛出</exception>
+    /// <exception cref="CryptographicException">当私钥格式非法或解密过程失败时抛出</exception>
+    public static string DecryptBase64(string privateKey, string content)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
+        ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
+
+        using var rsa = RSA.Create();
+        try
+        {
+            // 尝试导入 PKCS#8 格式私钥
+            rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(privateKey), out _);
+        }
+        catch (CryptographicException)
+        {
+            // 尝试导入 PKCS#1 格式私钥
+            rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKey), out _);
+        }
+
+        var dataToDecrypt = Convert.FromBase64String(content);
+
+        // RSA 解密块大小等于密钥长度（字节）
+        int bufferSize = rsa.KeySize / 8;
+        using var outputStream = new MemoryStream();
+
+        int offset = 0;
+        while (offset < dataToDecrypt.Length)
+        {
+            int currentBlockSize = Math.Min(bufferSize, dataToDecrypt.Length - offset);
+            var chunk = new byte[currentBlockSize];
+            Array.Copy(dataToDecrypt, offset, chunk, 0, currentBlockSize);
+
+            var decryptedChunk = rsa.Decrypt(chunk, RSAEncryptionPadding.Pkcs1);
+            outputStream.Write(decryptedChunk, 0, decryptedChunk.Length);
+
+            offset += currentBlockSize;
+        }
+
+        return Encoding.UTF8.GetString(outputStream.ToArray());
+    }
+
+    /// <summary>
     /// RSA算法提供程序实例
     /// </summary>
     private readonly RSA _rsa;
