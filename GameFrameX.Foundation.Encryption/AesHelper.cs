@@ -56,7 +56,7 @@ public static class AesHelper
     {
         if (encryptByte == null)
         {
-            throw new ArgumentNullException(nameof(encryptByte), "Plain text byte array cannot be null");
+            throw new ArgumentNullException(nameof(encryptByte), @"Plain text byte array cannot be null");
         }
 
         if (encryptByte.Length == 0)
@@ -149,7 +149,7 @@ public static class AesHelper
     {
         if (decryptByte == null)
         {
-            throw new ArgumentNullException(nameof(decryptByte), "Cipher text byte array cannot be null");
+            throw new ArgumentNullException(nameof(decryptByte), @"Cipher text byte array cannot be null");
         }
 
         if (decryptByte.Length == 0)
