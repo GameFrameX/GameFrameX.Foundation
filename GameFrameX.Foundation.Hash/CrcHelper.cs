@@ -69,7 +69,7 @@ public static partial class CrcHelper
     {
         if (bytes == null)
         {
-            throw new ArgumentNullException(nameof(bytes), "Bytes is invalid.");
+            throw new ArgumentNullException(nameof(bytes), @"Bytes is invalid.");
         }
 
         return GetCrc32(bytes, 0, bytes.Length);
@@ -88,7 +88,7 @@ public static partial class CrcHelper
     {
         if (bytes == null)
         {
-            throw new ArgumentNullException(nameof(bytes), "Bytes is invalid.");
+            throw new ArgumentNullException(nameof(bytes), @"Bytes is invalid.");
         }
 
         if (offset < 0 || length < 0 || offset + length > bytes.Length)
@@ -112,7 +112,7 @@ public static partial class CrcHelper
     {
         if (stream == null)
         {
-            throw new ArgumentNullException(nameof(stream), "Stream is invalid.");
+            throw new ArgumentNullException(nameof(stream), @"Stream is invalid.");
         }
 
         while (true)
@@ -166,7 +166,7 @@ public static partial class CrcHelper
     {
         if (bytes == null)
         {
-            throw new ArgumentNullException(nameof(bytes), "Result is invalid.");
+            throw new ArgumentNullException(nameof(bytes), @"Result is invalid.");
         }
 
         if (offset < 0 || offset + 4 > bytes.Length)
@@ -193,12 +193,12 @@ public static partial class CrcHelper
     {
         if (stream == null)
         {
-            throw new ArgumentNullException(nameof(stream), "Stream is invalid.");
+            throw new ArgumentNullException(nameof(stream), @"Stream is invalid.");
         }
 
         if (code == null)
         {
-            throw new ArgumentNullException(nameof(code), "Code is invalid.");
+            throw new ArgumentNullException(nameof(code), @"Code is invalid.");
         }
 
         var codeLength = code.Length;
