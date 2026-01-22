@@ -12,6 +12,97 @@ namespace GameFrameX.Foundation.Encryption;
 public sealed class RsaHelper
 {
     /// <summary>
+    /// 使用私钥对数据进行签名（SHA256 哈希算法）。
+    /// 本方法支持 PKCS#8 与 PKCS#1 两种私钥格式，自动识别并导入。
+    /// 签名过程采用 SHA256 哈希算法与 PKCS#1 填充模式，确保数据完整性与不可否认性。
+    /// </summary>
+    /// <remarks>
+    /// 调用过程：
+    /// 1. 将待签名内容按 UTF-8 编码转为字节数组；
+    /// 2. 使用 RSA 私钥对哈希值进行签名；
+    /// 3. 返回 Base64 编码的签名结果，便于网络传输与存储。
+    /// 
+    /// 异常处理：
+    /// - 私钥格式非法或导入失败时抛出 <see cref="CryptographicException"/>；
+    /// - 参数为 null 或空字符串时抛出 <see cref="ArgumentException"/>。
+    /// </remarks>
+    /// <param name="privateKey">Base64 格式的私钥字符串，支持 PKCS#8 与 PKCS#1 两种编码。</param>
+    /// <param name="content">待签名的明文字符串，将使用 UTF-8 编码转换为字节数组。</param>
+    /// <returns>Base64 格式的签名结果，可直接用于网络传输或持久化存储。</returns>
+    /// <exception cref="ArgumentException">当 <paramref name="privateKey"/> 或 <paramref name="content"/> 为 null 或空字符串时抛出。</exception>
+    /// <exception cref="CryptographicException">当私钥格式非法或签名过程失败时抛出。</exception>
+    public static string Sign(string privateKey, string content)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
+        ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
+
+        using var rsa = RSA.Create();
+        try
+        {
+            // 尝试导入 PKCS#8 格式私钥
+            rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(privateKey), out _);
+        }
+        catch (CryptographicException)
+        {
+            // 尝试导入 PKCS#1 格式私钥
+            rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKey), out _);
+        }
+
+
+        var data = Encoding.UTF8.GetBytes(content);
+        var signature = rsa.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        return Convert.ToBase64String(signature);
+    }
+
+    /// <summary>
+    /// 使用公钥验证数据签名（SHA256 哈希算法）。
+    /// 本方法支持 SubjectPublicKeyInfo（PKCS#8）与 RSAPublicKey（PKCS#1）两种公钥格式，自动识别并导入。
+    /// 验签过程采用 SHA256 哈希算法与 PKCS#1 填充模式，确保签名真实性与数据完整性。
+    /// </summary>
+    /// <remarks>
+    /// 调用过程：
+    /// 1. 将待验签内容按 UTF-8 编码转为字节数组；
+    /// 2. 将 Base64 格式的签名解码为字节数组；
+    /// 3. 使用 RSA 公钥对签名进行验证；
+    /// 4. 返回验签结果，true 表示签名有效，false 表示签名无效。
+    /// 
+    /// 异常处理：
+    /// - 公钥格式非法或导入失败时抛出 <see cref="CryptographicException"/>；
+    /// - 参数为 null 或空字符串时抛出 <see cref="ArgumentException"/>；
+    /// - 签名不是合法 Base64 字符串时抛出 <see cref="FormatException"/>。
+    /// </remarks>
+    /// <param name="publicKey">Base64 格式的公钥字符串，支持 SubjectPublicKeyInfo（PKCS#8）与 RSAPublicKey（PKCS#1）两种编码。</param>
+    /// <param name="content">待验签的明文字符串，将使用 UTF-8 编码转换为字节数组。</param>
+    /// <param name="sign">Base64 格式的签名结果，需与 <see cref="Sign"/> 方法生成的格式保持一致。</param>
+    /// <returns>验签结果，true 表示签名有效，false 表示签名无效。</returns>
+    /// <exception cref="ArgumentException">当 <paramref name="publicKey"/>、<paramref name="content"/> 或 <paramref name="sign"/> 为 null 或空字符串时抛出。</exception>
+    /// <exception cref="FormatException">当 <paramref name="sign"/> 不是合法的 Base64 字符串时抛出。</exception>
+    /// <exception cref="CryptographicException">当公钥格式非法或验签过程失败时抛出。</exception>
+    public static bool Verify(string publicKey, string content, string sign)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(publicKey, nameof(publicKey));
+        ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
+        ArgumentException.ThrowIfNullOrEmpty(sign, nameof(sign));
+
+        using var rsa = RSA.Create();
+        try
+        {
+            // 尝试导入 SubjectPublicKeyInfo 格式公钥
+            rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(publicKey), out _);
+        }
+        catch (CryptographicException)
+        {
+            // 尝试导入 RSAPublicKey (PKCS#1) 格式公钥
+            rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKey), out _);
+        }
+
+
+        var data = Encoding.UTF8.GetBytes(content);
+        var signature = Convert.FromBase64String(sign);
+        return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+    }
+
+    /// <summary>
     /// 使用公钥加密数据（支持Base64格式公钥）
     /// </summary>
     /// <remarks>
