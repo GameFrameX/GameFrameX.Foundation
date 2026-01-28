@@ -321,6 +321,23 @@ namespace GameFrameX.Foundation.Tests.Json
             Assert.Equal(testObject.Name, deserializedObject.Name);
             Assert.Equal(testObject.Status, deserializedObject.Status);
         }
+
+        /// <summary>
+        /// 测试中文字符序列化时不应被转义
+        /// </summary>
+        [Fact]
+        public void ChineseCharacterSerialization_ShouldNotBeEscaped()
+        {
+            // 准备测试数据
+            var testObject = new { Name = "测试中文" };
+
+            // 序列化
+            string json = JsonHelper.Serialize(testObject);
+
+            // 验证结果不包含Unicode转义序列
+            Assert.Contains("测试中文", json);
+            Assert.DoesNotContain("\\u", json);
+        }
     }
 
     /// <summary>
