@@ -1,6 +1,7 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace GameFrameX.Foundation.Json;
 
@@ -33,7 +34,7 @@ public static class JsonHelper
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         // 忽略注释
         ReadCommentHandling = JsonCommentHandling.Skip,
-        // 使用 JavaScriptEncoder.UnsafeRelaxedJsonEscaping 进行编码
+        // 使用 UnicodeJsonEncoder.Singleton 进行编码，不转义中文字符和Emoji
         Encoder = UnicodeJsonEncoder.Singleton,
         // 不使用属性名称转换
         PropertyNamingPolicy = null,
@@ -81,7 +82,7 @@ public static class JsonHelper
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         // 忽略注释
         ReadCommentHandling = JsonCommentHandling.Skip,
-        // 使用 JavaScriptEncoder.UnsafeRelaxedJsonEscaping 进行编码
+        // 使用 UnicodeJsonEncoder.Singleton 进行编码，不转义中文字符和Emoji
         Encoder = UnicodeJsonEncoder.Singleton,
         // 不使用属性名称转换
         PropertyNamingPolicy = null,
