@@ -328,7 +328,7 @@ public partial class TimerHelper
     /// </remarks>
     public static int CurrentDateWithUtcDay()
     {
-        return Convert.ToInt32(DateTime.UtcNow.ToString("yyyyMMdd"));
+        return Convert.ToInt32(GetUtcNow().ToString("yyyyMMdd"));
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ public partial class TimerHelper
     /// <returns>跨越的天数。</returns>
     public static int GetCrossDays(DateTime startTime, int hour = 0)
     {
-        return GetCrossDays(startTime, DateTime.UtcNow, hour);
+        return GetCrossDays(startTime, GetUtcNow(), hour);
     }
 
     /// <summary>
@@ -368,7 +368,7 @@ public partial class TimerHelper
     /// <returns>跨越的天数。</returns>
     public static int GetCrossLocalDays(DateTime startTime, int hour = 0)
     {
-        return GetCrossDays(startTime, DateTime.Now, hour);
+        return GetCrossDays(startTime, GetNow(), hour);
     }
 
     /// <summary>
@@ -451,6 +451,6 @@ public partial class TimerHelper
     /// </remarks>
     public static int CurrentDateWithDay()
     {
-        return Convert.ToInt32(DateTime.Now.ToString("yyyyMMdd"));
+        return Convert.ToInt32(GetNow().ToString("yyyyMMdd"));
     }
 }

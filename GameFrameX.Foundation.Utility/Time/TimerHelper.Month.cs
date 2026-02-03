@@ -171,7 +171,8 @@ public partial class TimerHelper
     /// </remarks>
     public static DateTime GetMonthStartTime()
     {
-        return new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+        var utcNow = GetUtcNow();
+        return new DateTime(utcNow.Year, utcNow.Month, 1);
     }
 
     /// <summary>

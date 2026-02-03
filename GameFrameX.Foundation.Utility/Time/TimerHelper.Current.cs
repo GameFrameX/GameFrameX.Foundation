@@ -46,7 +46,7 @@ public partial class TimerHelper
     /// </remarks>
     public static string CurrentTimeWithUtcFullString()
     {
-        return DateTime.UtcNow.ToString("HHmmss");
+        return GetUtcNow().ToString("HHmmss");
     }
 
     /// <summary>
@@ -62,7 +62,7 @@ public partial class TimerHelper
     /// </remarks>
     public static string CurrentTimeWithLocalFullString()
     {
-        return DateTime.Now.ToString("HHmmss");
+        return GetNow().ToString("HHmmss");
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public partial class TimerHelper
     /// </remarks>
     public static string CurrentDateTimeWithFormat(string format = "yyyy-MM-dd HH:mm:ss.fff K")
     {
-        return DateTime.Now.ToString(format);
+        return GetNow().ToString(format);
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public partial class TimerHelper
     /// </remarks>
     public static string CurrentDateTimeWithUtcFormat(string format = "yyyy-MM-dd HH:mm:ss.fff K")
     {
-        return DateTime.UtcNow.ToString(format);
+        return GetUtcNow().ToString(format);
     }
 
     /// <summary>

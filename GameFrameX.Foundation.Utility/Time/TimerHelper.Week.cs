@@ -60,7 +60,7 @@ public partial class TimerHelper
     /// </remarks>
     public static bool IsNowSameWeek(DateTime start)
     {
-        return IsSameWeek(start, DateTime.Now);
+        return IsSameWeek(start, GetNow());
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public partial class TimerHelper
     /// </remarks>
     public static bool IsNowSameWeekUtc(DateTime start)
     {
-        return IsSameWeek(start, DateTime.UtcNow);
+        return IsSameWeek(start, GetUtcNow());
     }
 
     /// <summary>
@@ -195,7 +195,7 @@ public partial class TimerHelper
     /// </remarks>
     public static DateTime GetDayOfWeekTime(DayOfWeek day)
     {
-        return GetDayOfWeekTime(DateTime.UtcNow, day);
+        return GetDayOfWeekTime(GetUtcNow(), day);
     }
 
     /// <summary>
@@ -232,7 +232,7 @@ public partial class TimerHelper
     /// </remarks>
     public static int GetChinaDayOfWeek()
     {
-        return GetChinaDayOfWeek(DateTime.Now.DayOfWeek);
+        return GetChinaDayOfWeek(GetNow().DayOfWeek);
     }
 
     /// <summary>
@@ -248,7 +248,7 @@ public partial class TimerHelper
     /// </remarks>
     public static DateTime GetWeekStartTime()
     {
-        var now = DateTime.Now;
+        var now = GetNow();
         var dayOfWeek = (int)now.DayOfWeek;
         dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
         return now.AddDays(1 - dayOfWeek).Date;

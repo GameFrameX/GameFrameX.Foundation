@@ -53,7 +53,7 @@ public partial class TimerHelper
     /// </remarks>
     public static DateTime GetYearStartTime()
     {
-        return new DateTime(DateTime.UtcNow.Year, 1, 1);
+        return new DateTime(GetUtcNow().Year, 1, 1);
     }
 
     /// <summary>
