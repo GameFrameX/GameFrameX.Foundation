@@ -266,7 +266,19 @@ public partial class TimerHelper
     public static long GetWeekStartTimestamp()
     {
         var time = GetWeekStartTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取本周开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>本周一零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetWeekStartTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetWeekStartTime());
     }
 
     /// <summary>
@@ -295,9 +307,20 @@ public partial class TimerHelper
     public static long GetWeekEndTimestamp()
     {
         var time = GetWeekEndTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
     }
 
+    /// <summary>
+    /// 获取本周结束时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>本周日23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetWeekEndTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetWeekEndTime());
+    }
 
     /// <summary>
     /// 获取指定日期所在周的开始时间
@@ -330,9 +353,21 @@ public partial class TimerHelper
     public static long GetStartTimestampOfWeek(DateTime date)
     {
         var time = GetStartTimeOfWeek(date);
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
     }
 
+    /// <summary>
+    /// 获取指定日期所在周的开始时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在周周一零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetStartTimestampOfWeekWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetStartTimeOfWeek(date));
+    }
 
     /// <summary>
     /// 获取下周开始时间
@@ -360,7 +395,19 @@ public partial class TimerHelper
     public static long GetNextWeekStartTimestamp()
     {
         var time = GetNextWeekStartTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取下周开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>下周一零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetNextWeekStartTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetNextWeekStartTime());
     }
 
     /// <summary>
@@ -389,9 +436,20 @@ public partial class TimerHelper
     public static long GetNextWeekEndTimestamp()
     {
         var time = GetNextWeekEndTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
     }
 
+    /// <summary>
+    /// 获取下周结束时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>下周日23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetNextWeekEndTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetNextWeekEndTime());
+    }
 
     /// <summary>
     /// 获取指定日期所在周的结束时间
@@ -422,6 +480,19 @@ public partial class TimerHelper
     public static long GetEndTimestampOfWeek(DateTime date)
     {
         var time = GetEndTimeOfWeek(date);
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在周的结束时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在周周日23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetEndTimestampOfWeekWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetEndTimeOfWeek(date));
     }
 }
