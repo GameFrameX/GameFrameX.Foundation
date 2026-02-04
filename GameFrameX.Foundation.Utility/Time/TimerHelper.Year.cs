@@ -67,7 +67,19 @@ public partial class TimerHelper
     public static long GetYearStartTimestamp()
     {
         var time = GetYearStartTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取本年开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>本年1月1日零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetYearStartTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetYearStartTime());
     }
 
     /// <summary>
@@ -96,7 +108,19 @@ public partial class TimerHelper
     public static long GetYearEndTimestamp()
     {
         var time = GetYearEndTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取本年结束时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>本年12月31日23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetYearEndTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetYearEndTime());
     }
 
     /// <summary>
@@ -127,7 +151,20 @@ public partial class TimerHelper
     public static long GetStartTimestampOfYear(DateTime date)
     {
         var time = GetStartTimeOfYear(date);
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在年的开始时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在年1月1日零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetStartTimestampOfYearWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetStartTimeOfYear(date));
     }
 
     /// <summary>
@@ -158,6 +195,19 @@ public partial class TimerHelper
     public static long GetEndTimestampOfYear(DateTime date)
     {
         var time = GetEndTimeOfYear(date);
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在年的结束时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在年12月31日23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetEndTimestampOfYearWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetEndTimeOfYear(date));
     }
 }
