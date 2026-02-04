@@ -77,7 +77,20 @@ public partial class TimerHelper
     public static long GetTodayStartTimestamp()
     {
         var date = GetTodayStartTime();
-        return new DateTimeOffset(date, CurrentTimeZone.GetUtcOffset(date)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(date);
+    }
+
+    /// <summary>
+    /// 获取今天开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>今天零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// 适用于需要伪造本地时间戳的场景
+    /// </remarks>
+    public static long GetTodayStartTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetTodayStartTime());
     }
 
     /// <summary>
@@ -106,9 +119,20 @@ public partial class TimerHelper
     public static long GetTodayEndTimestamp()
     {
         var date = GetTodayEndTime();
-        return new DateTimeOffset(date, CurrentTimeZone.GetUtcOffset(date)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(date);
     }
 
+    /// <summary>
+    /// 获取今天结束时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>今天23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetTodayEndTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetTodayEndTime());
+    }
 
     /// <summary>
     /// 获取指定日期的开始时间
@@ -138,21 +162,20 @@ public partial class TimerHelper
     public static long GetStartTimestampOfDay(DateTime date)
     {
         var targetDate = GetStartTimeOfDay(date);
-        TimeSpan offset;
-        if (targetDate.Kind == DateTimeKind.Utc)
-        {
-            offset = TimeSpan.Zero;
-        }
-        else if (targetDate.Kind == DateTimeKind.Local)
-        {
-            offset = TimeZoneInfo.Local.GetUtcOffset(targetDate);
-        }
-        else
-        {
-            offset = CurrentTimeZone.GetUtcOffset(targetDate);
-        }
+        return DateTimeToUnixTimeSeconds(targetDate);
+    }
 
-        return new DateTimeOffset(targetDate, offset).ToUnixTimeSeconds();
+    /// <summary>
+    /// 获取指定日期的开始时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>指定日期零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetStartTimestampOfDayWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetStartTimeOfDay(date));
     }
 
     /// <summary>
@@ -183,21 +206,20 @@ public partial class TimerHelper
     public static long GetEndTimestampOfDay(DateTime date)
     {
         var targetDate = GetEndTimeOfDay(date);
-        TimeSpan offset;
-        if (targetDate.Kind == DateTimeKind.Utc)
-        {
-            offset = TimeSpan.Zero;
-        }
-        else if (targetDate.Kind == DateTimeKind.Local)
-        {
-            offset = TimeZoneInfo.Local.GetUtcOffset(targetDate);
-        }
-        else
-        {
-            offset = CurrentTimeZone.GetUtcOffset(targetDate);
-        }
+        return DateTimeToUnixTimeSeconds(targetDate);
+    }
 
-        return new DateTimeOffset(targetDate, offset).ToUnixTimeSeconds();
+    /// <summary>
+    /// 获取指定日期的结束时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>指定日期23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetEndTimestampOfDayWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetEndTimeOfDay(date));
     }
 
     /// <summary>
@@ -227,7 +249,19 @@ public partial class TimerHelper
     public static long GetTomorrowStartTimestamp()
     {
         var date = GetTomorrowStartTime();
-        return new DateTimeOffset(date, CurrentTimeZone.GetUtcOffset(date)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(date);
+    }
+
+    /// <summary>
+    /// 获取明天开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>明天零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetTomorrowStartTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetTomorrowStartTime());
     }
 
     /// <summary>
@@ -255,9 +289,20 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetTomorrowEndTimestamp()
     {
-        return new DateTimeOffset(GetTomorrowEndTime()).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(GetTomorrowEndTime());
     }
 
+    /// <summary>
+    /// 获取明天结束时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>明天23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetTomorrowEndTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetTomorrowEndTime());
+    }
 
     /// <summary>
     /// 按照当前时区 (<see cref="CurrentTimeZone"/>) 时间判断两个时间戳是否是同一天
