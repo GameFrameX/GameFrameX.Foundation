@@ -60,7 +60,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法会先将时间戳转换为DateTime后再计算差值
     /// 时间戳以1970年1月1日为起点
-    /// 当utc=true时使用UTC时间，否则使用本地时间
+    /// 当utc=true时使用UTC时间，否则使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 返回的TimeSpan对象包含完整的时间差信息
     /// </remarks>
     public static TimeSpan GetTimeDifference(long startTimestamp, long endTimestamp, bool utc = true)
@@ -80,7 +80,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法提供毫秒级的精确时间差计算
     /// 时间戳以1970年1月1日为起点
-    /// 当utc=true时使用UTC时间，否则使用本地时间
+    /// 当utc=true时使用UTC时间，否则使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 适用于需要高精度时间差计算的场景
     /// </remarks>
     public static TimeSpan GetTimeDifferenceMs(long startTimestampMs, long endTimestampMs, bool utc = true)
@@ -94,11 +94,11 @@ public partial class TimerHelper
     /// 计算指定时间到当前时间的时间差
     /// </summary>
     /// <param name="time">指定时间</param>
-    /// <param name="useUtc">是否使用UTC时间作为当前时间，默认为false（使用本地时间）</param>
+    /// <param name="useUtc">是否使用UTC时间作为当前时间，默认为false（使用当前时区 (<see cref="CurrentTimeZone"/>) 时间）</param>
     /// <returns>时间差TimeSpan对象</returns>
     /// <remarks>
     /// 此方法计算指定时间到当前时间的差值
-    /// 当useUtc=true时使用UTC时间，否则使用本地时间
+    /// 当useUtc=true时使用UTC时间，否则使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 如果指定时间在当前时间之后，将返回负值
     /// 常用于计算时间间隔和判断过期时间
     /// </remarks>
@@ -254,7 +254,7 @@ public partial class TimerHelper
     /// <returns>经过的秒数（如果指定时间在未来，返回负数）</returns>
     /// <remarks>
     /// 此方法计算从指定时间到现在经过的总秒数
-    /// 当useUtc=true时使用UTC时间，否则使用本地时间
+    /// 当useUtc=true时使用UTC时间，否则使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 结果会被转换为长整型，可能损失小数部分精度
     /// 常用于计算时间是否过期或剩余时间
     /// </remarks>
@@ -265,38 +265,36 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 计算指定时间戳到当前时间经过了多少秒
+    /// 计算指定Unix时间戳到当前时间经过了多少秒
     /// </summary>
-    /// <param name="timestamp">时间戳（秒）</param>
-    /// <param name="useUtc">是否使用UTC时间，默认为true</param>
-    /// <returns>经过的秒数</returns>
+    /// <param name="timestamp">Unix时间戳（秒）。应为UTC时间戳。</param>
+    /// <returns>经过的秒数。如果timestamp在未来，返回负数。</returns>
     /// <remarks>
-    /// 此方法直接使用时间戳计算经过的秒数
-    /// 当useUtc=true时使用UTC时间戳，否则使用本地时间戳
+    /// 此方法直接使用Unix时间戳计算经过的秒数
+    /// 使用 <see cref="UnixTimeSeconds"/> 获取当前UTC时间戳进行计算
     /// 计算效率高于DateTime转换方式
     /// 适用于Unix时间戳的剩余时间计算
     /// </remarks>
-    public static long GetElapsedSeconds(long timestamp, bool useUtc = true)
+    public static long GetElapsedSeconds(long timestamp)
     {
-        var currentTimestamp = useUtc ? UnixTimeSeconds() : NowTimeSeconds();
+        var currentTimestamp = UnixTimeSeconds();
         return currentTimestamp - timestamp;
     }
 
     /// <summary>
-    /// 计算指定毫秒时间戳到当前时间经过了多少毫秒
+    /// 计算指定Unix时间戳到当前时间经过了多少毫秒
     /// </summary>
-    /// <param name="timestampMs">时间戳（毫秒）</param>
-    /// <param name="useUtc">是否使用UTC时间，默认为true</param>
-    /// <returns>经过的毫秒数</returns>
+    /// <param name="timestampMs">Unix时间戳（毫秒）。应为UTC时间戳。</param>
+    /// <returns>经过的毫秒数。如果timestampMs在未来，返回负数。</returns>
     /// <remarks>
-    /// 此方法直接使用毫秒时间戳计算经过的毫秒数
-    /// 当useUtc=true时使用UTC时间戳，否则使用本地时间戳
+    /// 此方法直接使用Unix毫秒时间戳计算经过的毫秒数
+    /// 使用 <see cref="UnixTimeMilliseconds"/> 获取当前UTC时间戳进行计算
     /// 计算效率高于DateTime转换方式
     /// 适用于需要毫秒级精度的剩余时间计算
     /// </remarks>
-    public static long GetElapsedMilliseconds(long timestampMs, bool useUtc = true)
+    public static long GetElapsedMilliseconds(long timestampMs)
     {
-        var currentTimestamp = useUtc ? UnixTimeMilliseconds() : NowTimeMilliseconds();
+        var currentTimestamp = UnixTimeMilliseconds();
         return currentTimestamp - timestampMs;
     }
 
