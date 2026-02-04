@@ -56,11 +56,12 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期所在月份的1号零点时间的Unix时间戳
     /// 例如:输入2024-01-10,返回2024-01-01 00:00:00的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetStartTimestampOfMonth(DateTime date)
     {
-        return new DateTimeOffset(GetStartTimeOfMonth(date)).ToUnixTimeSeconds();
+        var time = GetStartTimeOfMonth(date);
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -87,11 +88,12 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期所在月份的最后一天最后一秒的Unix时间戳
     /// 例如:输入2024-01-10,返回2024-01-31 23:59:59的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetEndTimestampOfMonth(DateTime date)
     {
-        return new DateTimeOffset(GetEndTimeOfMonth(date)).ToUnixTimeSeconds();
+        var time = GetEndTimeOfMonth(date);
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -101,11 +103,12 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回下个月1号零点时间的Unix时间戳
     /// 例如:当前是2024-01-10,返回2024-02-01 00:00:00的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetNextMonthStartTimestamp()
     {
-        return new DateTimeOffset(GetNextMonthStartTime()).ToUnixTimeSeconds();
+        var time = GetNextMonthStartTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -130,11 +133,12 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回下个月最后一天最后一秒的Unix时间戳
     /// 例如:当前是2024-01-10,返回2024-02-29 23:59:59的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetNextMonthEndTimestamp()
     {
-        return new DateTimeOffset(GetNextMonthEndTime()).ToUnixTimeSeconds();
+        var time = GetNextMonthEndTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -156,32 +160,37 @@ public partial class TimerHelper
     /// </summary>
     /// <returns>本月1号零点时间</returns>
     /// <remarks>
-    /// 此方法基于UTC时间计算本月开始时间:
-    /// 1. 获取当前UTC时间的年份和月份
+    /// 此方法基于当前时区 (<see cref="CurrentTimeZone"/>) 时间计算本月开始时间:
+    /// 1. 获取当前时区时间的年份和月份
     /// 2. 创建一个新的DateTime对象,设置为本月1号零点
-    /// 3. 返回的时间为UTC时区的时间
+    /// 3. 返回的时间为当前时区的时间
     /// 
     /// 示例:
-    /// - 当前UTC时间为2024-01-15 14:30:00
-    /// - 返回时间为2024-01-01 00:00:00 (UTC)
+    /// - 当前时间为2024-01-15 14:30:00
+    /// - 返回时间为2024-01-01 00:00:00
     /// 
     /// 注意:
-    /// - 返回的是UTC时区的时间,如需本地时间请使用TimeZoneInfo.ConvertTimeFromUtc转换
+    /// - 返回的是当前时区的时间
     /// - 返回时间的Hour/Minute/Second/Millisecond均为0
     /// </remarks>
     public static DateTime GetMonthStartTime()
     {
-        var utcNow = GetUtcNow();
-        return new DateTime(utcNow.Year, utcNow.Month, 1);
+        var now = GetNow();
+        return new DateTime(now.Year, now.Month, 1);
     }
 
     /// <summary>
     /// 获取本月开始时间戳
     /// </summary>
     /// <returns>本月1号零点时间戳(秒)</returns>
+    /// <remarks>
+    /// 此方法返回本月1号零点时间的Unix时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// </remarks>
     public static long GetMonthStartTimestamp()
     {
-        return new DateTimeOffset(GetMonthStartTime()).ToUnixTimeSeconds();
+        var time = GetMonthStartTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -197,8 +206,13 @@ public partial class TimerHelper
     /// 获取本月结束时间戳
     /// </summary>
     /// <returns>本月最后一天23:59:59的时间戳(秒)</returns>
+    /// <remarks>
+    /// 此方法返回本月最后一天最后一秒的Unix时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// </remarks>
     public static long GetMonthEndTimestamp()
     {
-        return new DateTimeOffset(GetMonthEndTime()).ToUnixTimeSeconds();
+        var time = GetMonthEndTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 }
