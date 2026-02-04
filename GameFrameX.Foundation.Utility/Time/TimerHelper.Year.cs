@@ -38,7 +38,7 @@ public partial class TimerHelper
     /// </summary>
     /// <returns>本年1月1日零点时间</returns>
     /// <remarks>
-    /// 此方法基于当前时区时间计算年份:
+    /// 此方法基于当前时区 (<see cref="CurrentTimeZone"/>) 时间计算年份:
     /// 1. 获取当前时区时间的年份
     /// 2. 返回该年份1月1日零点时间
     /// 
@@ -61,7 +61,7 @@ public partial class TimerHelper
     /// <returns>本年1月1日零点时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回当前年份1月1日零点的Unix时间戳
-    /// 使用当前时区计算时间
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 计算时间
     /// 例如:2024年返回2024-01-01 00:00:00的时间戳
     /// </remarks>
     public static long GetYearStartTimestamp()
@@ -76,7 +76,7 @@ public partial class TimerHelper
     /// <returns>本年12月31日23:59:59的时间</returns>
     /// <remarks>
     /// 此方法返回当前年份最后一天的最后一秒
-    /// 使用当前时区计算时间
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 计算时间
     /// 例如:2024年返回2024-12-31 23:59:59
     /// </remarks>
     public static DateTime GetYearEndTime()
@@ -90,7 +90,7 @@ public partial class TimerHelper
     /// <returns>本年12月31日23:59:59的时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回当前年份最后一天的最后一秒的Unix时间戳
-    /// 使用当前时区计算时间
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 计算时间
     /// 例如:2024年返回2024-12-31 23:59:59的时间戳
     /// </remarks>
     public static long GetYearEndTimestamp()
@@ -122,7 +122,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期所在年份的1月1日零点时间的Unix时间戳
     /// 例如:输入2024-01-10,返回2024-01-01 00:00:00的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetStartTimestampOfYear(DateTime date)
     {
@@ -153,7 +153,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期所在年份的12月31日最后一秒的Unix时间戳
     /// 例如:输入2024-01-10,返回2024-12-31 23:59:59的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetEndTimestampOfYear(DateTime date)
     {
