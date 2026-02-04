@@ -37,6 +37,41 @@ namespace GameFrameX.Foundation.Utility;
 public partial class TimerHelper
 {
     /// <summary>
+    /// 当前时区，默认为 UTC
+    /// </summary>
+    private static TimeZoneInfo _currentTimeZone = TimeZoneInfo.Utc;
+
+    /// <summary>
+    /// 获取当前时区
+    /// </summary>
+    public static TimeZoneInfo CurrentTimeZone => _currentTimeZone;
+
+    /// <summary>
+    /// 设置当前时区
+    /// </summary>
+    /// <param name="timeZone">时区信息</param>
+    public static void SetTimeZone(TimeZoneInfo timeZone)
+    {
+        _currentTimeZone = timeZone ?? TimeZoneInfo.Utc;
+    }
+
+    /// <summary>
+    /// 设置当前时区
+    /// </summary>
+    /// <param name="timeZoneId">时区ID，如 "China Standard Time" 或 "UTC"</param>
+    public static void SetTimeZone(string timeZoneId)
+    {
+        try
+        {
+            _currentTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+        }
+        catch
+        {
+            _currentTimeZone = TimeZoneInfo.Utc;
+        }
+    }
+
+    /// <summary>
     /// Unix 纪元时间：1970-01-01 00:00:00 本地时间。
     /// </summary>
     /// <value>
@@ -45,6 +80,8 @@ public partial class TimerHelper
     /// <remarks>
     /// 此常量用于本地时间与 Unix 时间戳之间的转换计算。
     /// Unix 纪元是计算机系统中时间戳的起始参考点。
+    /// 注意：此字段始终基于系统本地时区，不随 <see cref="CurrentTimeZone"/> 变化。
+    /// 如需基于当前设置时区的纪元时间，请使用 TimeZoneInfo.ConvertTime(EpochUtc, CurrentTimeZone)。
     /// </remarks>
     /// <seealso cref="EpochUtc"/>
     public static readonly DateTime EpochLocal = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
