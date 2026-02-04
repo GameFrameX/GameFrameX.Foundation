@@ -61,7 +61,20 @@ public partial class TimerHelper
     public static long GetStartTimestampOfMonth(DateTime date)
     {
         var time = GetStartTimeOfMonth(date);
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在月的开始时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在月1号零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetStartTimestampOfMonthWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetStartTimeOfMonth(date));
     }
 
     /// <summary>
@@ -93,7 +106,20 @@ public partial class TimerHelper
     public static long GetEndTimestampOfMonth(DateTime date)
     {
         var time = GetEndTimeOfMonth(date);
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在月的结束时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在月最后一天23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetEndTimestampOfMonthWithTimeZone(DateTime date)
+    {
+        return TimeToSecondsWithTimeZone(GetEndTimeOfMonth(date));
     }
 
     /// <summary>
@@ -108,7 +134,19 @@ public partial class TimerHelper
     public static long GetNextMonthStartTimestamp()
     {
         var time = GetNextMonthStartTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取下月开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>下月1号零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetNextMonthStartTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetNextMonthStartTime());
     }
 
     /// <summary>
@@ -138,7 +176,19 @@ public partial class TimerHelper
     public static long GetNextMonthEndTimestamp()
     {
         var time = GetNextMonthEndTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取下月结束时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>下月最后一天23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetNextMonthEndTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetNextMonthEndTime());
     }
 
     /// <summary>
@@ -190,7 +240,19 @@ public partial class TimerHelper
     public static long GetMonthStartTimestamp()
     {
         var time = GetMonthStartTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取本月开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>本月1号零点时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetMonthStartTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetMonthStartTime());
     }
 
     /// <summary>
@@ -213,6 +275,18 @@ public partial class TimerHelper
     public static long GetMonthEndTimestamp()
     {
         var time = GetMonthEndTime();
-        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取本月结束时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>本月最后一天23:59:59的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetMonthEndTimestampWithTimeZone()
+    {
+        return TimeToSecondsWithTimeZone(GetMonthEndTime());
     }
 }
