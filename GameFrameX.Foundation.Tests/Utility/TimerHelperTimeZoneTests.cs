@@ -196,5 +196,32 @@ namespace GameFrameX.Foundation.Tests.Utility
             TimerHelper.SetTimeZone("InvalidTimeZoneId");
             Assert.Equal(TimeZoneInfo.Utc.Id, TimerHelper.CurrentTimeZone.Id);
         }
+
+        /// <summary>
+        /// 测试 UnixTimeSecondsWithTimeZone 和 UnixTimeMillisecondsWithTimeZone 应包含时区偏移
+        /// </summary>
+        [Fact]
+        public void UnixTimeWithTimeZone_ShouldIncludeOffset()
+        {
+            var offset = TimeSpan.FromHours(8);
+            var customTimeZone = TimeZoneInfo.CreateCustomTimeZone("Test+8", offset, "Test+8", "Test+8");
+            TimerHelper.SetTimeZone(customTimeZone);
+
+            var tsStandard = TimerHelper.UnixTimeSeconds();
+            var tsWithZone = TimerHelper.UnixTimeSecondsWithTimeZone();
+            var tsMsStandard = TimerHelper.UnixTimeMilliseconds();
+            var tsMsWithZone = TimerHelper.UnixTimeMillisecondsWithTimeZone();
+
+            // 验证秒级时间戳差异接近 8 小时 (28800 秒)
+            // 注意：由于执行时间差异，tsStandard 和 tsWithZone 获取的时间点可能略有不同，但差异不应很大
+            var diffSeconds = tsWithZone - tsStandard;
+            // 允许误差在 2 秒内
+            Assert.True(Math.Abs(diffSeconds - 28800) <= 2, $"Expected diff 28800, but got {diffSeconds}");
+
+            // 验证毫秒级时间戳差异接近 8 小时 (28800000 毫秒)
+            var diffMilliseconds = tsMsWithZone - tsMsStandard;
+            // 允许误差在 100 毫秒内
+            Assert.True(Math.Abs(diffMilliseconds - 28800000) <= 100, $"Expected diff 28800000, but got {diffMilliseconds}");
+        }
     }
 }
