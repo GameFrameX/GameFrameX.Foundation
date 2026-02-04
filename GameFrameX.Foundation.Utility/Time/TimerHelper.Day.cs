@@ -57,12 +57,12 @@ public partial class TimerHelper
     /// <returns>今天零点时间</returns>
     /// <remarks>
     /// 此方法返回当天的零点时间(00:00:00)
-    /// 使用DateTime.Today获取当前日期的零点时间
-    /// 返回的是本地时区的时间
+    /// 使用 <see cref="GetNow"/> 获取当前日期的零点时间
+    /// 返回的是 <see cref="CurrentTimeZone"/> 时区的时间
     /// </remarks>
     public static DateTime GetTodayStartTime()
     {
-        return DateTime.Today;
+        return GetNow().Date;
     }
 
     /// <summary>
@@ -71,12 +71,13 @@ public partial class TimerHelper
     /// <returns>今天零点时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回当天零点时间的Unix时间戳
-    /// 先获取本地时区的今天零点时间,然后转换为时间戳
+    /// 先获取 <see cref="CurrentTimeZone"/> 时区的今天零点时间,然后转换为时间戳
     /// 返回从1970-01-01 00:00:00 UTC开始的秒数
     /// </remarks>
     public static long GetTodayStartTimestamp()
     {
-        return new DateTimeOffset(GetTodayStartTime()).ToUnixTimeSeconds();
+        var date = GetTodayStartTime();
+        return new DateTimeOffset(date, CurrentTimeZone.GetUtcOffset(date)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -86,11 +87,11 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回当天的最后一秒(23:59:59)
     /// 通过获取明天零点时间然后减去1秒来计算
-    /// 返回的是本地时区的时间
+    /// 返回的是 <see cref="CurrentTimeZone"/> 时区的时间
     /// </remarks>
     public static DateTime GetTodayEndTime()
     {
-        return DateTime.Today.AddDays(1).AddSeconds(-1);
+        return GetTodayStartTime().AddDays(1).AddSeconds(-1);
     }
 
     /// <summary>
@@ -99,12 +100,13 @@ public partial class TimerHelper
     /// <returns>今天23:59:59的时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回当天最后一秒的Unix时间戳
-    /// 先获取本地时区的今天23:59:59,然后转换为时间戳
+    /// 先获取 <see cref="CurrentTimeZone"/> 时区的今天23:59:59,然后转换为时间戳
     /// 返回从1970-01-01 00:00:00 UTC开始的秒数
     /// </remarks>
     public static long GetTodayEndTimestamp()
     {
-        return new DateTimeOffset(GetTodayEndTime()).ToUnixTimeSeconds();
+        var date = GetTodayEndTime();
+        return new DateTimeOffset(date, CurrentTimeZone.GetUtcOffset(date)).ToUnixTimeSeconds();
     }
 
 
@@ -135,7 +137,22 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetStartTimestampOfDay(DateTime date)
     {
-        return new DateTimeOffset(GetStartTimeOfDay(date)).ToUnixTimeSeconds();
+        var targetDate = GetStartTimeOfDay(date);
+        TimeSpan offset;
+        if (targetDate.Kind == DateTimeKind.Utc)
+        {
+            offset = TimeSpan.Zero;
+        }
+        else if (targetDate.Kind == DateTimeKind.Local)
+        {
+            offset = TimeZoneInfo.Local.GetUtcOffset(targetDate);
+        }
+        else
+        {
+            offset = CurrentTimeZone.GetUtcOffset(targetDate);
+        }
+
+        return new DateTimeOffset(targetDate, offset).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -165,7 +182,22 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetEndTimestampOfDay(DateTime date)
     {
-        return new DateTimeOffset(GetEndTimeOfDay(date)).ToUnixTimeSeconds();
+        var targetDate = GetEndTimeOfDay(date);
+        TimeSpan offset;
+        if (targetDate.Kind == DateTimeKind.Utc)
+        {
+            offset = TimeSpan.Zero;
+        }
+        else if (targetDate.Kind == DateTimeKind.Local)
+        {
+            offset = TimeZoneInfo.Local.GetUtcOffset(targetDate);
+        }
+        else
+        {
+            offset = CurrentTimeZone.GetUtcOffset(targetDate);
+        }
+
+        return new DateTimeOffset(targetDate, offset).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -175,11 +207,11 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回明天的零点时间
     /// 例如:当前是2024-01-10,返回2024-01-11 00:00:00
-    /// 使用本地时区计算时间
+    /// 使用 <see cref="CurrentTimeZone"/> 时区计算时间
     /// </remarks>
     public static DateTime GetTomorrowStartTime()
     {
-        return DateTime.Today.AddDays(1);
+        return GetTodayStartTime().AddDays(1);
     }
 
     /// <summary>
@@ -189,11 +221,13 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回明天零点时间的Unix时间戳
     /// 例如:当前是2024-01-10,返回2024-01-11 00:00:00的时间戳
+    /// 使用 <see cref="CurrentTimeZone"/> 时区计算时间
     /// 会将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetTomorrowStartTimestamp()
     {
-        return new DateTimeOffset(GetTomorrowStartTime()).ToUnixTimeSeconds();
+        var date = GetTomorrowStartTime();
+        return new DateTimeOffset(date, CurrentTimeZone.GetUtcOffset(date)).ToUnixTimeSeconds();
     }
 
     /// <summary>
