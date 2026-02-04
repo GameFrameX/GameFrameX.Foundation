@@ -260,7 +260,7 @@ public partial class TimerHelper
     /// <returns>本周一零点时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回本周一零点时间的Unix时间戳
-    /// 先获取本地时区的本周一零点时间,然后转换为时间戳
+    /// 先获取当前时区 (<see cref="CurrentTimeZone"/>) 的本周一零点时间,然后转换为时间戳
     /// 返回从1970-01-01 00:00:00 UTC开始的秒数
     /// </remarks>
     public static long GetWeekStartTimestamp()
@@ -289,7 +289,7 @@ public partial class TimerHelper
     /// <returns>本周日23:59:59的时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回本周日最后一秒的Unix时间戳
-    /// 先获取本地时区的本周日23:59:59,然后转换为时间戳
+    /// 先获取当前时区 (<see cref="CurrentTimeZone"/>) 的本周日23:59:59,然后转换为时间戳
     /// 返回从1970-01-01 00:00:00 UTC开始的秒数
     /// </remarks>
     public static long GetWeekEndTimestamp()
@@ -325,7 +325,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期所在周的周一零点时间的Unix时间戳
     /// 例如:输入2024-01-10(周三),返回2024-01-08 00:00:00(周一)的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetStartTimestampOfWeek(DateTime date)
     {
@@ -355,7 +355,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回下周一零点时间的Unix时间戳
     /// 例如:当前是2024-01-10(周三),返回2024-01-15 00:00:00(下周一)的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetNextWeekStartTimestamp()
     {
@@ -384,7 +384,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回下周日最后一秒的Unix时间戳
     /// 例如:当前是2024-01-10(周三),返回2024-01-21 23:59:59(下周日)的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetNextWeekEndTimestamp()
     {
@@ -417,7 +417,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期所在周的周日最后一秒的Unix时间戳
     /// 例如:输入2024-01-10(周三),返回2024-01-14 23:59:59(周日)的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetEndTimestampOfWeek(DateTime date)
     {
