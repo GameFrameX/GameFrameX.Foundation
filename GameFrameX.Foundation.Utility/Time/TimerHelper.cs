@@ -180,6 +180,94 @@ public partial class TimerHelper
     }
 
     /// <summary>
+    /// 获取指定时间基于当前设置时区的 Unix 时间戳（秒级精度）。
+    /// </summary>
+    /// <param name="time">要转换的时间。</param>
+    /// <returns>
+    /// 返回一个 <see cref="long"/> 值，表示将指定时间视为 UTC 时间时的 Unix 时间戳 + 时区偏移。
+    /// </returns>
+    /// <remarks>
+    /// 此方法会先将输入时间转换为 UTC（如果不是），然后加上当前设置时区的偏移量。
+    /// 如果输入时间 Kind 为 Unspecified，则默认视为当前设置时区 (<see cref="CurrentTimeZone"/>) 的时间。
+    /// </remarks>
+    public static long TimeToSecondsWithTimeZone(DateTime time)
+    {
+        var utcTime = ConvertToUtc(time);
+        var offset = CurrentTimeZone.GetUtcOffset(utcTime);
+        return new DateTimeOffset(utcTime).ToUnixTimeSeconds() + (long)offset.TotalSeconds;
+    }
+
+    /// <summary>
+    /// 获取指定时间基于当前设置时区的 Unix 时间戳（毫秒级精度）。
+    /// </summary>
+    /// <param name="time">要转换的时间。</param>
+    /// <returns>
+    /// 返回一个 <see cref="long"/> 值，表示将指定时间视为 UTC 时间时的 Unix 时间戳 + 时区偏移。
+    /// </returns>
+    /// <remarks>
+    /// 此方法会先将输入时间转换为 UTC（如果不是），然后加上当前设置时区的偏移量。
+    /// 如果输入时间 Kind 为 Unspecified，则默认视为当前设置时区 (<see cref="CurrentTimeZone"/>) 的时间。
+    /// </remarks>
+    public static long TimeToMillisecondsWithTimeZone(DateTime time)
+    {
+        var utcTime = ConvertToUtc(time);
+        var offset = CurrentTimeZone.GetUtcOffset(utcTime);
+        return new DateTimeOffset(utcTime).ToUnixTimeMilliseconds() + (long)offset.TotalMilliseconds;
+    }
+
+    /// <summary>
+    /// 将 DateTime 转换为 Unix 时间戳（秒）
+    /// 自动处理 DateTime.Kind
+    /// Utc -> 使用 Zero 偏移
+    /// Local -> 使用 Local 偏移
+    /// Unspecified -> 使用 CurrentTimeZone 偏移
+    /// </summary>
+    private static long DateTimeToUnixTimeSeconds(DateTime time)
+    {
+        TimeSpan offset;
+        if (time.Kind == DateTimeKind.Utc)
+        {
+            offset = TimeSpan.Zero;
+        }
+        else if (time.Kind == DateTimeKind.Local)
+        {
+            offset = TimeZoneInfo.Local.GetUtcOffset(time);
+        }
+        else
+        {
+            offset = CurrentTimeZone.GetUtcOffset(time);
+        }
+
+        return new DateTimeOffset(time, offset).ToUnixTimeSeconds();
+    }
+
+    /// <summary>
+    /// 将时间转换为 UTC 时间。
+    /// </summary>
+    /// <param name="time">要转换的时间。</param>
+    /// <returns>转换后的 UTC 时间。</returns>
+    /// <remarks>
+    /// - 如果 Kind 为 Utc，直接返回。
+    /// - 如果 Kind 为 Local，转换为 UTC。
+    /// - 如果 Kind 为 Unspecified，视为当前设置时区 (<see cref="CurrentTimeZone"/>) 的时间并转换为 UTC。
+    /// </remarks>
+    private static DateTime ConvertToUtc(DateTime time)
+    {
+        if (time.Kind == DateTimeKind.Utc)
+        {
+            return time;
+        }
+
+        if (time.Kind == DateTimeKind.Local)
+        {
+            return time.ToUniversalTime();
+        }
+
+        // Unspecified, assume CurrentTimeZone
+        return TimeZoneInfo.ConvertTimeToUtc(time, CurrentTimeZone);
+    }
+
+    /// <summary>
     /// 获取指定时间距离纪元时间的毫秒数。
     /// </summary>
     /// <param name="time">要转换的指定时间。</param>
