@@ -107,15 +107,15 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取当前本地时区时间的秒级时间戳
+    /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的秒级时间戳
     /// </summary>
-    /// <returns>返回自1970年1月1日 00:00:00以来经过的秒数(本地时区),加上时区偏移量</returns>
+    /// <returns>返回自1970年1月1日 00:00:00以来经过的秒数(当前时区),加上时区偏移量</returns>
     /// <remarks>
     /// 此方法:
-    /// 1. 获取当前本地时区时间
+    /// 1. 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 2. 转换为Unix时间戳(秒)
     /// 3. 加上TimeOffsetSeconds偏移量
-    /// 主要用于需要本地时区时间戳的场景
+    /// 主要用于需要当前时区 (<see cref="CurrentTimeZone"/>) 时间戳的场景
     /// </remarks>
     public static long TimeSecondsWithOffset()
     {
@@ -123,12 +123,12 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取当前本地时区时间的毫秒级时间戳
+    /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的毫秒级时间戳
     /// </summary>
-    /// <returns>返回自1970年1月1日 00:00:00以来经过的毫秒数(本地时区),加上时区偏移量</returns>
+    /// <returns>返回自1970年1月1日 00:00:00以来经过的毫秒数(当前时区),加上时区偏移量</returns>
     /// <remarks>
     /// 此方法:
-    /// 1. 获取当前本地时区时间
+    /// 1. 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 2. 转换为Unix时间戳(毫秒)
     /// 3. 加上TimeOffsetMilliseconds偏移量
     /// 相比秒级时间戳提供更高的精度,适用于需要精确时间计算的场景
