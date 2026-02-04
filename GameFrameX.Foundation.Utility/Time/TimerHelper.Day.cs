@@ -133,7 +133,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期零点时间的Unix时间戳
     /// 例如:输入2024-01-10 14:30:00,返回2024-01-10 00:00:00的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetStartTimestampOfDay(DateTime date)
     {
@@ -178,7 +178,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回指定日期最后一秒的Unix时间戳
     /// 例如:输入2024-01-10 14:30:00,返回2024-01-10 23:59:59的时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
     /// </remarks>
     public static long GetEndTimestampOfDay(DateTime date)
     {
@@ -260,15 +260,15 @@ public partial class TimerHelper
 
 
     /// <summary>
-    /// 按照本地时间判断两个时间戳是否是同一天
+    /// 按照当前时区 (<see cref="CurrentTimeZone"/>) 时间判断两个时间戳是否是同一天
     /// </summary>
     /// <param name="timestamp1">时间戳1（Unix秒级时间戳）。例如：1704857400</param>
     /// <param name="timestamp2">时间戳2（Unix秒级时间戳）。例如：1704859200</param>
-    /// <returns>如果两个时间戳转换为本地时间后是同一天，则返回true；否则返回false</returns>
+    /// <returns>如果两个时间戳转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间后是同一天，则返回true；否则返回false</returns>
     /// <remarks>
-    /// 此方法会先将UTC时间戳转换为本地时间，然后比较是否为同一天
+    /// 此方法会先将UTC时间戳转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间，然后比较是否为同一天
     /// 比较时只考虑年月日，不考虑具体时间
-    /// 使用系统默认时区进行UTC到本地时间的转换
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 进行UTC到当前时区时间的转换
     /// </remarks>
     public static bool IsLocalSameDay(long timestamp1, long timestamp2)
     {
@@ -395,7 +395,7 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取从指定日期到当前本地日期之间跨越的天数。
+    /// 获取从指定日期到当前时区 (<see cref="CurrentTimeZone"/>) 日期之间跨越的天数。
     /// </summary>
     /// <param name="startTime">起始日期。</param>
     /// <param name="hour">小时。</param>
@@ -455,13 +455,13 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取两个本地时间戳之间的间隔天数
+    /// 获取两个当前时区 (<see cref="CurrentTimeZone"/>) 时间戳之间的间隔天数
     /// </summary>
-    /// <param name="startTimestamp">开始时间戳(秒),UTC时间戳将被转换为本地时间</param>
-    /// <param name="endTimestamp">结束时间戳(秒),UTC时间戳将被转换为本地时间</param>
+    /// <param name="startTimestamp">开始时间戳(秒),UTC时间戳将被转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间</param>
+    /// <param name="endTimestamp">结束时间戳(秒),UTC时间戳将被转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间</param>
     /// <returns>间隔天数,如果开始时间晚于结束时间,返回负数</returns>
     /// <remarks>
-    /// 此方法会先将UTC时间戳转换为本地时间,然后计算两个本地时间之间的天数差
+    /// 此方法会先将UTC时间戳转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间,然后计算两个时间之间的天数差
     /// 计算时会考虑日期的时分秒部分
     /// </remarks>
     public static int GetCrossLocalDays(long startTimestamp, long endTimestamp)
@@ -473,15 +473,15 @@ public partial class TimerHelper
 
 
     /// <summary>
-    /// 获取当前本地时区的日期，格式为yyyyMMdd的整数
+    /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 的日期，格式为yyyyMMdd的整数
     /// </summary>
-    /// <returns>返回一个8位整数，表示当前本地时区的日期。例如：20231225表示2023年12月25日</returns>
+    /// <returns>返回一个8位整数，表示当前时区 (<see cref="CurrentTimeZone"/>) 的日期。例如：20231225表示2023年12月25日</returns>
     /// <remarks>
-    /// 此方法将当前本地时间转换为8位数字格式:
+    /// 此方法将当前时区 (<see cref="CurrentTimeZone"/>) 时间转换为8位数字格式:
     /// - 前4位表示年份
     /// - 中间2位表示月份
     /// - 最后2位表示日期
-    /// 使用DateTime.Now获取本地时间
+    /// 使用 <see cref="GetNow"/> 获取当前时区时间
     /// </remarks>
     public static int CurrentDateWithDay()
     {

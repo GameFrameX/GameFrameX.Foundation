@@ -44,11 +44,13 @@ public partial class TimerHelper
     /// <returns>转换后的时间。</returns>
     public static DateTime MillisecondsTimeStampToDateTime(long timestamp, bool utc = false)
     {
+        var dateTime = EpochUtc.AddMilliseconds(timestamp);
         if (utc)
         {
-            return EpochUtc.AddMilliseconds(timestamp);
+            return dateTime;
         }
 
+        return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimeZone);
         return EpochLocal.AddMilliseconds(timestamp);
     }
 
