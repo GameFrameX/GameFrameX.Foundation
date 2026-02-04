@@ -151,11 +151,11 @@ public partial class TimerHelper
     /// <returns>当前时间</returns>
     /// <remarks>
     /// 此方法返回当前的本地时间
-    /// 会根据系统设置的时区自动调整
+    /// 会根据设置的时区(<see cref="CurrentTimeZone"/>)自动调整
     /// 主要用于需要显示本地时间的场景
     /// </remarks>
     public static DateTime GetNow()
     {
-        return DateTime.Now;
+        return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, CurrentTimeZone);
     }
 }
