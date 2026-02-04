@@ -265,7 +265,8 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetWeekStartTimestamp()
     {
-        return new DateTimeOffset(GetWeekStartTime()).ToUnixTimeSeconds();
+        var time = GetWeekStartTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -293,7 +294,8 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetWeekEndTimestamp()
     {
-        return new DateTimeOffset(GetWeekEndTime()).ToUnixTimeSeconds();
+        var time = GetWeekEndTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
 
@@ -327,7 +329,8 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetStartTimestampOfWeek(DateTime date)
     {
-        return new DateTimeOffset(GetStartTimeOfWeek(date)).ToUnixTimeSeconds();
+        var time = GetStartTimeOfWeek(date);
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
 
@@ -356,7 +359,8 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekStartTimestamp()
     {
-        return new DateTimeOffset(GetNextWeekStartTime()).ToUnixTimeSeconds();
+        var time = GetNextWeekStartTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -384,7 +388,8 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekEndTimestamp()
     {
-        return new DateTimeOffset(GetNextWeekEndTime()).ToUnixTimeSeconds();
+        var time = GetNextWeekEndTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
 
@@ -416,6 +421,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetEndTimestampOfWeek(DateTime date)
     {
-        return new DateTimeOffset(GetEndTimeOfWeek(date)).ToUnixTimeSeconds();
+        var time = GetEndTimeOfWeek(date);
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 }
