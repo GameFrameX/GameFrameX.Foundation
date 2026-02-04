@@ -38,22 +38,21 @@ public partial class TimerHelper
     /// </summary>
     /// <returns>本年1月1日零点时间</returns>
     /// <remarks>
-    /// 此方法基于UTC时间计算年份:
-    /// 1. 获取当前UTC时间的年份
+    /// 此方法基于当前时区时间计算年份:
+    /// 1. 获取当前时区时间的年份
     /// 2. 返回该年份1月1日零点时间
     /// 
     /// 示例:
-    /// - 当前UTC时间为2024-03-15 14:30:00
+    /// - 当前时间为2024-03-15 14:30:00
     /// - 返回2024-01-01 00:00:00
     /// 
     /// 注意:
-    /// - 返回的是UTC时间,不考虑本地时区
+    /// - 返回的是当前时区的时间
     /// - 返回时间的时分秒毫秒都为0
-    /// - 使用DateTime.UtcNow避免时区转换带来的问题
     /// </remarks>
     public static DateTime GetYearStartTime()
     {
-        return new DateTime(GetUtcNow().Year, 1, 1);
+        return new DateTime(GetNow().Year, 1, 1);
     }
 
     /// <summary>
@@ -62,12 +61,13 @@ public partial class TimerHelper
     /// <returns>本年1月1日零点时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回当前年份1月1日零点的Unix时间戳
-    /// 使用本地时区计算时间
+    /// 使用当前时区计算时间
     /// 例如:2024年返回2024-01-01 00:00:00的时间戳
     /// </remarks>
     public static long GetYearStartTimestamp()
     {
-        return new DateTimeOffset(GetYearStartTime()).ToUnixTimeSeconds();
+        var time = GetYearStartTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public partial class TimerHelper
     /// <returns>本年12月31日23:59:59的时间</returns>
     /// <remarks>
     /// 此方法返回当前年份最后一天的最后一秒
-    /// 使用本地时区计算时间
+    /// 使用当前时区计算时间
     /// 例如:2024年返回2024-12-31 23:59:59
     /// </remarks>
     public static DateTime GetYearEndTime()
@@ -90,12 +90,13 @@ public partial class TimerHelper
     /// <returns>本年12月31日23:59:59的时间戳(秒)</returns>
     /// <remarks>
     /// 此方法返回当前年份最后一天的最后一秒的Unix时间戳
-    /// 使用本地时区计算时间
+    /// 使用当前时区计算时间
     /// 例如:2024年返回2024-12-31 23:59:59的时间戳
     /// </remarks>
     public static long GetYearEndTimestamp()
     {
-        return new DateTimeOffset(GetYearEndTime()).ToUnixTimeSeconds();
+        var time = GetYearEndTime();
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -125,7 +126,8 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetStartTimestampOfYear(DateTime date)
     {
-        return new DateTimeOffset(GetStartTimeOfYear(date)).ToUnixTimeSeconds();
+        var time = GetStartTimeOfYear(date);
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 
     /// <summary>
@@ -155,6 +157,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetEndTimestampOfYear(DateTime date)
     {
-        return new DateTimeOffset(GetEndTimeOfYear(date)).ToUnixTimeSeconds();
+        var time = GetEndTimeOfYear(date);
+        return new DateTimeOffset(time, CurrentTimeZone.GetUtcOffset(time)).ToUnixTimeSeconds();
     }
 }
