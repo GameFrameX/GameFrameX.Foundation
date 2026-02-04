@@ -50,13 +50,13 @@ public partial class TimerHelper
     /// <summary>
     /// 判断当前时间是否与指定时间处于同一周。
     /// 以周一为每周的第一天,周日为每周的最后一天。
-    /// 使用本地时间(DateTime.Now)进行比较。
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间进行比较。
     /// </summary>
     /// <param name="start">指定时间的起始时间。可以是任意DateTime值。</param>
     /// <returns>如果当前时间与指定时间处于同一周，则为 true；否则为 false。</returns>
     /// <remarks>
     /// 此方法将调用IsSameWeek方法进行实际比较。
-    /// 使用本地时区时间作为当前时间参考点。
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间作为当前时间参考点。
     /// </remarks>
     public static bool IsNowSameWeek(DateTime start)
     {
@@ -191,7 +191,7 @@ public partial class TimerHelper
     /// <returns>返回当前UTC日期所在星期的指定星期几的零点时间。例如：当前是2024-01-10(星期三)，传入DayOfWeek.Monday，则返回2024-01-08 00:00:00。</returns>
     /// <remarks>
     /// 此方法使用UTC时间作为基准计算。
-    /// 如果需要使用本地时间，请使用 GetDayOfWeekTime(DateTime.Now, day)。
+    /// 如果需要使用当前时区 (<see cref="CurrentTimeZone"/>) 时间，请使用 GetDayOfWeekTime(GetNow(), day)。
     /// </remarks>
     public static DateTime GetDayOfWeekTime(DayOfWeek day)
     {
@@ -226,8 +226,8 @@ public partial class TimerHelper
     /// </summary>
     /// <returns>当前星期在中国的对应数字。返回1-7,其中7表示星期日</returns>
     /// <remarks>
-    /// 此方法获取当前本地时间的星期几,并转换为中国习惯的表示方式
-    /// 使用本地时区时间(DateTime.Now)作为基准
+    /// 此方法获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的星期几,并转换为中国习惯的表示方式
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间作为基准
     /// 内部调用GetChinaDayOfWeek(DayOfWeek)方法进行转换
     /// </remarks>
     public static int GetChinaDayOfWeek()
@@ -244,7 +244,7 @@ public partial class TimerHelper
     /// 使用中国习惯:
     /// - 将周日的DayOfWeek值0转换为7
     /// - 以周一为每周的第一天
-    /// 返回的是本地时区的时间
+    /// 返回的是当前时区 (<see cref="CurrentTimeZone"/>) 的时间
     /// </remarks>
     public static DateTime GetWeekStartTime()
     {
@@ -276,7 +276,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回本周日的最后一秒(23:59:59)
     /// 通过获取下周一零点时间然后减去1秒来计算
-    /// 返回的是本地时区的时间
+    /// 返回的是当前时区 (<see cref="CurrentTimeZone"/>) 的时间
     /// </remarks>
     public static DateTime GetWeekEndTime()
     {
@@ -341,7 +341,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回下周一的零点时间
     /// 例如:当前是2024-01-10(周三),返回2024-01-15 00:00:00(下周一)
-    /// 使用本地时区计算时间
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 计算时间
     /// </remarks>
     public static DateTime GetNextWeekStartTime()
     {
@@ -370,7 +370,7 @@ public partial class TimerHelper
     /// <remarks>
     /// 此方法返回下周日的最后一秒
     /// 例如:当前是2024-01-10(周三),返回2024-01-21 23:59:59(下周日)
-    /// 使用本地时区计算时间
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 计算时间
     /// </remarks>
     public static DateTime GetNextWeekEndTime()
     {
