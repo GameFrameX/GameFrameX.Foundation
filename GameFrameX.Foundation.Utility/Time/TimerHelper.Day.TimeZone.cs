@@ -324,7 +324,7 @@ public partial class TimerHelper
     public static int GetCrossDays(long beginTimestamp, int hour = 0)
     {
         var begin = TimestampToDateTime(beginTimestamp);
-        return GetCrossDays(begin, hour);
+        return GetCrossDaysWithTimeZone(begin, hour);
     }
 
     /// <summary>
