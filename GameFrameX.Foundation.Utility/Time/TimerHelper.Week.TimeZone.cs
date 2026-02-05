@@ -42,9 +42,9 @@ public partial class TimerHelper
     /// 此方法使用当前时区 (<see cref="CurrentTimeZone"/>) 时间进行比较
     /// 输入的ticks会被转换为DateTime后与当前时区时间比较
     /// </remarks>
-    public static bool IsNowSameWeek(long ticks)
+    public static bool IsNowSameWeekWithTimeZone(long ticks)
     {
-        return IsNowSameWeek(new DateTime(ticks));
+        return IsNowSameWeekWithTimeZone(new DateTime(ticks));
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public partial class TimerHelper
     /// 此方法使用当前时区 (<see cref="CurrentTimeZone"/>) 时间进行比较
     /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前时区时间
     /// </remarks>
-    public static bool IsNowSameWeek(DateTime start)
+    public static bool IsNowSameWeekWithTimeZone(DateTime start)
     {
         return IsSameWeek(start, GetNowWithTimeZone());
     }
@@ -69,9 +69,9 @@ public partial class TimerHelper
     /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前时区时间
     /// 将DayOfWeek枚举转换为对应的中文表示
     /// </remarks>
-    public static string GetChinaDayOfWeek()
+    public static string GetChinaDayOfWeekWithTimeZone()
     {
-        return GetChinaDayOfWeek(GetNowWithTimeZone());
+        return GetChinaDayOfWeekWithTimeZone(GetNowWithTimeZone());
     }
 
     /// <summary>
@@ -83,9 +83,9 @@ public partial class TimerHelper
     /// 根据传入日期的DayOfWeek属性返回对应的中文名称
     /// 支持从星期一到星期日的所有映射
     /// </remarks>
-    public static string GetChinaDayOfWeek(DateTime date)
+    public static string GetChinaDayOfWeekWithTimeZone(DateTime date)
     {
-        string[] dayOfWeek = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        string[] dayOfWeek = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六",];
         return dayOfWeek[Convert.ToInt32(date.DayOfWeek.ToString("d"))];
     }
 
@@ -98,7 +98,7 @@ public partial class TimerHelper
     /// 使用 <see cref="CurrentTimeZone"/> 时区计算
     /// 如果今天是周日(DayOfWeek=0),会将其视为本周第7天处理
     /// </remarks>
-    public static DateTime GetWeekStartTime()
+    public static DateTime GetWeekStartTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
         var dayOfWeek = (int)now.DayOfWeek;
@@ -116,7 +116,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetWeekStartTimestamp()
     {
-        var date = GetWeekStartTime();
+        var date = GetWeekStartTimeWithTimeZone();
         return DateTimeToUnixTimeSeconds(date);
     }
 
@@ -129,7 +129,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetWeekStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetWeekStartTime());
+        return TimeToSecondsWithTimeZone(GetWeekStartTimeWithTimeZone());
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public partial class TimerHelper
     /// 此方法返回本周最后一天(周日)的最后一秒
     /// 使用 <see cref="CurrentTimeZone"/> 时区计算
     /// </remarks>
-    public static DateTime GetWeekEndTime()
+    public static DateTime GetWeekEndTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
         var dayOfWeek = (int)now.DayOfWeek;
@@ -158,7 +158,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetWeekEndTimestamp()
     {
-        var date = GetWeekEndTime();
+        var date = GetWeekEndTimeWithTimeZone();
         return DateTimeToUnixTimeSeconds(date);
     }
 
@@ -171,23 +171,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetWeekEndTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetWeekEndTime());
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的开始时间
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周一00:00:00的时间</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在周的周一零点时间
-    /// 保持原有时区不变
-    /// </remarks>
-    public static DateTime GetStartTimeOfWeek(DateTime date)
-    {
-        var dayOfWeek = (int)date.DayOfWeek;
-        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
-        return date.AddDays(1 - dayOfWeek).Date;
+        return TimeToSecondsWithTimeZone(GetWeekEndTimeWithTimeZone());
     }
 
     /// <summary>
@@ -216,22 +200,6 @@ public partial class TimerHelper
     public static long GetStartTimestampOfWeekWithTimeZone(DateTime date)
     {
         return TimeToSecondsWithTimeZone(GetStartTimeOfWeek(date));
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的结束时间
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周日23:59:59的时间</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在周的周日最后一秒
-    /// 保持原有时区不变
-    /// </remarks>
-    public static DateTime GetEndTimeOfWeek(DateTime date)
-    {
-        var dayOfWeek = (int)date.DayOfWeek;
-        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
-        return date.AddDays(7 - dayOfWeek).Date.AddDays(1).AddSeconds(-1);
     }
 
     /// <summary>
@@ -271,7 +239,7 @@ public partial class TimerHelper
     /// 此方法返回下周第一天(周一)的零点时间
     /// 使用 <see cref="CurrentTimeZone"/> 时区计算
     /// </remarks>
-    public static DateTime GetNextWeekStartTime()
+    public static DateTime GetNextWeekStartTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
         var dayOfWeek = (int)now.DayOfWeek;
@@ -289,7 +257,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekStartTimestamp()
     {
-        var date = GetNextWeekStartTime();
+        var date = GetNextWeekStartTimeWithTimeZone();
         return DateTimeToUnixTimeSeconds(date);
     }
 
@@ -302,7 +270,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetNextWeekStartTime());
+        return TimeToSecondsWithTimeZone(GetNextWeekStartTimeWithTimeZone());
     }
 
     /// <summary>
@@ -313,9 +281,9 @@ public partial class TimerHelper
     /// 此方法返回下周最后一天(周日)的最后一秒
     /// 使用 <see cref="CurrentTimeZone"/> 时区计算
     /// </remarks>
-    public static DateTime GetNextWeekEndTime()
+    public static DateTime GetNextWeekEndTimeWithTimeZone()
     {
-        return GetNextWeekStartTime().AddDays(7).AddSeconds(-1);
+        return GetNextWeekStartTimeWithTimeZone().AddDays(7).AddSeconds(-1);
     }
 
     /// <summary>
@@ -328,7 +296,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekEndTimestamp()
     {
-        var date = GetNextWeekEndTime();
+        var date = GetNextWeekEndTimeWithTimeZone();
         return DateTimeToUnixTimeSeconds(date);
     }
 
@@ -341,6 +309,6 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekEndTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetNextWeekEndTime());
+        return TimeToSecondsWithTimeZone(GetNextWeekEndTimeWithTimeZone());
     }
 }

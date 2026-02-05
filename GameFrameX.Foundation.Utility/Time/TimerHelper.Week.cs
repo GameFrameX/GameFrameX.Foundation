@@ -89,4 +89,36 @@ public partial class TimerHelper
     {
         return dateTime.AddDays(day - dateTime.DayOfWeek);
     }
+
+    /// <summary>
+    /// 获取指定日期所在周的开始时间
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在周周一00:00:00的时间</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在周的周一零点时间
+    /// 保持原有时区不变
+    /// </remarks>
+    public static DateTime GetStartTimeOfWeek(DateTime date)
+    {
+        var dayOfWeek = (int)date.DayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+        return date.AddDays(1 - dayOfWeek).Date;
+    }
+
+    /// <summary>
+    /// 获取指定日期所在周的结束时间
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在周周日23:59:59的时间</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在周的周日最后一秒
+    /// 保持原有时区不变
+    /// </remarks>
+    public static DateTime GetEndTimeOfWeek(DateTime date)
+    {
+        var dayOfWeek = (int)date.DayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+        return date.AddDays(7 - dayOfWeek).Date.AddDays(1).AddSeconds(-1);
+    }
 }
