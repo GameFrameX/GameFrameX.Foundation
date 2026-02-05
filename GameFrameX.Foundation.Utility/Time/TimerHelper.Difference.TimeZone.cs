@@ -131,7 +131,7 @@ public partial class TimerHelper
     /// 计算指定时间到当前时间经过了多少秒
     /// </summary>
     /// <param name="time">指定时间</param>
-    /// <param name="useUtc">是否使用UTC时间作为当前时间，默认为false</param>
+    /// <param name="useUtc">是否使用UTC时间作为当前时间，默认为false（使用当前时区 (<see cref="CurrentTimeZone"/>) 时间）</param>
     /// <returns>经过的秒数（如果指定时间在未来，返回负数）</returns>
     /// <remarks>
     /// 此方法计算从指定时间到现在经过的总秒数
