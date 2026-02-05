@@ -118,7 +118,7 @@ public partial class TimerHelper
     /// <seealso cref="UnixTimeMilliseconds"/>
     public static long UnixTimeSeconds()
     {
-        return new DateTimeOffset(GetUtcNow()).ToUnixTimeSeconds();
+        return new DateTimeOffset(GetUtcNow()).ToUnixTimeSeconds() + TimeOffsetSeconds;
     }
 
     /// <summary>
@@ -140,7 +140,7 @@ public partial class TimerHelper
     /// <seealso cref="UnixTimeSeconds"/>
     public static long UnixTimeMilliseconds()
     {
-        return new DateTimeOffset(GetUtcNow()).ToUnixTimeMilliseconds();
+        return new DateTimeOffset(GetUtcNow()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
     }
 
     /// <summary>
