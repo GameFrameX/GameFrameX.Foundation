@@ -70,7 +70,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetYearStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetYearStartTimeWithTimeZone());
+        return DateTimeToSecondsWithTimeZone(GetYearStartTimeWithTimeZone());
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetYearEndTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetYearEndTime());
+        return DateTimeToSecondsWithTimeZone(GetYearEndTime());
     }
 
     /// <summary>
@@ -138,7 +138,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetStartTimestampOfYearWithTimeZone(DateTime date)
     {
-        return TimeToSecondsWithTimeZone(GetStartTimeOfYear(date));
+        return DateTimeToSecondsWithTimeZone(GetStartTimeOfYear(date));
     }
 
     /// <summary>
@@ -166,7 +166,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetEndTimestampOfYearWithTimeZone(DateTime date)
     {
-        return TimeToSecondsWithTimeZone(GetEndTimeOfYear(date));
+        return DateTimeToSecondsWithTimeZone(GetEndTimeOfYear(date));
     }
 
     /// <summary>
@@ -205,6 +205,6 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextYearStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetNextYearStartTimeWithTimeZone());
+        return DateTimeToSecondsWithTimeZone(GetNextYearStartTimeWithTimeZone());
     }
 }
