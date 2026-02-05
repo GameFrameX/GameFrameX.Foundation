@@ -73,7 +73,7 @@ public partial class TimerHelper
     /// <param name="startTime">起始日期。</param>
     /// <param name="hour">小时。</param>
     /// <returns>跨越的天数。</returns>
-    public static int GetCrossDays(DateTime startTime, int hour = 0)
+    public static int GetCrossDaysUtc(DateTime startTime, int hour = 0)
     {
         return GetCrossDays(startTime, GetUtcNow(), hour);
     }
@@ -85,7 +85,7 @@ public partial class TimerHelper
     /// <param name="afterTimestamp">结束时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
     /// <param name="hour">小时。</param>
     /// <returns>跨越的天数。</returns>
-    public static int GetCrossDays(long beginTimestamp, long afterTimestamp, int hour = 0)
+    public static int GetCrossDaysUtc(long beginTimestamp, long afterTimestamp, int hour = 0)
     {
         var begin = UtcSecondsToUtcDateTime(beginTimestamp);
         var after = UtcSecondsToUtcDateTime(afterTimestamp);
