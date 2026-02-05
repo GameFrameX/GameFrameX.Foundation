@@ -70,7 +70,7 @@ public partial class TimerHelper
     /// </remarks>
     public static void ResetTimeOffset()
     {
-        TimeOffsetSeconds = default;
-        TimeOffsetMilliseconds = default;
+        TimeOffsetSeconds = 0;
+        TimeOffsetMilliseconds = 0;
     }
 }
