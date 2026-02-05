@@ -69,21 +69,4 @@ public partial class TimerHelper
 
         return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimeZone);
     }
-
-    /// <summary>
-    /// 将给定的时间戳转换为相对于EpochLocal的 TimeSpan 对象。
-    /// </summary>
-    /// <param name="timestamp">自1970年1月1日午夜以来经过的秒数。</param>
-    /// <returns>一个 TimeSpan 对象，表示从EpochLocal到给定时间戳的间隔。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当时间戳超出有效范围时抛出此异常</exception>
-    public static TimeSpan TimeSpanWithTimeZoneTimestamp(long timestamp)
-    {
-        if (timestamp < -62135596800L || timestamp > 253402300799L)
-        {
-            throw new ArgumentOutOfRangeException(nameof(timestamp), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
-        }
-
-        // 直接将秒数转换为TimeSpan
-        return TimeSpan.FromSeconds(timestamp);
-    }
 }
