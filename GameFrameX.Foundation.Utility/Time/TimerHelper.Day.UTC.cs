@@ -34,24 +34,6 @@ namespace GameFrameX.Foundation.Utility;
 public partial class TimerHelper
 {
     /// <summary>
-    /// 按照UTC时间判断两个时间戳是否是同一天
-    /// </summary>
-    /// <param name="unixTimestampA">时间戳1</param>
-    /// <param name="unixTimestampB">时间戳2</param>
-    /// <returns>是否是同一天</returns>
-    /// <remarks>
-    /// 此方法将两个Unix时间戳转换为UTC时间后比较是否为同一天
-    /// 比较时只考虑日期部分(年月日),忽略时间部分
-    /// 使用UTC时间避免时区转换带来的问题
-    /// </remarks>
-    public static bool IsUnixSameDay(long unixTimestampA, long unixTimestampB)
-    {
-        var time1 = UtcSecondsToUtcDateTime(unixTimestampA);
-        var time2 = UtcSecondsToUtcDateTime(unixTimestampB);
-        return IsSameDay(time1, time2);
-    }
-
-    /// <summary>
     /// 获取当前UTC时区的日期，格式为yyyyMMdd的整数
     /// </summary>
     /// <returns>返回一个8位整数，表示当前UTC时区的日期。例如：20231225表示2023年12月25日</returns>
@@ -68,17 +50,6 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取从指定日期到当前UTC日期之间跨越的天数。
-    /// </summary>
-    /// <param name="startTime">起始日期。</param>
-    /// <param name="hour">小时。</param>
-    /// <returns>跨越的天数。</returns>
-    public static int GetCrossDaysUtc(DateTime startTime, int hour = 0)
-    {
-        return GetCrossDays(startTime, GetUtcNow(), hour);
-    }
-
-    /// <summary>
     /// 获取两个UTC时间戳之间跨越的天数。
     /// </summary>
     /// <param name="beginUnixTimestamp">开始时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
@@ -90,5 +61,63 @@ public partial class TimerHelper
         var begin = UtcSecondsToUtcDateTime(beginUnixTimestamp);
         var after = UtcSecondsToUtcDateTime(afterUnixTimestamp);
         return GetCrossDays(begin, after, hour);
+    }
+
+    /// <summary>
+    /// 获取从指定日期到当前UTC日期之间跨越的天数。
+    /// </summary>
+    /// <param name="startTime">起始日期。</param>
+    /// <param name="hour">小时。</param>
+    /// <returns>跨越的天数。</returns>
+    public static int GetCrossDaysWithUtc(DateTime startTime, int hour = 0)
+    {
+        return GetCrossDays(startTime, GetUtcNow(), hour);
+    }
+
+    /// <summary>
+    /// 获取今天开始时间
+    /// </summary>
+    /// <returns>今天零点时间</returns>
+    /// <remarks>
+    /// 此方法返回当天的零点时间(00:00:00)
+    /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前日期的零点时间
+    /// 返回的是 <see cref="CurrentTimeZone"/> 时区的时间
+    /// </remarks>
+    public static DateTime GetTodayStartTime()
+    {
+        return GetUtcNow().Date;
+    }
+
+    /// <summary>
+    /// 获取今天开始时间戳
+    /// </summary>
+    /// <returns>今天零点时间戳(秒)</returns>
+    /// <remarks>
+    /// 此方法返回当天零点时间的Unix时间戳
+    /// 先获取 <see cref="CurrentTimeZone"/> 时区的今天零点时间,然后转换为时间戳
+    /// 返回从1970-01-01 00:00:00 UTC开始的秒数
+    /// </remarks>
+    public static long GetTodayStartTimestampWithUtc()
+    {
+        var date = GetTodayStartTime();
+        return DateTimeToUnixTimeSeconds(date);
+    }
+
+    /// <summary>
+    /// 按照UTC时间判断两个时间戳是否是同一天
+    /// </summary>
+    /// <param name="unixTimestampA">时间戳1</param>
+    /// <param name="unixTimestampB">时间戳2</param>
+    /// <returns>是否是同一天</returns>
+    /// <remarks>
+    /// 此方法将两个Unix时间戳转换为UTC时间后比较是否为同一天
+    /// 比较时只考虑日期部分(年月日),忽略时间部分
+    /// 使用UTC时间避免时区转换带来的问题
+    /// </remarks>
+    public static bool IsUnixSameDay(long unixTimestampA, long unixTimestampB)
+    {
+        var time1 = UtcSecondsToUtcDateTime(unixTimestampA);
+        var time2 = UtcSecondsToUtcDateTime(unixTimestampB);
+        return IsSameDay(time1, time2);
     }
 }

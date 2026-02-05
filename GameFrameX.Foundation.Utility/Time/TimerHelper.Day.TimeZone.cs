@@ -34,6 +34,51 @@ namespace GameFrameX.Foundation.Utility;
 public partial class TimerHelper
 {
     /// <summary>
+    /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 的日期，格式为yyyyMMdd的整数
+    /// </summary>
+    /// <returns>返回一个8位整数，表示当前时区 (<see cref="CurrentTimeZone"/>) 的日期。例如：20231225表示2023年12月25日</returns>
+    /// <remarks>
+    /// 此方法将当前时区 (<see cref="CurrentTimeZone"/>) 时间转换为8位数字格式:
+    /// - 前4位表示年份
+    /// - 中间2位表示月份
+    /// - 最后2位表示日期
+    /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前时区时间
+    /// </remarks>
+    public static int CurrentDateWithDayWithTimeZone()
+    {
+        return Convert.ToInt32(GetNowWithTimeZone().ToString("yyyyMMdd"));
+    }
+
+    /// <summary>
+    /// 获取两个当前时区 (<see cref="CurrentTimeZone"/>) 时间戳之间的间隔天数
+    /// </summary>
+    /// <param name="startTimestamp">开始时间戳(秒),UTC时间戳将被转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间</param>
+    /// <param name="endTimestamp">结束时间戳(秒),UTC时间戳将被转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间</param>
+    /// <param name="hour">跨天计算的小时数,默认值为0,表示跨天计算</param>
+    /// <returns>间隔天数,如果开始时间晚于结束时间,返回负数</returns>
+    /// <remarks>
+    /// 此方法会先将UTC时间戳转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间,然后计算两个时间之间的天数差
+    /// 计算时会考虑日期的时分秒部分
+    /// </remarks>
+    public static int GetCrossDaysWithTimeZone(long startTimestamp, long endTimestamp, int hour = 0)
+    {
+        var startTime = TimestampSecondToDateTime(startTimestamp);
+        var endTime = TimestampSecondToDateTime(endTimestamp);
+        return GetCrossDays(startTime, endTime, hour);
+    }
+
+    /// <summary>
+    /// 获取从指定日期到当前时区 (<see cref="CurrentTimeZone"/>) 日期之间跨越的天数。
+    /// </summary>
+    /// <param name="startTime">起始日期。</param>
+    /// <param name="hour">小时。</param>
+    /// <returns>跨越的天数。</returns>
+    public static int GetCrossDaysWithTimeZone(DateTime startTime, int hour = 0)
+    {
+        return GetCrossDays(startTime, GetNowWithTimeZone(), hour);
+    }
+
+    /// <summary>
     /// 获取今天开始时间
     /// </summary>
     /// <returns>今天零点时间</returns>
@@ -42,24 +87,9 @@ public partial class TimerHelper
     /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前日期的零点时间
     /// 返回的是 <see cref="CurrentTimeZone"/> 时区的时间
     /// </remarks>
-    public static DateTime GetTodayStartTime()
+    public static DateTime GetTodayStartTimeWithTimeZone()
     {
         return GetNowWithTimeZone().Date;
-    }
-
-    /// <summary>
-    /// 获取今天开始时间戳
-    /// </summary>
-    /// <returns>今天零点时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回当天零点时间的Unix时间戳
-    /// 先获取 <see cref="CurrentTimeZone"/> 时区的今天零点时间,然后转换为时间戳
-    /// 返回从1970-01-01 00:00:00 UTC开始的秒数
-    /// </remarks>
-    public static long GetTodayStartTimestamp()
-    {
-        var date = GetTodayStartTime();
-        return DateTimeToUnixTimeSeconds(date);
     }
 
     /// <summary>
@@ -72,7 +102,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetTodayStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetTodayStartTime());
+        return DateTimeToSecondsWithTimeZone(GetTodayStartTime());
     }
 
     /// <summary>
@@ -113,7 +143,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetTodayEndTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetTodayEndTime());
+        return DateTimeToSecondsWithTimeZone(GetTodayEndTime());
     }
 
     /// <summary>
@@ -157,7 +187,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetStartTimestampOfDayWithTimeZone(DateTime date)
     {
-        return TimeToSecondsWithTimeZone(GetStartTimeOfDay(date));
+        return DateTimeToSecondsWithTimeZone(GetStartTimeOfDay(date));
     }
 
     /// <summary>
@@ -201,7 +231,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetEndTimestampOfDayWithTimeZone(DateTime date)
     {
-        return TimeToSecondsWithTimeZone(GetEndTimeOfDay(date));
+        return DateTimeToSecondsWithTimeZone(GetEndTimeOfDay(date));
     }
 
     /// <summary>
@@ -243,7 +273,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetTomorrowStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetTomorrowStartTime());
+        return DateTimeToSecondsWithTimeZone(GetTomorrowStartTime());
     }
 
     /// <summary>
@@ -283,7 +313,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetTomorrowEndTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetTomorrowEndTime());
+        return DateTimeToSecondsWithTimeZone(GetTomorrowEndTime());
     }
 
     /// <summary>
@@ -299,20 +329,9 @@ public partial class TimerHelper
     /// </remarks>
     public static bool IsSameDayWithTimeZone(long timestamp1, long timestamp2)
     {
-        var time1 = UtcSecondsToTimeZoneDateTime(timestamp1);
-        var time2 = UtcSecondsToTimeZoneDateTime(timestamp2);
+        var time1 = TimestampSecondToDateTime(timestamp1);
+        var time2 = TimestampSecondToDateTime(timestamp2);
         return IsSameDay(time1, time2);
-    }
-
-    /// <summary>
-    /// 获取从指定日期到当前时区 (<see cref="CurrentTimeZone"/>) 日期之间跨越的天数。
-    /// </summary>
-    /// <param name="startTime">起始日期。</param>
-    /// <param name="hour">小时。</param>
-    /// <returns>跨越的天数。</returns>
-    public static int GetCrossDaysWithTimeZone(DateTime startTime, int hour = 0)
-    {
-        return GetCrossDays(startTime, GetNowWithTimeZone(), hour);
     }
 
     /// <summary>
@@ -323,40 +342,7 @@ public partial class TimerHelper
     /// <returns>跨越的天数。</returns>
     public static int GetCrossDays(long beginTimestamp, int hour = 0)
     {
-        var begin = TimestampToDateTime(beginTimestamp);
+        var begin = TimestampSecondToDateTime(beginTimestamp);
         return GetCrossDaysWithTimeZone(begin, hour);
-    }
-
-    /// <summary>
-    /// 获取两个当前时区 (<see cref="CurrentTimeZone"/>) 时间戳之间的间隔天数
-    /// </summary>
-    /// <param name="startTimestamp">开始时间戳(秒),UTC时间戳将被转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间</param>
-    /// <param name="endTimestamp">结束时间戳(秒),UTC时间戳将被转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间</param>
-    /// <returns>间隔天数,如果开始时间晚于结束时间,返回负数</returns>
-    /// <remarks>
-    /// 此方法会先将UTC时间戳转换为当前时区 (<see cref="CurrentTimeZone"/>) 时间,然后计算两个时间之间的天数差
-    /// 计算时会考虑日期的时分秒部分
-    /// </remarks>
-    public static int GetCrossDaysWithTimeZone(long startTimestamp, long endTimestamp)
-    {
-        var startTime = UtcSecondsToTimeZoneDateTime(startTimestamp);
-        var endTime = UtcSecondsToTimeZoneDateTime(endTimestamp);
-        return GetCrossDays(startTime, endTime);
-    }
-
-    /// <summary>
-    /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 的日期，格式为yyyyMMdd的整数
-    /// </summary>
-    /// <returns>返回一个8位整数，表示当前时区 (<see cref="CurrentTimeZone"/>) 的日期。例如：20231225表示2023年12月25日</returns>
-    /// <remarks>
-    /// 此方法将当前时区 (<see cref="CurrentTimeZone"/>) 时间转换为8位数字格式:
-    /// - 前4位表示年份
-    /// - 中间2位表示月份
-    /// - 最后2位表示日期
-    /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前时区时间
-    /// </remarks>
-    public static int CurrentDateWithDay()
-    {
-        return Convert.ToInt32(GetNowWithTimeZone().ToString("yyyyMMdd"));
     }
 }
