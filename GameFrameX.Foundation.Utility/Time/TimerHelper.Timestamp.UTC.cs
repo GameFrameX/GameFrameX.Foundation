@@ -37,36 +37,6 @@ namespace GameFrameX.Foundation.Utility;
 public partial class TimerHelper
 {
     /// <summary>
-    /// UTC 时间戳 转换成UTC时间
-    /// </summary>
-    /// <param name="utcTimestampSeconds">UTC时间戳,单位秒</param>
-    /// <returns>转换后的UTC时间。</returns>
-    /// <remarks>
-    /// 此方法将Unix时间戳(从1970-01-01 00:00:00 UTC开始的秒数)转换为UTC DateTime
-    /// 使用DateTimeOffset.FromUnixTimeSeconds进行转换
-    /// 返回的是UTC时区的时间
-    /// </remarks>
-    public static DateTime UtcSecondsToUtcDateTime(long utcTimestampSeconds)
-    {
-        return DateTimeOffset.FromUnixTimeSeconds(utcTimestampSeconds).UtcDateTime;
-    }
-
-    /// <summary>
-    /// UTC 毫秒时间戳 转换成UTC时间
-    /// </summary>
-    /// <param name="utcTimestampMilliseconds">UTC时间戳,单位毫秒</param>
-    /// <returns>转换后的UTC时间。</returns>
-    /// <remarks>
-    /// 此方法将Unix毫秒时间戳(从1970-01-01 00:00:00 UTC开始的毫秒数)转换为UTC DateTime
-    /// 使用DateTimeOffset.FromUnixTimeMilliseconds进行转换
-    /// 返回的是UTC时区的时间
-    /// </remarks>
-    public static DateTime UtcMillisecondsToUtcDateTime(long utcTimestampMilliseconds)
-    {
-        return DateTimeOffset.FromUnixTimeMilliseconds(utcTimestampMilliseconds).UtcDateTime;
-    }
-
-    /// <summary>
     /// 将给定的时间戳转换为相对于EpochUtc的 TimeSpan 对象。
     /// </summary>
     /// <param name="timestamp">自1970年1月1日午夜以来经过的秒数。</param>

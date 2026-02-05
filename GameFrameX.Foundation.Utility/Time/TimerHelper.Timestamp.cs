@@ -181,4 +181,38 @@ public partial class TimerHelper
         // 使用TimeHelper.EpochUtc.Ticks确保与项目中其他时间计算保持一致
         return timestampMillisSeconds * TimeSpan.TicksPerMillisecond + EpochUtc.Ticks;
     }
+
+    /// <summary>
+    /// 毫秒转时间
+    /// </summary>
+    /// <param name="utcTimestampMilliseconds">毫秒时间戳。</param>
+    /// <param name="utc">是否使用UTC时间。</param>
+    /// <returns>转换后的时间。如果utc为false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间。</returns>
+    public static DateTime TimeStampMillisecondToDateTime(long utcTimestampMilliseconds, bool utc = false)
+    {
+        var dateTime = EpochUtc.AddMilliseconds(utcTimestampMilliseconds);
+        if (utc)
+        {
+            return dateTime;
+        }
+
+        return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimeZone);
+    }
+
+    /// <summary>
+    /// 秒时间戳转时间
+    /// </summary>
+    /// <param name="utcTimestampSeconds">秒时间戳。</param>
+    /// <param name="utc">是否使用UTC时间。</param>
+    /// <returns>转换后的时间。如果utc为false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间。</returns>
+    public static DateTime TimestampSecondToDateTime(long utcTimestampSeconds, bool utc = false)
+    {
+        var dateTime = EpochUtc.AddSeconds(utcTimestampSeconds);
+        if (utc)
+        {
+            return dateTime;
+        }
+
+        return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimeZone);
+    }
 }
