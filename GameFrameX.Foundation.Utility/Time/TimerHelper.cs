@@ -44,7 +44,10 @@ public partial class TimerHelper
     /// <summary>
     /// 获取当前时区
     /// </summary>
-    public static TimeZoneInfo CurrentTimeZone => _currentTimeZone;
+    public static TimeZoneInfo CurrentTimeZone
+    {
+        get { return _currentTimeZone; }
+    }
 
     /// <summary>
     /// 设置当前时区
