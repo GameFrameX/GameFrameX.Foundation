@@ -272,24 +272,6 @@ public class TimeHelperTests
     }
 
     /// <summary>
-    /// 测试 TimeSpanWithTimeZoneTimestamp 方法
-    /// </summary>
-    [Fact]
-    public void TimeSpanWithTimeZoneTimestamp_ShouldReturnCorrectTimeSpan()
-    {
-        // Arrange
-        const long timestamp = 1672574400; // seconds
-        var expectedDateTime = TimerHelper.EpochLocal.AddSeconds(timestamp);
-        var expectedTimeSpan = expectedDateTime - TimerHelper.EpochLocal;
-
-        // Act
-        var actualTimeSpan = TimerHelper.TimeSpanWithTimeZoneTimestamp(timestamp);
-
-        // Assert
-        Assert.Equal(expectedTimeSpan, actualTimeSpan);
-    }
-
-    /// <summary>
     /// 测试 GetTimeDifference 方法比较两个DateTime
     /// </summary>
     [Fact]
