@@ -1,4 +1,4 @@
-﻿/*// ==========================================================================================
+/*// ==========================================================================================
 //  GameFrameX 组织及其衍生项目的版权、商标、专利及其他相关权利
 //  GameFrameX organization and its derivative projects' copyrights, trademarks, patents, and related rights
 //  均受中华人民共和国及相关国际法律法规保护。
@@ -145,7 +145,7 @@ public class UnitTestTime : IDisposable
     public void TestUtcSecondsToLocalDateTime()
     {
         var timestamp = 1704897045L; // 2024-01-10 14:30:45 UTC
-        var localDateTime = TimeHelper.UtcSecondsToLocalDateTime(timestamp);
+        var localDateTime = TimeHelper.UtcSecondsToTimeZoneDateTime(timestamp);
         Assert.IsType<DateTime>(localDateTime);
     }
 
@@ -164,7 +164,7 @@ public class UnitTestTime : IDisposable
 
         foreach (var timestamp in timestamps)
         {
-            var method1 = TimeHelper.UtcSecondsToLocalDateTime(timestamp);
+            var method1 = TimeHelper.UtcSecondsToTimeZoneDateTime(timestamp);
             var method2 = DateTimeOffset.FromUnixTimeSeconds(timestamp).ToLocalTime().DateTime;
 
             Assert.Equal(method2.Year, method1.Year);
@@ -180,7 +180,7 @@ public class UnitTestTime : IDisposable
     public void TestUtcMillisecondsToDateTime()
     {
         var timestampMs = 1704897045123L; // 2024-01-10 14:30:45.123 UTC
-        var dateTime = TimeHelper.UtcMillisecondsToDateTime(timestampMs);
+        var dateTime = TimeHelper.UtcMillisecondsToTimeZoneDateTime(timestampMs);
         Assert.IsType<DateTime>(dateTime);
         Assert.Equal(123, dateTime.Millisecond);
     }
@@ -201,7 +201,7 @@ public class UnitTestTime : IDisposable
     public void TestGetCrossLocalDaysFromDateTime()
     {
         var startTime = new DateTime(2024, 1, 10, 10, 0, 0);
-        var days = TimeHelper.GetCrossLocalDays(startTime, 0);
+        var days = TimeHelper.GetCrossDaysWithTimeZone(startTime, 0);
         Assert.True(days >= 0);
     }
 
@@ -424,7 +424,7 @@ public class UnitTestTime : IDisposable
         var startTimestamp = 1704880800L; // 2024-01-10 08:00:00 UTC
         var endTimestamp = 1704967200L;   // 2024-01-11 08:00:00 UTC
 
-        var days = TimeHelper.GetCrossLocalDays(startTimestamp, endTimestamp);
+        var days = TimeHelper.GetCrossDaysWithTimeZone(startTimestamp, endTimestamp);
         Assert.True(days >= 0); // 结果取决于本地时区
     }
 

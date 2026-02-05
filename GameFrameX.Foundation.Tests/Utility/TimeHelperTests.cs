@@ -1,4 +1,4 @@
-﻿// ==========================================================================================
+// ==========================================================================================
 //  GameFrameX 组织及其衍生项目的版权、商标、专利及其他相关权利
 //  GameFrameX organization and its derivative projects' copyrights, trademarks, patents, and related rights
 //  均受中华人民共和国及相关国际法律法规保护。
@@ -46,8 +46,10 @@ public class TimeHelperTests
     public void TimeConstants_ShouldHaveCorrectValues()
     {
         // Assert
-        Assert.Equal(TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local), TimerHelper.EpochLocal);
-        Assert.Equal(TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Utc), TimerHelper.EpochUtc);
+        Assert.Equal(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local).Ticks, TimerHelper.EpochLocal.Ticks);
+        Assert.Equal(DateTimeKind.Local, TimerHelper.EpochLocal.Kind);
+        Assert.Equal(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks, TimerHelper.EpochUtc.Ticks);
+        Assert.Equal(DateTimeKind.Utc, TimerHelper.EpochUtc.Kind);
         Assert.Equal(0L, TimerHelper.TimeOffsetSeconds);
         Assert.Equal(0L, TimerHelper.TimeOffsetMilliseconds);
     }
@@ -270,10 +272,10 @@ public class TimeHelperTests
     }
 
     /// <summary>
-    /// 测试 TimeSpanLocalWithTimestamp 方法
+    /// 测试 TimeSpanWithTimeZoneTimestamp 方法
     /// </summary>
     [Fact]
-    public void TimeSpanLocalWithTimestamp_ShouldReturnCorrectTimeSpan()
+    public void TimeSpanWithTimeZoneTimestamp_ShouldReturnCorrectTimeSpan()
     {
         // Arrange
         const long timestamp = 1672574400; // seconds
@@ -281,7 +283,7 @@ public class TimeHelperTests
         var expectedTimeSpan = expectedDateTime - TimerHelper.EpochLocal;
 
         // Act
-        var actualTimeSpan = TimerHelper.TimeSpanLocalWithTimestamp(timestamp);
+        var actualTimeSpan = TimerHelper.TimeSpanWithTimeZoneTimestamp(timestamp);
 
         // Assert
         Assert.Equal(expectedTimeSpan, actualTimeSpan);
@@ -348,7 +350,7 @@ public class TimeHelperTests
     public void GetTimeDifferenceFromNow_WithDateTime_ShouldReturnCorrectDifference()
     {
         // Arrange
-        var pastTime = DateTime.Now.AddHours(-1);
+        var pastTime = TimerHelper.GetNowWithTimeZone().AddHours(-1);
 
         // Act
         var difference = TimerHelper.GetTimeDifferenceFromNow(pastTime);

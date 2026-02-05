@@ -40,7 +40,7 @@ namespace GameFrameX.Foundation.Tests.Utility
         {
             Assert.Equal(TimeZoneInfo.Utc.Id, TimerHelper.CurrentTimeZone.Id);
             
-            var now = TimerHelper.GetNow();
+            var now = TimerHelper.GetNowWithTimeZone();
             var utcNow = DateTime.UtcNow;
             
             // Allow small difference for execution time
@@ -60,7 +60,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             TimerHelper.SetTimeZone(customTimeZone);
             Assert.Equal(customTimeZone.Id, TimerHelper.CurrentTimeZone.Id);
 
-            var now = TimerHelper.GetNow();
+            var now = TimerHelper.GetNowWithTimeZone();
             var utcNow = DateTime.UtcNow;
             
             // Expected: Now = UtcNow + 8 hours
@@ -78,7 +78,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             var customTimeZone = TimeZoneInfo.CreateCustomTimeZone("Test+8", offset, "Test+8", "Test+8");
             TimerHelper.SetTimeZone(customTimeZone);
 
-            var now = TimerHelper.GetNow();
+            var now = TimerHelper.GetNowWithTimeZone();
             var todayStart = TimerHelper.GetTodayStartTime();
             var todayStartTimestamp = TimerHelper.GetTodayStartTimestamp();
 
@@ -102,7 +102,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             var customTimeZone = TimeZoneInfo.CreateCustomTimeZone("Test+8", offset, "Test+8", "Test+8");
             TimerHelper.SetTimeZone(customTimeZone);
 
-            var now = TimerHelper.GetNow();
+            var now = TimerHelper.GetNowWithTimeZone();
             var weekStart = TimerHelper.GetWeekStartTime();
             var weekStartTimestamp = TimerHelper.GetWeekStartTimestamp();
 
@@ -127,7 +127,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             var customTimeZone = TimeZoneInfo.CreateCustomTimeZone("Test-5", offset, "Test-5", "Test-5");
             TimerHelper.SetTimeZone(customTimeZone);
 
-            var now = TimerHelper.GetNow();
+            var now = TimerHelper.GetNowWithTimeZone();
             var monthStart = TimerHelper.GetMonthStartTime();
             var monthStartTimestamp = TimerHelper.GetMonthStartTimestamp();
 
@@ -151,7 +151,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             var customTimeZone = TimeZoneInfo.CreateCustomTimeZone("Test+9", offset, "Test+9", "Test+9");
             TimerHelper.SetTimeZone(customTimeZone);
 
-            var now = TimerHelper.GetNow();
+            var now = TimerHelper.GetNowWithTimeZone();
             var yearStart = TimerHelper.GetYearStartTime();
             var yearStartTimestamp = TimerHelper.GetYearStartTimestamp();
 
