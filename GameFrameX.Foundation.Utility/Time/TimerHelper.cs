@@ -274,14 +274,14 @@ public partial class TimerHelper
     /// 获取指定时间距离纪元时间的毫秒数。
     /// </summary>
     /// <param name="time">要转换的指定时间。</param>
-    /// <param name="utc">指定使用的纪元时间类型。如果为 <c>true</c>，使用 UTC 纪元时间；如果为 <c>false</c>，使用本地纪元时间。默认值为 <c>false</c>。</param>
+    /// <param name="utc">指定使用的纪元时间类型。如果为 <c>true</c>，使用 UTC 纪元时间；如果为 <c>false</c>，使用当前设置时区的纪元时间。默认值为 <c>false</c>。</param>
     /// <returns>
     /// 返回一个 <see cref="long"/> 值，表示指定时间距离相应纪元时间的毫秒数。
     /// </returns>
     /// <remarks>
     /// 此方法根据 <paramref name="utc"/> 参数选择不同的纪元时间进行计算：
     /// - 当 <paramref name="utc"/> 为 <c>true</c> 时，使用 <see cref="EpochUtc"/>（1970-01-01 00:00:00 UTC）作为基准
-    /// - 当 <paramref name="utc"/> 为 <c>false</c> 时，使用 <see cref="EpochLocal"/>（1970-01-01 00:00:00 本地时间）作为基准
+    /// - 当 <paramref name="utc"/> 为 <c>false</c> 时，使用当前设置时区（<see cref="CurrentTimeZone"/>）的纪元时间作为基准
     /// 
     /// 计算公式：毫秒数 = (指定时间 - 纪元时间).TotalMilliseconds
     /// 
@@ -294,9 +294,9 @@ public partial class TimerHelper
     /// DateTime now = DateTime.Now;
     /// DateTime utcNow = DateTime.UtcNow;
     /// 
-    /// // 使用本地纪元时间计算
+    /// // 使用当前设置时区的纪元时间计算
     /// long localMillis = TimerHelper.TimeToMilliseconds(now, false);
-    /// Console.WriteLine($"距离本地纪元时间: {localMillis} 毫秒");
+    /// Console.WriteLine($"距离当前时区纪元时间: {localMillis} 毫秒");
     /// 
     /// // 使用UTC纪元时间计算
     /// long utcMillis = TimerHelper.TimeToMilliseconds(utcNow, true);
@@ -308,31 +308,31 @@ public partial class TimerHelper
     /// Console.WriteLine($"历史时间毫秒数: {historicalMillis}"); // 负值
     /// </code>
     /// </example>
-    /// <seealso cref="TimeToSecond"/>
+    /// <seealso cref="DateTimeToSecond"/>
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="EpochLocal"/>
-    public static long TimeToMilliseconds(DateTime time, bool utc = false)
+    public static long DateTimeToMilliseconds(DateTime time, bool utc = false)
     {
         if (utc)
         {
             return (long)(time - EpochUtc).TotalMilliseconds;
         }
 
-        return (long)(time - EpochLocal).TotalMilliseconds;
+        return (long)(time - TimeZoneInfo.ConvertTime(EpochUtc, CurrentTimeZone)).TotalMilliseconds;
     }
 
     /// <summary>
     /// 获取指定时间距离纪元时间的秒数。
     /// </summary>
     /// <param name="time">要转换的指定时间。</param>
-    /// <param name="utc">指定使用的纪元时间类型。如果为 <c>true</c>，使用 UTC 纪元时间；如果为 <c>false</c>，使用本地纪元时间。默认值为 <c>false</c>。</param>
+    /// <param name="utc">指定使用的纪元时间类型。如果为 <c>true</c>，使用 UTC 纪元时间；如果为 <c>false</c>，使用当前设置时区的纪元时间。默认值为 <c>false</c>。</param>
     /// <returns>
     /// 返回一个 <see cref="long"/> 值，表示指定时间距离相应纪元时间的秒数。
     /// </returns>
     /// <remarks>
     /// 此方法根据 <paramref name="utc"/> 参数选择不同的纪元时间进行计算：
     /// - 当 <paramref name="utc"/> 为 <c>true</c> 时，使用 <see cref="EpochUtc"/>（1970-01-01 00:00:00 UTC）作为基准
-    /// - 当 <paramref name="utc"/> 为 <c>false</c> 时，使用 <see cref="EpochLocal"/>（1970-01-01 00:00:00 本地时间）作为基准
+    /// - 当 <paramref name="utc"/> 为 <c>false</c> 时，使用当前设置时区（<see cref="CurrentTimeZone"/>）的纪元时间作为基准
     /// 
     /// 计算公式：秒数 = (指定时间 - 纪元时间).TotalSeconds
     /// 
@@ -346,9 +346,9 @@ public partial class TimerHelper
     /// DateTime now = DateTime.Now;
     /// DateTime utcNow = DateTime.UtcNow;
     /// 
-    /// // 使用本地纪元时间计算
+    /// // 使用当前设置时区的纪元时间计算
     /// long localSeconds = TimerHelper.TimeToSecond(now, false);
-    /// Console.WriteLine($"距离本地纪元时间: {localSeconds} 秒");
+    /// Console.WriteLine($"距离当前时区纪元时间: {localSeconds} 秒");
     /// 
     /// // 使用UTC纪元时间计算
     /// long utcSeconds = TimerHelper.TimeToSecond(utcNow, true);
@@ -360,16 +360,16 @@ public partial class TimerHelper
     /// Console.WriteLine($"精度差异: {millis - localSeconds * 1000} 毫秒");
     /// </code>
     /// </example>
-    /// <seealso cref="TimeToMilliseconds"/>
+    /// <seealso cref="DateTimeToMilliseconds"/>
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="EpochLocal"/>
-    public static long TimeToSecond(DateTime time, bool utc = false)
+    public static long DateTimeToSecond(DateTime time, bool utc = false)
     {
         if (utc)
         {
             return (long)(time - EpochUtc).TotalSeconds;
         }
 
-        return (long)(time - EpochLocal).TotalSeconds;
+        return (long)(time - TimeZoneInfo.ConvertTime(EpochUtc, CurrentTimeZone)).TotalSeconds;
     }
 }
