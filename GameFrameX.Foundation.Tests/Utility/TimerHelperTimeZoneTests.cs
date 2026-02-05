@@ -152,7 +152,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             TimerHelper.SetTimeZone(customTimeZone);
 
             var now = TimerHelper.GetNowWithTimeZone();
-            var yearStart = TimerHelper.GetYearStartTime();
+            var yearStart = TimerHelper.GetYearStartTimeWithTimeZone();
             var yearStartTimestamp = TimerHelper.GetYearStartTimestamp();
 
             Assert.Equal(now.Year, yearStart.Year);
