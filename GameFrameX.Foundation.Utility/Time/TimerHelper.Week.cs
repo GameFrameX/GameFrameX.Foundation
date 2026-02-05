@@ -34,465 +34,59 @@ namespace GameFrameX.Foundation.Utility;
 public partial class TimerHelper
 {
     /// <summary>
-    /// 判断当前时间是否与指定时间处于同一周。
+    /// 判断两个日期是否在同一周
     /// </summary>
-    /// <param name="ticks">指定时间的起始时间(Ticks)。表示自 0001 年 1 月 1 日午夜 00:00:00 以来所经过的时钟周期数</param>
-    /// <returns>如果当前时间与指定时间处于同一周，则为 true；否则为 false。</returns>
+    /// <param name="startTime">开始时间</param>
+    /// <param name="endTime">结束时间</param>
+    /// <returns>如果是同一周返回true，否则返回false</returns>
     /// <remarks>
-    /// 此方法将传入的ticks转换为DateTime后与当前时间比较是否在同一周
-    /// 使用系统默认的周计算规则(周日为每周第一天)
+    /// 此方法通过计算两个日期分别距离周一的天数差来判断是否在同一周
+    /// 假设周一为每周的第一天
+    /// 
+    /// 算法逻辑：
+    /// 1. 计算startTime是周几(1-7)
+    /// 2. 计算startTime所在周的周一日期
+    /// 3. 计算endTime是周几(1-7)
+    /// 4. 计算endTime所在周的周一日期
+    /// 5. 比较两个周一日期是否相同
     /// </remarks>
-    public static bool IsNowSameWeek(long ticks)
+    public static bool IsSameWeek(DateTime startTime, DateTime endTime)
     {
-        return IsNowSameWeek(new DateTime(ticks));
+        var startDayOfWeek = (int)startTime.DayOfWeek;
+        startDayOfWeek = startDayOfWeek == 0 ? 7 : startDayOfWeek;
+        var startWeekMonday = startTime.AddDays(1 - startDayOfWeek).Date;
+
+        var endDayOfWeek = (int)endTime.DayOfWeek;
+        endDayOfWeek = endDayOfWeek == 0 ? 7 : endDayOfWeek;
+        var endWeekMonday = endTime.AddDays(1 - endDayOfWeek).Date;
+
+        return startWeekMonday == endWeekMonday;
     }
 
     /// <summary>
-    /// 判断当前时间是否与指定时间处于同一周。
-    /// 以周一为每周的第一天,周日为每周的最后一天。
-    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间进行比较。
+    /// 获取指定日期所在周的指定星期几的日期时间
     /// </summary>
-    /// <param name="start">指定时间的起始时间。可以是任意DateTime值。</param>
-    /// <returns>如果当前时间与指定时间处于同一周，则为 true；否则为 false。</returns>
+    /// <param name="dateTime">指定日期</param>
+    /// <param name="day">目标星期几 (DayOfWeek.Sunday 到 DayOfWeek.Saturday)</param>
+    /// <returns>计算结果日期时间</returns>
     /// <remarks>
-    /// 此方法将调用IsSameWeek方法进行实际比较。
-    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间作为当前时间参考点。
-    /// </remarks>
-    public static bool IsNowSameWeek(DateTime start)
-    {
-        return IsSameWeek(start, GetNow());
-    }
-
-    /// <summary>
-    /// 判断两个时间是否处于同一周。
-    /// 以周一为每周的第一天,周日为每周的最后一天。
-    /// </summary>
-    /// <param name="start">起始时间。可以是任意DateTime值。</param>
-    /// <param name="end">结束时间。可以是任意DateTime值。</param>
-    /// <returns>如果两个时间处于同一周，则为 true；否则为 false。</returns>
-    /// <remarks>
-    /// 此方法会自动调整参数顺序,确保start是较早的时间。
-    /// 通过计算较早时间所在周的周日时间点,判断另一个时间是否在同一周内。
-    /// </remarks>
-    public static bool IsSameWeek(DateTime start, DateTime end)
-    {
-        // 让start是较早的时间
-        if (start > end)
-        {
-            (start, end) = (end, start);
-        }
-
-        var dayOfWeek = (int)start.DayOfWeek;
-        if (dayOfWeek == (int)DayOfWeek.Sunday)
-        {
-            dayOfWeek = 7;
-        }
-
-        // 获取较早时间所在星期的星期天的0点
-        var startsWeekLastDate = start.AddDays(7 - dayOfWeek).Date;
-        // 判断end是否在start所在周
-        return startsWeekLastDate >= end.Date;
-    }
-
-    /// <summary>
-    /// 判断当前UTC时间是否与指定时间处于同一周。
-    /// 以周一为每周的第一天,周日为每周的最后一天。
-    /// 使用UTC时间(DateTime.UtcNow)进行比较。
-    /// </summary>
-    /// <param name="start">指定时间的起始时间。可以是任意DateTime值。</param>
-    /// <returns>如果当前UTC时间与指定时间处于同一周，则为 true；否则为 false。</returns>
-    /// <remarks>
-    /// 此方法将调用IsSameWeek方法进行实际比较。
-    /// 使用UTC时区时间作为当前时间参考点，避免时区差异影响。
-    /// </remarks>
-    public static bool IsNowSameWeekUtc(DateTime start)
-    {
-        return IsSameWeek(start, GetUtcNow());
-    }
-
-    /// <summary>
-    /// 判断当前UTC时间是否与指定时间戳处于同一周。
-    /// </summary>
-    /// <param name="ticks">指定时间的起始时间(Ticks)。表示自 0001 年 1 月 1 日午夜 00:00:00 以来所经过的时钟周期数</param>
-    /// <returns>如果当前UTC时间与指定时间处于同一周，则为 true；否则为 false。</returns>
-    /// <remarks>
-    /// 此方法将传入的ticks转换为DateTime后与当前UTC时间比较是否在同一周
-    /// 使用UTC时区时间作为当前时间参考点，避免时区差异影响
-    /// </remarks>
-    public static bool IsUnixSameWeek(long ticks)
-    {
-        return IsNowSameWeekUtc(new DateTime(ticks));
-    }
-
-    /// <summary>
-    /// 判断当前UTC时间是否与指定Unix时间戳处于同一周。
-    /// </summary>
-    /// <param name="timestampSeconds">指定时间的Unix时间戳(秒)。表示自1970年1月1日00:00:00 UTC以来的秒数</param>
-    /// <returns>如果当前UTC时间与指定时间处于同一周，则为 true；否则为 false。</returns>
-    /// <remarks>
-    /// 此方法将传入的Unix时间戳(秒)转换为UTC DateTime后与当前UTC时间比较是否在同一周
-    /// 全程使用UTC时间，避免时区差异影响
-    /// </remarks>
-    public static bool IsUnixSameWeekFromTimestamp(long timestampSeconds)
-    {
-        var dateTime = UtcSecondsToUtcDateTime(timestampSeconds);
-        return IsNowSameWeekUtc(dateTime);
-    }
-
-    /// <summary>
-    /// 判断当前UTC时间是否与指定Unix时间戳处于同一周。
-    /// </summary>
-    /// <param name="timestampMilliseconds">指定时间的Unix时间戳(毫秒)。表示自1970年1月1日00:00:00 UTC以来的毫秒数</param>
-    /// <returns>如果当前UTC时间与指定时间处于同一周，则为 true；否则为 false。</returns>
-    /// <remarks>
-    /// 此方法将传入的Unix时间戳(毫秒)转换为UTC DateTime后与当前UTC时间比较是否在同一周
-    /// 全程使用UTC时间，避免时区差异影响
-    /// </remarks>
-    public static bool IsUnixSameWeekFromTimestampMilliseconds(long timestampMilliseconds)
-    {
-        var dateTime = UtcMillisecondsToUtcDateTime(timestampMilliseconds);
-        return IsNowSameWeekUtc(dateTime);
-    }
-
-    /// <summary>
-    /// 获取指定日期所在星期的时间。
-    /// </summary>
-    /// <param name="dateTime">指定日期。例如：2024-01-10</param>
-    /// <param name="day">星期几。例如：DayOfWeek.Monday 表示星期一，DayOfWeek.Sunday 表示星期日</param>
-    /// <returns>返回指定日期所在星期的指定星期几的零点时间。例如：dateTime为2024-01-10(星期三)，day为DayOfWeek.Monday，则返回2024-01-08 00:00:00</returns>
-    /// <remarks>
-    /// 此方法将星期日(DayOfWeek.Sunday)视为每周的第7天，而不是第0天
-    /// 返回的时间总是该日期的零点时间（00:00:00）
+    /// 此方法计算输入日期所在周的对应星期几的日期
+    /// 
+    /// 计算逻辑：
+    /// 1. 获取输入日期的星期数(DayOfWeek)
+    /// 2. 计算目标星期与当前星期的差值
+    /// 3. 在输入日期上加上差值得到结果
+    /// 
+    /// 例如：
+    /// 如果输入是周三，求周一，则差值为 -2，返回日期减2天
+    /// 如果输入是周三，求周五，则差值为 +2，返回日期加2天
+    /// 
+    /// 注意：
+    /// - 这里的周是以周日为起始点(DayOfWeek定义的标准)
+    /// - 不会改变时间部分，只改变日期部分
     /// </remarks>
     public static DateTime GetDayOfWeekTime(DateTime dateTime, DayOfWeek day)
     {
-        // 将星期几转换为数字(1-7)，将星期日从0转换为7
-        var dd = (int)day;
-        if (dd == 0)
-        {
-            dd = 7;
-        }
-
-        // 获取指定日期是星期几(1-7)，将星期日从0转换为7
-        var dayOfWeek = (int)dateTime.DayOfWeek;
-        if (dayOfWeek == 0)
-        {
-            dayOfWeek = 7;
-        }
-
-        // 计算目标日期与当前日期的天数差，并返回目标日期的零点时间
-        return dateTime.AddDays(dd - dayOfWeek).Date;
-    }
-
-    /// <summary>
-    /// 获取当前日期所在星期的时间。
-    /// </summary>
-    /// <param name="day">星期几。例如：DayOfWeek.Monday 表示星期一，DayOfWeek.Sunday 表示星期日。</param>
-    /// <returns>返回当前UTC日期所在星期的指定星期几的零点时间。例如：当前是2024-01-10(星期三)，传入DayOfWeek.Monday，则返回2024-01-08 00:00:00。</returns>
-    /// <remarks>
-    /// 此方法使用UTC时间作为基准计算。
-    /// 如果需要使用当前时区 (<see cref="CurrentTimeZone"/>) 时间，请使用 GetDayOfWeekTime(GetNow(), day)。
-    /// </remarks>
-    public static DateTime GetDayOfWeekTime(DayOfWeek day)
-    {
-        return GetDayOfWeekTime(GetUtcNow(), day);
-    }
-
-    /// <summary>
-    /// 获取指定星期在中国的对应数字。
-    /// </summary>
-    /// <param name="day">星期几。例如：DayOfWeek.Monday 表示星期一，DayOfWeek.Sunday 表示星期日</param>
-    /// <returns>星期在中国的对应数字。返回1-7,其中7表示星期日</returns>
-    /// <remarks>
-    /// 此方法将C#的DayOfWeek枚举值(0-6)转换为中国习惯的星期表示(1-7)
-    /// 主要区别在于将星期日从0转换为7
-    /// 例如:
-    /// - DayOfWeek.Monday(1) -> 1 (星期一)
-    /// - DayOfWeek.Sunday(0) -> 7 (星期日)
-    /// </remarks>
-    public static int GetChinaDayOfWeek(DayOfWeek day)
-    {
-        var dayOfWeek = (int)day;
-        if (dayOfWeek == 0)
-        {
-            dayOfWeek = 7;
-        }
-
-        return dayOfWeek;
-    }
-
-    /// <summary>
-    /// 获取当前星期在中国的对应数字。
-    /// </summary>
-    /// <returns>当前星期在中国的对应数字。返回1-7,其中7表示星期日</returns>
-    /// <remarks>
-    /// 此方法获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的星期几,并转换为中国习惯的表示方式
-    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间作为基准
-    /// 内部调用GetChinaDayOfWeek(DayOfWeek)方法进行转换
-    /// </remarks>
-    public static int GetChinaDayOfWeek()
-    {
-        return GetChinaDayOfWeek(GetNow().DayOfWeek);
-    }
-
-    /// <summary>
-    /// 获取本周开始时间
-    /// </summary>
-    /// <returns>本周一零点时间</returns>
-    /// <remarks>
-    /// 此方法返回本周一的零点时间(00:00:00)
-    /// 使用中国习惯:
-    /// - 将周日的DayOfWeek值0转换为7
-    /// - 以周一为每周的第一天
-    /// 返回的是当前时区 (<see cref="CurrentTimeZone"/>) 的时间
-    /// </remarks>
-    public static DateTime GetWeekStartTime()
-    {
-        var now = GetNow();
-        var dayOfWeek = (int)now.DayOfWeek;
-        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
-        return now.AddDays(1 - dayOfWeek).Date;
-    }
-
-    /// <summary>
-    /// 获取本周开始时间戳
-    /// </summary>
-    /// <returns>本周一零点时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回本周一零点时间的Unix时间戳
-    /// 先获取当前时区 (<see cref="CurrentTimeZone"/>) 的本周一零点时间,然后转换为时间戳
-    /// 返回从1970-01-01 00:00:00 UTC开始的秒数
-    /// </remarks>
-    public static long GetWeekStartTimestamp()
-    {
-        var time = GetWeekStartTime();
-        return DateTimeToUnixTimeSeconds(time);
-    }
-
-    /// <summary>
-    /// 获取本周开始时间戳（基于设置时区）
-    /// </summary>
-    /// <returns>本周一零点时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
-    public static long GetWeekStartTimestampWithTimeZone()
-    {
-        return TimeToSecondsWithTimeZone(GetWeekStartTime());
-    }
-
-    /// <summary>
-    /// 获取本周结束时间
-    /// </summary>
-    /// <returns>本周日23:59:59的时间</returns>
-    /// <remarks>
-    /// 此方法返回本周日的最后一秒(23:59:59)
-    /// 通过获取下周一零点时间然后减去1秒来计算
-    /// 返回的是当前时区 (<see cref="CurrentTimeZone"/>) 的时间
-    /// </remarks>
-    public static DateTime GetWeekEndTime()
-    {
-        return GetWeekStartTime().AddDays(7).AddSeconds(-1);
-    }
-
-    /// <summary>
-    /// 获取本周结束时间戳
-    /// </summary>
-    /// <returns>本周日23:59:59的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回本周日最后一秒的Unix时间戳
-    /// 先获取当前时区 (<see cref="CurrentTimeZone"/>) 的本周日23:59:59,然后转换为时间戳
-    /// 返回从1970-01-01 00:00:00 UTC开始的秒数
-    /// </remarks>
-    public static long GetWeekEndTimestamp()
-    {
-        var time = GetWeekEndTime();
-        return DateTimeToUnixTimeSeconds(time);
-    }
-
-    /// <summary>
-    /// 获取本周结束时间戳（基于设置时区）
-    /// </summary>
-    /// <returns>本周日23:59:59的时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
-    public static long GetWeekEndTimestampWithTimeZone()
-    {
-        return TimeToSecondsWithTimeZone(GetWeekEndTime());
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的开始时间
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周一零点时间</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在周的周一零点时间
-    /// 例如:输入2024-01-10(周三),返回2024-01-08 00:00:00(周一)
-    /// 使用周一作为每周的第一天,周日为每周的最后一天
-    /// 保持原有时区不变
-    /// </remarks>
-    public static DateTime GetStartTimeOfWeek(DateTime date)
-    {
-        var dayOfWeek = (int)date.DayOfWeek;
-        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
-        return date.AddDays(1 - dayOfWeek).Date;
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的开始时间戳
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周一零点时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在周的周一零点时间的Unix时间戳
-    /// 例如:输入2024-01-10(周三),返回2024-01-08 00:00:00(周一)的时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetStartTimestampOfWeek(DateTime date)
-    {
-        var time = GetStartTimeOfWeek(date);
-        return DateTimeToUnixTimeSeconds(time);
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的开始时间戳（基于设置时区）
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周一零点时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
-    public static long GetStartTimestampOfWeekWithTimeZone(DateTime date)
-    {
-        return TimeToSecondsWithTimeZone(GetStartTimeOfWeek(date));
-    }
-
-    /// <summary>
-    /// 获取下周开始时间
-    /// </summary>
-    /// <returns>下周一零点时间</returns>
-    /// <remarks>
-    /// 此方法返回下周一的零点时间
-    /// 例如:当前是2024-01-10(周三),返回2024-01-15 00:00:00(下周一)
-    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 计算时间
-    /// </remarks>
-    public static DateTime GetNextWeekStartTime()
-    {
-        return GetWeekStartTime().AddDays(7);
-    }
-
-    /// <summary>
-    /// 获取下周开始时间戳
-    /// </summary>
-    /// <returns>下周一零点时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回下周一零点时间的Unix时间戳
-    /// 例如:当前是2024-01-10(周三),返回2024-01-15 00:00:00(下周一)的时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetNextWeekStartTimestamp()
-    {
-        var time = GetNextWeekStartTime();
-        return DateTimeToUnixTimeSeconds(time);
-    }
-
-    /// <summary>
-    /// 获取下周开始时间戳（基于设置时区）
-    /// </summary>
-    /// <returns>下周一零点时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
-    public static long GetNextWeekStartTimestampWithTimeZone()
-    {
-        return TimeToSecondsWithTimeZone(GetNextWeekStartTime());
-    }
-
-    /// <summary>
-    /// 获取下周结束时间
-    /// </summary>
-    /// <returns>下周日23:59:59的时间</returns>
-    /// <remarks>
-    /// 此方法返回下周日的最后一秒
-    /// 例如:当前是2024-01-10(周三),返回2024-01-21 23:59:59(下周日)
-    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 计算时间
-    /// </remarks>
-    public static DateTime GetNextWeekEndTime()
-    {
-        return GetNextWeekStartTime().AddDays(7).AddSeconds(-1);
-    }
-
-    /// <summary>
-    /// 获取下周结束时间戳
-    /// </summary>
-    /// <returns>下周日23:59:59的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回下周日最后一秒的Unix时间戳
-    /// 例如:当前是2024-01-10(周三),返回2024-01-21 23:59:59(下周日)的时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetNextWeekEndTimestamp()
-    {
-        var time = GetNextWeekEndTime();
-        return DateTimeToUnixTimeSeconds(time);
-    }
-
-    /// <summary>
-    /// 获取下周结束时间戳（基于设置时区）
-    /// </summary>
-    /// <returns>下周日23:59:59的时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
-    public static long GetNextWeekEndTimestampWithTimeZone()
-    {
-        return TimeToSecondsWithTimeZone(GetNextWeekEndTime());
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的结束时间
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周日23:59:59的时间</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在周的周日最后一秒
-    /// 例如:输入2024-01-10(周三),返回2024-01-14 23:59:59(周日)
-    /// 使用周一作为每周的第一天,周日为每周的最后一天
-    /// 保持原有时区不变
-    /// </remarks>
-    public static DateTime GetEndTimeOfWeek(DateTime date)
-    {
-        return GetStartTimeOfWeek(date).AddDays(7).AddSeconds(-1);
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的结束时间戳
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周日23:59:59的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在周的周日最后一秒的Unix时间戳
-    /// 例如:输入2024-01-10(周三),返回2024-01-14 23:59:59(周日)的时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetEndTimestampOfWeek(DateTime date)
-    {
-        var time = GetEndTimeOfWeek(date);
-        return DateTimeToUnixTimeSeconds(time);
-    }
-
-    /// <summary>
-    /// 获取指定日期所在周的结束时间戳（基于设置时区）
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周日23:59:59的时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
-    public static long GetEndTimestampOfWeekWithTimeZone(DateTime date)
-    {
-        return TimeToSecondsWithTimeZone(GetEndTimeOfWeek(date));
+        return dateTime.AddDays(day - dateTime.DayOfWeek);
     }
 }
