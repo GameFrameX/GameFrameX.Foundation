@@ -39,12 +39,12 @@ public partial class TimerHelper
     /// <summary>
     /// 毫秒转时间
     /// </summary>
-    /// <param name="timestamp">毫秒时间戳。</param>
+    /// <param name="utcTimestampMilliseconds">毫秒时间戳。</param>
     /// <param name="utc">是否使用UTC时间。</param>
     /// <returns>转换后的时间。如果utc为false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间。</returns>
-    public static DateTime MillisecondsTimeStampToDateTime(long timestamp, bool utc = false)
+    public static DateTime TimeStampMillisecondToDateTime(long utcTimestampMilliseconds, bool utc = false)
     {
-        var dateTime = EpochUtc.AddMilliseconds(timestamp);
+        var dateTime = EpochUtc.AddMilliseconds(utcTimestampMilliseconds);
         if (utc)
         {
             return dateTime;
@@ -56,48 +56,18 @@ public partial class TimerHelper
     /// <summary>
     /// 秒时间戳转时间
     /// </summary>
-    /// <param name="timestamp">秒时间戳。</param>
+    /// <param name="utcTimestampSeconds">秒时间戳。</param>
     /// <param name="utc">是否使用UTC时间。</param>
     /// <returns>转换后的时间。如果utc为false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间。</returns>
-    public static DateTime TimestampToDateTime(long timestamp, bool utc = false)
+    public static DateTime TimestampSecondToDateTime(long utcTimestampSeconds, bool utc = false)
     {
-        var dateTime = EpochUtc.AddSeconds(timestamp);
+        var dateTime = EpochUtc.AddSeconds(utcTimestampSeconds);
         if (utc)
         {
             return dateTime;
         }
 
         return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimeZone);
-    }
-
-    /// <summary>
-    /// UTC 时间戳 转换成本地时间
-    /// </summary>
-    /// <param name="utcTimestamp">UTC时间戳,单位秒</param>
-    /// <returns>转换后的本地时间。</returns>
-    /// <remarks>
-    /// 此方法将Unix时间戳(从1970-01-01 00:00:00 UTC开始的秒数)转换为本地时区的DateTime
-    /// 使用DateTimeOffset.FromUnixTimeSeconds进行转换
-    /// 返回的时间会根据当前设置的时区 (<see cref="CurrentTimeZone"/>) 自动调整
-    /// </remarks>
-    public static DateTime UtcSecondsToTimeZoneDateTime(long utcTimestamp)
-    {
-        return TimeZoneInfo.ConvertTimeFromUtc(DateTimeOffset.FromUnixTimeSeconds(utcTimestamp).UtcDateTime, CurrentTimeZone);
-    }
-
-    /// <summary>
-    /// UTC 毫秒时间戳 转换成本地时间
-    /// </summary>
-    /// <param name="utcTimestampMilliseconds">UTC时间戳,单位毫秒</param>
-    /// <returns>转换后的本地时间。</returns>
-    /// <remarks>
-    /// 此方法将Unix毫秒时间戳(从1970-01-01 00:00:00 UTC开始的毫秒数)转换为本地时区的DateTime
-    /// 使用DateTimeOffset.FromUnixTimeMilliseconds进行转换
-    /// 返回的时间会根据当前设置的时区 (<see cref="CurrentTimeZone"/>) 自动调整
-    /// </remarks>
-    public static DateTime UtcMillisecondsToTimeZoneDateTime(long utcTimestampMilliseconds)
-    {
-        return TimeZoneInfo.ConvertTimeFromUtc(DateTimeOffset.FromUnixTimeMilliseconds(utcTimestampMilliseconds).UtcDateTime, CurrentTimeZone);
     }
 
     /// <summary>
