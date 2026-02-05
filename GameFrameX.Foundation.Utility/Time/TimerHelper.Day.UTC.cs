@@ -36,18 +36,18 @@ public partial class TimerHelper
     /// <summary>
     /// 按照UTC时间判断两个时间戳是否是同一天
     /// </summary>
-    /// <param name="timestamp1">时间戳1</param>
-    /// <param name="timestamp2">时间戳2</param>
+    /// <param name="unixTimestampA">时间戳1</param>
+    /// <param name="unixTimestampB">时间戳2</param>
     /// <returns>是否是同一天</returns>
     /// <remarks>
     /// 此方法将两个Unix时间戳转换为UTC时间后比较是否为同一天
     /// 比较时只考虑日期部分(年月日),忽略时间部分
     /// 使用UTC时间避免时区转换带来的问题
     /// </remarks>
-    public static bool IsUnixSameDay(long timestamp1, long timestamp2)
+    public static bool IsUnixSameDay(long unixTimestampA, long unixTimestampB)
     {
-        var time1 = UtcSecondsToUtcDateTime(timestamp1);
-        var time2 = UtcSecondsToUtcDateTime(timestamp2);
+        var time1 = UtcSecondsToUtcDateTime(unixTimestampA);
+        var time2 = UtcSecondsToUtcDateTime(unixTimestampB);
         return IsSameDay(time1, time2);
     }
 
@@ -81,14 +81,14 @@ public partial class TimerHelper
     /// <summary>
     /// 获取两个UTC时间戳之间跨越的天数。
     /// </summary>
-    /// <param name="beginTimestamp">开始时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
-    /// <param name="afterTimestamp">结束时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
+    /// <param name="beginUnixTimestamp">开始时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
+    /// <param name="afterUnixTimestamp">结束时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
     /// <param name="hour">小时。</param>
     /// <returns>跨越的天数。</returns>
-    public static int GetCrossDaysUtc(long beginTimestamp, long afterTimestamp, int hour = 0)
+    public static int GetCrossDaysUtc(long beginUnixTimestamp, long afterUnixTimestamp, int hour = 0)
     {
-        var begin = UtcSecondsToUtcDateTime(beginTimestamp);
-        var after = UtcSecondsToUtcDateTime(afterTimestamp);
+        var begin = UtcSecondsToUtcDateTime(beginUnixTimestamp);
+        var after = UtcSecondsToUtcDateTime(afterUnixTimestamp);
         return GetCrossDays(begin, after, hour);
     }
 }
