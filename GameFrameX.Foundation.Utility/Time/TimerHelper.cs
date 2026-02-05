@@ -161,7 +161,7 @@ public partial class TimerHelper
     {
         var utcNow = GetUtcNow();
         var offset = CurrentTimeZone.GetUtcOffset(utcNow);
-        return new DateTimeOffset(utcNow).ToUnixTimeSeconds() + (long)offset.TotalSeconds;
+        return new DateTimeOffset(utcNow).ToUnixTimeSeconds() + (long)offset.TotalSeconds + TimeOffsetSeconds;
     }
 
     /// <summary>
@@ -179,7 +179,7 @@ public partial class TimerHelper
     {
         var utcNow = GetUtcNow();
         var offset = CurrentTimeZone.GetUtcOffset(utcNow);
-        return new DateTimeOffset(utcNow).ToUnixTimeMilliseconds() + (long)offset.TotalMilliseconds;
+        return new DateTimeOffset(utcNow).ToUnixTimeMilliseconds() + (long)offset.TotalMilliseconds + TimeOffsetMilliseconds;
     }
 
     /// <summary>
@@ -193,11 +193,11 @@ public partial class TimerHelper
     /// 此方法会先将输入时间转换为 UTC（如果不是），然后加上当前设置时区的偏移量。
     /// 如果输入时间 Kind 为 Unspecified，则默认视为当前设置时区 (<see cref="CurrentTimeZone"/>) 的时间。
     /// </remarks>
-    public static long TimeToSecondsWithTimeZone(DateTime time)
+    public static long DateTimeToSecondsWithTimeZone(DateTime time)
     {
         var utcTime = ConvertToUtc(time);
         var offset = CurrentTimeZone.GetUtcOffset(utcTime);
-        return new DateTimeOffset(utcTime).ToUnixTimeSeconds() + (long)offset.TotalSeconds;
+        return new DateTimeOffset(utcTime).ToUnixTimeSeconds() + (long)offset.TotalSeconds + TimeOffsetSeconds;
     }
 
     /// <summary>
@@ -215,7 +215,7 @@ public partial class TimerHelper
     {
         var utcTime = ConvertToUtc(time);
         var offset = CurrentTimeZone.GetUtcOffset(utcTime);
-        return new DateTimeOffset(utcTime).ToUnixTimeMilliseconds() + (long)offset.TotalMilliseconds;
+        return new DateTimeOffset(utcTime).ToUnixTimeMilliseconds() + (long)offset.TotalMilliseconds + TimeOffsetMilliseconds;
     }
 
     /// <summary>
@@ -372,5 +372,4 @@ public partial class TimerHelper
 
         return (long)(time - EpochLocal).TotalSeconds;
     }
-
 }
