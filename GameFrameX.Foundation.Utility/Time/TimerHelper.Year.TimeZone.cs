@@ -177,7 +177,7 @@ public partial class TimerHelper
     /// 此方法返回明年第一天的零点时间
     /// 使用 <see cref="CurrentTimeZone"/> 时区计算
     /// </remarks>
-    public static DateTime GetNextYearStartTime()
+    public static DateTime GetNextYearStartTimeWithTimeZone()
     {
         return GetYearStartTimeWithTimeZone().AddYears(1);
     }
@@ -192,7 +192,7 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextYearStartTimestamp()
     {
-        var date = GetNextYearStartTime();
+        var date = GetNextYearStartTimeWithTimeZone();
         return DateTimeToUnixTimeSeconds(date);
     }
 
@@ -205,6 +205,6 @@ public partial class TimerHelper
     /// </remarks>
     public static long GetNextYearStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetNextYearStartTime());
+        return TimeToSecondsWithTimeZone(GetNextYearStartTimeWithTimeZone());
     }
 }

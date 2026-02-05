@@ -103,7 +103,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             TimerHelper.SetTimeZone(customTimeZone);
 
             var now = TimerHelper.GetNowWithTimeZone();
-            var weekStart = TimerHelper.GetWeekStartTime();
+            var weekStart = TimerHelper.GetWeekStartTimeWithTimeZone();
             var weekStartTimestamp = TimerHelper.GetWeekStartTimestamp();
 
             // Verify it is indeed the start of the week (Monday)
