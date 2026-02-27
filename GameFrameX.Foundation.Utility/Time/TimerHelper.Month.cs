@@ -34,13 +34,13 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取指定日期所在月的开始时间
+    /// 获取指定日期所在月的开始时间。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在月1号00:00:00的时间</returns>
+    /// <param name="date">指定日期。</param>
+    /// <returns>所在月1号00:00:00的时间。</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在月第一天的零点时间
-    /// 保持原有时区不变
+    /// 此方法返回指定日期所在月第一天的零点时间。
+    /// 保持原有时区不变。
     /// </remarks>
     public static DateTime GetStartTimeOfMonth(DateTime date)
     {
@@ -48,16 +48,73 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在月的结束时间
+    /// 获取指定日期所在月的结束时间。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在月最后一天23:59:59的时间</returns>
+    /// <param name="date">指定日期。</param>
+    /// <returns>所在月最后一天23:59:59的时间。</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在月最后一天的最后一秒
-    /// 保持原有时区不变
+    /// 此方法返回指定日期所在月最后一天的最后一秒。
+    /// 保持原有时区不变。
     /// </remarks>
     public static DateTime GetEndTimeOfMonth(DateTime date)
     {
         return GetStartTimeOfMonth(date).AddMonths(1).AddSeconds(-1);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在月的开始时间戳。
+    /// </summary>
+    /// <param name="date">指定日期。</param>
+    /// <returns>所在月1号00:00:00的时间戳(秒)。</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在月第一天零点时间的Unix时间戳。
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳。
+    /// </remarks>
+    public static long GetStartTimestampOfMonth(DateTime date)
+    {
+        var time = GetStartTimeOfMonth(date);
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在月的开始时间戳（基于设置时区）。
+    /// </summary>
+    /// <param name="date">指定日期。</param>
+    /// <returns>所在月1号00:00:00的时间戳(秒) + 时区偏移。</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在月第一天零点时间的Unix时间戳。
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。
+    /// </remarks>
+    public static long GetStartTimestampOfMonthWithTimeZone(DateTime date)
+    {
+        return DateTimeToSecondsWithTimeZone(GetStartTimeOfMonth(date));
+    }
+
+    /// <summary>
+    /// 获取指定日期所在月的结束时间戳。
+    /// </summary>
+    /// <param name="date">指定日期。</param>
+    /// <returns>所在月最后一天23:59:59的时间戳(秒)。</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在月最后一天最后一秒的Unix时间戳。
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳。
+    /// </remarks>
+    public static long GetEndTimestampOfMonth(DateTime date)
+    {
+        var time = GetEndTimeOfMonth(date);
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在月的结束时间戳（基于设置时区）。
+    /// </summary>
+    /// <param name="date">指定日期。</param>
+    /// <returns>所在月最后一天23:59:59的时间戳(秒) + 时区偏移。</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。
+    /// </remarks>
+    public static long GetEndTimestampOfMonthWithTimeZone(DateTime date)
+    {
+        return DateTimeToSecondsWithTimeZone(GetEndTimeOfMonth(date));
     }
 }

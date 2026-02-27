@@ -38,112 +38,114 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取本月开始时间 (UTC)
+    /// 获取本月开始时间（基于UTC时间）。
     /// </summary>
-    /// <returns>本月1号00:00:00的时间 (UTC)</returns>
+    /// <returns>本月1号00:00:00的时间（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回本月第一天的零点时间
-    /// 使用 UTC 时区计算
+    /// 此方法返回本月第一天的零点时间。
+    /// 使用 UTC 时区计算。
     /// </remarks>
-    public static DateTime GetUtcMonthStartTime()
+    public static DateTime GetMonthStartTimeWithUtc()
     {
         var now = GetUtcNow();
         return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
     }
 
     /// <summary>
-    /// 获取本月开始时间戳 (UTC)
+    /// 获取本月开始时间戳（基于UTC时间）。
     /// </summary>
-    /// <returns>本月1号00:00:00的时间戳(秒) (UTC)</returns>
+    /// <returns>本月1号00:00:00的时间戳(秒)（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回本月第一天零点时间的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// 此方法返回本月第一天零点时间的Unix时间戳。
+    /// 基于 UTC 时间计算。
     /// </remarks>
-    public static long GetUtcMonthStartTimestamp()
+    public static long GetMonthStartTimestampWithUtc()
     {
-        var date = GetUtcMonthStartTime();
+        var date = GetMonthStartTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 
     /// <summary>
-    /// 获取本月结束时间 (UTC)
+    /// 获取本月结束时间（基于UTC时间）。
     /// </summary>
-    /// <returns>本月最后一天23:59:59的时间 (UTC)</returns>
+    /// <returns>本月最后一天23:59:59的时间（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回本月最后一天的最后一秒
-    /// 使用 UTC 时区计算
+    /// 此方法返回本月最后一天的最后一秒。
+    /// 使用 UTC 时区计算。
     /// </remarks>
-    public static DateTime GetUtcMonthEndTime()
+    public static DateTime GetMonthEndTimeWithUtc()
     {
         var now = GetUtcNow();
         return GetStartTimeOfMonth(now).AddMonths(1).AddSeconds(-1);
     }
 
     /// <summary>
-    /// 获取本月结束时间戳 (UTC)
+    /// 获取本月结束时间戳（基于UTC时间）。
     /// </summary>
-    /// <returns>本月最后一天23:59:59的时间戳(秒) (UTC)</returns>
+    /// <returns>本月最后一天23:59:59的时间戳(秒)（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回本月最后一天最后一秒的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// 此方法返回本月最后一天最后一秒的Unix时间戳。
+    /// 基于 UTC 时间计算。
     /// </remarks>
-    public static long GetUtcMonthEndTimestamp()
+    public static long GetMonthEndTimestampWithUtc()
     {
-        var date = GetUtcMonthEndTime();
+        var date = GetMonthEndTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 
     /// <summary>
-    /// 获取下个月开始时间 (UTC)
+    /// 获取下个月开始时间（基于UTC时间）。
     /// </summary>
-    /// <returns>下个月1号00:00:00的时间 (UTC)</returns>
+    /// <returns>下个月1号00:00:00的时间（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回下个月第一天的零点时间
-    /// 使用 UTC 时区计算
+    /// 此方法返回下个月第一天的零点时间。
+    /// 使用 UTC 时区计算。
     /// </remarks>
-    public static DateTime GetUtcNextMonthStartTime()
+    public static DateTime GetNextMonthStartTimeWithUtc()
     {
-        return GetUtcMonthStartTime().AddMonths(1);
+        var date = GetMonthStartTimeWithUtc();
+        return date.AddMonths(1);
     }
 
     /// <summary>
-    /// 获取下个月开始时间戳 (UTC)
+    /// 获取下个月开始时间戳（基于UTC时间）。
     /// </summary>
-    /// <returns>下个月1号00:00:00的时间戳(秒) (UTC)</returns>
+    /// <returns>下个月1号00:00:00的时间戳(秒)（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回下个月第一天零点时间的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// 此方法返回下个月第一天零点时间的Unix时间戳。
+    /// 基于 UTC 时间计算。
     /// </remarks>
-    public static long GetUtcNextMonthStartTimestamp()
+    public static long GetNextMonthStartTimestampWithUtc()
     {
-        var date = GetUtcNextMonthStartTime();
+        var date = GetNextMonthStartTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 
     /// <summary>
-    /// 获取下个月结束时间 (UTC)
+    /// 获取下个月结束时间（基于UTC时间）。
     /// </summary>
-    /// <returns>下个月最后一天23:59:59的时间 (UTC)</returns>
+    /// <returns>下个月最后一天23:59:59的时间（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回下个月最后一天的最后一秒
-    /// 使用 UTC 时区计算
+    /// 此方法返回下个月最后一天的最后一秒。
+    /// 使用 UTC 时区计算。
     /// </remarks>
-    public static DateTime GetUtcNextMonthEndTime()
+    public static DateTime GetNextMonthEndTimeWithUtc()
     {
-        return GetUtcNextMonthStartTime().AddMonths(1).AddSeconds(-1);
+        var date = GetNextMonthStartTimeWithUtc();
+        return date.AddMonths(1).AddSeconds(-1);
     }
 
     /// <summary>
-    /// 获取下个月结束时间戳 (UTC)
+    /// 获取下个月结束时间戳（基于UTC时间）。
     /// </summary>
-    /// <returns>下个月最后一天23:59:59的时间戳(秒) (UTC)</returns>
+    /// <returns>下个月最后一天23:59:59的时间戳(秒)（UTC）。</returns>
     /// <remarks>
-    /// 此方法返回下个月最后一天最后一秒的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// 此方法返回下个月最后一天最后一秒的Unix时间戳。
+    /// 基于 UTC 时间计算。
     /// </remarks>
-    public static long GetUtcNextMonthEndTimestamp()
+    public static long GetNextMonthEndTimestampWithUtc()
     {
-        var date = GetUtcNextMonthEndTime();
+        var date = GetNextMonthEndTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 }
