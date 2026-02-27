@@ -58,8 +58,8 @@ public partial class TimerHelper
     /// <returns>跨越的天数。</returns>
     public static int GetCrossDaysUtc(long beginUnixTimestamp, long afterUnixTimestamp, int hour = 0)
     {
-        var begin = UtcSecondsToUtcDateTime(beginUnixTimestamp);
-        var after = UtcSecondsToUtcDateTime(afterUnixTimestamp);
+        var begin = TimestampSecondToDateTime(beginUnixTimestamp, true);
+        var after = TimestampSecondToDateTime(afterUnixTimestamp, true);
         return GetCrossDays(begin, after, hour);
     }
 
