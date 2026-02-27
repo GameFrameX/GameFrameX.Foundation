@@ -89,7 +89,8 @@ public partial class TimerHelper
     /// </remarks>
     public static DateTime GetTodayStartTimeWithTimeZone()
     {
-        return GetNowWithTimeZone().Date;
+        var dateTime = GetNowWithTimeZone();
+        return dateTime.Date;
     }
 
     /// <summary>

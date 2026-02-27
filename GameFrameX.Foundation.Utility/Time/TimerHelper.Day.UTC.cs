@@ -83,9 +83,10 @@ public partial class TimerHelper
     /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前日期的零点时间
     /// 返回的是 <see cref="CurrentTimeZone"/> 时区的时间
     /// </remarks>
-    public static DateTime GetTodayStartTime()
+    public static DateTime GetTodayStartTimeWithUtc()
     {
-        return GetUtcNow().Date;
+        var dateTime = GetUtcNow();
+        return dateTime.Date;
     }
 
     /// <summary>
