@@ -60,7 +60,7 @@ public static partial class TimerHelper
     /// - 最后2位表示秒
     /// 内部调用CurrentTimeWithUtcFullString()获取字符串后转换为整数
     /// </remarks>
-    public static int CurrentTimeWithUtcTime()
+    public static int CurrentTimeWithUtc()
     {
         return Convert.ToInt32(CurrentTimeWithUtcFullString());
     }
