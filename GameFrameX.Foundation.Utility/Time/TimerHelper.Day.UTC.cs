@@ -34,9 +34,9 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取当前UTC时区的日期，格式为yyyyMMdd的整数
+    /// 获取当前UTC时区的日期，格式为yyyyMMdd的整数。
     /// </summary>
-    /// <returns>返回一个8位整数，表示当前UTC时区的日期。例如：20231225表示2023年12月25日</returns>
+    /// <returns>返回一个8位整数，表示当前UTC时区的日期。例如：20231225表示2023年12月25日。</returns>
     /// <remarks>
     /// 此方法将当前UTC时间转换为8位数字格式:
     /// - 前4位表示年份
@@ -50,11 +50,11 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取两个UTC时间戳之间跨越的天数。
+    /// 获取两个UTC时间戳之间跨越的天数（基于UTC时间）。
     /// </summary>
     /// <param name="beginUnixTimestamp">开始时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
     /// <param name="afterUnixTimestamp">结束时间戳(秒)，从1970年1月1日以来经过的秒数。</param>
-    /// <param name="hour">小时。</param>
+    /// <param name="hour">小时阈值。</param>
     /// <returns>跨越的天数。</returns>
     public static int GetCrossDaysUtc(long beginUnixTimestamp, long afterUnixTimestamp, int hour = 0)
     {
@@ -64,10 +64,10 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取从指定日期到当前UTC日期之间跨越的天数。
+    /// 获取从指定日期到当前UTC日期之间跨越的天数（基于UTC时间）。
     /// </summary>
     /// <param name="startTime">起始日期。</param>
-    /// <param name="hour">小时。</param>
+    /// <param name="hour">小时阈值。</param>
     /// <returns>跨越的天数。</returns>
     public static int GetCrossDaysWithUtc(DateTime startTime, int hour = 0)
     {
@@ -75,13 +75,13 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今天开始时间
+    /// 获取今天开始时间（基于UTC时间）。
     /// </summary>
-    /// <returns>今天零点时间</returns>
+    /// <returns>今天零点时间。</returns>
     /// <remarks>
-    /// 此方法返回当天的零点时间(00:00:00)
-    /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前日期的零点时间
-    /// 返回的是 <see cref="CurrentTimeZone"/> 时区的时间
+    /// 此方法返回当天的零点时间(00:00:00)。
+    /// 使用 <see cref="GetUtcNow"/> 获取当前日期的零点时间。
+    /// 返回的是UTC时间。
     /// </remarks>
     public static DateTime GetTodayStartTimeWithUtc()
     {
@@ -90,35 +90,115 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今天开始时间戳
+    /// 获取今天开始时间戳（基于UTC时间）。
     /// </summary>
-    /// <returns>今天零点时间戳(秒)</returns>
+    /// <returns>今天零点时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回当天零点时间的Unix时间戳
-    /// 先获取 <see cref="CurrentTimeZone"/> 时区的今天零点时间,然后转换为时间戳
-    /// 返回从1970-01-01 00:00:00 UTC开始的秒数
+    /// 此方法返回当天零点时间的Unix时间戳。
+    /// 先获取UTC的今天零点时间,然后转换为时间戳。
+    /// 返回从1970-01-01 00:00:00 UTC开始的秒数。
     /// </remarks>
     public static long GetTodayStartTimestampWithUtc()
     {
-        var date = GetTodayStartTime();
+        var date = GetTodayStartTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 
     /// <summary>
-    /// 按照UTC时间判断两个时间戳是否是同一天
+    /// 获取今天结束时间（基于UTC时间）。
     /// </summary>
-    /// <param name="unixTimestampA">时间戳1</param>
-    /// <param name="unixTimestampB">时间戳2</param>
-    /// <returns>是否是同一天</returns>
+    /// <returns>今天23:59:59的时间。</returns>
     /// <remarks>
-    /// 此方法将两个Unix时间戳转换为UTC时间后比较是否为同一天
-    /// 比较时只考虑日期部分(年月日),忽略时间部分
-    /// 使用UTC时间避免时区转换带来的问题
+    /// 此方法返回当天的最后一秒(23:59:59)。
+    /// 通过获取明天零点时间然后减去1秒来计算。
+    /// 返回的是UTC时间。
     /// </remarks>
-    public static bool IsUnixSameDay(long unixTimestampA, long unixTimestampB)
+    public static DateTime GetTodayEndTimeWithUtc()
     {
-        var time1 = UtcSecondsToUtcDateTime(unixTimestampA);
-        var time2 = UtcSecondsToUtcDateTime(unixTimestampB);
-        return IsSameDay(time1, time2);
+        return GetTodayStartTimeWithUtc().AddDays(1).AddSeconds(-1);
+    }
+
+    /// <summary>
+    /// 获取今天结束时间戳（基于UTC时间）。
+    /// </summary>
+    /// <returns>今天23:59:59的时间戳(秒)。</returns>
+    /// <remarks>
+    /// 此方法返回当天最后一秒的Unix时间戳。
+    /// 先获取UTC的今天23:59:59,然后转换为时间戳。
+    /// 返回从1970-01-01 00:00:00 UTC开始的秒数。
+    /// </remarks>
+    public static long GetTodayEndTimestampWithUtc()
+    {
+        var date = GetTodayEndTimeWithUtc();
+        return DateTimeToUnixTimeSeconds(date);
+    }
+
+    /// <summary>
+    /// 获取明天开始时间（基于UTC时间）。
+    /// </summary>
+    /// <returns>明天零点时间。</returns>
+    /// <remarks>
+    /// 此方法返回明天的零点时间。
+    /// 例如:当前是2024-01-10,返回2024-01-11 00:00:00。
+    /// 使用UTC时间计算。
+    /// </remarks>
+    public static DateTime GetTomorrowStartTimeWithUtc()
+    {
+        return GetTodayStartTimeWithUtc().AddDays(1);
+    }
+
+    /// <summary>
+    /// 获取明天开始时间戳（基于UTC时间）。
+    /// </summary>
+    /// <returns>明天零点时间戳(秒)。</returns>
+    /// <remarks>
+    /// 此方法返回明天零点时间的Unix时间戳。
+    /// 例如:当前是2024-01-10,返回2024-01-11 00:00:00的时间戳。
+    /// 使用UTC时间计算并转换为时间戳。
+    /// </remarks>
+    public static long GetTomorrowStartTimestampWithUtc()
+    {
+        var date = GetTomorrowStartTimeWithUtc();
+        return DateTimeToUnixTimeSeconds(date);
+    }
+
+    /// <summary>
+    /// 获取明天结束时间（基于UTC时间）。
+    /// </summary>
+    /// <returns>明天23:59:59的时间。</returns>
+    /// <remarks>
+    /// 此方法返回明天的最后一秒。
+    /// 例如:当前是2024-01-10,返回2024-01-11 23:59:59。
+    /// 使用UTC时间计算。
+    /// </remarks>
+    public static DateTime GetTomorrowEndTimeWithUtc()
+    {
+        return GetUtcNow().Date.AddDays(2).AddSeconds(-1);
+    }
+
+    /// <summary>
+    /// 获取明天结束时间戳（基于UTC时间）。
+    /// </summary>
+    /// <returns>明天23:59:59的时间戳(秒)。</returns>
+    /// <remarks>
+    /// 此方法返回明天最后一秒的Unix时间戳。
+    /// 例如:当前是2024-01-10,返回2024-01-11 23:59:59的时间戳。
+    /// 会将时间转换为UTC时间后再计算时间戳。
+    /// </remarks>
+    public static long GetTomorrowEndTimestampWithUtc()
+    {
+        return DateTimeToUnixTimeSeconds(GetTomorrowEndTimeWithUtc());
+    }
+
+    /// <summary>
+    /// 获取两个时间戳之间跨越的天数（基于UTC时间）。
+    /// </summary>
+    /// <param name="beginTimestamp">起始时间戳,从1970年1月1日以来经过的秒数。</param>
+    /// <param name="hour">小时阈值。</param>
+    /// <returns>跨越的天数。</returns>
+    public static int GetCrossDaysWithUtc(long beginTimestamp, int hour = 0)
+    {
+        var begin = TimestampSecondToDateTime(beginTimestamp);
+        return GetCrossDaysWithUtc(begin, hour);
     }
 }
