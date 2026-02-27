@@ -34,66 +34,26 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 判断两个 <see cref="DateTime"/> 对象是否表示同一天。
+    /// 判断两个 <see cref="DateTime"/> 是否表示同一日历日期。
     /// </summary>
-    /// <param name="timeA">要比较的第一个时间。例如：2024-01-10 14:30:00</param>
-    /// <param name="timeB">要比较的第二个时间。例如：2024-01-10 18:45:00</param>
-    /// <returns>
-    /// 如果两个时间是同一天，则返回 <c>true</c>；否则返回 <c>false</c>。
-    /// </returns>
+    /// <param name="timeA">要比较的第一个时间。</param>
+    /// <param name="timeB">要比较的第二个时间。</param>
+    /// <returns>如果两个时间在同一天内，则返回 <c>true</c>；否则返回 <c>false</c>。</returns>
     /// <remarks>
-    /// 此方法执行以下比较逻辑：
-    /// 1. 使用 <see cref="DateTime.Date"/> 属性获取日期部分（忽略时间部分）
-    /// 2. 分别比较年、月、日三个组成部分
-    /// 3. 只有当年、月、日都相同时才返回 <c>true</c>
-    /// 
-    /// 重要特性：
-    /// - 忽略具体的时、分、秒、毫秒等时间部分
-    /// - 忽略时区差异，直接使用 <see cref="DateTime"/> 中存储的日期值
-    /// - 不进行时区转换，基于原始 <see cref="DateTime"/> 值进行比较
-    /// 
-    /// 性能优化：
-    /// - 使用直接的整数比较（Year、Month、Day）
-    /// - 避免创建新的 <see cref="DateTime"/> 对象
-    /// - 比使用 <c>time1.Date == time2.Date</c> 更高效
-    /// 
-    /// 适用场景：
-    /// - 日程安排和事件管理
-    /// - 日志按日期分组
-    /// - 统计同一天的数据
-    /// - 用户界面中的日期筛选
+    /// 此方法仅比较年、月、日三个部分，忽略时、分、秒、毫秒等时间成分。
+    /// 该比较不会进行时区转换，直接使用传入 <see cref="DateTime"/> 的日期值。
     /// </remarks>
     /// <example>
     /// <code>
-    /// // 同一天的不同时间
     /// DateTime morning = new DateTime(2024, 1, 10, 8, 30, 0);
     /// DateTime evening = new DateTime(2024, 1, 10, 20, 45, 30);
     /// bool sameDay1 = TimerHelper.IsSameDay(morning, evening);
-    /// Console.WriteLine($"早晨和晚上是同一天: {sameDay1}"); // True
-    /// 
-    /// // 不同天的时间
+    /// Console.WriteLine(sameDay1); // True
+    ///
     /// DateTime today = new DateTime(2024, 1, 10, 23, 59, 59);
     /// DateTime tomorrow = new DateTime(2024, 1, 11, 0, 0, 1);
     /// bool sameDay2 = TimerHelper.IsSameDay(today, tomorrow);
-    /// Console.WriteLine($"今天和明天是同一天: {sameDay2}"); // False
-    /// 
-    /// // 跨年比较
-    /// DateTime lastYear = new DateTime(2023, 12, 31, 12, 0, 0);
-    /// DateTime thisYear = new DateTime(2024, 1, 1, 12, 0, 0);
-    /// bool sameDay3 = TimerHelper.IsSameDay(lastYear, thisYear);
-    /// Console.WriteLine($"跨年日期是同一天: {sameDay3}"); // False
-    /// 
-    /// // 实际应用：按日期分组日志
-    /// List&lt;DateTime&gt; logTimes = new List&lt;DateTime&gt;
-    /// {
-    ///     new DateTime(2024, 1, 10, 9, 0, 0),
-    ///     new DateTime(2024, 1, 10, 15, 30, 0),
-    ///     new DateTime(2024, 1, 11, 10, 0, 0)
-    /// };
-    /// 
-    /// DateTime targetDate = new DateTime(2024, 1, 10);
-    /// var sameDayLogs = logTimes.Where(log =&gt; TimerHelper.IsSameDay(log, targetDate)).ToList();
-    /// Console.WriteLine($"2024-01-10 的日志数量: {sameDayLogs.Count}"); // 2
+    /// Console.WriteLine(sameDay2); // False
     /// </code>
     /// </example>
     /// <seealso cref="DateTime.Date"/>
@@ -106,17 +66,24 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取两个时间之间的天数差
+    /// 获取两个时间之间的天数差。
     /// </summary>
-    /// <param name="startTime">开始时间</param>
-    /// <param name="endTime">结束时间</param>
-    /// <returns>天数差（可能为负数）</returns>
+    /// <param name="startTime">开始时间。</param>
+    /// <param name="endTime">结束时间。</param>
+    /// <returns>天数差，使用 <see cref="double"/> 表示，可能为负数。</returns>
     /// <remarks>
-    /// 此方法返回两个时间之间的总天数，保留小数部分
-    /// 如果endTime早于startTime，返回负数
-    /// 返回double类型以保持精度
-    /// 适用于需要天级时间差的场景
+    /// 返回值来源于 <see cref="TimeSpan.TotalDays"/>，包含小数部分。
+    /// 如果 <paramref name="endTime"/> 早于 <paramref name="startTime"/>，结果为负数。
     /// </remarks>
+    /// <example>
+    /// <code>
+    /// DateTime start = new DateTime(2024, 1, 10, 8, 0, 0);
+    /// DateTime end = new DateTime(2024, 1, 11, 20, 0, 0);
+    /// double days = TimerHelper.GetDaysDifference(start, end);
+    /// Console.WriteLine(days); // 1.5
+    /// </code>
+    /// </example>
+    /// <seealso cref="TimeSpan.TotalDays"/>
     public static double GetDaysDifference(DateTime startTime, DateTime endTime)
     {
         return (endTime - startTime).TotalDays;
@@ -125,10 +92,23 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取两个日期之间跨越的天数。
     /// </summary>
-    /// <param name="startTime">起始日期。</param>
-    /// <param name="endTime">结束日期。</param>
-    /// <param name="hour">小时。</param>
+    /// <param name="startTime">起始时间。</param>
+    /// <param name="endTime">结束时间。</param>
+    /// <param name="hour">用于判定跨日的小时阈值。</param>
     /// <returns>跨越的天数。</returns>
+    /// <remarks>
+    /// 此方法先计算两个日期（忽略具体时间部分）之间的天数差，再依据小时阈值调整结果。
+    /// 如果 <paramref name="startTime"/> 的小时数小于阈值，则结果加一；
+    /// 如果 <paramref name="endTime"/> 的小时数小于阈值，则结果减一。
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// DateTime start = new DateTime(2024, 1, 10, 3, 0, 0);
+    /// DateTime end = new DateTime(2024, 1, 11, 2, 0, 0);
+    /// int days = TimerHelper.GetCrossDays(start, end, 5);
+    /// Console.WriteLine(days); // 0
+    /// </code>
+    /// </example>
     public static int GetCrossDays(DateTime startTime, DateTime endTime, int hour = 0)
     {
         var days = (int)(endTime.Date - startTime.Date).TotalDays;
