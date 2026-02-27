@@ -36,9 +36,9 @@ public partial class TimerHelper
     /// <summary>
     /// 计算两个时间戳之间的时间差（秒级）
     /// </summary>
-    /// <param name="startTimestamp">开始时间戳（秒）</param>
-    /// <param name="endTimestamp">结束时间戳（秒）</param>
-    /// <param name="utc">是否使用UTC时间，默认为true</param>
+    /// <param name="startUtcTimestampSeconds">开始时间戳（秒）</param>
+    /// <param name="endUtcTimestampSeconds">结束时间戳（秒）</param>
+    /// <param name="isUseUtc">是否使用UTC时间，默认为true</param>
     /// <returns>时间差TimeSpan对象</returns>
     /// <remarks>
     /// 此方法会先将时间戳转换为DateTime后再计算差值
@@ -46,19 +46,19 @@ public partial class TimerHelper
     /// 当utc=true时使用UTC时间，否则使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 返回的TimeSpan对象包含完整的时间差信息
     /// </remarks>
-    public static TimeSpan GetTimeDifference(long startTimestamp, long endTimestamp, bool utc = true)
+    public static TimeSpan GetTimeDifference(long startUtcTimestampSeconds, long endUtcTimestampSeconds, bool isUseUtc = true)
     {
-        var startTime = TimestampToDateTime(startTimestamp, utc);
-        var endTime = TimestampToDateTime(endTimestamp, utc);
+        var startTime = TimestampSecondToDateTime(startUtcTimestampSeconds, isUseUtc);
+        var endTime = TimestampSecondToDateTime(endUtcTimestampSeconds, isUseUtc);
         return endTime - startTime;
     }
 
     /// <summary>
     /// 计算两个毫秒时间戳之间的时间差
     /// </summary>
-    /// <param name="startTimestampMs">开始时间戳（毫秒）</param>
-    /// <param name="endTimestampMs">结束时间戳（毫秒）</param>
-    /// <param name="utc">是否使用UTC时间，默认为true</param>
+    /// <param name="startUtcTimestampMillisecond">开始时间戳（毫秒）</param>
+    /// <param name="endUtcTimestampMillisecond">结束时间戳（毫秒）</param>
+    /// <param name="isUseUtc">是否使用UTC时间，默认为true</param>
     /// <returns>时间差TimeSpan对象</returns>
     /// <remarks>
     /// 此方法提供毫秒级的精确时间差计算
@@ -66,10 +66,10 @@ public partial class TimerHelper
     /// 当utc=true时使用UTC时间，否则使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
     /// 适用于需要高精度时间差计算的场景
     /// </remarks>
-    public static TimeSpan GetTimeDifferenceMs(long startTimestampMs, long endTimestampMs, bool utc = true)
+    public static TimeSpan GetTimeDifferenceMillisecond(long startUtcTimestampMillisecond, long endUtcTimestampMillisecond, bool isUseUtc = true)
     {
-        var startTime = MillisecondsTimeStampToDateTime(startTimestampMs, utc);
-        var endTime = MillisecondsTimeStampToDateTime(endTimestampMs, utc);
+        var startTime = TimeStampMillisecondToDateTime(startUtcTimestampMillisecond, isUseUtc);
+        var endTime = TimeStampMillisecondToDateTime(endUtcTimestampMillisecond, isUseUtc);
         return endTime - startTime;
     }
 
@@ -77,7 +77,7 @@ public partial class TimerHelper
     /// 计算指定时间到当前时间的时间差
     /// </summary>
     /// <param name="time">指定时间</param>
-    /// <param name="useUtc">是否使用UTC时间作为当前时间，默认为false（使用当前时区 (<see cref="CurrentTimeZone"/>) 时间）</param>
+    /// <param name="isUseUtc">是否使用UTC时间作为当前时间，默认为false（使用当前时区 (<see cref="CurrentTimeZone"/>) 时间）</param>
     /// <returns>时间差TimeSpan对象</returns>
     /// <remarks>
     /// 此方法计算指定时间到当前时间的差值
@@ -85,9 +85,9 @@ public partial class TimerHelper
     /// 如果指定时间在当前时间之后，将返回负值
     /// 常用于计算时间间隔和判断过期时间
     /// </remarks>
-    public static TimeSpan GetTimeDifferenceFromNow(DateTime time, bool useUtc = false)
+    public static TimeSpan GetTimeDifferenceFromNow(DateTime time, bool isUseUtc = false)
     {
-        var now = useUtc ? GetUtcNow() : GetNowWithTimeZone();
+        var now = isUseUtc ? GetUtcNow() : GetNowWithTimeZone();
         return now - time;
     }
 
@@ -95,7 +95,7 @@ public partial class TimerHelper
     /// 计算指定时间戳到当前时间的时间差
     /// </summary>
     /// <param name="timestamp">时间戳（秒）</param>
-    /// <param name="useUtc">是否使用UTC时间，默认为true</param>
+    /// <param name="isUseUtc">是否使用UTC时间，默认为true</param>
     /// <returns>时间差TimeSpan对象</returns>
     /// <remarks>
     /// 此方法先将时间戳转换为DateTime，再计算与当前时间的差值
@@ -103,17 +103,17 @@ public partial class TimerHelper
     /// 当useUtc=true时使用UTC时间，否则使用本地时间
     /// 适用于处理Unix时间戳格式的时间差计算
     /// </remarks>
-    public static TimeSpan GetTimeDifferenceFromNow(long timestamp, bool useUtc = true)
+    public static TimeSpan GetTimeDifferenceFromNow(long timestamp, bool isUseUtc = true)
     {
-        var time = TimestampToDateTime(timestamp, useUtc);
-        return GetTimeDifferenceFromNow(time, useUtc);
+        var time = TimestampSecondToDateTime(timestamp, isUseUtc);
+        return GetTimeDifferenceFromNow(time, isUseUtc);
     }
 
     /// <summary>
     /// 计算指定毫秒时间戳到当前时间的时间差
     /// </summary>
     /// <param name="timestampMs">时间戳（毫秒）</param>
-    /// <param name="useUtc">是否使用UTC时间，默认为true</param>
+    /// <param name="isUseUtc">是否使用UTC时间，默认为true</param>
     /// <returns>时间差TimeSpan对象</returns>
     /// <remarks>
     /// 此方法提供毫秒级精度的时间差计算
@@ -121,17 +121,17 @@ public partial class TimerHelper
     /// 当useUtc=true时使用UTC时间，否则使用本地时间
     /// 适用于需要高精度时间差计算的场景
     /// </remarks>
-    public static TimeSpan GetTimeDifferenceFromNowMs(long timestampMs, bool useUtc = true)
+    public static TimeSpan GetTimeDifferenceFromNowMs(long timestampMs, bool isUseUtc = true)
     {
-        var time = MillisecondsTimeStampToDateTime(timestampMs, useUtc);
-        return GetTimeDifferenceFromNow(time, useUtc);
+        var time = TimeStampMillisecondToDateTime(timestampMs, isUseUtc);
+        return GetTimeDifferenceFromNow(time, isUseUtc);
     }
 
     /// <summary>
     /// 计算指定时间到当前时间经过了多少秒
     /// </summary>
     /// <param name="time">指定时间</param>
-    /// <param name="useUtc">是否使用UTC时间作为当前时间，默认为false（使用当前时区 (<see cref="CurrentTimeZone"/>) 时间）</param>
+    /// <param name="isUseUtc">是否使用UTC时间作为当前时间，默认为false（使用当前时区 (<see cref="CurrentTimeZone"/>) 时间）</param>
     /// <returns>经过的秒数（如果指定时间在未来，返回负数）</returns>
     /// <remarks>
     /// 此方法计算从指定时间到现在经过的总秒数
@@ -139,9 +139,9 @@ public partial class TimerHelper
     /// 结果会被转换为长整型，可能损失小数部分精度
     /// 常用于计算时间是否过期或剩余时间
     /// </remarks>
-    public static long GetElapsedSeconds(DateTime time, bool useUtc = false)
+    public static long GetElapsedSeconds(DateTime time, bool isUseUtc = false)
     {
-        var now = useUtc ? GetUtcNow() : GetNowWithTimeZone();
+        var now = isUseUtc ? GetUtcNow() : GetNowWithTimeZone();
         return (long)(now - time).TotalSeconds;
     }
 }
