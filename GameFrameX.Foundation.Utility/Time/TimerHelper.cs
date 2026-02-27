@@ -147,17 +147,17 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取基于当前设置时区的 Unix 时间戳（秒级精度）。
+    /// 获取基于当前设置时区并包含时区偏移的 Unix 时间戳（秒级精度）。
     /// </summary>
     /// <returns>
     /// 返回一个 <see cref="long"/> 值，表示将当前设置时区的时间视为 UTC 时间时的 Unix 时间戳。
-    /// 即：标准 Unix 时间戳 + 时区偏移秒数。
+    /// 即：标准 Unix 时间戳 + 时区偏移秒数 + <see cref="TimeOffsetSeconds"/>。
     /// </returns>
     /// <remarks>
-    /// 此方法返回的时间戳包含时区偏移量。
+    /// 此方法返回的时间戳包含时区偏移量与 <see cref="TimeOffsetSeconds"/> 调整量。
     /// 例如：如果当前时区为 UTC+8，则返回的时间戳比标准 UTC 时间戳大 8 小时（28800秒）。
     /// </remarks>
-    public static long UnixTimeSecondsWithTimeZone()
+    public static long UnixTimeSecondsWithTimeZoneOffset()
     {
         var utcNow = GetUtcNow();
         var offset = CurrentTimeZone.GetUtcOffset(utcNow);
@@ -165,17 +165,17 @@ public partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取基于当前设置时区的 Unix 时间戳（毫秒级精度）。
+    /// 获取基于当前设置时区并包含时区偏移的 Unix 时间戳（毫秒级精度）。
     /// </summary>
     /// <returns>
     /// 返回一个 <see cref="long"/> 值，表示将当前设置时区的时间视为 UTC 时间时的 Unix 时间戳。
-    /// 即：标准 Unix 时间戳 + 时区偏移毫秒数。
+    /// 即：标准 Unix 时间戳 + 时区偏移毫秒数 + <see cref="TimeOffsetMilliseconds"/>。
     /// </returns>
     /// <remarks>
-    /// 此方法返回的时间戳包含时区偏移量。
+    /// 此方法返回的时间戳包含时区偏移量与 <see cref="TimeOffsetMilliseconds"/> 调整量。
     /// 例如：如果当前时区为 UTC+8，则返回的时间戳比标准 UTC 时间戳大 8 小时（28800000毫秒）。
     /// </remarks>
-    public static long UnixTimeMillisecondsWithTimeZone()
+    public static long UnixTimeMillisecondsWithTimeZoneOffset()
     {
         var utcNow = GetUtcNow();
         var offset = CurrentTimeZone.GetUtcOffset(utcNow);

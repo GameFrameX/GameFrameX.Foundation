@@ -198,7 +198,7 @@ namespace GameFrameX.Foundation.Tests.Utility
         }
 
         /// <summary>
-        /// 测试 UnixTimeSecondsWithTimeZone 和 UnixTimeMillisecondsWithTimeZone 应包含时区偏移
+        /// 测试 UnixTimeSecondsWithTimeZoneOffset 和 UnixTimeMillisecondsWithTimeZoneOffset 应包含时区偏移
         /// </summary>
         [Fact]
         public void UnixTimeWithTimeZone_ShouldIncludeOffset()
@@ -208,9 +208,9 @@ namespace GameFrameX.Foundation.Tests.Utility
             TimerHelper.SetTimeZone(customTimeZone);
 
             var tsStandard = TimerHelper.UnixTimeSeconds();
-            var tsWithZone = TimerHelper.UnixTimeSecondsWithTimeZone();
+            var tsWithZone = TimerHelper.UnixTimeSecondsWithTimeZoneOffset();
             var tsMsStandard = TimerHelper.UnixTimeMilliseconds();
-            var tsMsWithZone = TimerHelper.UnixTimeMillisecondsWithTimeZone();
+            var tsMsWithZone = TimerHelper.UnixTimeMillisecondsWithTimeZoneOffset();
 
             // 验证秒级时间戳差异接近 8 小时 (28800 秒)
             // 注意：由于执行时间差异，tsStandard 和 tsWithZone 获取的时间点可能略有不同，但差异不应很大
