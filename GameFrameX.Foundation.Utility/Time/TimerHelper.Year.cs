@@ -31,7 +31,7 @@
 
 namespace GameFrameX.Foundation.Utility;
 
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 获取指定日期所在年的开始时间

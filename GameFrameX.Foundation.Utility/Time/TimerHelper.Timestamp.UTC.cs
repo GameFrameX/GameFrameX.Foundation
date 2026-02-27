@@ -34,7 +34,7 @@ using GameFrameX.Foundation.Utility.Localization;
 
 namespace GameFrameX.Foundation.Utility;
 
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 将给定的时间戳转换为相对于EpochUtc的 TimeSpan 对象。

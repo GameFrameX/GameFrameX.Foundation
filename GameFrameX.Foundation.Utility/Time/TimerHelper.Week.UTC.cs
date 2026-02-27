@@ -31,7 +31,7 @@
 
 namespace GameFrameX.Foundation.Utility;
 
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 判断指定日期是否与当前UTC时间是同一周

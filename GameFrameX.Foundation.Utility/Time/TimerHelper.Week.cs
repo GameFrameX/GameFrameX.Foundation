@@ -31,7 +31,7 @@
 
 namespace GameFrameX.Foundation.Utility;
 
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 判断两个日期是否在同一周

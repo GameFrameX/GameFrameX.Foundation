@@ -34,7 +34,7 @@ namespace GameFrameX.Foundation.Utility;
 /// <summary>
 /// 时间辅助工具类
 /// </summary>
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 当前时区，默认为 UTC

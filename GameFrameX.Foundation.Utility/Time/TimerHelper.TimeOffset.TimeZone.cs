@@ -31,7 +31,7 @@
 
 namespace GameFrameX.Foundation.Utility;
 
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的秒级时间戳

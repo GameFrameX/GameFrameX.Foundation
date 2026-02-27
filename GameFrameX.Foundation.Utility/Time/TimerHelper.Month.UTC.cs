@@ -35,7 +35,7 @@ using GameFrameX.Foundation.Utility.Localization;
 
 namespace GameFrameX.Foundation.Utility;
 
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 获取本月开始时间 (UTC)

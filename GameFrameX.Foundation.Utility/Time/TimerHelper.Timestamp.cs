@@ -34,7 +34,7 @@ using GameFrameX.Foundation.Utility.Localization;
 
 namespace GameFrameX.Foundation.Utility;
 
-public partial class TimerHelper
+public static partial class TimerHelper
 {
     /// <summary>
     /// 将 Unix 时间戳（秒级）转换为 .NET 刻度数（Ticks）。
