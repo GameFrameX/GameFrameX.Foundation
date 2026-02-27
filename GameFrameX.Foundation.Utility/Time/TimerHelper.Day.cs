@@ -36,8 +36,8 @@ public partial class TimerHelper
     /// <summary>
     /// 判断两个 <see cref="DateTime"/> 对象是否表示同一天。
     /// </summary>
-    /// <param name="time1">要比较的第一个时间。例如：2024-01-10 14:30:00</param>
-    /// <param name="time2">要比较的第二个时间。例如：2024-01-10 18:45:00</param>
+    /// <param name="timeA">要比较的第一个时间。例如：2024-01-10 14:30:00</param>
+    /// <param name="timeB">要比较的第二个时间。例如：2024-01-10 18:45:00</param>
     /// <returns>
     /// 如果两个时间是同一天，则返回 <c>true</c>；否则返回 <c>false</c>。
     /// </returns>
@@ -100,9 +100,9 @@ public partial class TimerHelper
     /// <seealso cref="DateTime.Year"/>
     /// <seealso cref="DateTime.Month"/>
     /// <seealso cref="DateTime.Day"/>
-    public static bool IsSameDay(DateTime time1, DateTime time2)
+    public static bool IsSameDay(DateTime timeA, DateTime timeB)
     {
-        return time1.Date.Year == time2.Date.Year && time1.Date.Month == time2.Date.Month && time1.Date.Day == time2.Date.Day;
+        return timeA.Date.Year == timeB.Date.Year && timeA.Date.Month == timeB.Date.Month && timeA.Date.Day == timeB.Date.Day;
     }
 
     /// <summary>
