@@ -46,7 +46,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long UnixTimeSecondsWithOffset()
     {
-        return new DateTimeOffset(GetUtcNow()).ToUnixTimeSeconds() + TimeOffsetSeconds;
+        return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeSeconds() + TimeOffsetSeconds;
     }
 
     /// <summary>
@@ -62,6 +62,6 @@ public static partial class TimerHelper
     /// </remarks>
     public static long UnixTimeMillisecondsWithOffset()
     {
-        return new DateTimeOffset(GetUtcNow()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
+        return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
     }
 }
