@@ -46,7 +46,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static string CurrentTimeWithUtcFullString()
     {
-        return GetUtcNow().ToString("HHmmss");
+        return GetNowWithUtc().ToString("HHmmss");
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static string CurrentDateTimeWithUtcFormat(string format = "yyyy-MM-dd HH:mm:ss.fff K")
     {
-        return GetUtcNow().ToString(format);
+        return GetNowWithUtc().ToString(format);
     }
 
     /// <summary>
@@ -91,7 +91,7 @@ public static partial class TimerHelper
     /// 与本地时间相比会有时区偏移
     /// 主要用于需要统一时间标准的场景
     /// </remarks>
-    public static DateTime GetUtcNow()
+    public static DateTime GetNowWithUtc()
     {
         return DateTime.UtcNow;
     }
