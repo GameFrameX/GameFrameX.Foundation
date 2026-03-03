@@ -47,7 +47,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static DateTime GetMonthStartTimeWithUtc()
     {
-        var now = GetUtcNow();
+        var now = GetNowWithUtc();
         return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
     }
 
@@ -75,7 +75,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static DateTime GetMonthEndTimeWithUtc()
     {
-        var now = GetUtcNow();
+        var now = GetNowWithUtc();
         return GetStartTimeOfMonth(now).AddMonths(1).AddSeconds(-1);
     }
 
