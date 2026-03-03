@@ -121,7 +121,7 @@ public static partial class TimerHelper
     /// <seealso cref="UnixTimeMilliseconds"/>
     public static long UnixTimeSeconds()
     {
-        return new DateTimeOffset(GetUtcNow()).ToUnixTimeSeconds() + TimeOffsetSeconds;
+        return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeSeconds() + TimeOffsetSeconds;
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public static partial class TimerHelper
     /// <seealso cref="UnixTimeSeconds"/>
     public static long UnixTimeMilliseconds()
     {
-        return new DateTimeOffset(GetUtcNow()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
+        return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
     }
 
     /// <summary>
@@ -159,7 +159,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long UnixTimeSecondsWithTimeZoneOffset()
     {
-        var utcNow = GetUtcNow();
+        var utcNow = GetNowWithUtc();
         var offset = CurrentTimeZone.GetUtcOffset(utcNow);
         return new DateTimeOffset(utcNow).ToUnixTimeSeconds() + (long)offset.TotalSeconds + TimeOffsetSeconds;
     }
@@ -177,7 +177,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long UnixTimeMillisecondsWithTimeZoneOffset()
     {
-        var utcNow = GetUtcNow();
+        var utcNow = GetNowWithUtc();
         var offset = CurrentTimeZone.GetUtcOffset(utcNow);
         return new DateTimeOffset(utcNow).ToUnixTimeMilliseconds() + (long)offset.TotalMilliseconds + TimeOffsetMilliseconds;
     }
