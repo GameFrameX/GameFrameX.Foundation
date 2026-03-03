@@ -46,7 +46,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static int CurrentDateWithUtcDay()
     {
-        return Convert.ToInt32(GetUtcNow().ToString("yyyyMMdd"));
+        return Convert.ToInt32(GetNowWithUtc().ToString("yyyyMMdd"));
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public static partial class TimerHelper
     /// <returns>跨越的天数。</returns>
     public static int GetCrossDaysWithUtc(DateTime startTime, int hour = 0)
     {
-        return GetCrossDays(startTime, GetUtcNow(), hour);
+        return GetCrossDays(startTime, GetNowWithUtc(), hour);
     }
 
     /// <summary>
@@ -80,12 +80,12 @@ public static partial class TimerHelper
     /// <returns>今天零点时间。</returns>
     /// <remarks>
     /// 此方法返回当天的零点时间(00:00:00)。
-    /// 使用 <see cref="GetUtcNow"/> 获取当前日期的零点时间。
+    /// 使用 <see cref="GetNowWithUtc"/> 获取当前日期的零点时间。
     /// 返回的是UTC时间。
     /// </remarks>
     public static DateTime GetTodayStartTimeWithUtc()
     {
-        var dateTime = GetUtcNow();
+        var dateTime = GetNowWithUtc();
         return dateTime.Date;
     }
 
@@ -173,7 +173,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static DateTime GetTomorrowEndTimeWithUtc()
     {
-        return GetUtcNow().Date.AddDays(2).AddSeconds(-1);
+        return GetNowWithUtc().Date.AddDays(2).AddSeconds(-1);
     }
 
     /// <summary>
