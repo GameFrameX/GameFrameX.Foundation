@@ -29,10 +29,6 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
-using System;
-using GameFrameX.Foundation.Localization.Core;
-using GameFrameX.Foundation.Utility.Localization;
-
 namespace GameFrameX.Foundation.Utility;
 
 public static partial class TimerHelper
@@ -45,9 +41,9 @@ public static partial class TimerHelper
     /// 此方法返回今年第一天的零点时间
     /// 使用 UTC 时区计算
     /// </remarks>
-    public static DateTime GetUtcYearStartTime()
+    public static DateTime GetYearStartTimeWithUtc()
     {
-        var now = GetUtcNow();
+        var now = GetNowWithUtc();
         return new DateTime(now.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
     }
 
@@ -59,9 +55,9 @@ public static partial class TimerHelper
     /// 此方法返回今年第一天零点时间的Unix时间戳
     /// 基于 UTC 时间计算
     /// </remarks>
-    public static long GetUtcYearStartTimestamp()
+    public static long GetYearStartTimestampWithUtc()
     {
-        var date = GetUtcYearStartTime();
+        var date = GetYearStartTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 
@@ -73,9 +69,9 @@ public static partial class TimerHelper
     /// 此方法返回今年最后一天的最后一秒
     /// 使用 UTC 时区计算
     /// </remarks>
-    public static DateTime GetUtcYearEndTime()
+    public static DateTime GetYearEndTimeWithUtc()
     {
-        var now = GetUtcNow();
+        var now = GetNowWithUtc();
         return GetStartTimeOfYear(now).AddYears(1).AddSeconds(-1);
     }
 
@@ -87,9 +83,9 @@ public static partial class TimerHelper
     /// 此方法返回今年最后一天最后一秒的Unix时间戳
     /// 基于 UTC 时间计算
     /// </remarks>
-    public static long GetUtcYearEndTimestamp()
+    public static long GetUtcYearEndTimestampWithUtc()
     {
-        var date = GetUtcYearEndTime();
+        var date = GetYearEndTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 
@@ -101,9 +97,9 @@ public static partial class TimerHelper
     /// 此方法返回明年第一天的零点时间
     /// 使用 UTC 时区计算
     /// </remarks>
-    public static DateTime GetUtcNextYearStartTime()
+    public static DateTime GetNextYearStartTimeWithUtc()
     {
-        return GetUtcYearStartTime().AddYears(1);
+        return GetYearStartTimeWithUtc().AddYears(1);
     }
 
     /// <summary>
@@ -114,9 +110,9 @@ public static partial class TimerHelper
     /// 此方法返回明年第一天零点时间的Unix时间戳
     /// 基于 UTC 时间计算
     /// </remarks>
-    public static long GetUtcNextYearStartTimestamp()
+    public static long GetNextYearStartTimestampWithUtc()
     {
-        var date = GetUtcNextYearStartTime();
+        var date = GetNextYearStartTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
 }

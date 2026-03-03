@@ -48,20 +48,6 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今年开始时间戳
-    /// </summary>
-    /// <returns>今年1月1号00:00:00的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回今年第一天零点时间的Unix时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetYearStartTimestamp()
-    {
-        var date = GetYearStartTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
-    }
-
-    /// <summary>
     /// 获取今年开始时间戳（基于设置时区）
     /// </summary>
     /// <returns>今年1月1号00:00:00的时间戳(秒) + 时区偏移</returns>
@@ -70,7 +56,8 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetYearStartTimestampWithTimeZone()
     {
-        return DateTimeToSecondsWithTimeZone(GetYearStartTimeWithTimeZone());
+        var date = GetYearStartTimeWithTimeZone();
+        return DateTimeToSecondsWithTimeZone(date);
     }
 
     /// <summary>
@@ -95,65 +82,10 @@ public static partial class TimerHelper
     /// 此方法返回今年最后一天最后一秒的Unix时间戳
     /// 会将时间转换为UTC时间后再计算时间戳
     /// </remarks>
-    public static long GetYearEndTimestamp()
-    {
-        var date = GetYearEndTime();
-        return DateTimeToUnixTimeSeconds(date);
-    }
-
-    /// <summary>
-    /// 获取今年结束时间戳（基于设置时区）
-    /// </summary>
-    /// <returns>今年12月31号23:59:59的时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
     public static long GetYearEndTimestampWithTimeZone()
     {
-        return DateTimeToSecondsWithTimeZone(GetYearEndTime());
-    }
-
-    /// <summary>
-    /// 获取指定日期所在年的开始时间戳
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年1月1号00:00:00的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在年第一天零点时间的Unix时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetStartTimestampOfYear(DateTime date)
-    {
-        var time = GetStartTimeOfYear(date);
-        return DateTimeToUnixTimeSeconds(time);
-    }
-
-    /// <summary>
-    /// 获取指定日期所在年的开始时间戳（基于设置时区）
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年1月1号00:00:00的时间戳(秒) + 时区偏移</returns>
-    /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
-    /// </remarks>
-    public static long GetStartTimestampOfYearWithTimeZone(DateTime date)
-    {
-        return DateTimeToSecondsWithTimeZone(GetStartTimeOfYear(date));
-    }
-
-    /// <summary>
-    /// 获取指定日期所在年的结束时间戳
-    /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年12月31号23:59:59的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回指定日期所在年最后一天最后一秒的Unix时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetEndTimestampOfYear(DateTime date)
-    {
-        var time = GetEndTimeOfYear(date);
-        return DateTimeToUnixTimeSeconds(time);
+        var date = GetYearEndTime();
+        return DateTimeToSecondsWithTimeZone(date);
     }
 
     /// <summary>
@@ -166,7 +98,8 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetEndTimestampOfYearWithTimeZone(DateTime date)
     {
-        return DateTimeToSecondsWithTimeZone(GetEndTimeOfYear(date));
+        var endTime = GetEndTimeOfYear(date);
+        return DateTimeToSecondsWithTimeZone(endTime);
     }
 
     /// <summary>
@@ -193,7 +126,21 @@ public static partial class TimerHelper
     public static long GetNextYearStartTimestamp()
     {
         var date = GetNextYearStartTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
+        return DateTimeToSecondsWithTimeZone(date);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在年的开始时间戳（基于设置时区）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在年1月1号00:00:00的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetStartTimestampOfYearWithTimeZone(DateTime date)
+    {
+        var startTime = GetStartTimeOfYear(date);
+        return DateTimeToSecondsWithTimeZone(startTime);
     }
 
     /// <summary>
@@ -205,6 +152,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetNextYearStartTimestampWithTimeZone()
     {
-        return DateTimeToSecondsWithTimeZone(GetNextYearStartTimeWithTimeZone());
+        var startTime = GetNextYearStartTimeWithTimeZone();
+        return DateTimeToSecondsWithTimeZone(startTime);
     }
 }

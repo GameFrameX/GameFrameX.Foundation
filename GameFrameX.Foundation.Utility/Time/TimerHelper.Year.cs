@@ -60,4 +60,34 @@ public static partial class TimerHelper
     {
         return GetStartTimeOfYear(date).AddYears(1).AddSeconds(-1);
     }
+
+    /// <summary>
+    /// 获取指定日期所在年的开始时间戳
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在年1月1号00:00:00的时间戳(秒)</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在年第一天零点时间的Unix时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// </remarks>
+    public static long GetStartTimestampOfYear(DateTime date)
+    {
+        var time = GetStartTimeOfYear(date);
+        return DateTimeToUnixTimeSeconds(time);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在年的结束时间戳
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在年12月31号23:59:59的时间戳(秒)</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在年最后一天最后一秒的Unix时间戳
+    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// </remarks>
+    public static long GetEndTimestampOfYear(DateTime date)
+    {
+        var time = GetEndTimeOfYear(date);
+        return DateTimeToUnixTimeSeconds(time);
+    }
 }
