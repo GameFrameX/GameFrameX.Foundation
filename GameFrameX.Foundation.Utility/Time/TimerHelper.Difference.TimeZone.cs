@@ -87,7 +87,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static TimeSpan GetTimeDifferenceFromNow(DateTime time, bool isUseUtc = false)
     {
-        var now = isUseUtc ? GetUtcNow() : GetNowWithTimeZone();
+        var now = isUseUtc ? GetNowWithUtc() : GetNowWithTimeZone();
         return now - time;
     }
 
@@ -141,7 +141,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetElapsedSeconds(DateTime time, bool isUseUtc = false)
     {
-        var now = isUseUtc ? GetUtcNow() : GetNowWithTimeZone();
+        var now = isUseUtc ? GetNowWithUtc() : GetNowWithTimeZone();
         return (long)(now - time).TotalSeconds;
     }
 }
