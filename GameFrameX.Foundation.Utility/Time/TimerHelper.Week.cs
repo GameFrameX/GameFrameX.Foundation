@@ -34,6 +34,37 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
+    /// 判断指定时间戳是否与当前UTC时间是同一周
+    /// </summary>
+    /// <param name="ticks">时间刻度(Ticks)</param>
+    /// <param name="isUtc">是否使用UTC时间进行比较，默认值为true</param>
+    /// <returns>如果是同一周返回true,否则返回false</returns>
+    /// <remarks>
+    /// 此方法使用UTC时间进行比较
+    /// 输入的ticks会被转换为DateTime后与当前UTC时间比较
+    /// </remarks>
+    public static bool IsSameWeek(long ticks, bool isUtc = true)
+    {
+        return IsSameWeek(new DateTime(ticks), isUtc);
+    }
+
+    /// <summary>
+    /// 判断指定日期是否与当前UTC时间是同一周
+    /// </summary>
+    /// <param name="start">要比较的日期</param>
+    /// <param name="isUtc">是否使用UTC时间进行比较，默认值为true</param>
+    /// <returns>如果是同一周返回true,否则返回false</returns>
+    /// <remarks>
+    /// 此方法使用UTC时间进行比较
+    /// 使用 <see cref="GetNowWithUtc"/> 获取当前UTC时间
+    /// 比较逻辑基于 <see cref="IsSameWeek"/> 方法
+    /// </remarks>
+    public static bool IsSameWeek(DateTime start, bool isUtc = true)
+    {
+        return IsSameWeek(start, isUtc ? GetNowWithUtc() : GetNowWithTimeZone());
+    }
+
+    /// <summary>
     /// 判断两个日期是否在同一周
     /// </summary>
     /// <param name="startTime">开始时间</param>

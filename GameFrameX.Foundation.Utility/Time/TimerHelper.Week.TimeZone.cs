@@ -34,34 +34,6 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 判断指定时间戳是否与当前时区 (<see cref="CurrentTimeZone"/>) 时间是同一周
-    /// </summary>
-    /// <param name="ticks">时间刻度(Ticks)</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
-    /// <remarks>
-    /// 此方法使用当前时区 (<see cref="CurrentTimeZone"/>) 时间进行比较
-    /// 输入的ticks会被转换为DateTime后与当前时区时间比较
-    /// </remarks>
-    public static bool IsNowSameWeekWithTimeZone(long ticks)
-    {
-        return IsNowSameWeekWithTimeZone(new DateTime(ticks));
-    }
-
-    /// <summary>
-    /// 判断指定日期是否与当前时区 (<see cref="CurrentTimeZone"/>) 时间是同一周
-    /// </summary>
-    /// <param name="start">要比较的日期</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
-    /// <remarks>
-    /// 此方法使用当前时区 (<see cref="CurrentTimeZone"/>) 时间进行比较
-    /// 使用 <see cref="GetNowWithTimeZone"/> 获取当前时区时间
-    /// </remarks>
-    public static bool IsNowSameWeekWithTimeZone(DateTime start)
-    {
-        return IsSameWeek(start, GetNowWithTimeZone());
-    }
-
-    /// <summary>
     /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 日期的中文星期表示
     /// </summary>
     /// <returns>返回中文星期字符串，如"星期一"、"星期日"</returns>
@@ -129,7 +101,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetWeekStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetWeekStartTimeWithTimeZone());
+        return DateTimeToSecondsWithTimeZone(GetWeekStartTimeWithTimeZone());
     }
 
     /// <summary>
@@ -171,7 +143,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetWeekEndTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetWeekEndTimeWithTimeZone());
+        return DateTimeToSecondsWithTimeZone(GetWeekEndTimeWithTimeZone());
     }
 
     /// <summary>
@@ -199,7 +171,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetStartTimestampOfWeekWithTimeZone(DateTime date)
     {
-        return TimeToSecondsWithTimeZone(GetStartTimeOfWeek(date));
+        return DateTimeToSecondsWithTimeZone(GetStartTimeOfWeek(date));
     }
 
     /// <summary>
@@ -228,7 +200,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetEndTimestampOfWeekWithTimeZone(DateTime date)
     {
-        return TimeToSecondsWithTimeZone(GetEndTimeOfWeek(date));
+        return DateTimeToSecondsWithTimeZone(GetEndTimeOfWeek(date));
     }
 
     /// <summary>
@@ -270,7 +242,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekStartTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetNextWeekStartTimeWithTimeZone());
+        return DateTimeToSecondsWithTimeZone(GetNextWeekStartTimeWithTimeZone());
     }
 
     /// <summary>
@@ -287,20 +259,6 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取下周结束时间戳
-    /// </summary>
-    /// <returns>下周周日23:59:59的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回下周周日最后一秒的Unix时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetNextWeekEndTimestamp()
-    {
-        var date = GetNextWeekEndTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
-    }
-
-    /// <summary>
     /// 获取下周结束时间戳（基于设置时区）
     /// </summary>
     /// <returns>下周周日23:59:59的时间戳(秒) + 时区偏移</returns>
@@ -309,6 +267,7 @@ public static partial class TimerHelper
     /// </remarks>
     public static long GetNextWeekEndTimestampWithTimeZone()
     {
-        return TimeToSecondsWithTimeZone(GetNextWeekEndTimeWithTimeZone());
+        var time = GetNextWeekEndTimeWithTimeZone();
+        return DateTimeToSecondsWithTimeZone(time);
     }
 }

@@ -33,64 +33,35 @@ namespace GameFrameX.Foundation.Utility;
 
 public static partial class TimerHelper
 {
-    /// <summary>
-    /// 判断指定日期是否与当前UTC时间是同一周
-    /// </summary>
-    /// <param name="start">要比较的日期</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
-    /// <remarks>
-    /// 此方法使用UTC时间进行比较
-    /// 使用 <see cref="GetUtcNow"/> 获取当前UTC时间
-    /// 比较逻辑基于 <see cref="IsSameWeek"/> 方法
-    /// </remarks>
-    public static bool IsNowSameWeekUtc(DateTime start)
-    {
-        return IsSameWeek(start, GetUtcNow());
-    }
-
-    /// <summary>
-    /// 判断指定时间戳是否与当前UTC时间是同一周
-    /// </summary>
-    /// <param name="ticks">时间刻度(Ticks)</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
-    /// <remarks>
-    /// 此方法使用UTC时间进行比较
-    /// 输入的ticks会被转换为DateTime后与当前UTC时间比较
-    /// </remarks>
-    public static bool IsUnixSameWeek(long ticks)
-    {
-        return IsNowSameWeekUtc(new DateTime(ticks));
-    }
-
-    /// <summary>
-    /// 判断指定Unix时间戳(秒)是否与当前UTC时间是同一周
-    /// </summary>
-    /// <param name="timestampSeconds">Unix时间戳(秒)</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
-    /// <remarks>
-    /// 此方法将Unix秒级时间戳转换为UTC DateTime后进行比较
-    /// 适用于跨时区判定是否同周的场景
-    /// </remarks>
-    public static bool IsUnixSameWeekFromTimestamp(long timestampSeconds)
-    {
-        var dateTime = UtcSecondsToUtcDateTime(timestampSeconds);
-        return IsNowSameWeekUtc(dateTime);
-    }
-
-    /// <summary>
-    /// 判断指定Unix时间戳(毫秒)是否与当前UTC时间是同一周
-    /// </summary>
-    /// <param name="timestampMilliseconds">Unix时间戳(毫秒)</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
-    /// <remarks>
-    /// 此方法将Unix毫秒级时间戳转换为UTC DateTime后进行比较
-    /// 适用于跨时区判定是否同周的场景
-    /// </remarks>
-    public static bool IsUnixSameWeekFromTimestampMilliseconds(long timestampMilliseconds)
-    {
-        var dateTime = UtcMillisecondsToUtcDateTime(timestampMilliseconds);
-        return IsNowSameWeekUtc(dateTime);
-    }
+    // /// <summary>
+    // /// 判断指定Unix时间戳(秒)是否与当前UTC时间是同一周
+    // /// </summary>
+    // /// <param name="timestampSeconds">Unix时间戳(秒)</param>
+    // /// <returns>如果是同一周返回true,否则返回false</returns>
+    // /// <remarks>
+    // /// 此方法将Unix秒级时间戳转换为UTC DateTime后进行比较
+    // /// 适用于跨时区判定是否同周的场景
+    // /// </remarks>
+    // public static bool IsUnixSameWeekFromTimestamp(long timestampSeconds)
+    // {
+    //     var dateTime = UtcSecondsToUtcDateTime(timestampSeconds);
+    //     return IsNowSameWeekUtc(dateTime);
+    // }
+    //
+    // /// <summary>
+    // /// 判断指定Unix时间戳(毫秒)是否与当前UTC时间是同一周
+    // /// </summary>
+    // /// <param name="timestampMilliseconds">Unix时间戳(毫秒)</param>
+    // /// <returns>如果是同一周返回true,否则返回false</returns>
+    // /// <remarks>
+    // /// 此方法将Unix毫秒级时间戳转换为UTC DateTime后进行比较
+    // /// 适用于跨时区判定是否同周的场景
+    // /// </remarks>
+    // public static bool IsUnixSameWeekFromTimestampMilliseconds(long timestampMilliseconds)
+    // {
+    //     var dateTime = UtcMillisecondsToUtcDateTime(timestampMilliseconds);
+    //     return IsNowSameWeekUtc(dateTime);
+    // }
 
     /// <summary>
     /// 获取本周指定星期几的UTC时间
@@ -104,6 +75,61 @@ public static partial class TimerHelper
     /// </remarks>
     public static DateTime GetDayOfWeekTime(DayOfWeek day)
     {
-        return GetDayOfWeekTime(GetUtcNow(), day);
+        return GetDayOfWeekTime(GetNowWithUtc(), day);
+    }
+
+    /// <summary>
+    /// 获取下周开始时间
+    /// </summary>
+    /// <returns>下周周一00:00:00的时间</returns>
+    /// <remarks>
+    /// 此方法返回下周第一天(周一)的零点时间
+    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// </remarks>
+    public static DateTime GetNextWeekStartTimeWithUtc()
+    {
+        var now = GetNowWithUtc();
+        var dayOfWeek = (int)now.DayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+        return now.AddDays(1 - dayOfWeek + 7).Date;
+    }
+
+    /// <summary>
+    /// 获取下周开始时间戳（基于设置时区）
+    /// </summary>
+    /// <returns>下周周一00:00:00的时间戳(秒) + 时区偏移</returns>
+    /// <remarks>
+    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// </remarks>
+    public static long GetNextWeekStartTimestampWithUtc()
+    {
+        return DateTimeToUnixTimeSeconds(GetNextWeekStartTimeWithUtc());
+    }
+
+    /// <summary>
+    /// 获取下周结束时间
+    /// </summary>
+    /// <returns>下周周日23:59:59的时间</returns>
+    /// <remarks>
+    /// 此方法返回下周最后一天(周日)的最后一秒
+    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// </remarks>
+    public static DateTime GetNextWeekEndTimeWithUtc()
+    {
+        return GetNextWeekStartTimeWithUtc().AddDays(7).AddSeconds(-1);
+    }
+
+    /// <summary>
+    /// 获取下周结束时间戳
+    /// </summary>
+    /// <returns>下周周日23:59:59的时间戳(秒)</returns>
+    /// <remarks>
+    /// 此方法返回下周周日最后一秒的Unix时间戳
+    /// 会将时间转换为UTC时间后再计算时间戳
+    /// </remarks>
+    public static long GetNextWeekEndTimestampWithUtc()
+    {
+        var date = GetNextWeekEndTimeWithUtc();
+        return DateTimeToUnixTimeSeconds(date);
     }
 }
