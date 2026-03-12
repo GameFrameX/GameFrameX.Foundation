@@ -11,7 +11,8 @@ namespace GameFrameX.Foundation.Options;
 /// </summary>
 public static class OptionsProvider
 {
-    private static readonly Dictionary<Type, object> OptionsCache = new Dictionary<Type, object>();
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, object> OptionsCache = new();
+    private static readonly object _lock = new();
     private static string[] _args;
 
     /// <summary>
@@ -20,8 +21,11 @@ public static class OptionsProvider
     /// <param name="args">命令行参数</param>
     public static void Initialize(string[] args)
     {
-        _args = args ?? Array.Empty<string>();
-        OptionsCache.Clear();
+        lock (_lock)
+        {
+            _args = args ?? Array.Empty<string>();
+            OptionsCache.Clear();
+        }
     }
 
     /// <summary>
@@ -97,33 +101,42 @@ public static class OptionsProvider
         if (OptionsCache.TryGetValue(type, out var cachedOptions))
         {
             var cachedResult = (T)cachedOptions;
-            
+
             // 如果启用调试输出，打印缓存的选项对象
             if (shouldDebug)
             {
                 Console.WriteLine("⚠️  使用缓存的配置对象 (Using cached configuration object)");
                 OptionsDebugger.PrintParsedOptions(cachedResult);
             }
-            
+
             return cachedResult;
         }
 
         // 创建选项构建器
-        var builder = new OptionsBuilder<T>(_args ?? Array.Empty<string>());
+        string[] args;
+        lock (_lock)
+        {
+            args = _args ?? Array.Empty<string>();
+        }
+
+        var builder = new OptionsBuilder<T>(args);
 
         // 构建选项
         var options = builder.Build(skipValidation);
 
-        // 缓存选项
-        OptionsCache[type] = options;
+        // 缓存选项（使用 GetOrAdd 确保线程安全）
+        var cachedOptions2 = OptionsCache.GetOrAdd(type, options);
+
+        // 如果是刚添加的，使用新构建的 options；如果是其他线程已添加的，使用缓存的
+        var result = ReferenceEquals(cachedOptions2, options) ? options : (T)cachedOptions2;
 
         // 如果启用调试输出，打印解析后的选项对象
         if (shouldDebug)
         {
-            OptionsDebugger.PrintParsedOptions(options);
+            OptionsDebugger.PrintParsedOptions(result);
         }
 
-        return options;
+        return result;
     }
 
     /// <summary>
@@ -141,10 +154,7 @@ public static class OptionsProvider
     public static void RemoveFromCache<T>() where T : class
     {
         var type = typeof(T);
-        if (OptionsCache.ContainsKey(type))
-        {
-            OptionsCache.Remove(type);
-        }
+        OptionsCache.TryRemove(type, out _);
     }
 
     /// <summary>

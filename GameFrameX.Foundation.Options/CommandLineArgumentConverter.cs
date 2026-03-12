@@ -215,20 +215,4 @@ public class CommandLineArgumentConverter
         var normalizedValue = value.Trim().ToLowerInvariant();
         return normalizedValue is "true" or "false" or "1" or "0" or "yes" or "no" or "on" or "off";
     }
-
-    /// <summary>
-    /// 解析Bool类型字符串值
-    /// </summary>
-    /// <param name="value">要解析的字符串值</param>
-    /// <returns>解析后的Bool值</returns>
-    private static bool ParseBooleanValue(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return false;
-        }
-
-        var normalizedValue = value.Trim().ToLowerInvariant();
-        return normalizedValue is "true" or "1" or "yes" or "on";
-    }
 }

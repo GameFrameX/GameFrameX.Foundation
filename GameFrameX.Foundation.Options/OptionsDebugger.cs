@@ -38,7 +38,7 @@ namespace GameFrameX.Foundation.Options
 
                 // 计算最大显示宽度
                 int maxWidth = 0;
-            var optionInfos = new List<(PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute)>();
+                var optionInfos = new List<(PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute)>();
 
                 foreach (var property in properties.OrderBy(p => p.Name))
                 {
@@ -58,7 +58,7 @@ namespace GameFrameX.Foundation.Options
                     }
 
                     maxWidth = Math.Max(maxWidth, displayName.Length);
-                optionInfos.Add((property, displayName, optionAttribute));
+                    optionInfos.Add((property, displayName, optionAttribute));
                 }
 
                 // 添加2个字符的缓冲空间
@@ -73,7 +73,7 @@ namespace GameFrameX.Foundation.Options
                 int descWidth = DescriptionHeader.Length;
                 int defaultWidth = DefaultValueHeader.Length;
 
-            foreach (var (property, displayName, optionAttribute) in optionInfos)
+                foreach (var (property, displayName, optionAttribute) in optionInfos)
                 {
                     var value = property.GetValue(options);
                     var displayValue = FormatPropertyValue(value) ?? string.Empty;
