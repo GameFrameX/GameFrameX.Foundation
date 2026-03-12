@@ -23,6 +23,16 @@ namespace GameFrameX.Foundation.Utility.DistributedSystem.Snowflake;
 public static class TimeSystem
 {
     /// <summary>
+    /// 用于时间函数同步的锁对象
+    /// </summary>
+    private static readonly object LockObject = new object();
+
+    /// <summary>
+    /// 内部的时间函数委托
+    /// </summary>
+    private static Func<long> _currentTimeFunc = InternalCurrentTimeMillis;
+
+    /// <summary>
     /// 当前时间函数委托，默认使用内部实现的时间函数
     /// </summary>
     /// <value>
@@ -30,8 +40,25 @@ public static class TimeSystem
     /// </value>
     /// <remarks>
     /// 可以通过 <see cref="StubCurrentTime(Func{long})"/> 方法替换此委托以进行测试
+    /// 线程安全的属性
     /// </remarks>
-    public static Func<long> CurrentTimeFunc = InternalCurrentTimeMillis;
+    public static Func<long> CurrentTimeFunc
+    {
+        get
+        {
+            lock (LockObject)
+            {
+                return _currentTimeFunc;
+            }
+        }
+        set
+        {
+            lock (LockObject)
+            {
+                _currentTimeFunc = value;
+            }
+        }
+    }
 
     /// <summary>
     /// 获取当前时间戳（毫秒）
@@ -65,8 +92,9 @@ public static class TimeSystem
     /// </example>
     public static IDisposable StubCurrentTime(Func<long> func)
     {
+        var originalFunc = _currentTimeFunc;
         CurrentTimeFunc = func;
-        return new DisposableAction(() => { CurrentTimeFunc = InternalCurrentTimeMillis; });
+        return new DisposableAction(() => { CurrentTimeFunc = originalFunc; });
     }
 
     /// <summary>
@@ -88,8 +116,9 @@ public static class TimeSystem
     /// </example>
     public static IDisposable StubCurrentTime(long millis)
     {
+        var originalFunc = _currentTimeFunc;
         CurrentTimeFunc = () => millis;
-        return new DisposableAction(() => { CurrentTimeFunc = InternalCurrentTimeMillis; });
+        return new DisposableAction(() => { CurrentTimeFunc = originalFunc; });
     }
 
     /// <summary>
