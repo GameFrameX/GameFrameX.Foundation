@@ -47,5 +47,6 @@ public class DisposableAction : IDisposable
     public void Dispose()
     {
         _action();
+        GC.SuppressFinalize(this);
     }
 }
