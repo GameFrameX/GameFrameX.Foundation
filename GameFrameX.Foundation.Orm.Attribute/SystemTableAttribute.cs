@@ -48,7 +48,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 /// }
 /// </code>
 /// </example>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
 public sealed class SystemTableAttribute : System.Attribute
 {
     /// <summary>
