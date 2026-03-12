@@ -37,15 +37,15 @@ public static class SnowFlakeIdHelper
     /// <summary>
     /// 用于线程同步的锁对象
     /// </summary>
-    private static readonly object LockObject = new object();
+    private static readonly object LockObject = new();
 
     /// <summary>
-    /// 时间戳起始点（2010-11-04 09:42:54），Twitter雪花算法的起始时间
+    /// 时间戳起始点（2025-01-01 00:00:00 UTC）
     /// </summary>
     /// <value>
     /// 以毫秒为单位的时间戳起始点
     /// </value>
-    public static long BaseTime = (long)(UtcTimeStart - EpochTime).TotalMilliseconds;
+    public static long BaseTime { get; set; } = (long)(UtcTimeStart - EpochTime).TotalMilliseconds;
 
     /// <summary>
     /// 内部的 IdWorker 实例
@@ -62,7 +62,7 @@ public static class SnowFlakeIdHelper
     /// 该值在创建 <see cref="IdWorker"/> 实例之前可以修改。
     /// 一旦实例创建后，修改此值不会影响已创建的实例。
     /// </remarks>
-    public static int WorkId = 1;
+    public static int WorkId { get; set; } = 1;
 
     /// <summary>
     /// 数据中心ID，默认值为 1
@@ -74,7 +74,7 @@ public static class SnowFlakeIdHelper
     /// 该值在创建 <see cref="IdWorker"/> 实例之前可以修改。
     /// 一旦实例创建后，修改此值不会影响已创建的实例。
     /// </remarks>
-    public static int DataCenterId = 1;
+    public static int DataCenterId { get; set; } = 1;
 
     /// <summary>
     /// 静态构造函数
