@@ -144,4 +144,114 @@ public static partial class TimerHelper
         var now = isUseUtc ? GetNowWithUtc() : GetNowWithTimeZone();
         return (long)(now - time).TotalSeconds;
     }
+
+    #region TimeZone专用方法
+
+    /// <summary>
+    /// 计算两个时间戳之间的时间差（秒级，基于TimeZone）
+    /// </summary>
+    /// <param name="startTimestampSeconds">开始时间戳（秒）</param>
+    /// <param name="endTimestampSeconds">结束时间戳（秒）</param>
+    /// <returns>时间差TimeSpan对象</returns>
+    /// <remarks>
+    /// 此方法会先将时间戳转换为DateTime后再计算差值
+    /// 时间戳以1970年1月1日为起点
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
+    /// 返回的TimeSpan对象包含完整的时间差信息
+    /// </remarks>
+    public static TimeSpan GetTimeDifferenceWithTimeZone(long startTimestampSeconds, long endTimestampSeconds)
+    {
+        var startTime = TimestampSecondToDateTime(startTimestampSeconds, false);
+        var endTime = TimestampSecondToDateTime(endTimestampSeconds, false);
+        return endTime - startTime;
+    }
+
+    /// <summary>
+    /// 计算两个毫秒时间戳之间的时间差（基于TimeZone）
+    /// </summary>
+    /// <param name="startTimestampMillisecond">开始时间戳（毫秒）</param>
+    /// <param name="endTimestampMillisecond">结束时间戳（毫秒）</param>
+    /// <returns>时间差TimeSpan对象</returns>
+    /// <remarks>
+    /// 此方法提供毫秒级的精确时间差计算
+    /// 时间戳以1970年1月1日为起点
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
+    /// 适用于需要高精度时间差计算的场景
+    /// </remarks>
+    public static TimeSpan GetTimeDifferenceMillisecondWithTimeZone(long startTimestampMillisecond, long endTimestampMillisecond)
+    {
+        var startTime = TimeStampMillisecondToDateTime(startTimestampMillisecond, false);
+        var endTime = TimeStampMillisecondToDateTime(endTimestampMillisecond, false);
+        return endTime - startTime;
+    }
+
+    /// <summary>
+    /// 计算指定时间到当前时间的时间差（基于TimeZone）
+    /// </summary>
+    /// <param name="time">指定时间</param>
+    /// <returns>时间差TimeSpan对象</returns>
+    /// <remarks>
+    /// 此方法计算指定时间到当前时间的差值
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
+    /// 如果指定时间在当前时间之后，将返回负值
+    /// 常用于计算时间间隔和判断过期时间
+    /// </remarks>
+    public static TimeSpan GetTimeDifferenceFromNowWithTimeZone(DateTime time)
+    {
+        var now = GetNowWithTimeZone();
+        return now - time;
+    }
+
+    /// <summary>
+    /// 计算指定时间戳到当前时间的时间差（基于TimeZone）
+    /// </summary>
+    /// <param name="timestamp">时间戳（秒）</param>
+    /// <returns>时间差TimeSpan对象</returns>
+    /// <remarks>
+    /// 此方法先将时间戳转换为DateTime，再计算与当前时间的差值
+    /// 时间戳以1970年1月1日为起点
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
+    /// 适用于处理Unix时间戳格式的时间差计算
+    /// </remarks>
+    public static TimeSpan GetTimeDifferenceFromNowWithTimeZone(long timestamp)
+    {
+        var time = TimestampSecondToDateTime(timestamp, false);
+        return GetTimeDifferenceFromNowWithTimeZone(time);
+    }
+
+    /// <summary>
+    /// 计算指定毫秒时间戳到当前时间的时间差（基于TimeZone）
+    /// </summary>
+    /// <param name="timestampMs">时间戳（毫秒）</param>
+    /// <returns>时间差TimeSpan对象</returns>
+    /// <remarks>
+    /// 此方法提供毫秒级精度的时间差计算
+    /// 时间戳以1970年1月1日为起点
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
+    /// 适用于需要高精度时间差计算的场景
+    /// </remarks>
+    public static TimeSpan GetTimeDifferenceFromNowMsWithTimeZone(long timestampMs)
+    {
+        var time = TimeStampMillisecondToDateTime(timestampMs, false);
+        return GetTimeDifferenceFromNowWithTimeZone(time);
+    }
+
+    /// <summary>
+    /// 计算指定时间到当前时间经过了多少秒（基于TimeZone）
+    /// </summary>
+    /// <param name="time">指定时间</param>
+    /// <returns>经过的秒数（如果指定时间在未来，返回负数）</returns>
+    /// <remarks>
+    /// 此方法计算从指定时间到现在经过的总秒数
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 时间
+    /// 结果会被转换为长整型，可能损失小数部分精度
+    /// 常用于计算时间是否过期或剩余时间
+    /// </remarks>
+    public static long GetElapsedSecondsWithTimeZone(DateTime time)
+    {
+        var now = GetNowWithTimeZone();
+        return (long)(now - time).TotalSeconds;
+    }
+
+    #endregion
 }

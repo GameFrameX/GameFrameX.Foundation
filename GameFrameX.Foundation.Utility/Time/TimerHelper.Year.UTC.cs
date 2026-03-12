@@ -115,4 +115,34 @@ public static partial class TimerHelper
         var date = GetNextYearStartTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
+
+    /// <summary>
+    /// 获取指定日期所在年的结束时间戳（UTC）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在年12月31号23:59:59的时间戳(秒)（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在年最后一天最后一秒的Unix时间戳
+    /// 基于 UTC 时间计算
+    /// </remarks>
+    public static long GetEndTimestampOfYearWithUtc(DateTime date)
+    {
+        var endTime = GetEndTimeOfYear(date);
+        return DateTimeToUnixTimeSeconds(new DateTime(endTime.Year, endTime.Month, endTime.Day, endTime.Hour, endTime.Minute, endTime.Second, DateTimeKind.Utc));
+    }
+
+    /// <summary>
+    /// 获取指定日期所在年的开始时间戳（UTC）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在年1月1号00:00:00的时间戳(秒)（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在年第一天零点时间的Unix时间戳
+    /// 基于 UTC 时间计算
+    /// </remarks>
+    public static long GetStartTimestampOfYearWithUtc(DateTime date)
+    {
+        var startTime = GetStartTimeOfYear(date);
+        return DateTimeToUnixTimeSeconds(new DateTime(startTime.Year, startTime.Month, startTime.Day, 0, 0, 0, DateTimeKind.Utc));
+    }
 }

@@ -270,4 +270,19 @@ public static partial class TimerHelper
         var time = GetNextWeekEndTimeWithTimeZone();
         return DateTimeToSecondsWithTimeZone(time);
     }
+
+    /// <summary>
+    /// 获取本周指定星期几的时间（基于TimeZone）
+    /// </summary>
+    /// <param name="day">星期几 (DayOfWeek.Sunday 到 DayOfWeek.Saturday)</param>
+    /// <returns>本周指定星期几的日期时间</returns>
+    /// <remarks>
+    /// 此方法基于当前时区 (<see cref="CurrentTimeZone"/>) 时间计算
+    /// 返回的时间部分与当前时区时间保持一致，仅日期变更为本周对应的星期几
+    /// 注意：这里的"本周"是基于当前时区时间定义的
+    /// </remarks>
+    public static DateTime GetDayOfWeekTimeWithTimeZone(DayOfWeek day)
+    {
+        return GetDayOfWeekTime(GetNowWithTimeZone(), day);
+    }
 }

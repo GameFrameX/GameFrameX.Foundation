@@ -132,4 +132,98 @@ public static partial class TimerHelper
         var date = GetNextWeekEndTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);
     }
+
+    /// <summary>
+    /// 获取本周开始时间（UTC）
+    /// </summary>
+    /// <returns>本周周一00:00:00的时间（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回本周第一天(周一)的零点时间
+    /// 使用 UTC 时区计算
+    /// </remarks>
+    public static DateTime GetWeekStartTimeWithUtc()
+    {
+        var now = GetNowWithUtc();
+        var dayOfWeek = (int)now.DayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+        return now.AddDays(1 - dayOfWeek).Date;
+    }
+
+    /// <summary>
+    /// 获取本周开始时间戳（UTC）
+    /// </summary>
+    /// <returns>本周周一00:00:00的时间戳(秒)（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回本周周一零点时间的Unix时间戳
+    /// 基于 UTC 时间计算
+    /// </remarks>
+    public static long GetWeekStartTimestampWithUtc()
+    {
+        var date = GetWeekStartTimeWithUtc();
+        return DateTimeToUnixTimeSeconds(date);
+    }
+
+    /// <summary>
+    /// 获取本周结束时间（UTC）
+    /// </summary>
+    /// <returns>本周周日23:59:59的时间（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回本周最后一天(周日)的最后一秒
+    /// 使用 UTC 时区计算
+    /// </remarks>
+    public static DateTime GetWeekEndTimeWithUtc()
+    {
+        var now = GetNowWithUtc();
+        var dayOfWeek = (int)now.DayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+        return now.AddDays(7 - dayOfWeek).Date.AddDays(1).AddSeconds(-1);
+    }
+
+    /// <summary>
+    /// 获取本周结束时间戳（UTC）
+    /// </summary>
+    /// <returns>本周周日23:59:59的时间戳(秒)（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回本周周日最后一秒的Unix时间戳
+    /// 基于 UTC 时间计算
+    /// </remarks>
+    public static long GetWeekEndTimestampWithUtc()
+    {
+        var date = GetWeekEndTimeWithUtc();
+        return DateTimeToUnixTimeSeconds(date);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在周的开始时间戳（UTC）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在周周一00:00:00的时间戳(秒)（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在周的周一零点时间的Unix时间戳
+    /// 基于 UTC 时间计算
+    /// </remarks>
+    public static long GetStartTimestampOfWeekWithUtc(DateTime date)
+    {
+        var dayOfWeek = (int)date.DayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+        var monday = date.AddDays(1 - dayOfWeek).Date;
+        return DateTimeToUnixTimeSeconds(monday);
+    }
+
+    /// <summary>
+    /// 获取指定日期所在周的结束时间戳（UTC）
+    /// </summary>
+    /// <param name="date">指定日期</param>
+    /// <returns>所在周周日23:59:59的时间戳(秒)（UTC）</returns>
+    /// <remarks>
+    /// 此方法返回指定日期所在周的周日最后一秒的Unix时间戳
+    /// 基于 UTC 时间计算
+    /// </remarks>
+    public static long GetEndTimestampOfWeekWithUtc(DateTime date)
+    {
+        var dayOfWeek = (int)date.DayOfWeek;
+        dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
+        var sunday = date.AddDays(7 - dayOfWeek).Date.AddDays(1).AddSeconds(-1);
+        return DateTimeToUnixTimeSeconds(sunday);
+    }
 }
