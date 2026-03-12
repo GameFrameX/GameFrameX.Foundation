@@ -37,12 +37,17 @@ namespace GameFrameX.Foundation.Orm.Entity.Filter;
 public interface ISafeCreatedFilter
 {
     /// <summary>
-    /// 创建人
+    /// 创建人Id
     /// </summary>
-    public long CreatedId { get; set; }
+    long? CreatedId { get; set; }
 
     /// <summary>
     /// 创建时间
     /// </summary>
-    public long CreatedTime { get; set; }
+    long? CreatedTime { get; set; }
+
+    /// <summary>
+    /// 创建人姓名
+    /// </summary>
+    string? CreatedName { get; set; }
 }

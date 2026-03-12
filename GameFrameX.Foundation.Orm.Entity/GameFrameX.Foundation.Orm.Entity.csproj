@@ -4,6 +4,7 @@
         <Description>GameFrameX.Foundation.Orm.Entity,GameFrameX 框架的基础设施框架库,提供整套框架的日志写入的统一接口.框架文档主页: https://gameframex.doc.alianblank.com</Description>
         <PackageTags>GameFrameX,Lib,Foundation.Orm.Entity,Server,GameServer</PackageTags>
         <AssemblyOriginatorKeyFile>../gameframex.key.snk</AssemblyOriginatorKeyFile>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputPath>..\bin\app</OutputPath>

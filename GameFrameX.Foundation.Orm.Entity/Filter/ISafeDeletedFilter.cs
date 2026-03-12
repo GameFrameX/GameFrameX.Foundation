@@ -44,5 +44,15 @@ public interface ISafeDeletedFilter
     /// <summary>
     /// 删除时间
     /// </summary>
-    long DeleteTime { get; set; }
+    long? DeleteTime { get; set; }
+
+    /// <summary>
+    /// 删除人Id
+    /// </summary>
+    long? DeletedId { get; set; }
+
+    /// <summary>
+    /// 删除人姓名
+    /// </summary>
+    string? DeletedName { get; set; }
 }
