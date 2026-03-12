@@ -47,6 +47,11 @@ public static partial class LogHelper
     private static ILogger _logger;
 
     /// <summary>
+    /// 用于保护 _logger 字段的锁对象
+    /// </summary>
+    private static readonly object _loggerLock = new();
+
+    /// <summary>
     /// 设置日志记录器
     /// </summary>
     /// <param name="logger">要设置的日志记录器实例</param>
@@ -54,7 +59,10 @@ public static partial class LogHelper
     public static void SetLogger(ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(logger);
-        _logger = logger;
+        lock (_loggerLock)
+        {
+            _logger = logger;
+        }
     }
 
     /// <summary>
@@ -63,7 +71,10 @@ public static partial class LogHelper
     /// <returns>返回当前设置的日志记录器，如果未设置则返回Serilog的默认Logger</returns>
     private static ILogger GetLogger()
     {
-        return _logger ?? Log.Logger;
+        lock (_loggerLock)
+        {
+            return _logger ?? Log.Logger;
+        }
     }
 
     /// <summary>

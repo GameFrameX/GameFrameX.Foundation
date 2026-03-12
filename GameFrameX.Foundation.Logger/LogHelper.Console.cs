@@ -49,13 +49,13 @@ public partial class LogHelper
     /// 设置控制台输出框架的宽度
     /// </summary>
     /// <param name="length">框架宽度，必须大于0的整数值</param>
-    /// <exception cref="ArgumentNullException">当length为null时抛出</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当length小于等于0时抛出</exception>
     /// <remarks>
     /// 此设置会影响所有后续的控制台输出格式，包括标题框、配置信息框和分隔线的宽度。
     /// </remarks>
     public static void SetFrameLength(int length)
     {
-        ArgumentNullException.ThrowIfNull(length, nameof(length));
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(length, 0, nameof(length));
         LogConsoleObject.SetFrameLength(length);
     }
 

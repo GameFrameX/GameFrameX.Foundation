@@ -18,7 +18,7 @@ public sealed class LogOptions
     /// </summary>
     public LogOptions(string logPathName = "logs")
     {
-        if (string.IsNullOrEmpty(logPathName.Trim()))
+        if (string.IsNullOrWhiteSpace(logPathName))
         {
             logPathName = "logs";
         }

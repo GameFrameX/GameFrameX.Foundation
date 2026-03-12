@@ -81,7 +81,7 @@ internal sealed class LogConsole
     public void SetFrameLength(int length)
     {
         // 验证参数有效性，确保框架宽度为正数
-        ArgumentOutOfRangeException.ThrowIfGreaterThan(0, length, nameof(length));
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(length, 0, nameof(length));
         _frameLength = length;
     }
 
