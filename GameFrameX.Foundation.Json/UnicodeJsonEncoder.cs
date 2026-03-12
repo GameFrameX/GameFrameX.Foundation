@@ -34,9 +34,19 @@ using System.Text.Encodings.Web;
 
 namespace GameFrameX.Foundation.Json;
 
-internal sealed class UnicodeJsonEncoder : JavaScriptEncoder
+/// <summary>
+/// 自定义的 JSON 编码器，用于在 JSON 序列化时保持中文字符和 Emoji 表情不被转义。
+/// <para>
+/// 默认的 <see cref="JavaScriptEncoder"/> 会将非 ASCII 字符（包括中文和 Emoji）转义为 Unicode 转义序列（如 \uXXXX）。
+/// 此编码器仅对必要的特殊字符进行转义（如双引号、反斜杠和控制字符），而保留其他字符的原始形式。
+/// </para>
+/// </summary>
+public sealed class UnicodeJsonEncoder : JavaScriptEncoder
 {
-    internal static readonly UnicodeJsonEncoder Singleton = new UnicodeJsonEncoder();
+    /// <summary>
+    /// 获取 <see cref="UnicodeJsonEncoder"/> 的单例实例。
+    /// </summary>
+    public static readonly UnicodeJsonEncoder Singleton = new UnicodeJsonEncoder();
 
     private readonly bool _preferHexEscape;
     private readonly bool _preferUppercase;
@@ -51,15 +61,17 @@ internal sealed class UnicodeJsonEncoder : JavaScriptEncoder
         _preferUppercase = preferUppercase;
     }
 
-    public override int MaxOutputCharactersPerInputCharacter
-    {
-        get
-        {
-            return 6;
-            // "\uXXXX" for a single char ("\uXXXX\uYYYY" [12 chars] for supplementary scalar value)
-        }
-    }
+    /// <summary>
+    /// 获取每个输入字符可能产生的最大输出字符数。
+    /// </summary>
+    public override int MaxOutputCharactersPerInputCharacter => 6;
 
+    /// <summary>
+    /// 查找文本中第一个需要编码的字符的位置。
+    /// </summary>
+    /// <param name="text">要检查的文本指针。</param>
+    /// <param name="textLength">文本长度。</param>
+    /// <returns>第一个需要编码的字符的索引，如果没有则返回 -1。</returns>
     public override unsafe int FindFirstCharacterToEncode(char* text, int textLength)
     {
         for (int index = 0; index < textLength; ++index)
@@ -75,6 +87,14 @@ internal sealed class UnicodeJsonEncoder : JavaScriptEncoder
         return -1;
     }
 
+    /// <summary>
+    /// 尝试将 Unicode 标量值编码到输出缓冲区。
+    /// </summary>
+    /// <param name="unicodeScalar">要编码的 Unicode 标量值。</param>
+    /// <param name="buffer">输出缓冲区。</param>
+    /// <param name="bufferLength">缓冲区长度。</param>
+    /// <param name="numberOfCharactersWritten">写入的字符数。</param>
+    /// <returns>如果编码成功则为 true，否则为 false。</returns>
     public override unsafe bool TryEncodeUnicodeScalar(int unicodeScalar, char* buffer, int bufferLength, out int numberOfCharactersWritten)
     {
         bool encode = WillEncode(unicodeScalar);
@@ -119,6 +139,11 @@ internal sealed class UnicodeJsonEncoder : JavaScriptEncoder
         }
     }
 
+    /// <summary>
+    /// 确定指定的 Unicode 标量值是否需要编码。
+    /// </summary>
+    /// <param name="unicodeScalar">要检查的 Unicode 标量值。</param>
+    /// <returns>如果该值需要编码则为 true，否则为 false。</returns>
     public override bool WillEncode(int unicodeScalar)
     {
         if (unicodeScalar > char.MaxValue)

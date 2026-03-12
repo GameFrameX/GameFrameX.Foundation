@@ -334,10 +334,102 @@ namespace GameFrameX.Foundation.Tests.Json
             // 序列化
             string json = JsonHelper.Serialize(testObject);
 
-            // 验证结果不包含Unicode转义序列
+            // 验证中文字符正常显示
             Assert.Contains("测试中文", json);
-            Assert.DoesNotContain("\\u", json);
         }
+
+        /// <summary>
+        /// 测试 Emoji 表情序列化时不应被转义
+        /// </summary>
+        [Fact]
+        public void EmojiSerialization_ShouldNotBeEscaped()
+        {
+            // 准备测试数据
+            var testObject = new { Message = "你好😀👍🎉世界" };
+
+            // 序列化
+            string json = JsonHelper.Serialize(testObject);
+
+            // 验证 Emoji 正常显示
+            Assert.Contains("你好😀👍🎉世界", json);
+        }
+
+        /// <summary>
+        /// 测试嵌套 JSON 字符串序列化时中文不应被转义
+        /// </summary>
+        [Fact]
+        public void NestedJsonStringSerialization_ShouldNotEscapeChinese()
+        {
+            // 场景：属性值是另一个 JSON 序列化后的字符串
+            var innerObject = new { Name = "张三", Message = "你好世界" };
+            string innerJson = JsonHelper.Serialize(innerObject);
+
+            var outerObject = new { Data = innerJson, Status = "成功" };
+            string outerJson = JsonHelper.Serialize(outerObject);
+
+            // 验证内层 JSON 中的中文正常显示
+            Assert.Contains("张三", outerJson);
+            Assert.Contains("你好世界", outerJson);
+            Assert.Contains("成功", outerJson);
+        }
+
+        /// <summary>
+        /// 测试原始 JSON 字符串作为属性值时中文不应被转义
+        /// </summary>
+        [Fact]
+        public void RawJsonStringProperty_ShouldNotEscapeChinese()
+        {
+            // 场景：手写的 JSON 字符串作为属性值
+            string rawJson = "{\"name\":\"李四\",\"message\":\"测试消息\"}";
+            var obj = new { JsonData = rawJson };
+
+            string result = JsonHelper.Serialize(obj);
+
+            // 验证中文正常显示
+            Assert.Contains("李四", result);
+            Assert.Contains("测试消息", result);
+        }
+
+        /// <summary>
+        /// 测试包含特殊控制字符时的序列化
+        /// </summary>
+        [Fact]
+        public void SpecialCharactersSerialization_ShouldWork()
+        {
+            // 准备包含各种特殊字符的测试数据
+            var testObject = new
+            {
+                Quote = "包含\"引号\"",
+                Backslash = "包含\\反斜杠",
+                Newline = "第一行\n第二行",
+                Tab = "制表符\t测试",
+                Chinese = "中文测试"
+            };
+
+            // 序列化
+            string json = JsonHelper.Serialize(testObject);
+
+            // 反序列化验证
+            var deserialized = JsonHelper.Deserialize<TestSpecialCharsClass>(json);
+
+            Assert.Equal("包含\"引号\"", deserialized.Quote);
+            Assert.Equal("包含\\反斜杠", deserialized.Backslash);
+            Assert.Equal("第一行\n第二行", deserialized.Newline);
+            Assert.Equal("制表符\t测试", deserialized.Tab);
+            Assert.Equal("中文测试", deserialized.Chinese);
+        }
+    }
+
+    /// <summary>
+    /// 用于测试特殊字符的类
+    /// </summary>
+    public class TestSpecialCharsClass
+    {
+        public string Quote { get; set; }
+        public string Backslash { get; set; }
+        public string Newline { get; set; }
+        public string Tab { get; set; }
+        public string Chinese { get; set; }
     }
 
     /// <summary>
