@@ -103,7 +103,7 @@ public sealed class LogOptions
     /// <remarks>
     /// 日志文件的存储位置，是绝对路径。
     /// </remarks>
-    public string LogSavePath { get; private set; }
+    public string LogSavePath { get; set; }
 
     /// <summary>
     /// 日志文件名，为空时使用默认名称。
