@@ -93,6 +93,14 @@ public class IdWorker
     private const long SequenceMask = -1L ^ (-1L << SequenceBits);
 
     /// <summary>
+    /// 默认起始时间（2025-01-01 00:00:00 UTC）
+    /// </summary>
+    /// <remarks>
+    /// 与 <see cref="SnowFlakeIdHelper.BaseTime"/> 保持一致
+    /// </remarks>
+    public const long DefaultBaseTime = 1735689600000L;
+
+    /// <summary>
     /// 当前序列号
     /// </summary>
     private long _sequence = 0L;
@@ -128,7 +136,7 @@ public class IdWorker
     /// var idWorkerWithSequence = new IdWorker(2, 1, 100);
     /// </code>
     /// </example>
-    public IdWorker(long workerId, long dataCenterId, long baseTime = 1288834974657L, long sequence = 0L)
+    public IdWorker(long workerId, long dataCenterId, long baseTime = DefaultBaseTime, long sequence = 0L)
     {
         WorkerId = workerId;
         DataCenterId = dataCenterId;
