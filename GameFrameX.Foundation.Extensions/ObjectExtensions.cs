@@ -53,15 +53,15 @@ public static class ObjectExtensions
     /// <exception cref="ArgumentOutOfRangeException">当参数不在范围内时,引发参数超出范围异常</exception>
     public static void CheckRange(this int value, int minValue = 0, int maxValue = int.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        if (value < minValue || value > maxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be greater than {minValue} and less than {maxValue}.");
+            throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} must be between {minValue} and {maxValue} (inclusive).");
         }
     }
 
     /// <summary>
-    /// 判断参数是否在最大值和最小值之间
+    /// 判断参数是否在最大值和最小值之间（闭区间）
     /// </summary>
     /// <param name="value">参数值</param>
     /// <param name="minValue">最小值</param>
@@ -69,17 +69,12 @@ public static class ObjectExtensions
     /// <returns>返回是否在范围内</returns>
     public static bool IsRange(this int value, int minValue = 0, int maxValue = int.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
-        {
-            return false;
-        }
-
-        return true;
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        return value >= minValue && value <= maxValue;
     }
 
     /// <summary>
-    /// 判断参数是否在最大值和最小值之间
+    /// 判断参数是否在最大值和最小值之间（闭区间）
     /// </summary>
     /// <param name="value">参数值</param>
     /// <param name="minValue">最小值</param>
@@ -87,13 +82,8 @@ public static class ObjectExtensions
     /// <returns>返回是否在范围内</returns>
     public static bool IsRange(this uint value, uint minValue = 0, uint maxValue = uint.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
-        {
-            return false;
-        }
-
-        return true;
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        return value >= minValue && value <= maxValue;
     }
 
     /// <summary>
@@ -105,15 +95,15 @@ public static class ObjectExtensions
     /// <exception cref="ArgumentOutOfRangeException">当参数不在范围内时,引发参数超出范围异常</exception>
     public static void CheckRange(this uint value, uint minValue = 0, uint maxValue = uint.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        if (value < minValue || value > maxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be greater than {minValue} and less than {maxValue}.");
+            throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} must be between {minValue} and {maxValue} (inclusive).");
         }
     }
 
     /// <summary>
-    /// 判断参数是否在最大值和最小值之间
+    /// 判断参数是否在最大值和最小值之间（闭区间）
     /// </summary>
     /// <param name="value">参数值</param>
     /// <param name="minValue">最小值</param>
@@ -121,13 +111,8 @@ public static class ObjectExtensions
     /// <returns>返回是否在范围内</returns>
     public static bool IsRange(this long value, long minValue = 0, long maxValue = long.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
-        {
-            return false;
-        }
-
-        return true;
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        return value >= minValue && value <= maxValue;
     }
 
     /// <summary>
@@ -139,15 +124,15 @@ public static class ObjectExtensions
     /// <exception cref="ArgumentOutOfRangeException">当参数不在范围内时,引发参数超出范围异常</exception>
     public static void CheckRange(this long value, long minValue = 0, long maxValue = long.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        if (value < minValue || value > maxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be greater than {minValue} and less than {maxValue}.");
+            throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} must be between {minValue} and {maxValue} (inclusive).");
         }
     }
 
     /// <summary>
-    /// 判断参数是否在最大值和最小值之间
+    /// 判断参数是否在最大值和最小值之间（闭区间）
     /// </summary>
     /// <param name="value">参数值</param>
     /// <param name="minValue">最小值</param>
@@ -155,13 +140,8 @@ public static class ObjectExtensions
     /// <returns>返回是否在范围内</returns>
     public static bool IsRange(this ulong value, ulong minValue = 0, ulong maxValue = ulong.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
-        {
-            return false;
-        }
-
-        return true;
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        return value >= minValue && value <= maxValue;
     }
 
     /// <summary>
@@ -173,15 +153,15 @@ public static class ObjectExtensions
     /// <exception cref="ArgumentOutOfRangeException">当参数不在范围内时,引发参数超出范围异常</exception>
     public static void CheckRange(this ulong value, ulong minValue = 0, ulong maxValue = ulong.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        if (value < minValue || value > maxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be greater than {minValue} and less than {maxValue}.");
+            throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} must be between {minValue} and {maxValue} (inclusive).");
         }
     }
 
     /// <summary>
-    /// 判断参数是否在最大值和最小值之间
+    /// 判断参数是否在最大值和最小值之间（闭区间）
     /// </summary>
     /// <param name="value">参数值</param>
     /// <param name="minValue">最小值</param>
@@ -189,13 +169,8 @@ public static class ObjectExtensions
     /// <returns>返回是否在范围内</returns>
     public static bool IsRange(this short value, short minValue = 0, short maxValue = short.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
-        {
-            return false;
-        }
-
-        return true;
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        return value >= minValue && value <= maxValue;
     }
 
     /// <summary>
@@ -207,15 +182,15 @@ public static class ObjectExtensions
     /// <exception cref="ArgumentOutOfRangeException">当参数不在范围内时,引发参数超出范围异常</exception>
     public static void CheckRange(this short value, short minValue = 0, short maxValue = short.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        if (value < minValue || value > maxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be greater than {minValue} and less than {maxValue}.");
+            throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} must be between {minValue} and {maxValue} (inclusive).");
         }
     }
 
     /// <summary>
-    /// 判断参数是否在最大值和最小值之间
+    /// 判断参数是否在最大值和最小值之间（闭区间）
     /// </summary>
     /// <param name="value">参数值</param>
     /// <param name="minValue">最小值</param>
@@ -223,13 +198,8 @@ public static class ObjectExtensions
     /// <returns>返回是否在范围内</returns>
     public static bool IsRange(this ushort value, ushort minValue = 0, ushort maxValue = ushort.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
-        {
-            return false;
-        }
-
-        return true;
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        return value >= minValue && value <= maxValue;
     }
 
     /// <summary>
@@ -241,10 +211,10 @@ public static class ObjectExtensions
     /// <exception cref="ArgumentOutOfRangeException">当参数不在范围内时,引发参数超出范围异常</exception>
     public static void CheckRange(this ushort value, ushort minValue = 0, ushort maxValue = ushort.MaxValue)
     {
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue, nameof(minValue));
-        if (value <= minValue || value >= maxValue)
+        ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue, nameof(minValue));
+        if (value < minValue || value > maxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be greater than {minValue} and less than {maxValue}.");
+            throw new ArgumentOutOfRangeException(nameof(value), $"Value {value} must be between {minValue} and {maxValue} (inclusive).");
         }
     }
 }
