@@ -17,15 +17,16 @@ public static class HttpJsonResultHelper
     /// <remarks>
     /// 该方法会:
     /// 1. 尝试将JSON字符串反序列化为HttpJsonResult对象
-    /// 2. 根据响应码(Code)判断请求是否成功
+    /// 2. 根据响应码(Code)判断请求是否成功（IsSuccess属性自动根据Code==0计算）
     /// 3. 如果成功(Code=0)，则将Data字段反序列化为泛型类型T
     /// 4. 如果失败，则保留错误信息，Data字段为默认值
     /// </remarks>
     public static HttpJsonResultData<T> ToHttpJsonResultData<T>(this string jsonResult) where T : class, new()
     {
-        HttpJsonResultData<T> resultData = new HttpJsonResultData<T>
+        // 创建默认结果对象，Code初始化为失败状态
+        HttpJsonResultData<T> resultData = new()
         {
-            IsSuccess = false,
+            Code = HttpJsonResultConstants.FailCode,
         };
         try
         {
@@ -36,17 +37,18 @@ public static class HttpJsonResultHelper
             {
                 resultData.Code = httpJsonResult.Code;
                 resultData.Message = httpJsonResult.Message;
-                return resultData; // 返回默认的失败结果
+                return resultData; // 返回失败结果
             }
 
-            resultData.IsSuccess = true; // 设置成功标志
+            // 设置成功状态（IsSuccess会自动根据Code==0返回true）
+            resultData.Code = HttpJsonResultConstants.SuccessCode;
             // 反序列化数据部分，如果数据为空则返回类型T的默认实例
             resultData.Data = string.IsNullOrEmpty(httpJsonResult.Data) ? new T() : JsonHelper.Deserialize<T>(httpJsonResult.Data);
         }
         catch (Exception e)
         {
             // 捕获并输出异常信息
-            LogHelper.Fatal(e, "JSON Deserialize Error {error}");
+            LogHelper.Fatal(e, "JSON Deserialize Error: {ErrorMessage}", e.Message);
         }
 
         return resultData; // 返回结果数据

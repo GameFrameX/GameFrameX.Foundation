@@ -12,11 +12,11 @@ public sealed class HttpJsonResultData<T>
 {
     /// <summary>
     /// 是否成功
-    /// 表示请求是否成功执行，成功为true，失败为false。
-    /// 该属性为快捷判断属性，只能在程序集内部设置，不参与序列化。
+    /// 根据响应码自动判断，Code为0时返回true，其他值返回false。
+    /// 该属性为快捷判断属性，不参与序列化。
     /// </summary>
     [JsonIgnore]
-    public bool IsSuccess { get; internal set; }
+    public bool IsSuccess => Code == HttpJsonResultConstants.SuccessCode;
 
     /// <summary>
     /// 响应码
@@ -63,7 +63,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.SuccessCode,
             Message = string.Empty,
-            IsSuccess = true
         };
     }
 
@@ -88,7 +87,6 @@ public sealed class HttpJsonResultData<T>
             Code = HttpJsonResultConstants.SuccessCode,
             Message = string.Empty,
             Data = data,
-            IsSuccess = true
         };
     }
 
@@ -115,7 +113,6 @@ public sealed class HttpJsonResultData<T>
             Code = HttpJsonResultConstants.SuccessCode,
             Message = message,
             Data = data,
-            IsSuccess = true
         };
     }
 
@@ -144,7 +141,6 @@ public sealed class HttpJsonResultData<T>
             Code = code,
             Message = message,
             Data = data,
-            IsSuccess = true
         };
     }
 
@@ -176,7 +172,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.FailCode,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -202,7 +197,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = code,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -233,7 +227,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = code,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -263,7 +256,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.ValidationErrorCode,
             Message = HttpJsonResultConstants.ValidationErrorMsg,
-            IsSuccess = false
         };
     }
 
@@ -287,7 +279,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.ValidationErrorCode,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -316,7 +307,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.UnauthorizedCode,
             Message = HttpJsonResultConstants.UnauthorizedMsg,
-            IsSuccess = false
         };
     }
 
@@ -340,7 +330,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.UnauthorizedCode,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -369,7 +358,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.NotFoundCode,
             Message = HttpJsonResultConstants.NotFoundMsg,
-            IsSuccess = false
         };
     }
 
@@ -393,7 +381,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.NotFoundCode,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -422,7 +409,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.ServerErrorCode,
             Message = HttpJsonResultConstants.ServerErrorMsg,
-            IsSuccess = false
         };
     }
 
@@ -446,7 +432,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.ServerErrorCode,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -475,7 +460,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.ParamErrorCode,
             Message = HttpJsonResultConstants.ParamErrorMsg,
-            IsSuccess = false
         };
     }
 
@@ -499,7 +483,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.ParamErrorCode,
             Message = message,
-            IsSuccess = false
         };
     }
 
@@ -528,7 +511,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.UnauthorizedCode,
             Message = HttpJsonResultConstants.IllegalMsg,
-            IsSuccess = false
         };
     }
 
@@ -552,7 +534,6 @@ public sealed class HttpJsonResultData<T>
         {
             Code = HttpJsonResultConstants.UnauthorizedCode,
             Message = message,
-            IsSuccess = false
         };
     }
 
