@@ -366,55 +366,6 @@ public static partial class CrcHelper
             ArrayPool<byte>.Shared.Return(buffer);
         }
 
-        /*/// <summary>
-        ///   Asychronously reads the contents of <paramref name="stream"/>
-        ///   and appends them to the data already
-        ///   processed for the current hash computation.
-        /// </summary>
-        /// <param name="stream">The data to process.</param>
-        /// <param name="cancellationToken">
-        ///   The token to monitor for cancellation requests.
-        ///   The default value is <see cref="CancellationToken.None"/>.
-        /// </param>
-        /// <returns>
-        ///   A task that represents the asynchronous append operation.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///   <paramref name="stream"/> is <see langword="null"/>.
-        /// </exception>
-        public Task AppendAsync(Stream stream, CancellationToken cancellationToken = default)
-        {
-            if (stream is null)
-            {
-                throw new ArgumentNullException(nameof(stream));
-            }
-
-            return AppendAsyncCore(stream, cancellationToken);
-        }
-
-        private async Task AppendAsyncCore(Stream stream, CancellationToken cancellationToken)
-        {
-            byte[] buffer = ArrayPool<byte>.Shared.Rent(4096);
-
-            while (true)
-            {
-#if NETCOREAPP
-        int read = await stream.ReadAsync(buffer.AsMemory(), cancellationToken).ConfigureAwait(false);
-#else
-                int read = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
-#endif
-
-                if (read == 0)
-                {
-                    break;
-                }
-
-                Append(new ReadOnlySpan<byte>(buffer, 0, read));
-            }
-
-            ArrayPool<byte>.Shared.Return(buffer);
-        }*/
-
         /// <summary>
         /// Gets the current computed hash value without modifying accumulated state.
         /// </summary>
