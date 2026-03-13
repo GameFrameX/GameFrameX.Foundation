@@ -4,9 +4,14 @@ using GameFrameX.Foundation.Encryption.Localization;
 namespace GameFrameX.Foundation.Encryption;
 
 /// <summary>
-/// XOR加密解密工具类,提供异或运算相关的加密解密功能。
-/// 异或运算具有可逆性,使用相同的密钥进行两次异或运算可以还原原始数据。
+/// XOR加密解密工具类，提供异或运算相关的加密解密功能。
+/// 异或运算具有可逆性，使用相同的密钥进行两次异或运算可以还原原始数据。
 /// </summary>
+/// <remarks>
+/// ⚠️ 安全声明（I-10）：XOR 循环加密属于轻量级数据混淆手段，
+/// 不提供任何密码学安全性保障。已知明文攻击或频率分析可轻易破解。
+/// 请勿将此类用于需要保密性的场景，仅适用于防止意外读取的简单混淆。
+/// </remarks>
 public static class XorHelper
 {
     /// <summary>
