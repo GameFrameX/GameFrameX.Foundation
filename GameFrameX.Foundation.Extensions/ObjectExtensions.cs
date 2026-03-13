@@ -18,7 +18,7 @@ public static class ObjectExtensions
     /// <returns>如果对象为null，则返回true；否则返回false</returns>
     public static bool IsNull(this object self)
     {
-        return self == null;
+        return self is null;
     }
 
     /// <summary>
@@ -28,7 +28,7 @@ public static class ObjectExtensions
     /// <returns>如果对象不为null，则返回true；否则返回false</returns>
     public static bool IsNotNull(this object self)
     {
-        return !self.IsNull();
+        return self is not null;
     }
 
     /// <summary>
