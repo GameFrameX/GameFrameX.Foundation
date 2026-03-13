@@ -5,7 +5,6 @@
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
 using System.Buffers.Binary;
-using System.Net;
 using System.Text;
 
 namespace GameFrameX.Foundation.Extensions;
@@ -88,7 +87,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的整数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加整数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteIntBigEndianValue(this Span<byte> buffer, int value, ref int offset)
+    public static void WriteIntBigEndianValue(this Span<byte> buffer, int value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -97,11 +96,8 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.IntSize}, Available: {buffer.Length}");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(int*)(ptr + offset) = IPAddress.HostToNetworkOrder(value);
-            offset += ConstBaseTypeSize.IntSize;
-        }
+        BinaryPrimitives.WriteInt32BigEndian(buffer[offset..], value);
+        offset += ConstBaseTypeSize.IntSize;
     }
 
 
@@ -113,7 +109,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的长整数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加长整数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteLongBigEndianValue(this Span<byte> buffer, long value, ref int offset)
+    public static void WriteLongBigEndianValue(this Span<byte> buffer, long value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -122,11 +118,8 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.LongSize}, Available: {buffer.Length}");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(long*)(ptr + offset) = IPAddress.HostToNetworkOrder(value);
-            offset += ConstBaseTypeSize.LongSize;
-        }
+        BinaryPrimitives.WriteInt64BigEndian(buffer[offset..], value);
+        offset += ConstBaseTypeSize.LongSize;
     }
 
     /// <summary>
@@ -156,7 +149,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的浮点数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加浮点数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteFloatBigEndianValue(this Span<byte> buffer, float value, ref int offset)
+    public static void WriteFloatBigEndianValue(this Span<byte> buffer, float value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -165,12 +158,8 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.FloatSize}, Available: {buffer.Length}");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(float*)(ptr + offset) = value;
-            *(int*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(int*)(ptr + offset));
-            offset += ConstBaseTypeSize.FloatSize;
-        }
+        BinaryPrimitives.WriteSingleBigEndian(buffer[offset..], value);
+        offset += ConstBaseTypeSize.FloatSize;
     }
 
 
@@ -181,7 +170,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的双精度浮点数值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加双精度浮点数的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteDoubleBigEndianValue(this Span<byte> buffer, double value, ref int offset)
+    public static void WriteDoubleBigEndianValue(this Span<byte> buffer, double value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -190,12 +179,8 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.DoubleSize}, Available: {buffer.Length}");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(double*)(ptr + offset) = value;
-            *(long*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(long*)(ptr + offset));
-            offset += ConstBaseTypeSize.DoubleSize;
-        }
+        BinaryPrimitives.WriteDoubleBigEndian(buffer[offset..], value);
+        offset += ConstBaseTypeSize.DoubleSize;
     }
 
 
