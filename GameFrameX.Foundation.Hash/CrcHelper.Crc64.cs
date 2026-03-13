@@ -220,7 +220,7 @@ public static partial class CrcHelper
         {
             if (destination.Length < Size)
             {
-                ThrowDestinationTooShort();
+                throw new ArgumentException("Destination buffer is too short.", nameof(destination));
             }
 
             var hash = HashToUInt64(source);
@@ -469,7 +469,7 @@ public static partial class CrcHelper
         {
             if (destination.Length < HashLengthInBytes)
             {
-                ThrowDestinationTooShort();
+                throw new ArgumentException("Destination buffer is too short.", nameof(destination));
             }
 
             GetCurrentHashCore(destination.Slice(0, HashLengthInBytes));
@@ -531,7 +531,7 @@ public static partial class CrcHelper
         {
             if (destination.Length < HashLengthInBytes)
             {
-                ThrowDestinationTooShort();
+                throw new ArgumentException("Destination buffer is too short.", nameof(destination));
             }
 
             GetHashAndResetCore(destination.Slice(0, HashLengthInBytes));
@@ -581,12 +581,6 @@ public static partial class CrcHelper
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
             throw new NotSupportedException();
-        }
-
-
-        private protected static void ThrowDestinationTooShort()
-        {
-            throw new ArgumentException("destination");
         }
     }
 }

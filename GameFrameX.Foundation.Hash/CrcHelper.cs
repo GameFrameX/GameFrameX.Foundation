@@ -67,10 +67,7 @@ public static partial class CrcHelper
     /// <exception cref="ArgumentNullException">当bytes参数为null时抛出</exception>
     public static int GetCrc32(byte[] bytes)
     {
-        if (bytes == null)
-        {
-            throw new ArgumentNullException(nameof(bytes), @"Bytes is invalid.");
-        }
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
 
         return GetCrc32(bytes, 0, bytes.Length);
     }
@@ -86,10 +83,7 @@ public static partial class CrcHelper
     /// <exception cref="ArgumentException">当offset或length参数无效时抛出</exception>
     public static int GetCrc32(byte[] bytes, int offset, int length)
     {
-        if (bytes == null)
-        {
-            throw new ArgumentNullException(nameof(bytes), @"Bytes is invalid.");
-        }
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
 
         if (offset < 0 || length < 0 || offset + length > bytes.Length)
         {
@@ -110,10 +104,7 @@ public static partial class CrcHelper
     /// <exception cref="ArgumentNullException">当stream参数为null时抛出</exception>
     public static int GetCrc32(Stream stream)
     {
-        if (stream == null)
-        {
-            throw new ArgumentNullException(nameof(stream), @"Stream is invalid.");
-        }
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
         while (true)
         {
