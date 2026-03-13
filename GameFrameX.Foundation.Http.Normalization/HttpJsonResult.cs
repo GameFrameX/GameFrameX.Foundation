@@ -98,6 +98,32 @@ public sealed class HttpJsonResult
     }
 
     /// <summary>
+    /// 创建一个表示失败的HttpJsonResult对象，并包含错误码和错误消息。
+    /// </summary>
+    /// <param name="code">错误码。</param>
+    /// <param name="message">失败的详细消息。</param>
+    /// <returns>失败的HttpJsonResult实例。</returns>
+    public static HttpJsonResult Fail(int code, string message)
+    {
+        return new HttpJsonResult
+        {
+            Code = code,
+            Message = message,
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示失败的HttpJsonResult对象的JSON字符串。
+    /// </summary>
+    /// <param name="code">错误码。</param>
+    /// <param name="message">失败的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string FailString(int code, string message)
+    {
+        return Fail(code, message).ToString();
+    }
+
+    /// <summary>
     /// 创建一个表示特定错误的HttpJsonResult对象，并包含错误码和错误消息。
     /// 允许自定义错误码和消息，用于表示特定的错误情况。
     /// </summary>
@@ -145,6 +171,30 @@ public sealed class HttpJsonResult
     public static string ValidationErrorString()
     {
         return ValidationError().ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示验证失败的HttpJsonResult对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">验证失败的详细消息。</param>
+    /// <returns>验证失败的HttpJsonResult实例。</returns>
+    public static HttpJsonResult ValidationError(string message)
+    {
+        return new HttpJsonResult
+        {
+            Code = 400,
+            Message = message,
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示验证失败的HttpJsonResult对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">验证失败的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string ValidationErrorString(string message)
+    {
+        return ValidationError(message).ToString();
     }
 
     /// <summary>
@@ -285,6 +335,30 @@ public sealed class HttpJsonResult
     }
 
     /// <summary>
+    /// 创建一个表示未授权的HttpJsonResult对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">未授权的详细消息。</param>
+    /// <returns>未授权的HttpJsonResult实例。</returns>
+    public static HttpJsonResult Unauthorized(string message)
+    {
+        return new HttpJsonResult
+        {
+            Code = 401,
+            Message = message
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示未授权的HttpJsonResult对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">未授权的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string UnauthorizedString(string message)
+    {
+        return Unauthorized(message).ToString();
+    }
+
+    /// <summary>
     /// 创建一个表示资源未找到的HttpJsonResult对象。
     /// 使用HTTP 404状态码表示请求的资源不存在。
     /// </summary>
@@ -305,6 +379,30 @@ public sealed class HttpJsonResult
     public static string NotFoundString()
     {
         return NotFound().ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示资源未找到的HttpJsonResult对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">资源未找到的详细消息。</param>
+    /// <returns>未找到的HttpJsonResult实例。</returns>
+    public static HttpJsonResult NotFound(string message)
+    {
+        return new HttpJsonResult
+        {
+            Code = 404,
+            Message = message
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示资源未找到的HttpJsonResult对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">资源未找到的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string NotFoundString(string message)
+    {
+        return NotFound(message).ToString();
     }
 
     /// <summary>
@@ -331,6 +429,30 @@ public sealed class HttpJsonResult
     }
 
     /// <summary>
+    /// 创建一个表示服务器内部错误的HttpJsonResult对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">服务器错误的详细消息。</param>
+    /// <returns>服务器错误的HttpJsonResult实例。</returns>
+    public static HttpJsonResult ServerError(string message)
+    {
+        return new HttpJsonResult
+        {
+            Code = 500,
+            Message = message
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示服务器内部错误的HttpJsonResult对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">服务器错误的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string ServerErrorString(string message)
+    {
+        return ServerError(message).ToString();
+    }
+
+    /// <summary>
     /// 创建一个表示参数错误的HttpJsonResult对象。
     /// 使用HTTP 403状态码表示请求参数错误。
     /// </summary>
@@ -354,6 +476,30 @@ public sealed class HttpJsonResult
     }
 
     /// <summary>
+    /// 创建一个表示参数错误的HttpJsonResult对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">参数错误的详细消息。</param>
+    /// <returns>参数错误的HttpJsonResult实例。</returns>
+    public static HttpJsonResult ParamError(string message)
+    {
+        return new HttpJsonResult
+        {
+            Code = 403,
+            Message = message
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示参数错误的HttpJsonResult对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">参数错误的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string ParamErrorString(string message)
+    {
+        return ParamError(message).ToString();
+    }
+
+    /// <summary>
     /// 创建一个表示非法请求的HttpJsonResult对象。
     /// 使用HTTP 401状态码表示非法的请求访问。
     /// </summary>
@@ -374,5 +520,29 @@ public sealed class HttpJsonResult
     public static string IllegalString()
     {
         return Illegal().ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示非法请求的HttpJsonResult对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">非法请求的详细消息。</param>
+    /// <returns>非法请求的HttpJsonResult实例。</returns>
+    public static HttpJsonResult Illegal(string message)
+    {
+        return new HttpJsonResult
+        {
+            Code = 401,
+            Message = message
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示非法请求的HttpJsonResult对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">非法请求的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string IllegalString(string message)
+    {
+        return Illegal(message).ToString();
     }
 }

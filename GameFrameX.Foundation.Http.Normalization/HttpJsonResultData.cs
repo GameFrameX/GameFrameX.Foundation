@@ -13,9 +13,10 @@ public sealed class HttpJsonResultData<T>
     /// <summary>
     /// 是否成功
     /// 表示请求是否成功执行，成功为true，失败为false。
+    /// 该属性为快捷判断属性，只能在程序集内部设置。
     /// </summary>
     [JsonPropertyName("isSuccess")]
-    public bool IsSuccess { get; set; } = false;
+    public bool IsSuccess { get; internal set; }
 
     /// <summary>
     /// 响应码
@@ -189,6 +190,33 @@ public sealed class HttpJsonResultData<T>
         return Fail(message).ToString();
     }
 
+    /// <summary>
+    /// 创建一个表示失败的HttpJsonResultData对象，并包含错误码和错误消息。
+    /// </summary>
+    /// <param name="code">错误码。</param>
+    /// <param name="message">失败的详细消息。</param>
+    /// <returns>失败的HttpJsonResultData实例。</returns>
+    public static HttpJsonResultData<T> Fail(int code, string message)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = code,
+            Message = message,
+            IsSuccess = false
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示失败的HttpJsonResultData对象的JSON字符串。
+    /// </summary>
+    /// <param name="code">错误码。</param>
+    /// <param name="message">失败的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string FailString(int code, string message)
+    {
+        return Fail(code, message).ToString();
+    }
+
     #endregion
 
     #region Error
@@ -248,6 +276,31 @@ public sealed class HttpJsonResultData<T>
         return ValidationError().ToString();
     }
 
+    /// <summary>
+    /// 创建一个表示验证失败的HttpJsonResultData对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">验证失败的详细消息。</param>
+    /// <returns>验证失败的HttpJsonResultData实例。</returns>
+    public static HttpJsonResultData<T> ValidationError(string message)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = 400,
+            Message = message,
+            IsSuccess = false
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示验证失败的HttpJsonResultData对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">验证失败的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string ValidationErrorString(string message)
+    {
+        return ValidationError(message).ToString();
+    }
+
     #endregion
 
     #region Unauthorized
@@ -274,6 +327,31 @@ public sealed class HttpJsonResultData<T>
     public static string UnauthorizedString()
     {
         return Unauthorized().ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示未授权的HttpJsonResultData对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">未授权的详细消息。</param>
+    /// <returns>未授权的HttpJsonResultData实例。</returns>
+    public static HttpJsonResultData<T> Unauthorized(string message)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = 401,
+            Message = message,
+            IsSuccess = false
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示未授权的HttpJsonResultData对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">未授权的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string UnauthorizedString(string message)
+    {
+        return Unauthorized(message).ToString();
     }
 
     #endregion
@@ -304,6 +382,31 @@ public sealed class HttpJsonResultData<T>
         return NotFound().ToString();
     }
 
+    /// <summary>
+    /// 创建一个表示资源未找到的HttpJsonResultData对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">资源未找到的详细消息。</param>
+    /// <returns>未找到的HttpJsonResultData实例。</returns>
+    public static HttpJsonResultData<T> NotFound(string message)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = 404,
+            Message = message,
+            IsSuccess = false
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示资源未找到的HttpJsonResultData对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">资源未找到的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string NotFoundString(string message)
+    {
+        return NotFound(message).ToString();
+    }
+
     #endregion
 
     #region ServerError
@@ -330,6 +433,31 @@ public sealed class HttpJsonResultData<T>
     public static string ServerErrorString()
     {
         return ServerError().ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示服务器内部错误的HttpJsonResultData对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">服务器错误的详细消息。</param>
+    /// <returns>服务器错误的HttpJsonResultData实例。</returns>
+    public static HttpJsonResultData<T> ServerError(string message)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = 500,
+            Message = message,
+            IsSuccess = false
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示服务器内部错误的HttpJsonResultData对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">服务器错误的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string ServerErrorString(string message)
+    {
+        return ServerError(message).ToString();
     }
 
     #endregion
@@ -360,6 +488,31 @@ public sealed class HttpJsonResultData<T>
         return ParamError().ToString();
     }
 
+    /// <summary>
+    /// 创建一个表示参数错误的HttpJsonResultData对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">参数错误的详细消息。</param>
+    /// <returns>参数错误的HttpJsonResultData实例。</returns>
+    public static HttpJsonResultData<T> ParamError(string message)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = 403,
+            Message = message,
+            IsSuccess = false
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示参数错误的HttpJsonResultData对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">参数错误的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string ParamErrorString(string message)
+    {
+        return ParamError(message).ToString();
+    }
+
     #endregion
 
     #region Illegal
@@ -386,6 +539,31 @@ public sealed class HttpJsonResultData<T>
     public static string IllegalString()
     {
         return Illegal().ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示非法请求的HttpJsonResultData对象，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">非法请求的详细消息。</param>
+    /// <returns>非法请求的HttpJsonResultData实例。</returns>
+    public static HttpJsonResultData<T> Illegal(string message)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = 401,
+            Message = message,
+            IsSuccess = false
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示非法请求的HttpJsonResultData对象的JSON字符串，并包含自定义错误消息。
+    /// </summary>
+    /// <param name="message">非法请求的详细消息。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string IllegalString(string message)
+    {
+        return Illegal(message).ToString();
     }
 
     #endregion
