@@ -1,5 +1,4 @@
 using System.Buffers.Binary;
-using System.Net;
 using System.Text;
 using GameFrameX.Foundation.Localization.Core;
 using GameFrameX.Foundation.Extensions.Localization;
@@ -193,8 +192,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.UIntSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.UIntSize} bytes, have {buffer.Length}.");
         }
 
         BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan()[offset..], value);
@@ -216,8 +214,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.IntSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.IntSize} bytes, have {buffer.Length}.");
         }
 
         BinaryPrimitives.WriteInt32BigEndian(buffer.AsSpan()[offset..], value);
@@ -239,8 +236,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.ByteSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.ByteSize} bytes, have {buffer.Length}.");
         }
 
         buffer[offset] = value;
@@ -262,8 +258,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.ShortSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.ShortSize} bytes, have {buffer.Length}.");
         }
 
         BinaryPrimitives.WriteInt16BigEndian(buffer.AsSpan()[offset..], value);
@@ -285,8 +280,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.UShortSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.UShortSize} bytes, have {buffer.Length}.");
         }
 
         BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan()[offset..], value);
@@ -308,8 +302,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.LongSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.LongSize} bytes, have {buffer.Length}.");
         }
 
         BinaryPrimitives.WriteInt64BigEndian(buffer.AsSpan()[offset..], value);
@@ -331,8 +324,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.ULongSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.ULongSize} bytes, have {buffer.Length}.");
         }
 
         BinaryPrimitives.WriteUInt64BigEndian(buffer.AsSpan()[offset..], value);
@@ -494,16 +486,11 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.FloatSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.FloatSize} bytes, have {buffer.Length}.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(float*)(ptr + offset) = value;
-            *(int*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(int*)(ptr + offset));
-            offset += ConstBaseTypeSize.FloatSize;
-        }
+        BinaryPrimitives.WriteSingleBigEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.FloatSize;
     }
 
     /// <summary>
@@ -521,16 +508,11 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.DoubleSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.DoubleSize} bytes, have {buffer.Length}.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(double*)(ptr + offset) = value;
-            *(long*)(ptr + offset) = IPAddress.HostToNetworkOrder(*(long*)(ptr + offset));
-            offset += ConstBaseTypeSize.DoubleSize;
-        }
+        BinaryPrimitives.WriteDoubleBigEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.DoubleSize;
     }
 
 
@@ -555,8 +537,7 @@ public static class ByteExtensions
 
         if (offset + value.Length + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            offset += value.Length + ConstBaseTypeSize.IntSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + value.Length + ConstBaseTypeSize.IntSize} bytes, have {buffer.Length}.");
         }
 
         buffer.WriteIntValue(value.Length, ref offset);
@@ -610,8 +591,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.SbyteSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.SbyteSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.SbyteSize} bytes, have {buffer.Length}.");
         }
 
         buffer[offset] = (byte)value;
@@ -646,8 +626,7 @@ public static class ByteExtensions
 
         if (offset + len + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            offset += len + ConstBaseTypeSize.ShortSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + len + ConstBaseTypeSize.ShortSize} bytes, have {buffer.Length}.");
         }
 
         Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + ConstBaseTypeSize.ShortSize);
@@ -670,8 +649,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            offset += ConstBaseTypeSize.BoolSize;
-            return;
+            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.BoolSize} bytes, have {buffer.Length}.");
         }
 
         buffer[offset] = value ? (byte)1 : (byte)0;
@@ -690,7 +668,7 @@ public static class ByteExtensions
     /// <returns>从字节缓冲区中读取的浮点数。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static unsafe float ReadFloatValue(this byte[] buffer, ref int offset)
+    public static float ReadFloatValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -700,13 +678,9 @@ public static class ByteExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(int*)(ptr + offset) = IPAddress.NetworkToHostOrder(*(int*)(ptr + offset));
-            var value = *(float*)(ptr + offset);
-            offset += ConstBaseTypeSize.FloatSize;
-            return value;
-        }
+        var value = BinaryPrimitives.ReadSingleBigEndian(buffer.AsSpan(offset));
+        offset += ConstBaseTypeSize.FloatSize;
+        return value;
     }
 
     /// <summary>
@@ -717,7 +691,7 @@ public static class ByteExtensions
     /// <returns>返回从缓冲区读取的 double 类型数据。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    public static unsafe double ReadDoubleValue(this byte[] buffer, ref int offset)
+    public static double ReadDoubleValue(this byte[] buffer, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -727,13 +701,9 @@ public static class ByteExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(long*)(ptr + offset) = IPAddress.NetworkToHostOrder(*(long*)(ptr + offset));
-            var value = *(double*)(ptr + offset);
-            offset += ConstBaseTypeSize.DoubleSize;
-            return value;
-        }
+        var value = BinaryPrimitives.ReadDoubleBigEndian(buffer.AsSpan(offset));
+        offset += ConstBaseTypeSize.DoubleSize;
+        return value;
     }
 
     /// <summary>
