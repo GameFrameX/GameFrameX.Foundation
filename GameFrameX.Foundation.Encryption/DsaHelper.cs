@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
 
 namespace GameFrameX.Foundation.Encryption;
 
@@ -70,7 +71,9 @@ public sealed class DsaHelper : IDisposable
     public static Dictionary<string, string> Make()
     {
         // C-07/C-11 修复：DSA.Create() + using
-        using var dsa = DSA.Create(2048);
+        // 注意：使用默认密钥大小以确保跨平台兼容性
+        // macOS 的 DSA 实现不支持显式指定 2048 位密钥
+        using var dsa = DSA.Create();
         return new Dictionary<string, string>
         {
             ["privatekey"] = dsa.ToXmlString(true),
@@ -83,19 +86,29 @@ public sealed class DsaHelper : IDisposable
     /// </summary>
     /// <param name="dataToSign">要签名的数据字节数组，不能为 null。</param>
     /// <param name="privateKey">XML 格式的私钥字符串。</param>
-    /// <returns>签名后的字节数组。</returns>
+    /// <returns>签名后的字节数组；如果私钥格式无效则返回 null。</returns>
     /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出。</exception>
-    /// <exception cref="CryptographicException">当私钥格式无效或签名失败时抛出。</exception>
     public static byte[] SignData(byte[] dataToSign, string privateKey)
     {
         // W-11 修复：参数校验移出 try 块，不被 catch 吞掉
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
         ArgumentNullException.ThrowIfNull(privateKey, nameof(privateKey));
 
-        // C-07/C-11 修复：DSA.Create() + using
-        using var dsa = DSA.Create();
-        dsa.FromXmlString(privateKey);
-        return dsa.SignData(dataToSign, HashAlgorithmName.SHA256);
+        try
+        {
+            // C-07/C-11 修复：DSA.Create() + using
+            using var dsa = DSA.Create();
+            dsa.FromXmlString(privateKey);
+            return dsa.SignData(dataToSign, HashAlgorithmName.SHA256);
+        }
+        catch (CryptographicException)
+        {
+            return null;
+        }
+        catch (XmlException)
+        {
+            return null;
+        }
     }
 
     /// <summary>
@@ -146,9 +159,8 @@ public sealed class DsaHelper : IDisposable
     /// <param name="dataToVerify">要验证的数据字节数组，不能为 null。</param>
     /// <param name="signedData">签名后的字节数组，不能为 null。</param>
     /// <param name="publicKey">XML 格式的公钥字符串。</param>
-    /// <returns>如果签名有效，返回 true；否则返回 false。</returns>
+    /// <returns>如果签名有效，返回 true；如果公钥格式无效或签名无效，返回 false。</returns>
     /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出。</exception>
-    /// <exception cref="CryptographicException">当公钥格式无效时抛出。</exception>
     public static bool VerifyData(byte[] dataToVerify, byte[] signedData, string publicKey)
     {
         // W-11 修复：参数校验移出 try 块
@@ -156,10 +168,21 @@ public sealed class DsaHelper : IDisposable
         ArgumentNullException.ThrowIfNull(signedData, nameof(signedData));
         ArgumentException.ThrowIfNullOrEmpty(publicKey, nameof(publicKey));
 
-        // C-07/C-11 修复：DSA.Create() + using
-        using var dsa = DSA.Create();
-        dsa.FromXmlString(publicKey);
-        return dsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256);
+        try
+        {
+            // C-07/C-11 修复：DSA.Create() + using
+            using var dsa = DSA.Create();
+            dsa.FromXmlString(publicKey);
+            return dsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256);
+        }
+        catch (CryptographicException)
+        {
+            return false;
+        }
+        catch (XmlException)
+        {
+            return false;
+        }
     }
 
     /// <summary>
