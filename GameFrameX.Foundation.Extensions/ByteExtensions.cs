@@ -486,7 +486,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteFloatValue(this byte[] buffer, float value, ref int offset)
+    public static void WriteFloatValue(this byte[] buffer, float value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -508,7 +508,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteDoubleValue(this byte[] buffer, double value, ref int offset)
+    public static void WriteDoubleValue(this byte[] buffer, double value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -560,7 +560,7 @@ public static class ByteExtensions
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
-    public static unsafe void WriteBytesWithoutLength(this byte[] buffer, byte[] value, ref int offset)
+    public static void WriteBytesWithoutLength(this byte[] buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentNullException.ThrowIfNull(value, nameof(value));
@@ -571,11 +571,8 @@ public static class ByteExtensions
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.BufferWriteOutOfRange, offset + value.Length, buffer.Length));
         }
 
-        fixed (byte* ptr = buffer, valPtr = value)
-        {
-            Buffer.MemoryCopy(valPtr, ptr + offset, value.Length, value.Length);
-            offset += value.Length;
-        }
+        value.AsSpan().CopyTo(buffer.AsSpan(offset));
+        offset += value.Length;
     }
 
     /// <summary>
