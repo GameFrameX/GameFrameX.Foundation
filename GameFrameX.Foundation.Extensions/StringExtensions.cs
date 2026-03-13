@@ -131,7 +131,7 @@ public static class StringExtensions
         int total = 0;
         foreach (var c in text)
         {
-            var isChineseChar = (c >= '\u4e00' && c <= '\u9fff') || (c >= '\u3400' && c <= '\u4dbf') || (c >= '\u2000' && c <= '\u2a6d');
+            var isChineseChar = (c >= '\u4e00' && c <= '\u9fff') || (c >= '\u3400' && c <= '\u4dbf');
             total += isChineseChar ? 2 : 1;
         }
 
