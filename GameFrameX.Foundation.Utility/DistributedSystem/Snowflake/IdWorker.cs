@@ -35,12 +35,11 @@ namespace GameFrameX.Foundation.Utility.DistributedSystem.Snowflake;
 /// <code>
 /// // 创建ID生成器实例
 /// var idWorker = new IdWorker(1, 1);
-/// 
+///
 /// // 生成唯一ID
-/// long id1 = idWorker.NextId();
-/// long id2 = idWorker.GetID();
-/// 
-/// Console.WriteLine($"生成的ID: {id1}, {id2}");
+/// long id = idWorker.NextId();
+///
+/// Console.WriteLine($"生成的ID: {id}");
 /// </code>
 /// </example>
 /// <seealso cref="SnowFlakeIdHelper"/>
@@ -195,7 +194,6 @@ public class IdWorker
     public long Sequence
     {
         get { return _sequence; }
-        internal set { _sequence = value; }
     }
 
     /// <summary>

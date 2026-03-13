@@ -45,6 +45,22 @@ public static class SnowFlakeIdHelper
     /// <value>
     /// 以毫秒为单位的时间戳起始点
     /// </value>
+    /// <remarks>
+    /// <para>
+    /// ⚠️ 注意：必须在访问 <see cref="Instance"/> 之前设置此属性。一旦实例创建后，修改此属性将不会生效。
+    /// </para>
+    /// <para>
+    /// 雪花算法使用 41 位时间戳，默认起始时间为 2025-01-01 00:00:00 UTC，可使用约 69 年。
+    /// 如需使用其他起始时间（如 2020-01-01），请在首次访问 <see cref="Instance"/> 前设置此属性。
+    /// </para>
+    /// <example>
+    /// <code>
+    /// // 正确用法：在访问 Instance 前设置
+    /// SnowFlakeIdHelper.BaseTime = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc).Ticks / 10000;
+    /// var id = SnowFlakeIdHelper.Instance.NextId();
+    /// </code>
+    /// </example>
+    /// </remarks>
     public static long BaseTime { get; set; } = (long)(UtcTimeStart - EpochTime).TotalMilliseconds;
 
     /// <summary>
@@ -75,16 +91,6 @@ public static class SnowFlakeIdHelper
     /// 一旦实例创建后，修改此值不会影响已创建的实例。
     /// </remarks>
     public static int DataCenterId { get; set; } = 1;
-
-    /// <summary>
-    /// 静态构造函数
-    /// </summary>
-    /// <remarks>
-    /// 静态构造函数确保类型初始化的线程安全性
-    /// </remarks>
-    static SnowFlakeIdHelper()
-    {
-    }
 
     /// <summary>
     /// 获取 <see cref="IdWorker"/> 的单例实例

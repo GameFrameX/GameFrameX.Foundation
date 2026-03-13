@@ -92,9 +92,18 @@ public static class TimeSystem
     /// </example>
     public static IDisposable StubCurrentTime(Func<long> func)
     {
-        var originalFunc = _currentTimeFunc;
-        CurrentTimeFunc = func;
-        return new DisposableAction(() => { CurrentTimeFunc = originalFunc; });
+        lock (LockObject)
+        {
+            var originalFunc = _currentTimeFunc;
+            _currentTimeFunc = func;
+            return new DisposableAction(() =>
+            {
+                lock (LockObject)
+                {
+                    _currentTimeFunc = originalFunc;
+                }
+            });
+        }
     }
 
     /// <summary>
@@ -116,9 +125,18 @@ public static class TimeSystem
     /// </example>
     public static IDisposable StubCurrentTime(long millis)
     {
-        var originalFunc = _currentTimeFunc;
-        CurrentTimeFunc = () => millis;
-        return new DisposableAction(() => { CurrentTimeFunc = originalFunc; });
+        lock (LockObject)
+        {
+            var originalFunc = _currentTimeFunc;
+            _currentTimeFunc = () => millis;
+            return new DisposableAction(() =>
+            {
+                lock (LockObject)
+                {
+                    _currentTimeFunc = originalFunc;
+                }
+            });
+        }
     }
 
     /// <summary>
