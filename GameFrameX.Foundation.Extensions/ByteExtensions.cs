@@ -1,3 +1,4 @@
+using System;
 using System.Buffers.Binary;
 using System.Text;
 using GameFrameX.Foundation.Localization.Core;
@@ -33,7 +34,7 @@ public static class ByteExtensions
         var stringBuilder = new StringBuilder();
         foreach (var b in bytes)
         {
-            stringBuilder.Append(b + " ");
+            stringBuilder.Append(b).Append(' ');
         }
 
         return stringBuilder.ToString();
@@ -900,20 +901,7 @@ public static class ByteExtensions
         ArgumentNullException.ThrowIfNull(bytes1, nameof(bytes1));
         ArgumentNullException.ThrowIfNull(bytes2, nameof(bytes2));
 
-        if (bytes1.Length != bytes2.Length)
-        {
-            return false;
-        }
-
-        for (int i = 0; i < bytes1.Length; i++)
-        {
-            if (bytes1[i] != bytes2[i])
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return ((ReadOnlySpan<byte>)bytes1).SequenceEqual(bytes2);
     }
 
     /// <summary>
@@ -926,10 +914,7 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
 
-        for (int i = 0; i < bytes.Length; i++)
-        {
-            bytes[i] = value;
-        }
+        Array.Fill(bytes, value);
     }
 
     /// <summary>
@@ -952,10 +937,7 @@ public static class ByteExtensions
             throw new ArgumentException("The sum of startIndex and count is greater than the buffer length.", nameof(count));
         }
 
-        for (int i = startIndex; i < startIndex + count; i++)
-        {
-            bytes[i] = value;
-        }
+        Array.Fill(bytes, value, startIndex, count);
     }
 
     /// <summary>

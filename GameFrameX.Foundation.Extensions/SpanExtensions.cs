@@ -191,7 +191,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的字节值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加字节的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteByteValue(this Span<byte> buffer, byte value, ref int offset)
+    public static void WriteByteValue(this Span<byte> buffer, byte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -200,11 +200,8 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ByteSize}, Available: {buffer.Length}");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(ptr + offset) = value;
-            offset += ConstBaseTypeSize.ByteSize;
-        }
+        buffer[offset] = value;
+        offset += ConstBaseTypeSize.ByteSize;
     }
 
     /// <summary>
@@ -214,7 +211,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的有符号字节值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加字节的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteSByteValue(this Span<byte> buffer, sbyte value, ref int offset)
+    public static void WriteSByteValue(this Span<byte> buffer, sbyte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -223,11 +220,8 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ByteSize}, Available: {buffer.Length}");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(sbyte*)(ptr + offset) = value;
-            offset += ConstBaseTypeSize.ByteSize;
-        }
+        buffer[offset] = (byte)value;
+        offset += ConstBaseTypeSize.ByteSize;
     }
 
     /// <summary>
@@ -237,7 +231,7 @@ public static class SpanExtensions
     /// <param name="value">要写入的布尔值。</param>
     /// <param name="offset">写入的起始偏移量，会在调用后增加布尔值的大小。</param>
     /// <exception cref="ArgumentOutOfRangeException">当偏移量超出缓冲区有效范围时抛出。</exception>
-    public static unsafe void WriteBoolValue(this Span<byte> buffer, bool value, ref int offset)
+    public static void WriteBoolValue(this Span<byte> buffer, bool value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
@@ -246,11 +240,8 @@ public static class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.BoolSize}, Available: {buffer.Length}");
         }
 
-        fixed (byte* ptr = buffer)
-        {
-            *(bool*)(ptr + offset) = value;
-            offset += ConstBaseTypeSize.BoolSize;
-        }
+        buffer[offset] = value ? (byte)1 : (byte)0;
+        offset += ConstBaseTypeSize.BoolSize;
     }
 
     /// <summary>
