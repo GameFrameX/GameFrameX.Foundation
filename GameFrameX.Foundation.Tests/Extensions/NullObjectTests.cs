@@ -152,7 +152,10 @@ public class NullObjectTests
 
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => nullObject.CompareTo(other));
-        Assert.Equal("Object must be of type NullObject<T> or T. (Parameter 'value')", exception.Message);
+        // 验证异常消息不为空且包含参数名（支持中英文本地化）
+        Assert.NotNull(exception.Message);
+        Assert.True(exception.Message.Length > 0);
+        Assert.Equal("value", exception.ParamName);
     }
 
     [Fact]

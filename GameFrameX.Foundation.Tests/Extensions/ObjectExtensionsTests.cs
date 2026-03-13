@@ -124,27 +124,29 @@ public class ObjectExtensionsTests
     }
 
     [Fact]
-    public void CheckRange_Int_ValueEqualToMin_ShouldThrowArgumentOutOfRangeException()
+    public void CheckRange_Int_ValueEqualToMin_ShouldNotThrow()
     {
-        // Arrange
+        // Arrange - 闭区间：边界值是有效的
         int value = 0;
         int minValue = 0;
         int maxValue = 10;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => value.CheckRange(minValue, maxValue));
+        var exception = Record.Exception(() => value.CheckRange(minValue, maxValue));
+        Assert.Null(exception);
     }
 
     [Fact]
-    public void CheckRange_Int_ValueEqualToMax_ShouldThrowArgumentOutOfRangeException()
+    public void CheckRange_Int_ValueEqualToMax_ShouldNotThrow()
     {
-        // Arrange
+        // Arrange - 闭区间：边界值是有效的
         int value = 10;
         int minValue = 0;
         int maxValue = 10;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => value.CheckRange(minValue, maxValue));
+        var exception = Record.Exception(() => value.CheckRange(minValue, maxValue));
+        Assert.Null(exception);
     }
 
     [Fact]
@@ -203,9 +205,9 @@ public class ObjectExtensionsTests
     }
 
     [Fact]
-    public void IsRange_Int_ValueEqualToMin_ShouldReturnFalse()
+    public void IsRange_Int_ValueEqualToMin_ShouldReturnTrue()
     {
-        // Arrange
+        // Arrange - 闭区间：边界值是有效的
         int value = 0;
         int minValue = 0;
         int maxValue = 10;
@@ -214,13 +216,13 @@ public class ObjectExtensionsTests
         var result = value.IsRange(minValue, maxValue);
 
         // Assert
-        Assert.False(result);
+        Assert.True(result);
     }
 
     [Fact]
-    public void IsRange_Int_ValueEqualToMax_ShouldReturnFalse()
+    public void IsRange_Int_ValueEqualToMax_ShouldReturnTrue()
     {
-        // Arrange
+        // Arrange - 闭区间：边界值是有效的
         int value = 10;
         int minValue = 0;
         int maxValue = 10;
@@ -229,7 +231,7 @@ public class ObjectExtensionsTests
         var result = value.IsRange(minValue, maxValue);
 
         // Assert
-        Assert.False(result);
+        Assert.True(result);
     }
 
     [Fact]
@@ -262,15 +264,16 @@ public class ObjectExtensionsTests
     }
 
     [Fact]
-    public void CheckRange_UInt_ValueEqualToMin_ShouldThrowArgumentOutOfRangeException()
+    public void CheckRange_UInt_ValueEqualToMin_ShouldNotThrow()
     {
-        // Arrange
+        // Arrange - 闭区间：边界值是有效的
         uint value = 0;
         uint minValue = 0;
         uint maxValue = 10;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => value.CheckRange(minValue, maxValue));
+        var exception = Record.Exception(() => value.CheckRange(minValue, maxValue));
+        Assert.Null(exception);
     }
 
     #endregion
