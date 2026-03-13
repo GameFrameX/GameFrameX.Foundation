@@ -162,7 +162,7 @@ public class LocalizationServiceTests
     }
 
     [Theory]
-    [InlineData("Test.Key")] // Use a non-existent key for testing
+    [InlineData("Test.UniqueKey.NotUsedElsewhere")] // Use a unique key that no other test uses
     public void GetString_WithCommonKeys_ShouldReturnValidValues(string key)
     {
         // Act
