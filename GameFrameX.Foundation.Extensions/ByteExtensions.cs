@@ -116,11 +116,11 @@ public static class ByteExtensions
     public static string ToDefaultString(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        return Encoding.Default.GetString(bytes);
+        return Encoding.UTF8.GetString(bytes);
     }
 
     /// <summary>
-    /// 将字节数组的指定范围转换为默认编码的字符串。
+    /// 将字节数组的指定范围转换为 UTF-8 字符串。
     /// </summary>
     /// <param name="bytes">要转换的字节数组。</param>
     /// <param name="index">起始偏移量。</param>
@@ -139,7 +139,7 @@ public static class ByteExtensions
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength), nameof(count));
         }
 
-        return Encoding.Default.GetString(bytes, index, count);
+        return Encoding.UTF8.GetString(bytes, index, count);
     }
 
     /// <summary>
@@ -556,13 +556,8 @@ public static class ByteExtensions
     public static unsafe void WriteBytesWithoutLength(this byte[] buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (value == null)
-        {
-            buffer.WriteIntValue(0, ref offset);
-            return;
-        }
 
         if (offset + value.Length > buffer.Length)
         {
