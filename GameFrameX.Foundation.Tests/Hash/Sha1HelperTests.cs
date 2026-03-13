@@ -41,8 +41,8 @@ public class Sha1HelperTests
         // Act
         var hash = Sha1Helper.ComputeHash(input);
 
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Assert - 空字符串返回实际的哈希值（与 Sha256Helper 行为一致）
+        Assert.Equal("da39a3ee5e6b4b0d3255bfef95601890afd80709", hash);
     }
 
     [Fact]
@@ -134,8 +134,8 @@ public class Sha1HelperTests
         // Act
         var hash = Sha1Helper.ComputeHash(input);
 
-        // Assert
-        Assert.Equal(string.Empty, hash);
+        // Assert - 空数组返回实际的哈希值（与 Sha256Helper 行为一致）
+        Assert.Equal("da39a3ee5e6b4b0d3255bfef95601890afd80709", hash);
     }
 
     [Fact]
@@ -424,7 +424,7 @@ public class Sha1HelperTests
     {
         // Arrange
         var input = "";
-        var expectedResult = ""; // Sha1Helper returns empty string for empty input
+        var expectedResult = "da39a3ee5e6b4b0d3255bfef95601890afd80709"; // 空字符串的 SHA-1 哈希值
 
         // Act
         var actualHash = Sha1Helper.ComputeHash(input);
