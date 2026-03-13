@@ -1012,12 +1012,12 @@ public static class ByteExtensions
     }
 
     /// <summary>
-    /// 将Base64字符串转换为字节数组。
+    /// 将 Base64 字符串转换为字节数组。
     /// </summary>
-    /// <param name="base64String">Base64编码的字符串。</param>
+    /// <param name="base64String">Base64 编码的字符串。</param>
     /// <returns>解码后的字节数组。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="base64String"/> 为 null 时抛出。</exception>
-    public static byte[] FromBase64String(string base64String)
+    public static byte[] ToByteArrayFromBase64(this string base64String)
     {
         ArgumentNullException.ThrowIfNull(base64String, nameof(base64String));
         return Convert.FromBase64String(base64String);
@@ -1223,17 +1223,19 @@ public static class ByteExtensions
     }
 
     /// <summary>
-    /// 连接多个字节数组。
+    /// 将当前字节数组与其他字节数组连接。
     /// </summary>
-    /// <param name="arrays">要连接的字节数组集合。</param>
+    /// <param name="first">第一个字节数组。</param>
+    /// <param name="others">要连接的其他字节数组集合。</param>
     /// <returns>连接后的字节数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="arrays"/> 为 null 时抛出。</exception>
-    public static byte[] Concat(params byte[][] arrays)
+    /// <exception cref="ArgumentNullException">当 <paramref name="first"/> 或 <paramref name="others"/> 为 null 时抛出。</exception>
+    public static byte[] Concat(this byte[] first, params byte[][] others)
     {
-        ArgumentNullException.ThrowIfNull(arrays, nameof(arrays));
+        ArgumentNullException.ThrowIfNull(first, nameof(first));
+        ArgumentNullException.ThrowIfNull(others, nameof(others));
 
-        int totalLength = 0;
-        foreach (var array in arrays)
+        int totalLength = first.Length;
+        foreach (var array in others)
         {
             if (array != null)
             {
@@ -1242,13 +1244,14 @@ public static class ByteExtensions
         }
 
         var result = new byte[totalLength];
-        int offset = 0;
+        first.AsSpan().CopyTo(result);
+        int offset = first.Length;
 
-        foreach (var array in arrays)
+        foreach (var array in others)
         {
             if (array != null)
             {
-                array.AsSpan().CopyTo(result.AsSpan(offset, array.Length));
+                array.AsSpan().CopyTo(result.AsSpan(offset));
                 offset += array.Length;
             }
         }
