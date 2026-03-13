@@ -105,20 +105,6 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取下个月开始时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>下个月1号00:00:00的时间戳(秒)。</returns>
-    /// <remarks>
-    /// 此方法返回下个月第一天零点时间的Unix时间戳。
-    /// 会将时间转换为UTC时间后再计算时间戳。
-    /// </remarks>
-    public static long GetNextMonthStartTimestamp()
-    {
-        var date = GetNextMonthStartTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
-    }
-
-    /// <summary>
-    /// 获取下个月开始时间戳（基于设置时区）。
-    /// </summary>
     /// <returns>下个月1号00:00:00的时间戳(秒) + 时区偏移。</returns>
     /// <remarks>
     /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。

@@ -44,7 +44,7 @@ public static partial class TimerHelper
     /// 3. 加上TimeOffsetSeconds偏移量
     /// 主要用于需要当前时区 (<see cref="CurrentTimeZone"/>) 时间戳的场景
     /// </remarks>
-    public static long TimeSecondsWithOffset()
+    public static long UnixTimeSecondsWithOffsetWithTimeZone()
     {
         return new DateTimeOffset(GetNowWithTimeZone()).ToUnixTimeSeconds() + TimeOffsetSeconds;
     }
@@ -60,7 +60,7 @@ public static partial class TimerHelper
     /// 3. 加上TimeOffsetMilliseconds偏移量
     /// 相比秒级时间戳提供更高的精度,适用于需要精确时间计算的场景
     /// </remarks>
-    public static long TimeMillisecondsWithOffset()
+    public static long UnixTimeMillisecondsWithOffsetWithTimeZone()
     {
         return new DateTimeOffset(GetNowWithTimeZone()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
     }

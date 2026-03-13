@@ -83,7 +83,7 @@ public static partial class TimerHelper
     /// 此方法返回今年最后一天最后一秒的Unix时间戳
     /// 基于 UTC 时间计算
     /// </remarks>
-    public static long GetUtcYearEndTimestampWithUtc()
+    public static long GetYearEndTimestampWithUtc()
     {
         var date = GetYearEndTimeWithUtc();
         return DateTimeToUnixTimeSeconds(date);

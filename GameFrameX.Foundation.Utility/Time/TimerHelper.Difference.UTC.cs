@@ -34,7 +34,7 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 计算指定Unix时间戳到当前时间经过了多少秒
+    /// 计算指定Unix时间戳到当前时间经过了多少秒（基于UTC）
     /// </summary>
     /// <param name="timestamp">Unix时间戳（秒）。应为UTC时间戳。</param>
     /// <returns>经过的秒数。如果timestamp在未来，返回负数。</returns>
@@ -44,14 +44,14 @@ public static partial class TimerHelper
     /// 计算效率高于DateTime转换方式
     /// 适用于Unix时间戳的剩余时间计算
     /// </remarks>
-    public static long GetElapsedSeconds(long timestamp)
+    public static long GetElapsedSecondsWithUtc(long timestamp)
     {
         var currentTimestamp = UnixTimeSeconds();
         return currentTimestamp - timestamp;
     }
 
     /// <summary>
-    /// 计算指定Unix时间戳到当前时间经过了多少毫秒
+    /// 计算指定Unix时间戳到当前时间经过了多少毫秒（基于UTC）
     /// </summary>
     /// <param name="timestampMs">Unix时间戳（毫秒）。应为UTC时间戳。</param>
     /// <returns>经过的毫秒数。如果timestampMs在未来，返回负数。</returns>
@@ -61,7 +61,7 @@ public static partial class TimerHelper
     /// 计算效率高于DateTime转换方式
     /// 适用于需要毫秒级精度的剩余时间计算
     /// </remarks>
-    public static long GetElapsedMilliseconds(long timestampMs)
+    public static long GetElapsedMillisecondsWithUtc(long timestampMs)
     {
         var currentTimestamp = UnixTimeMilliseconds();
         return currentTimestamp - timestampMs;

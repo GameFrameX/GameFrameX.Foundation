@@ -79,20 +79,6 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取本周开始时间戳
-    /// </summary>
-    /// <returns>本周周一00:00:00的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回本周周一零点时间的Unix时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetWeekStartTimestamp()
-    {
-        var date = GetWeekStartTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
-    }
-
-    /// <summary>
     /// 获取本周开始时间戳（基于设置时区）
     /// </summary>
     /// <returns>本周周一00:00:00的时间戳(秒) + 时区偏移</returns>
@@ -118,20 +104,6 @@ public static partial class TimerHelper
         var dayOfWeek = (int)now.DayOfWeek;
         dayOfWeek = dayOfWeek == 0 ? 7 : dayOfWeek;
         return now.AddDays(7 - dayOfWeek).Date.AddDays(1).AddSeconds(-1);
-    }
-
-    /// <summary>
-    /// 获取本周结束时间戳
-    /// </summary>
-    /// <returns>本周周日23:59:59的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回本周周日最后一秒的Unix时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetWeekEndTimestamp()
-    {
-        var date = GetWeekEndTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
     }
 
     /// <summary>
@@ -220,19 +192,6 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取下周开始时间戳
-    /// </summary>
-    /// <returns>下周周一00:00:00的时间戳(秒)</returns>
-    /// <remarks>
-    /// 此方法返回下周周一零点时间的Unix时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
-    /// </remarks>
-    public static long GetNextWeekStartTimestamp()
-    {
-        var date = GetNextWeekStartTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
-    }
-
     /// <summary>
     /// 获取下周开始时间戳（基于设置时区）
     /// </summary>

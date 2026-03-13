@@ -42,7 +42,7 @@ public static partial class TimerHelper
     /// <param name="timestamp">自1970年1月1日午夜以来经过的秒数。</param>
     /// <returns>一个 TimeSpan 对象，表示从EpochUtc到给定时间戳的间隔。</returns>
     /// <exception cref="ArgumentOutOfRangeException">当时间戳超出有效范围时抛出此异常</exception>
-    public static TimeSpan TimeSpanWithTimestamp(long timestamp)
+    public static TimeSpan TimeSpanWithTimestampUtc(long timestamp)
     {
         if (timestamp < -62135596800L || timestamp > 253402300799L)
         {
