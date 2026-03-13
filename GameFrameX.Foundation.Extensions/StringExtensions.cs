@@ -12,7 +12,7 @@ namespace GameFrameX.Foundation.Extensions;
 /// <summary>
 /// 提供字符串类型的扩展方法
 /// </summary>
-public static class StringExtensions
+public static partial class StringExtensions
 {
     /// <summary>
     /// 将Base64字符串转换为URL安全格式。
@@ -180,15 +180,7 @@ public static class StringExtensions
     public static string RepeatChar(this char c, int count)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
-
-        var stringBuilder = new StringBuilder();
-        stringBuilder.Clear();
-        for (var i = 0; i < count; i++)
-        {
-            stringBuilder.Append(c);
-        }
-
-        return stringBuilder.ToString();
+        return new string(c, count);
     }
 
     /// <summary>
@@ -320,7 +312,13 @@ public static class StringExtensions
     /// </remarks>
     public static string RemoveWhiteSpace(this string self)
     {
-        return self.IsNullOrEmpty() ? self : new string(self.Where(c => !char.IsWhiteSpace(c)).ToArray());
+        if (self.IsNullOrEmpty()) return self;
+        var sb = new StringBuilder(self.Length);
+        foreach (var c in self)
+        {
+            if (!char.IsWhiteSpace(c)) sb.Append(c);
+        }
+        return sb.ToString();
     }
 
     /// <summary>
@@ -476,6 +474,12 @@ public static class StringExtensions
         return ret;
     }
 
+    [GeneratedRegex(@"^_+")]
+    private static partial Regex LeadingUnderscoresRegex();
+
+    [GeneratedRegex(@"([a-z0-9])([A-Z])")]
+    private static partial Regex SnakeCaseRegex();
+
     /// <summary>
     /// 将驼峰命名法字符串转换为蛇形命名法（下划线分隔的小写形式）。
     /// </summary>
@@ -494,8 +498,8 @@ public static class StringExtensions
             return input;
         }
 
-        var startUnderscores = Regex.Match(input, @"^_+").Value;
-        return startUnderscores + Regex.Replace(input.TrimStart('_'), @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
+        var startUnderscores = LeadingUnderscoresRegex().Match(input).Value;
+        return startUnderscores + SnakeCaseRegex().Replace(input.TrimStart('_'), "$1_$2").ToLower();
     }
 
     /// <summary>
