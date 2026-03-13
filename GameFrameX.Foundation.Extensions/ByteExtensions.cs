@@ -109,26 +109,32 @@ public static class ByteExtensions
     }
 
     /// <summary>
-    /// 将字节数组转换为默认编码的字符串。
+    /// 将字节数组转换为系统默认编码的字符串。
     /// </summary>
     /// <param name="bytes">要转换的字节数组。</param>
-    /// <returns>字符串。</returns>
+    /// <returns>系统默认编码的字符串。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// 使用 <see cref="Encoding.Default"/> 进行编码转换。如需使用 UTF-8 编码，请使用 <see cref="ToUtf8String(byte[])"/> 方法。
+    /// </remarks>
     public static string ToDefaultString(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        return Encoding.UTF8.GetString(bytes);
+        return Encoding.Default.GetString(bytes);
     }
 
     /// <summary>
-    /// 将字节数组的指定范围转换为 UTF-8 字符串。
+    /// 将字节数组的指定范围转换为系统默认编码的字符串。
     /// </summary>
     /// <param name="bytes">要转换的字节数组。</param>
     /// <param name="index">起始偏移量。</param>
     /// <param name="count">要转换的字节数。</param>
-    /// <returns>字符串。</returns>
+    /// <returns>系统默认编码的字符串。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="index"/> 或 <paramref name="count"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// 使用 <see cref="Encoding.Default"/> 进行编码转换。如需使用 UTF-8 编码，请使用 <see cref="ToUtf8String(byte[], int, int)"/> 方法。
+    /// </remarks>
     public static string ToDefaultString(this byte[] bytes, int index, int count)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -140,7 +146,7 @@ public static class ByteExtensions
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength), nameof(count));
         }
 
-        return Encoding.UTF8.GetString(bytes, index, count);
+        return Encoding.Default.GetString(bytes, index, count);
     }
 
     /// <summary>
