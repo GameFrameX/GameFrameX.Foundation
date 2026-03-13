@@ -8,7 +8,7 @@ namespace GameFrameX.Foundation.Http.Normalization;
 /// 该类用于封装HTTP请求的返回结果，提供统一的结构以便于处理和解析响应数据。
 /// </summary>
 /// <typeparam name="T">消息类型，表示返回的数据对象的类型。</typeparam>
-public sealed class HttpJsonResultData<T>
+public sealed class HttpJsonResultData<T> : IHttpJsonResult
 {
     /// <summary>
     /// 是否成功
@@ -39,6 +39,13 @@ public sealed class HttpJsonResultData<T>
     /// </summary>
     [JsonPropertyName("data")]
     public T Data { get; set; }
+
+    /// <summary>
+    /// 显式实现接口的Data属性
+    /// 将泛型数据序列化为JSON字符串，用于统一接口访问。
+    /// </summary>
+    [JsonIgnore]
+    string IHttpJsonResult.Data => Data == null ? null : JsonHelper.Serialize(Data);
 
     /// <summary>
     /// 将当前对象序列化为JSON字符串。

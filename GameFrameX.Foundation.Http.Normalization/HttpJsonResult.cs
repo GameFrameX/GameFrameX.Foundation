@@ -1,4 +1,4 @@
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using GameFrameX.Foundation.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;
@@ -8,7 +8,7 @@ namespace GameFrameX.Foundation.Http.Normalization;
 /// 该类用于封装HTTP请求的响应结果，包括响应码、消息和数据。
 /// 提供了一系列静态方法来创建不同状态的响应对象，如成功、失败、错误等。
 /// </summary>
-public sealed class HttpJsonResult
+public sealed class HttpJsonResult : IHttpJsonResult
 {
     /// <summary>
     /// 响应码，0表示成功，其他值表示不同的错误类型。
@@ -23,6 +23,14 @@ public sealed class HttpJsonResult
     /// </summary>
     [JsonPropertyName("code")]
     public int Code { get; set; }
+
+    /// <summary>
+    /// 是否成功
+    /// 根据响应码自动判断，Code为0时返回true，其他值返回false。
+    /// 该属性为快捷判断属性，不参与序列化。
+    /// </summary>
+    [JsonIgnore]
+    public bool IsSuccess => Code == HttpJsonResultConstants.SuccessCode;
 
     /// <summary>
     /// 响应消息，提供关于请求结果的详细信息。
