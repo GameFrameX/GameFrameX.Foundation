@@ -8,20 +8,32 @@ namespace GameFrameX.Foundation.Encryption;
 /// <summary>
 /// AES 加密解密
 /// </summary>
+/// <remarks>
+/// 加密输出格式：[Salt(16 字节) | IV(16 字节) | 密文]
+/// Salt 和 IV 每次随机生成，与密文拼接存储，解密时自动从密文头部读取。
+/// 此格式与旧版本（固定 IV/Salt）不兼容。
+/// </remarks>
 public static class AesHelper
 {
+    /// <summary>PBKDF2 迭代次数（符合 OWASP 2023 建议 600,000 次）</summary>
+    private const int Pbkdf2Iterations = 600_000;
+
+    /// <summary>Salt 长度（字节）</summary>
+    private const int SaltSize = 16;
+
+    /// <summary>IV 长度（字节）</summary>
+    private const int IvSize = 16;
+
+    /// <summary>输出头部长度 = Salt + IV</summary>
+    private const int HeaderSize = SaltSize + IvSize;
+
     /// <summary>
-    /// 使用 AES 算法加密字符串（高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法）
-    /// AES加密过程:
-    /// 1. 检查输入参数的有效性
-    /// 2. 将输入字符串转换为UTF8字节数组
-    /// 3. 调用字节数组加密方法进行加密
-    /// 4. 将加密结果转换为Base64字符串返回
+    /// 使用 AES 算法加密字符串（输出 Base64 编码）
     /// </summary>
     /// <param name="encryptString">待加密的明文字符串</param>
-    /// <param name="encryptKey">加密密钥，用于生成加密所需的密钥</param>
-    /// <returns>加密后的 Base64 编码字符串</returns>
-    /// <exception cref="ArgumentException">当明文或密钥为空时抛出异常</exception>
+    /// <param name="encryptKey">加密密钥</param>
+    /// <returns>加密后的 Base64 编码字符串，格式为 [Salt(16) | IV(16) | 密文] 的 Base64 表示</returns>
+    /// <exception cref="ArgumentException">当明文或密钥为空时抛出</exception>
     public static string Encrypt(string encryptString, string encryptKey)
     {
         if (string.IsNullOrEmpty(encryptString))
@@ -37,21 +49,16 @@ public static class AesHelper
         return Convert.ToBase64String(Encrypt(Encoding.UTF8.GetBytes(encryptString), encryptKey));
     }
 
-
     /// <summary>
-    /// 使用 AES 算法加密字节数组（高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法）
-    /// AES加密过程:
-    /// 1. 检查输入参数的有效性
-    /// 2. 使用固定的IV(初始化向量)和Salt值
-    /// 3. 通过PBKDF2(RFC2898)算法从密钥派生出加密密钥
-    /// 4. 创建AES加密器并使用CryptoStream进行加密
-    /// 5. 返回加密后的字节数组
+    /// 使用 AES-CBC 算法加密字节数组。
+    /// 每次加密随机生成 Salt 和 IV，输出格式：[Salt(16 字节) | IV(16 字节) | 密文]。
     /// </summary>
     /// <param name="encryptByte">待加密的明文字节数组</param>
-    /// <param name="encryptKey">加密密钥，用于生成加密所需的密钥</param>
-    /// <returns>加密后的字节数组</returns>
-    /// <exception cref="ArgumentNullException">当明文字节数组为null时抛出异常</exception>
-    /// <exception cref="ArgumentException">当明文字节数组为空或密钥为空时抛出异常</exception>
+    /// <param name="encryptKey">加密密钥，用于通过 PBKDF2(600,000 次) 派生密钥</param>
+    /// <returns>加密后的字节数组，头部包含 Salt 和 IV</returns>
+    /// <exception cref="ArgumentNullException">当明文字节数组为 null 时抛出</exception>
+    /// <exception cref="ArgumentException">当明文字节数组为空或密钥为空时抛出</exception>
+    /// <exception cref="CryptographicException">当加密过程失败时抛出</exception>
     public static byte[] Encrypt(byte[] encryptByte, string encryptKey)
     {
         if (encryptByte == null)
@@ -69,52 +76,40 @@ public static class AesHelper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.EncryptionKeyCannotBeNullOrEmpty), nameof(encryptKey));
         }
 
-        byte[] encryptedBytes = null;
-        // 初始化向量，用于CBC模式
-        var iv = new byte[] { 224, 131, 122, 101, 37, 254, 33, 17, 19, 28, 212, 130, 45, 65, 43, 32, };
-        // 用于密钥派生的盐值
-        var salt = new byte[] { 234, 231, 123, 100, 87, 254, 123, 17, 89, 18, 230, 13, 45, 65, 43, 32, };
-        using (var aesProvider = Aes.Create())
+        // 每次加密随机生成 Salt 和 IV，确保语义安全（C-02 修复）
+        var salt = RandomNumberGenerator.GetBytes(SaltSize);
+        var iv = RandomNumberGenerator.GetBytes(IvSize);
+
+        using var aesProvider = Aes.Create();
+        // PBKDF2 迭代次数提升至 600,000（C-03 修复）；使用推荐的静态 Pbkdf2 方法（.NET 10+）
+        var keyBytes = Rfc2898DeriveBytes.Pbkdf2(
+            Encoding.UTF8.GetBytes(encryptKey), salt, Pbkdf2Iterations, HashAlgorithmName.SHA256, 32);
+
+        using var encryptor = aesProvider.CreateEncryptor(keyBytes, iv);
+        using var memoryStream = new MemoryStream();
+
+        // 将 Salt 和 IV 写入输出头部，解密时从此处读取
+        memoryStream.Write(salt, 0, SaltSize);
+        memoryStream.Write(iv, 0, IvSize);
+
+        // 使用 CryptoStream 写入密文（C-01 修复：不再捕获异常，让其自然传播）
+        using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
         {
-            try
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    // 使用PBKDF2算法派生密钥，迭代1000次
-                    using (var pdb = new Rfc2898DeriveBytes(encryptKey, salt, 1000, HashAlgorithmName.SHA256))
-                    {
-                        var transform = aesProvider.CreateEncryptor(pdb.GetBytes(32), iv);
-                        using (var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write))
-                        {
-                            cryptoStream.Write(encryptByte, 0, encryptByte.Length);
-                            cryptoStream.FlushFinalBlock();
-                            encryptedBytes = memoryStream.ToArray();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            cryptoStream.Write(encryptByte, 0, encryptByte.Length);
+            cryptoStream.FlushFinalBlock();
         }
 
-        return encryptedBytes;
+        return memoryStream.ToArray();
     }
 
-
     /// <summary>
-    /// 使用 AES 算法解密字符串（高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法）
-    /// 解密过程:
-    /// 1. 检查输入参数的有效性
-    /// 2. 将Base64字符串转换为字节数组
-    /// 3. 调用字节数组解密方法进行解密
-    /// 4. 将解密结果转换为UTF8字符串返回
+    /// 使用 AES 算法解密字符串
     /// </summary>
-    /// <param name="decryptString">待解密的 Base64 编码字符串</param>
+    /// <param name="decryptString">待解密的 Base64 编码字符串（格式：[Salt(16) | IV(16) | 密文] 的 Base64 表示）</param>
     /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同</param>
     /// <returns>解密后的明文字符串</returns>
-    /// <exception cref="ArgumentException">当密文或密钥为空时抛出异常</exception>
+    /// <exception cref="ArgumentException">当密文或密钥为空时抛出</exception>
+    /// <exception cref="CryptographicException">当解密失败（如密钥错误或数据被篡改）时抛出</exception>
     public static string Decrypt(string decryptString, string decryptKey)
     {
         if (string.IsNullOrEmpty(decryptString))
@@ -127,34 +122,30 @@ public static class AesHelper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DecryptionKeyCannotBeNullOrEmpty), nameof(decryptKey));
         }
 
-        return Encoding.UTF8.GetString(AesDecrypt(Convert.FromBase64String(decryptString), decryptKey));
+        return Encoding.UTF8.GetString(Decrypt(Convert.FromBase64String(decryptString), decryptKey));
     }
 
-
     /// <summary>
-    /// 使用 AES 算法解密字节数组（高级加密标准，是下一代的加密算法标准，速度快，安全级别高，目前 AES 标准的一个实现是 Rijndael 算法）
-    /// 解密过程:
-    /// 1. 检查输入参数的有效性
-    /// 2. 使用与加密相同的IV和Salt值
-    /// 3. 通过PBKDF2(RFC2898)算法从密钥派生出解密密钥
-    /// 4. 创建AES解密器并使用CryptoStream进行解密
-    /// 5. 返回解密后的字节数组
+    /// 使用 AES-CBC 算法解密字节数组。
+    /// 期望输入格式：[Salt(16 字节) | IV(16 字节) | 密文]，与 <see cref="Encrypt(byte[],string)"/> 输出格式对应。
     /// </summary>
-    /// <param name="decryptByte">待解密的密文字节数组</param>
+    /// <param name="decryptByte">待解密的密文字节数组，头部须包含 Salt 和 IV</param>
     /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同</param>
     /// <returns>解密后的明文字节数组</returns>
-    /// <exception cref="ArgumentNullException">当密文字节数组为null时抛出异常</exception>
-    /// <exception cref="ArgumentException">当密文字节数组为空或密钥为空时抛出异常</exception>
-    public static byte[] AesDecrypt(byte[] decryptByte, string decryptKey)
+    /// <exception cref="ArgumentNullException">当密文字节数组为 null 时抛出</exception>
+    /// <exception cref="ArgumentException">当密文长度不足或密钥为空时抛出</exception>
+    /// <exception cref="CryptographicException">当解密失败（如密钥错误或数据被篡改）时抛出</exception>
+    public static byte[] Decrypt(byte[] decryptByte, string decryptKey)
     {
         if (decryptByte == null)
         {
             throw new ArgumentNullException(nameof(decryptByte), @"Cipher text byte array cannot be null");
         }
 
-        if (decryptByte.Length == 0)
+        // 最小长度：Salt(16) + IV(16) + 至少一个完整加密块(16)
+        if (decryptByte.Length < HeaderSize + 16)
         {
-            throw new ArgumentException("Cipher text byte array cannot be empty", nameof(decryptByte));
+            throw new ArgumentException("Cipher text byte array is too short to be valid.", nameof(decryptByte));
         }
 
         if (string.IsNullOrEmpty(decryptKey))
@@ -162,36 +153,32 @@ public static class AesHelper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DecryptionKeyCannotBeNullOrEmpty), nameof(decryptKey));
         }
 
-        byte[] decryptedBytes = null;
-        // 初始化向量，必须与加密时使用的IV相同
-        var iv = new byte[] { 224, 131, 122, 101, 37, 254, 33, 17, 19, 28, 212, 130, 45, 65, 43, 32, };
-        // 用于密钥派生的盐值，必须与加密时使用的Salt相同
-        var salt = new byte[] { 234, 231, 123, 100, 87, 254, 123, 17, 89, 18, 230, 13, 45, 65, 43, 32, };
-        using (var aesProvider = Aes.Create())
+        // 从密文头部读取 Salt 和 IV（C-02 修复）
+        var salt = new byte[SaltSize];
+        var iv = new byte[IvSize];
+        Array.Copy(decryptByte, 0, salt, 0, SaltSize);
+        Array.Copy(decryptByte, SaltSize, iv, 0, IvSize);
+
+        int cipherOffset = HeaderSize;
+        int cipherLength = decryptByte.Length - cipherOffset;
+        var cipherData = new byte[cipherLength];
+        Array.Copy(decryptByte, cipherOffset, cipherData, 0, cipherLength);
+
+        using var aesProvider = Aes.Create();
+        // PBKDF2 迭代次数与加密时一致（C-03 修复）；使用推荐的静态 Pbkdf2 方法（.NET 10+）
+        var keyBytes = Rfc2898DeriveBytes.Pbkdf2(
+            Encoding.UTF8.GetBytes(decryptKey), salt, Pbkdf2Iterations, HashAlgorithmName.SHA256, 32);
+
+        using var decryptor = aesProvider.CreateDecryptor(keyBytes, iv);
+        using var memoryStream = new MemoryStream();
+
+        // C-01 修复：不再捕获异常，解密失败（密钥错误/数据篡改）时自然抛出 CryptographicException
+        using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
         {
-            try
-            {
-                using (var memoryStream = new MemoryStream())
-                {
-                    // 使用PBKDF2算法派生密钥，参数必须与加密时相同
-                    using (var pdb = new Rfc2898DeriveBytes(decryptKey, salt, 1000, HashAlgorithmName.SHA256))
-                    {
-                        var transform = aesProvider.CreateDecryptor(pdb.GetBytes(32), iv);
-                        using (var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write))
-                        {
-                            cryptoStream.Write(decryptByte, 0, decryptByte.Length);
-                            cryptoStream.FlushFinalBlock();
-                            decryptedBytes = memoryStream.ToArray();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            cryptoStream.Write(cipherData, 0, cipherData.Length);
+            cryptoStream.FlushFinalBlock();
         }
 
-        return decryptedBytes;
+        return memoryStream.ToArray();
     }
 }
