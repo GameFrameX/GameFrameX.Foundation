@@ -640,14 +640,14 @@ public class ByteExtensionTests
     }
 
     [Fact]
-    public void FromBase64String_ShouldReturnCorrectBytes()
+    public void ToByteArrayFromBase64_ShouldReturnCorrectBytes()
     {
         // Arrange
         string base64 = "SGVsbG8="; // "Hello" in Base64
         byte[] expected = { 72, 101, 108, 108, 111 };
 
         // Act
-        var result = ByteExtensions.FromBase64String(base64);
+        var result = base64.ToByteArrayFromBase64();
 
         // Assert
         Assert.Equal(expected, result);
@@ -817,7 +817,7 @@ public class ByteExtensionTests
         byte[] expected = { 1, 2, 3, 4, 5, 6 };
 
         // Act
-        var result = ByteExtensions.Concat(array1, array2, array3);
+        var result = array1.Concat(array2, array3);
 
         // Assert
         Assert.Equal(expected, result);
@@ -833,7 +833,7 @@ public class ByteExtensionTests
         byte[] expected = { 1, 2, 3, 4 };
 
         // Act
-        var result = ByteExtensions.Concat(array1, array2, array3);
+        var result = array1.Concat(array2, array3);
 
         // Assert
         Assert.Equal(expected, result);
