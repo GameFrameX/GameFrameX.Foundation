@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using GameFrameX.Foundation.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;
 
@@ -40,12 +40,12 @@ public sealed class HttpJsonResult
 
     /// <summary>
     /// 将当前对象序列化为JSON字符串。
-    /// 使用Newtonsoft.Json进行序列化，保持属性名称的驼峰命名规则。
+    /// 使用JsonHelper进行序列化，保持中文字符和Emoji不被转义。
     /// </summary>
     /// <returns>JSON格式的字符串表示。</returns>
     public override string ToString()
     {
-        return JsonSerializer.Serialize(this);
+        return JsonHelper.Serialize(this);
     }
 
     /// <summary>
@@ -164,7 +164,7 @@ public sealed class HttpJsonResult
         {
             Code = 0,
             Message = string.Empty,
-            Data = JsonSerializer.Serialize(data),
+            Data = JsonHelper.Serialize(data),
         };
     }
 
