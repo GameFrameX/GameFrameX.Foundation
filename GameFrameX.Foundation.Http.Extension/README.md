@@ -37,7 +37,7 @@ using GameFrameX.Foundation.Http.Extension;
 using var httpClient = new HttpClient();
 
 // GET请求获取字符串
-string response = await httpClient.GetToStringAsync<string>("https://api.example.com/users");
+string response = await httpClient.GetToStringAsync("https://api.example.com/users");
 Console.WriteLine(response);
 
 // POST JSON数据
@@ -57,9 +57,9 @@ var headers = new Dictionary<string, string>
 };
 
 // GET请求带请求头和超时
-string response = await httpClient.GetToStringAsync<string>(
-    "https://api.example.com/protected", 
-    headers, 
+string response = await httpClient.GetToStringAsync(
+    "https://api.example.com/protected",
+    headers,
     timeout: 30);
 
 // POST请求带请求头和超时
@@ -78,7 +78,7 @@ string postResponse = await httpClient.PostJsonToStringAsync(
 
 ```csharp
 // 基本GET请求
-string response1 = await httpClient.GetToStringAsync<string>("https://api.example.com/data");
+string response1 = await httpClient.GetToStringAsync("https://api.example.com/data");
 
 // 带请求头和超时的GET请求
 var headers = new Dictionary<string, string>
@@ -86,9 +86,9 @@ var headers = new Dictionary<string, string>
     ["Accept"] = "application/json",
     ["Authorization"] = "Bearer token"
 };
-string response2 = await httpClient.GetToStringAsync<string>(
-    "https://api.example.com/data", 
-    headers, 
+string response2 = await httpClient.GetToStringAsync(
+    "https://api.example.com/data",
+    headers,
     timeout: 30);
 ```
 
@@ -96,12 +96,12 @@ string response2 = await httpClient.GetToStringAsync<string>(
 
 ```csharp
 // 基本GET请求获取字节数组
-byte[] data1 = await httpClient.GetToByteArrayAsync<byte[]>("https://api.example.com/file");
+byte[] data1 = await httpClient.GetToByteArrayAsync("https://api.example.com/file");
 
 // 带请求头的GET请求获取字节数组
-byte[] data2 = await httpClient.GetToByteArrayAsync<byte[]>(
-    "https://api.example.com/file", 
-    headers, 
+byte[] data2 = await httpClient.GetToByteArrayAsync(
+    "https://api.example.com/file",
+    headers,
     timeout: 60);
 ```
 
@@ -109,12 +109,12 @@ byte[] data2 = await httpClient.GetToByteArrayAsync<byte[]>(
 
 ```csharp
 // 基本GET请求获取流
-using Stream stream1 = await httpClient.GetToStreamAsync<Stream>("https://api.example.com/download");
+using Stream stream1 = await httpClient.GetToStreamAsync("https://api.example.com/download");
 
 // 带请求头的GET请求获取流
-using Stream stream2 = await httpClient.GetToStreamAsync<Stream>(
-    "https://api.example.com/download", 
-    headers, 
+using Stream stream2 = await httpClient.GetToStreamAsync(
+    "https://api.example.com/download",
+    headers,
     timeout: 120);
 ```
 
@@ -284,8 +284,8 @@ public class BatchRequestProcessor
     
     public async Task<List<string>> ProcessBatchGetRequests(List<string> urls)
     {
-        var tasks = urls.Select(url => 
-            httpClient.GetToStringAsync<string>(url)).ToList();
+        var tasks = urls.Select(url =>
+            httpClient.GetToStringAsync(url)).ToList();
         
         return (await Task.WhenAll(tasks)).ToList();
     }
@@ -307,19 +307,19 @@ public class BatchRequestProcessor
 ```csharp
 public static class HttpClientRetryExtensions
 {
-    public static async Task<string> GetWithRetryAsync<T>(
-        this HttpClient httpClient, 
-        string url, 
-        int maxRetries = 3, 
+    public static async Task<string> GetWithRetryAsync(
+        this HttpClient httpClient,
+        string url,
+        int maxRetries = 3,
         TimeSpan delay = default)
     {
         if (delay == default) delay = TimeSpan.FromSeconds(1);
-        
+
         for (int i = 0; i < maxRetries; i++)
         {
             try
             {
-                return await httpClient.GetToStringAsync<T>(url);
+                return await httpClient.GetToStringAsync(url);
             }
             catch (HttpRequestException) when (i < maxRetries - 1)
             {
@@ -327,7 +327,7 @@ public static class HttpClientRetryExtensions
                 delay = TimeSpan.FromMilliseconds(delay.TotalMilliseconds * 2); // 指数退避
             }
         }
-        
+
         throw new InvalidOperationException($"请求失败，已重试 {maxRetries} 次");
     }
 }
@@ -350,16 +350,16 @@ public class CachedHttpClient
         });
     }
     
-    public async Task<string> GetWithCacheAsync<T>(
-        string url, 
+    public async Task<string> GetWithCacheAsync(
+        string url,
         TimeSpan? expiration = null)
     {
         if (cache.TryGetValue(url, out string cachedResponse))
         {
             return cachedResponse;
         }
-        
-        var response = await httpClient.GetToStringAsync<T>(url);
+
+        var response = await httpClient.GetToStringAsync(url);
         
         var cacheOptions = new MemoryCacheEntryOptions
         {
@@ -390,7 +390,7 @@ public class ApiService
     
     public async Task<string> GetDataAsync()
     {
-        return await httpClient.GetToStringAsync<string>("https://api.example.com/data");
+        return await httpClient.GetToStringAsync("https://api.example.com/data");
     }
 }
 
@@ -420,7 +420,7 @@ public class ApiClient
     {
         try
         {
-            var response = await httpClient.GetToStringAsync<T>(url);
+            var response = await httpClient.GetToStringAsync(url);
             return JsonSerializer.Deserialize<T>(response);
         }
         catch (HttpRequestException ex)
@@ -480,7 +480,7 @@ public class ConfiguredApiClient
     
     public async Task<string> GetAsync(string endpoint)
     {
-        return await httpClient.GetToStringAsync<string>(endpoint);
+        return await httpClient.GetToStringAsync(endpoint);
     }
 }
 ```
@@ -499,15 +499,15 @@ public class LoggingHttpClient
         this.logger = logger;
     }
     
-    public async Task<string> GetWithLoggingAsync<T>(string url)
+    public async Task<string> GetWithLoggingAsync(string url)
     {
         var stopwatch = Stopwatch.StartNew();
-        
+
         logger.LogInformation("开始GET请求: {Url}", url);
-        
+
         try
         {
-            var response = await httpClient.GetToStringAsync<T>(url);
+            var response = await httpClient.GetToStringAsync(url);
             
             stopwatch.Stop();
             logger.LogInformation("GET请求成功: {Url}, 耗时: {ElapsedMs}ms, 响应长度: {Length}", 
@@ -533,13 +533,13 @@ public class LoggingHttpClient
 ```csharp
 public static class HttpClientResponseExtensions
 {
-    public static async Task<ApiResponse<T>> GetApiResponseAsync<T>(
-        this HttpClient httpClient, 
+    public async Task<ApiResponse<T>> GetApiResponseAsync<T>(
+        this HttpClient httpClient,
         string url) where T : class
     {
         try
         {
-            var response = await httpClient.GetToStringAsync<T>(url);
+            var response = await httpClient.GetToStringAsync(url);
             var apiResponse = JsonSerializer.Deserialize<ApiResponse<T>>(response);
             return apiResponse;
         }
@@ -626,12 +626,12 @@ public class ThrottledHttpClient
         this.semaphore = new SemaphoreSlim(maxConcurrency, maxConcurrency);
     }
     
-    public async Task<string> GetWithThrottleAsync<T>(string url)
+    public async Task<string> GetWithThrottleAsync(string url)
     {
         await semaphore.WaitAsync();
         try
         {
-            return await httpClient.GetToStringAsync<T>(url);
+            return await httpClient.GetToStringAsync(url);
         }
         finally
         {
@@ -651,10 +651,10 @@ public class ThrottledHttpClient
 
 ```csharp
 // 增加超时时间
-string response = await httpClient.GetToStringAsync<string>(url, headers, timeout: 120);
+string response = await httpClient.GetToStringAsync(url, headers, timeout: 120);
 
 // 使用重试机制
-string response = await httpClient.GetWithRetryAsync<string>(url, maxRetries: 3);
+string response = await httpClient.GetWithRetryAsync(url, maxRetries: 3);
 ```
 
 #### 2. 内存泄漏问题
@@ -690,17 +690,17 @@ string response = await httpClient.PostJsonToStringAsync(url, data, options);
 // 启用详细日志
 public static class HttpClientDebugExtensions
 {
-    public static async Task<string> GetWithDebugAsync<T>(
-        this HttpClient httpClient, 
-        string url, 
+    public static async Task<string> GetWithDebugAsync(
+        this HttpClient httpClient,
+        string url,
         ILogger logger = null)
     {
         logger?.LogDebug("发送GET请求到: {Url}", url);
-        
+
         var stopwatch = Stopwatch.StartNew();
         try
         {
-            var response = await httpClient.GetToStringAsync<T>(url);
+            var response = await httpClient.GetToStringAsync(url);
             stopwatch.Stop();
             
             logger?.LogDebug("GET请求成功: {Url}, 耗时: {ElapsedMs}ms, 响应长度: {Length}", 
