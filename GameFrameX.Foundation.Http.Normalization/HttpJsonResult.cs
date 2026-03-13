@@ -59,7 +59,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.SuccessCode,
+            Code = HttpJsonResultConstants.SuccessCode,
             Message = string.Empty,
         };
     }
@@ -88,7 +88,7 @@ public sealed class HttpJsonResult
 
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.SuccessCode,
+            Code = HttpJsonResultConstants.SuccessCode,
             Message = string.Empty,
             Data = JsonHelper.Serialize(data),
         };
@@ -113,7 +113,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.SuccessCode,
+            Code = HttpJsonResultConstants.SuccessCode,
             Message = string.Empty,
             Data = data
         };
@@ -140,7 +140,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.SuccessCode,
+            Code = HttpJsonResultConstants.SuccessCode,
             Message = message,
             Data = data
         };
@@ -201,7 +201,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.FailCode,
+            Code = HttpJsonResultConstants.FailCode,
             Message = message,
         };
     }
@@ -286,8 +286,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.ValidationErrorCode,
-            Message = HttpJsonResultHelper.ValidationErrorMsg,
+            Code = HttpJsonResultConstants.ValidationErrorCode,
+            Message = HttpJsonResultConstants.ValidationErrorMsg,
         };
     }
 
@@ -309,7 +309,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.ValidationErrorCode,
+            Code = HttpJsonResultConstants.ValidationErrorCode,
             Message = message,
         };
     }
@@ -337,8 +337,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.UnauthorizedCode,
-            Message = HttpJsonResultHelper.UnauthorizedMsg
+            Code = HttpJsonResultConstants.UnauthorizedCode,
+            Message = HttpJsonResultConstants.UnauthorizedMsg
         };
     }
 
@@ -360,7 +360,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.UnauthorizedCode,
+            Code = HttpJsonResultConstants.UnauthorizedCode,
             Message = message
         };
     }
@@ -388,8 +388,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.NotFoundCode,
-            Message = HttpJsonResultHelper.NotFoundMsg
+            Code = HttpJsonResultConstants.NotFoundCode,
+            Message = HttpJsonResultConstants.NotFoundMsg
         };
     }
 
@@ -411,7 +411,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.NotFoundCode,
+            Code = HttpJsonResultConstants.NotFoundCode,
             Message = message
         };
     }
@@ -439,8 +439,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.ServerErrorCode,
-            Message = HttpJsonResultHelper.ServerErrorMsg
+            Code = HttpJsonResultConstants.ServerErrorCode,
+            Message = HttpJsonResultConstants.ServerErrorMsg
         };
     }
 
@@ -462,7 +462,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.ServerErrorCode,
+            Code = HttpJsonResultConstants.ServerErrorCode,
             Message = message
         };
     }
@@ -490,8 +490,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.ParamErrorCode,
-            Message = HttpJsonResultHelper.ParamErrorMsg
+            Code = HttpJsonResultConstants.ParamErrorCode,
+            Message = HttpJsonResultConstants.ParamErrorMsg
         };
     }
 
@@ -513,7 +513,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.ParamErrorCode,
+            Code = HttpJsonResultConstants.ParamErrorCode,
             Message = message
         };
     }
@@ -541,8 +541,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.UnauthorizedCode,
-            Message = HttpJsonResultHelper.IllegalMsg
+            Code = HttpJsonResultConstants.UnauthorizedCode,
+            Message = HttpJsonResultConstants.IllegalMsg
         };
     }
 
@@ -564,7 +564,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = HttpJsonResultHelper.UnauthorizedCode,
+            Code = HttpJsonResultConstants.UnauthorizedCode,
             Message = message
         };
     }

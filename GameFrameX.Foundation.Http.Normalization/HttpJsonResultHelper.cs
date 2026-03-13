@@ -4,88 +4,9 @@ using GameFrameX.Foundation.Logger;
 namespace GameFrameX.Foundation.Http.Normalization;
 
 /// <summary>
-/// 提供用于处理HTTP JSON结果的辅助方法和常量。
-/// </summary>
-public static partial class HttpJsonResultHelper
-{
-    #region 错误码常量
-
-    /// <summary>
-    /// 成功状态码
-    /// </summary>
-    public const int SuccessCode = 0;
-
-    /// <summary>
-    /// 一般性失败状态码
-    /// </summary>
-    public const int FailCode = -1;
-
-    /// <summary>
-    /// 验证失败状态码 (HTTP 400)
-    /// </summary>
-    public const int ValidationErrorCode = 400;
-
-    /// <summary>
-    /// 未授权状态码 (HTTP 401)
-    /// </summary>
-    public const int UnauthorizedCode = 401;
-
-    /// <summary>
-    /// 参数错误状态码 (HTTP 403)
-    /// </summary>
-    public const int ParamErrorCode = 403;
-
-    /// <summary>
-    /// 资源未找到状态码 (HTTP 404)
-    /// </summary>
-    public const int NotFoundCode = 404;
-
-    /// <summary>
-    /// 服务器内部错误状态码 (HTTP 500)
-    /// </summary>
-    public const int ServerErrorCode = 500;
-
-    #endregion
-
-    #region 消息常量
-
-    /// <summary>
-    /// 验证失败默认消息
-    /// </summary>
-    public const string ValidationErrorMsg = "Validation failed.";
-
-    /// <summary>
-    /// 未授权默认消息
-    /// </summary>
-    public const string UnauthorizedMsg = "Unauthorized access.";
-
-    /// <summary>
-    /// 参数错误默认消息
-    /// </summary>
-    public const string ParamErrorMsg = "Parameter error.";
-
-    /// <summary>
-    /// 资源未找到默认消息
-    /// </summary>
-    public const string NotFoundMsg = "Resource not found.";
-
-    /// <summary>
-    /// 服务器内部错误默认消息
-    /// </summary>
-    public const string ServerErrorMsg = "Internal server error.";
-
-    /// <summary>
-    /// 非法请求默认消息
-    /// </summary>
-    public const string IllegalMsg = "Illegal request.";
-
-    #endregion
-}
-
-/// <summary>
 /// 提供用于处理HTTP JSON结果的扩展方法。
 /// </summary>
-public static partial class HttpJsonResultHelper
+public static class HttpJsonResultHelper
 {
     /// <summary>
     /// 将JSON字符串转换为HttpJsonResultData对象
@@ -111,7 +32,7 @@ public static partial class HttpJsonResultHelper
             // 反序列化JSON字符串为HttpJsonResult对象
             var httpJsonResult = JsonHelper.Deserialize<HttpJsonResult>(jsonResult);
             // 检查响应码是否表示成功
-            if (httpJsonResult.Code != SuccessCode)
+            if (httpJsonResult.Code != HttpJsonResultConstants.SuccessCode)
             {
                 resultData.Code = httpJsonResult.Code;
                 resultData.Message = httpJsonResult.Message;
