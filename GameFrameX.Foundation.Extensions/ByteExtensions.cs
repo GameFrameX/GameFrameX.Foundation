@@ -527,20 +527,15 @@ public static class ByteExtensions
     /// 将一个字节数组写入指定的缓冲区，并更新偏移量。
     /// </summary>
     /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
+    /// <param name="value">要写入的值，不能为 null。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 或 <paramref name="value"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
     public static void WriteBytesValue(this byte[] buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (value == null)
-        {
-            buffer.WriteIntValue(0, ref offset);
-            return;
-        }
 
         if (offset + value.Length + ConstBaseTypeSize.IntSize > buffer.Length)
         {
