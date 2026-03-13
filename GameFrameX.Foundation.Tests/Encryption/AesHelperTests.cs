@@ -144,7 +144,7 @@ public class AesHelperTests
         var encryptedBytes = AesHelper.Encrypt(plainBytes, key);
 
         // Act
-        var decryptedBytes = AesHelper.AesDecrypt(encryptedBytes, key);
+        var decryptedBytes = AesHelper.Decrypt(encryptedBytes, key);
 
         // Assert
         Assert.Equal(plainBytes, decryptedBytes);
@@ -159,7 +159,7 @@ public class AesHelperTests
 
         // Act
         var encryptedBytes = AesHelper.Encrypt(plainBytes, key);
-        var decryptedBytes = AesHelper.AesDecrypt(encryptedBytes, key);
+        var decryptedBytes = AesHelper.Decrypt(encryptedBytes, key);
 
         // Assert
         Assert.Equal(plainBytes, decryptedBytes);
