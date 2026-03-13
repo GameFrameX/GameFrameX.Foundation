@@ -166,7 +166,7 @@ public class AesHelperTests
     }
 
     [Fact]
-    public void Encrypt_SameInputTwice_ShouldReturnSameResult()
+    public void Encrypt_SameInputTwice_ShouldReturnDifferentResults_BothDecryptable()
     {
         // Arrange
         var plainText = TestPlainText;
@@ -177,8 +177,11 @@ public class AesHelperTests
         var encryptedText2 = AesHelper.Encrypt(plainText, key);
 
         // Assert
-        // 注意：由于使用固定的IV和Salt，相同输入应该产生相同的加密结果
-        Assert.Equal(encryptedText1, encryptedText2);
+        // 由于每次加密都随机生成 Salt 和 IV，相同输入应该产生不同的加密结果（语义安全）
+        Assert.NotEqual(encryptedText1, encryptedText2);
+        // 但两个加密结果都应该能正确解密
+        Assert.Equal(plainText, AesHelper.Decrypt(encryptedText1, key));
+        Assert.Equal(plainText, AesHelper.Decrypt(encryptedText2, key));
     }
 
     [Fact]
