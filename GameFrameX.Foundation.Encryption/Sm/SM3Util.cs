@@ -15,23 +15,15 @@ internal static class SM3Util
     /// <param name="data">要计算摘要的输入字符串。</param>
     /// <returns>返回十六进制格式的SM3摘要值字符串。</returns>
     /// <remarks>
-    /// 该方法执行以下步骤：
-    /// 1. 将输入字符串转换为字节数组
-    /// 2. 创建SM3Digest实例并计算摘要
-    /// 3. 将结果转换为十六进制字符串
+    /// I-01 修复：原方法名 Encrypt 语义错误（SM3 是哈希算法，不是加密算法），重命名为 Hash。
     /// </remarks>
-    public static string Encrypt(string data)
+    public static string Hash(string data)
     {
-        byte[] msg1 = Encoding.Default.GetBytes(data);
-        //byte[] key1 = Encoding.Default.GetBytes(secretKey);
+        // W-03 修复：使用 UTF8 代替 Encoding.Default，确保跨平台哈希结果一致
+        byte[] msg1 = Encoding.UTF8.GetBytes(data);
 
-        //var keyParameter = new KeyParameter(key1);
         var sm3 = new Sm3Digest();
-
-        //HMac mac = new HMac(sm3); // 带密钥的杂凑算法
-        //mac.Init(keyParameter);
         sm3.BlockUpdate(msg1, 0, msg1.Length);
-        // byte[] result = new byte[sm3.GetMacSize()];
         byte[] result = new byte[sm3.GetDigestSize()];
         sm3.DoFinal(result, 0);
         return Encoding.ASCII.GetString(Hex.Encode(result));

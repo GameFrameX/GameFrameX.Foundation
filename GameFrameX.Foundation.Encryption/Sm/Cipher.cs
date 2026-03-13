@@ -37,9 +37,9 @@ internal sealed class Cipher
     private readonly byte[] _key;
 
     /// <summary>
-    /// 密钥偏移量
+    /// 密钥偏移量（W-05 修复：从 byte 改为 int，避免潜在截断）
     /// </summary>
-    private byte _keyOff;
+    private int _keyOff;
 
     /// <summary>
     /// 初始化Cipher类的新实例。
@@ -64,25 +64,22 @@ internal sealed class Cipher
             return null;
         }
 
+        // W-06 修复：缓存 ToByteArray() 结果，避免重复分配
+        var nBytes = n.ToByteArray();
         byte[] tmpd;
-        if (n.ToByteArray().Length == 33)
+        if (nBytes.Length == 33)
         {
             tmpd = new byte[32];
-            Array.Copy(n.ToByteArray(), 1, tmpd, 0, 32);
+            Array.Copy(nBytes, 1, tmpd, 0, 32);
         }
-        else if (n.ToByteArray().Length == 32)
+        else if (nBytes.Length == 32)
         {
-            tmpd = n.ToByteArray();
+            tmpd = nBytes;
         }
         else
         {
             tmpd = new byte[32];
-            for (int i = 0; i < 32 - n.ToByteArray().Length; i++)
-            {
-                tmpd[i] = 0;
-            }
-
-            Array.Copy(n.ToByteArray(), 0, tmpd, 32 - n.ToByteArray().Length, n.ToByteArray().Length);
+            Array.Copy(nBytes, 0, tmpd, 32 - nBytes.Length, nBytes.Length);
         }
 
         return tmpd;

@@ -33,7 +33,8 @@ public static class Sm4Helper
         }
         else if (!hexString && keyString.Length != 16)
         {
-        throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
+            // W-13 修复：补全缩进
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
         
         Sm4Util sm4Util = new Sm4Util

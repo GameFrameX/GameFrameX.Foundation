@@ -11,24 +11,26 @@ namespace GameFrameX.Foundation.Encryption.Sm;
 internal sealed class Sm4Util
 {
     /// <summary>
-    /// 密钥,长度必须为16字节
+    /// 密钥，长度必须为 16 字节（非 hex 模式）或 32 个 hex 字符（hex 模式）。
+    /// C-06 修复：移除硬编码默认密钥，调用方必须显式赋值，避免使用公开已知的密钥进行加密。
+    /// W-14 修复：改为属性。
     /// </summary>
-    public string secretKey = "1814546261730461";
+    public string secretKey { get; set; } = null;
 
     /// <summary>
-    /// 初始化向量
+    /// 初始化向量（W-14 修复：改为属性）
     /// </summary>
-    public string iv = "0000000000000000";
+    public string iv { get; set; } = "0000000000000000";
 
     /// <summary>
-    /// 是否以十六进制字符串形式处理密钥
+    /// 是否以十六进制字符串形式处理密钥（W-14 修复：改为属性）
     /// </summary>
-    public bool hexString = false;
+    public bool hexString { get; set; } = false;
 
     /// <summary>
-    /// 是否为JavaScript兼容模式
+    /// 是否为JavaScript兼容模式（W-14 修复：改为属性）
     /// </summary>
-    public bool forJavascript = false;
+    public bool forJavascript { get; set; } = false;
 
     /// <summary>
     /// 使用ECB模式加密字符串
@@ -106,8 +108,6 @@ internal sealed class Sm4Util
         sm4.Sm4SetKeyEnc(ctx, keyBytes);
         byte[] encrypted = sm4.Sm4_crypt_ecb(ctx, plainBytes);
         return encrypted;
-
-        //return Hex.Encode(encrypted);
     }
 
     /// <summary>

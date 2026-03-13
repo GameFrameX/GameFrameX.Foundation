@@ -31,11 +31,13 @@ internal sealed class Sm4
         long n;
         if (ForJavascript)
         {
-            n = (b[i] & 0xff) << 24 | ((b[i + 1] & 0xff) << 16) | ((b[i + 2] & 0xff) << 8) | (b[i + 3] & 0xff) & 0xff;
+            // W-07 修复：补全括号，明确运算顺序，避免 & 优先级高于 | 导致的歧义
+            n = ((b[i] & 0xff) << 24) | ((b[i + 1] & 0xff) << 16) | ((b[i + 2] & 0xff) << 8) | (b[i + 3] & 0xff);
         }
         else
         {
-            n = (long)(b[i] & 0xff) << 24 | (long)((b[i + 1] & 0xff) << 16) | (long)((b[i + 2] & 0xff) << 8) | b[i + 3] & 0xff & 0xffffffffL;
+            // W-07 修复：同上，补全括号
+            n = ((long)(b[i] & 0xff) << 24) | ((long)(b[i + 1] & 0xff) << 16) | ((long)(b[i + 2] & 0xff) << 8) | ((long)(b[i + 3] & 0xff));
         }
 
         return n;
@@ -74,7 +76,8 @@ internal sealed class Sm4
     /// <returns>循环左移后的结果</returns>
     private static long Rotl(long x, int n)
     {
-        return Shl(x, n) | x >> (32 - n);
+        // W-08 修复：使用无符号右移 >>> (C# 11+) 避免有符号算术右移污染高 32 位
+        return Shl(x, n) | (x >>> (32 - n)) & 0xFFFFFFFFL;
     }
 
     /// <summary>
@@ -88,9 +91,9 @@ internal sealed class Sm4
     }
 
     /// <summary>
-    /// SM4算法使用的S盒
+    /// SM4算法使用的S盒（I-11 修复：改为 static readonly，避免每次实例化重复分配）
     /// </summary>
-    private readonly byte[] _sboxTable = new byte[]
+    private static readonly byte[] _sboxTable = new byte[]
     {
         0xd6, 0x90, 0xe9, 0xfe, 0xcc, 0xe1, 0x3d, 0xb7,
         0x16, 0xb6, 0x14, 0xc2, 0x28, 0xfb, 0x2c, 0x05,
@@ -127,9 +130,9 @@ internal sealed class Sm4
     };
 
     /// <summary>
-    /// SM4算法系统参数FK
+    /// SM4算法系统参数FK（I-11 修复：改为 static readonly）
     /// </summary>
-    public readonly uint[] Fk =
+    public static readonly uint[] Fk =
     {
         0xa3b1bac6,
         0x56aa3350,
@@ -138,9 +141,9 @@ internal sealed class Sm4
     };
 
     /// <summary>
-    /// SM4算法固定参数CK
+    /// SM4算法固定参数CK（I-11 修复：改为 static readonly）
     /// </summary>
-    public readonly uint[] Ck =
+    public static readonly uint[] Ck =
     {
         0x00070e15, 0x1c232a31, 0x383f464d, 0x545b6269,
         0x70777e85, 0x8c939aa1, 0xa8afb6bd, 0xc4cbd2d9,
@@ -293,7 +296,36 @@ internal sealed class Sm4
         }
         else
         {
+            // C-09 修复：PKCS7 反填充完整性验证，防止 Padding Oracle 攻击
             int p = input[^1];
+
+            // 验证填充值范围（PKCS7 填充字节必须在 1–16 之间）
+            if (p < 1 || p > 16)
+            {
+                throw new System.Security.Cryptography.CryptographicException(
+                    $"Invalid PKCS7 padding: padding byte value {p} is out of range [1, 16].");
+            }
+
+            // 验证输入长度足够容纳填充字节
+            if (input.Length < p)
+            {
+                throw new System.Security.Cryptography.CryptographicException(
+                    "Invalid PKCS7 padding: input data is shorter than the declared padding length.");
+            }
+
+            // 验证所有填充字节值一致（常量时间比较防止时序攻击）
+            int mismatch = 0;
+            for (int i = input.Length - p; i < input.Length; i++)
+            {
+                mismatch |= input[i] ^ p;
+            }
+
+            if (mismatch != 0)
+            {
+                throw new System.Security.Cryptography.CryptographicException(
+                    "Invalid PKCS7 padding: padding bytes are not consistent.");
+            }
+
             ret = new byte[input.Length - p];
             Array.Copy(input, 0, ret, 0, input.Length - p);
         }

@@ -6,27 +6,27 @@ namespace GameFrameX.Foundation.Encryption.Sm;
 internal sealed class Sm4Context
 {
     /// <summary>
-    /// 加密/解密模式
+    /// 加密/解密模式（W-15 修复：改为属性）
     /// </summary>
-    public int Mode;
+    public int Mode { get; set; }
 
     /// <summary>
-    /// 轮密钥
+    /// 轮密钥（W-15 修复：改为属性）
     /// </summary>
-    public long[] Sk;
+    public long[] Sk { get; set; }
 
     /// <summary>
-    /// 是否使用填充
+    /// 是否使用填充（W-15 修复：改为属性）
     /// </summary>
-    public bool IsPadding;
+    public bool IsPadding { get; set; }
 
     /// <summary>
     /// 构造函数
     /// </summary>
     public Sm4Context()
     {
-        this.Mode = 1;
-        this.IsPadding = true;
-        this.Sk = new long[32];
+        Mode = 1;
+        IsPadding = true;
+        Sk = new long[32];
     }
 }

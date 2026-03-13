@@ -276,34 +276,33 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 使用ReadOnlySpan更新摘要计算
+    /// 使用 ReadOnlySpan 更新摘要计算。
+    /// C-08 修复：原实现为空方法体，导致哈希结果全为零。现委托至 byte[] 重载。
     /// </summary>
     /// <param name="input">输入数据的只读跨度</param>
     public override void BlockUpdate(ReadOnlySpan<byte> input)
     {
+        if (input.IsEmpty)
+        {
+            return;
+        }
+
+        // 委托至基类 GeneralDigest 的 BlockUpdate(byte[], int, int) 实现
+        var buffer = input.ToArray();
+        BlockUpdate(buffer, 0, buffer.Length);
     }
 
     /// <summary>
-    /// 完成摘要计算并将结果写入输出跨度
+    /// 完成摘要计算并将结果写入输出跨度。
+    /// C-08 修复：原实现仅返回长度而不写入任何数据。现委托至 byte[] 重载并复制结果。
     /// </summary>
-    /// <param name="output">输出数据的跨度</param>
+    /// <param name="output">输出数据的跨度，长度须不小于 <see cref="DigestLength"/>（32 字节）</param>
     /// <returns>写入的字节数</returns>
     public override int DoFinal(Span<byte> output)
     {
-        return DigestLength;
+        var result = new byte[DigestLength];
+        int length = DoFinal(result, 0);
+        result.AsSpan(0, length).CopyTo(output);
+        return length;
     }
-
-    //[STAThread]
-    //public static void  Main()
-    //{
-    //    byte[] md = new byte[32];
-    //    byte[] msg1 = Encoding.Default.GetBytes("ererfeiisgod");
-    //    SM3Digest sm3 = new SM3Digest();
-    //    sm3.BlockUpdate(msg1, 0, msg1.Length);
-    //    sm3.DoFinal(md, 0);
-    //    System.String s = new UTF8Encoding().GetString(Hex.Encode(md));
-    //    System.Console.Out.WriteLine(s.ToUpper());
-
-    //    Console.ReadLine();
-    //}
 }

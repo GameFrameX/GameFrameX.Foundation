@@ -183,12 +183,27 @@ internal static class Sm2Util
             return Array.Empty<byte>();
         }
 
+        // W-12 修复：添加最小长度校验，避免硬编码偏移量导致的越界
+        // 未压缩 EC 点 = 65 字节 = 130 hex 字符；C3 = 32 字节 = 64 hex 字符；最小密文 = 65+1+32 = 98 字节
+        const int c1HexLen = 130; // 65 字节未压缩点 × 2
+        const int c3HexLen = 64;  // 32 字节 SM3 摘要 × 2
+        const int minEncryptedLen = 97; // 65(C1) + 0(C2 最小) + 32(C3)
+
+        if (encryptedData.Length < minEncryptedLen)
+        {
+            throw new ArgumentException(
+                $"Encrypted data is too short: expected at least {minEncryptedLen} bytes, got {encryptedData.Length}.",
+                nameof(encryptedData));
+        }
+
         string data = Encoding.ASCII.GetString(Hex.Encode(encryptedData));
 
-        byte[] c1Bytes = Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(0, 130)));
-        int c2Len = encryptedData.Length - 97;
-        byte[] c2 = Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(130, 2 * c2Len)));
-        byte[] c3 = Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(130 + 2 * c2Len, 64)));
+        byte[] c1Bytes = Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(0, c1HexLen)));
+        int c2Len = encryptedData.Length - minEncryptedLen;
+        byte[] c2 = c2Len > 0
+            ? Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(c1HexLen, 2 * c2Len)))
+            : Array.Empty<byte>();
+        byte[] c3 = Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(c1HexLen + 2 * c2Len, c3HexLen)));
 
         Sm2 sm2 = Sm2.Instance;
         var userD = new BigInteger(1, privateKey);

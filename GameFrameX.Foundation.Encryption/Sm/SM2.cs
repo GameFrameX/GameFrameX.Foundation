@@ -12,15 +12,13 @@ namespace GameFrameX.Foundation.Encryption.Sm;
 /// </summary>
 internal sealed class Sm2
 {
-    private static Sm2 _instance;
+    // W-04 修复：使用 Lazy<T> 实现线程安全的延迟初始化单例
+    private static readonly Lazy<Sm2> _lazy = new Lazy<Sm2>(() => new Sm2());
 
     /// <summary>
-    /// 获取SM2算法的单例实例。
+    /// 获取SM2算法的单例实例（线程安全）。
     /// </summary>
-    public static Sm2 Instance
-    {
-        get { return _instance ??= new Sm2(); }
-    }
+    public static Sm2 Instance => _lazy.Value;
 
     /// <summary>
     /// SM2算法的标准参数数组。
