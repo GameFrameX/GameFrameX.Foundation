@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using GameFrameX.Foundation.Json;
+using System.Text.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;
 
@@ -13,9 +14,9 @@ public sealed class HttpJsonResultData<T>
     /// <summary>
     /// 是否成功
     /// 表示请求是否成功执行，成功为true，失败为false。
-    /// 该属性为快捷判断属性，只能在程序集内部设置。
+    /// 该属性为快捷判断属性，只能在程序集内部设置，不参与序列化。
     /// </summary>
-    [JsonPropertyName("isSuccess")]
+    [JsonIgnore]
     public bool IsSuccess { get; internal set; }
 
     /// <summary>
