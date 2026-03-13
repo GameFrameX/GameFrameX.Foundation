@@ -11,6 +11,49 @@ namespace GameFrameX.Foundation.Extensions;
 /// </summary>
 public static class ByteExtensions
 {
+    #region Private Helpers
+
+    /// <summary>
+    /// 验证缓冲区参数的有效性。
+    /// </summary>
+    /// <param name="buffer">要验证的缓冲区。</param>
+    /// <param name="offset">当前偏移量。</param>
+    /// <param name="requiredSize">需要写入或读取的字节数。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    private static void ValidateBufferBounds(byte[] buffer, int offset, int requiredSize)
+    {
+        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (offset + requiredSize > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                $"Buffer too small: need {offset + requiredSize} bytes, have {buffer.Length}.");
+        }
+    }
+
+    /// <summary>
+    /// 验证读取缓冲区参数的有效性。
+    /// </summary>
+    /// <param name="buffer">要验证的缓冲区。</param>
+    /// <param name="offset">当前偏移量。</param>
+    /// <param name="requiredSize">需要读取的字节数。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    private static void ValidateReadBounds(byte[] buffer, int offset, int requiredSize)
+    {
+        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (offset + requiredSize > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+        }
+    }
+
+    #endregion
+
     /// <summary>
     /// 将字节转换为16进制字符串。
     /// </summary>
@@ -191,17 +234,10 @@ public static class ByteExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteUIntValue(this byte[] buffer, uint value, ref int offset)
     {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.UIntSize} bytes, have {buffer.Length}.");
-        }
-
+        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.UIntSize);
         BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.UIntSize;
     }
@@ -213,17 +249,10 @@ public static class ByteExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteIntValue(this byte[] buffer, int value, ref int offset)
     {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.IntSize} bytes, have {buffer.Length}.");
-        }
-
+        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.IntSize);
         BinaryPrimitives.WriteInt32BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.IntSize;
     }
@@ -235,17 +264,10 @@ public static class ByteExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteByteValue(this byte[] buffer, byte value, ref int offset)
     {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.ByteSize} bytes, have {buffer.Length}.");
-        }
-
+        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.ByteSize);
         buffer[offset] = value;
         offset += ConstBaseTypeSize.ByteSize;
     }
@@ -257,17 +279,10 @@ public static class ByteExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteShortValue(this byte[] buffer, short value, ref int offset)
     {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.ShortSize} bytes, have {buffer.Length}.");
-        }
-
+        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.ShortSize);
         BinaryPrimitives.WriteInt16BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.ShortSize;
     }
@@ -279,17 +294,10 @@ public static class ByteExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteUShortValue(this byte[] buffer, ushort value, ref int offset)
     {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.UShortSize} bytes, have {buffer.Length}.");
-        }
-
+        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.UShortSize);
         BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.UShortSize;
     }
@@ -301,17 +309,10 @@ public static class ByteExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteLongValue(this byte[] buffer, long value, ref int offset)
     {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.LongSize} bytes, have {buffer.Length}.");
-        }
-
+        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.LongSize);
         BinaryPrimitives.WriteInt64BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.LongSize;
     }
@@ -323,17 +324,10 @@ public static class ByteExtensions
     /// <param name="value">要写入的值。</param>
     /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteULongValue(this byte[] buffer, ulong value, ref int offset)
     {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.ULongSize} bytes, have {buffer.Length}.");
-        }
-
+        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.ULongSize);
         BinaryPrimitives.WriteUInt64BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.ULongSize;
     }
