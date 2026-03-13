@@ -158,7 +158,7 @@ public class TimeHelperTests
         var expectedTime = new DateTimeOffset(now).ToUnixTimeSeconds() + TimerHelper.TimeOffsetSeconds;
 
         // Act
-        var actualTime = TimerHelper.TimeSecondsWithOffset();
+        var actualTime = TimerHelper.UnixTimeSecondsWithOffsetWithTimeZone();
 
         // Assert
         // 允许1秒的误差
@@ -176,7 +176,7 @@ public class TimeHelperTests
         var expectedTime = new DateTimeOffset(now).ToUnixTimeMilliseconds() + TimerHelper.TimeOffsetMilliseconds;
 
         // Act
-        var actualTime = TimerHelper.TimeMillisecondsWithOffset();
+        var actualTime = TimerHelper.UnixTimeMillisecondsWithOffsetWithTimeZone();
 
         // Assert
         // 允许1000毫秒的误差
@@ -265,7 +265,7 @@ public class TimeHelperTests
         var expectedTimeSpan = expectedDateTime - TimerHelper.EpochUtc;
 
         // Act
-        var actualTimeSpan = TimerHelper.TimeSpanWithTimestamp(timestamp);
+        var actualTimeSpan = TimerHelper.TimeSpanWithTimestampUtc(timestamp);
 
         // Assert
         Assert.Equal(expectedTimeSpan, actualTimeSpan);
@@ -435,12 +435,12 @@ public class TimeHelperTests
         // Arrange
         const long offsetSeconds = 3600; // 1 hour
         var originalUnixTime = TimerHelper.UnixTimeSeconds();
-        var originalTime = TimerHelper.TimeSecondsWithOffset();
+        var originalTime = TimerHelper.UnixTimeSecondsWithOffsetWithTimeZone();
 
         // Act
         TimerHelper.SetTimeOffset(offsetSeconds, offsetSeconds * 1000);
         var offsetUnixTime = TimerHelper.UnixTimeSeconds();
-        var offsetTime = TimerHelper.TimeSecondsWithOffset();
+        var offsetTime = TimerHelper.UnixTimeSecondsWithOffsetWithTimeZone();
 
         // Assert
         Assert.Equal((double)offsetSeconds, (double)(offsetUnixTime - originalUnixTime), precision: 1); // 允许1秒误差

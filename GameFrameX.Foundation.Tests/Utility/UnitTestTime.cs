@@ -786,7 +786,7 @@ public class UnitTestTime : IDisposable
     public void TestTimeSpanWithTimestamp()
     {
         var fixedTimestamp = 86400L; // 1970-01-02 00:00:00 UTC (1天后，在有效范围内)
-        var timeSpan = TimeHelper.TimeSpanWithTimestamp(fixedTimestamp);
+        var timeSpan = TimeHelper.TimeSpanWithTimestampUtc(fixedTimestamp);
 
         Assert.IsType<TimeSpan>(timeSpan);
         Assert.Equal(TimeSpan.FromSeconds(fixedTimestamp), timeSpan);
@@ -1073,7 +1073,7 @@ public class UnitTestTime : IDisposable
     [Fact]
     public void TestGetWeekStartTimestamp()
     {
-        var timestamp = TimeHelper.GetWeekStartTimestamp();
+        var timestamp = TimeHelper.GetWeekStartTimestampWithUtc();
         var dateTime = TimeHelper.UtcSecondsToLocalDateTime(timestamp);
 
         Assert.Equal(DayOfWeek.Monday, dateTime.DayOfWeek);
@@ -1083,7 +1083,7 @@ public class UnitTestTime : IDisposable
     [Fact]
     public void TestGetWeekEndTimestamp()
     {
-        var timestamp = TimeHelper.GetWeekEndTimestamp();
+        var timestamp = TimeHelper.GetWeekEndTimestampWithUtc();
         var dateTime = TimeHelper.UtcSecondsToLocalDateTime(timestamp);
 
         Assert.Equal(DayOfWeek.Sunday, dateTime.DayOfWeek);
@@ -1253,7 +1253,7 @@ public class UnitTestTime : IDisposable
     [Fact]
     public void TestGetNextWeekStartTimestamp()
     {
-        var timestamp = TimeHelper.GetNextWeekStartTimestamp();
+        var timestamp = TimeHelper.GetNextWeekStartTimestampWithUtc();
         var dateTime = TimeHelper.UtcSecondsToLocalDateTime(timestamp);
 
         Assert.Equal(DayOfWeek.Monday, dateTime.DayOfWeek);
@@ -1273,7 +1273,7 @@ public class UnitTestTime : IDisposable
     [Fact]
     public void TestGetNextMonthStartTimestamp()
     {
-        var timestamp = TimeHelper.GetNextMonthStartTimestamp();
+        var timestamp = TimeHelper.GetNextMonthStartTimestampWithUtc();
         var dateTime = TimeHelper.UtcSecondsToLocalDateTime(timestamp);
 
         Assert.Equal(1, dateTime.Day);

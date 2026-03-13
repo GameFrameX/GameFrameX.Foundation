@@ -108,7 +108,7 @@ public class TimerHelperPairTests : IDisposable
         var pastTimestampUtc = TimerHelper.UnixTimeSeconds() - 60;
 
         // Act - UTC 版本
-        var elapsedUtc = TimerHelper.GetElapsedSeconds(pastTimestampUtc);
+        var elapsedUtc = TimerHelper.GetElapsedSecondsWithUtc(pastTimestampUtc);
 
         // Arrange - TimeZone 版本
         TimerHelper.SetTimeZone(_testTimeZone);
@@ -130,7 +130,7 @@ public class TimerHelperPairTests : IDisposable
         var pastTimestampUtc = TimerHelper.UnixTimeMilliseconds() - 60000;
 
         // Act - UTC 版本
-        var elapsedUtc = TimerHelper.GetElapsedMilliseconds(pastTimestampUtc);
+        var elapsedUtc = TimerHelper.GetElapsedMillisecondsWithUtc(pastTimestampUtc);
 
         // Arrange - TimeZone 版本
         TimerHelper.SetTimeZone(_testTimeZone);
@@ -684,7 +684,7 @@ public class TimerHelperPairTests : IDisposable
         const long timestamp = 3600; // 1小时
 
         // Act
-        var timeSpanUtc = TimerHelper.TimeSpanWithTimestamp(timestamp);
+        var timeSpanUtc = TimerHelper.TimeSpanWithTimestampUtc(timestamp);
         var timeSpanZone = TimerHelper.TimeSpanWithTimestampWithTimeZone(timestamp);
 
         // Assert
@@ -699,7 +699,7 @@ public class TimerHelperPairTests : IDisposable
         const long timestamp = 0;
 
         // Act
-        var timeSpanUtc = TimerHelper.TimeSpanWithTimestamp(timestamp);
+        var timeSpanUtc = TimerHelper.TimeSpanWithTimestampUtc(timestamp);
         var timeSpanZone = TimerHelper.TimeSpanWithTimestampWithTimeZone(timestamp);
 
         // Assert
@@ -714,7 +714,7 @@ public class TimerHelperPairTests : IDisposable
         const long invalidTimestamp = long.MinValue;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => TimerHelper.TimeSpanWithTimestamp(invalidTimestamp));
+        Assert.Throws<ArgumentOutOfRangeException>(() => TimerHelper.TimeSpanWithTimestampUtc(invalidTimestamp));
         Assert.Throws<ArgumentOutOfRangeException>(() => TimerHelper.TimeSpanWithTimestampWithTimeZone(invalidTimestamp));
     }
 

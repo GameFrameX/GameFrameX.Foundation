@@ -105,7 +105,7 @@ namespace GameFrameX.Foundation.Tests.Utility
 
             var now = TimerHelper.GetNowWithTimeZone();
             var weekStart = TimerHelper.GetWeekStartTimeWithTimeZone();
-            var weekStartTimestamp = TimerHelper.GetWeekStartTimestamp();
+            var weekStartTimestamp = TimerHelper.GetWeekStartTimestampWithUtc();
 
             // Verify it is indeed the start of the week (Monday)
             Assert.Equal(DayOfWeek.Monday, weekStart.DayOfWeek);
@@ -280,7 +280,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             Assert.Equal(offsetSeconds, todayWithZone - todayStandard);
 
             // 2. Test Week
-            var weekStandard = TimerHelper.GetWeekStartTimestamp();
+            var weekStandard = TimerHelper.GetWeekStartTimestampWithUtc();
             var weekWithZone = TimerHelper.GetWeekStartTimestampWithTimeZone();
             Assert.Equal(offsetSeconds, weekWithZone - weekStandard);
 
@@ -319,17 +319,17 @@ namespace GameFrameX.Foundation.Tests.Utility
             Assert.Equal(offsetSeconds, TimerHelper.GetTomorrowEndTimestampWithTimeZone() - TimerHelper.GetTomorrowEndTimestamp());
 
             // Week
-            Assert.Equal(offsetSeconds, TimerHelper.GetWeekStartTimestampWithTimeZone() - TimerHelper.GetWeekStartTimestamp());
-            Assert.Equal(offsetSeconds, TimerHelper.GetWeekEndTimestampWithTimeZone() - TimerHelper.GetWeekEndTimestamp());
+            Assert.Equal(offsetSeconds, TimerHelper.GetWeekStartTimestampWithTimeZone() - TimerHelper.GetWeekStartTimestampWithUtc());
+            Assert.Equal(offsetSeconds, TimerHelper.GetWeekEndTimestampWithTimeZone() - TimerHelper.GetWeekEndTimestampWithUtc());
             Assert.Equal(offsetSeconds, TimerHelper.GetStartTimestampOfWeekWithTimeZone(now) - TimerHelper.GetStartTimestampOfWeek(now));
             Assert.Equal(offsetSeconds, TimerHelper.GetEndTimestampOfWeekWithTimeZone(now) - TimerHelper.GetEndTimestampOfWeek(now));
-            Assert.Equal(offsetSeconds, TimerHelper.GetNextWeekStartTimestampWithTimeZone() - TimerHelper.GetNextWeekStartTimestamp());
-            Assert.Equal(offsetSeconds, TimerHelper.GetNextWeekEndTimestampWithTimeZone() - TimerHelper.GetNextWeekEndTimestamp());
+            Assert.Equal(offsetSeconds, TimerHelper.GetNextWeekStartTimestampWithTimeZone() - TimerHelper.GetNextWeekStartTimestampWithUtc());
+            Assert.Equal(offsetSeconds, TimerHelper.GetNextWeekEndTimestampWithTimeZone() - TimerHelper.GetNextWeekEndTimestampWithUtc());
 
             // Month
             Assert.Equal(offsetSeconds, TimerHelper.GetStartTimestampOfMonthWithTimeZone(now) - TimerHelper.GetStartTimestampOfMonth(now));
             Assert.Equal(offsetSeconds, TimerHelper.GetEndTimestampOfMonthWithTimeZone(now) - TimerHelper.GetEndTimestampOfMonth(now));
-            Assert.Equal(offsetSeconds, TimerHelper.GetNextMonthStartTimestampWithTimeZone() - TimerHelper.GetNextMonthStartTimestamp());
+            Assert.Equal(offsetSeconds, TimerHelper.GetNextMonthStartTimestampWithTimeZone() - TimerHelper.GetNextMonthStartTimestampWithUtc());
             Assert.Equal(offsetSeconds, TimerHelper.GetNextMonthEndTimestampWithTimeZone() - TimerHelper.GetNextMonthEndTimestamp());
             Assert.Equal(offsetSeconds, TimerHelper.GetMonthStartTimestampWithTimeZone() - TimerHelper.GetMonthStartTimestamp());
             Assert.Equal(offsetSeconds, TimerHelper.GetMonthEndTimestampWithTimeZone() - TimerHelper.GetMonthEndTimestamp());
