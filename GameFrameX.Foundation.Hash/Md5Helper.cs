@@ -143,20 +143,12 @@ public static class Md5Helper
     /// <returns>32个字符的十六进制字符串形式的哈希值</returns>
     private static string ToHash(byte[] data, bool isUpper = false)
     {
-        var sb = new StringBuilder();
-        if (isUpper)
+        var sb = new StringBuilder(data.Length * 2);
+        var hex = isUpper ? "0123456789ABCDEF" : "0123456789abcdef";
+        foreach (var b in data)
         {
-            foreach (var t in data)
-            {
-                sb.Append(t.ToString("X2"));
-            }
-        }
-        else
-        {
-            foreach (var t in data)
-            {
-                sb.Append(t.ToString("x2"));
-            }
+            sb.Append(hex[b >> 4]);
+            sb.Append(hex[b & 0xF]);
         }
 
         return sb.ToString();
