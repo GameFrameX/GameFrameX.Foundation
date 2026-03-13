@@ -349,7 +349,7 @@ public static class IDictionaryExtensions
 
         if (!self.TryAdd(key, addValue))
         {
-            self[key] = await updateValueFactory(key, self[key]);
+            self[key] = await updateValueFactory(key, self[key]).ConfigureAwait(false);
         }
 
         return self[key];
@@ -373,7 +373,7 @@ public static class IDictionaryExtensions
 
         if (!self.TryAdd(key, addValue))
         {
-            self[key] = await updateValueFactory(key, self[key]);
+            self[key] = await updateValueFactory(key, self[key]).ConfigureAwait(false);
         }
 
         return self[key];
@@ -392,7 +392,7 @@ public static class IDictionaryExtensions
     {
         if (!self.TryAdd(key, addValue))
         {
-            self[key] = await updateValueFactory(key, self[key]);
+            self[key] = await updateValueFactory(key, self[key]).ConfigureAwait(false);
         }
 
         return self[key];
@@ -448,9 +448,9 @@ public static class IDictionaryExtensions
     /// <param name="updateValueFactory">更新时的操作</param>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, Func<TKey, Task<TValue>> addValueFactory, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
-        if (!self.TryAdd(key, await addValueFactory(key)))
+        if (!self.TryAdd(key, await addValueFactory(key).ConfigureAwait(false)))
         {
-            self[key] = await updateValueFactory(key, self[key]);
+            self[key] = await updateValueFactory(key, self[key]).ConfigureAwait(false);
         }
 
         return self[key];
@@ -467,9 +467,9 @@ public static class IDictionaryExtensions
     /// <param name="updateValueFactory">更新时的操作</param>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this NullableDictionary<TKey, TValue> self, TKey key, Func<TKey, Task<TValue>> addValueFactory, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
-        if (!self.TryAdd(key, await addValueFactory(key)))
+        if (!self.TryAdd(key, await addValueFactory(key).ConfigureAwait(false)))
         {
-            self[key] = await updateValueFactory(key, self[key]);
+            self[key] = await updateValueFactory(key, self[key]).ConfigureAwait(false);
         }
 
         return self[key];
@@ -486,9 +486,9 @@ public static class IDictionaryExtensions
     /// <param name="updateValueFactory">更新时的操作</param>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, TKey key, Func<TKey, Task<TValue>> addValueFactory, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
-        if (!self.TryAdd(key, await addValueFactory(key)))
+        if (!self.TryAdd(key, await addValueFactory(key).ConfigureAwait(false)))
         {
-            self[key] = await updateValueFactory(key, self[key]);
+            self[key] = await updateValueFactory(key, self[key]).ConfigureAwait(false);
         }
 
         return self[key];
@@ -668,7 +668,7 @@ public static class IDictionaryExtensions
     {
         if (!self.ContainsKey(key))
         {
-            self[key] = await addValueFactory();
+            self[key] = await addValueFactory().ConfigureAwait(false);
         }
 
         return self[key];
