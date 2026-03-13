@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using GameFrameX.Foundation.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;
@@ -48,6 +48,8 @@ public sealed class HttpJsonResult
         return JsonHelper.Serialize(this);
     }
 
+    #region Success
+
     /// <summary>
     /// 创建一个表示成功的HttpJsonResult对象。
     /// 返回一个Code为0，Message为空的基本成功响应。
@@ -57,20 +59,137 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 0,
+            Code = HttpJsonResultHelper.SuccessCode,
             Message = string.Empty,
         };
     }
 
     /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象。
-    /// 返回一个Code为0，Message为空的基本成功响应。
+    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串。
     /// </summary>
     /// <returns>序列化后的JSON字符串。</returns>
     public static string SuccessString()
     {
         return Success().ToString();
     }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象，并包含数据。
+    /// 如果数据为null，则返回基本成功响应。
+    /// </summary>
+    /// <param name="data">成功时返回的数据对象，将被序列化为JSON字符串。</param>
+    /// <returns>成功的HttpJsonResult实例。</returns>
+    public static HttpJsonResult Success(object data)
+    {
+        if (data == null)
+        {
+            return Success();
+        }
+
+        return new HttpJsonResult
+        {
+            Code = HttpJsonResultHelper.SuccessCode,
+            Message = string.Empty,
+            Data = JsonHelper.Serialize(data),
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，并包含数据。
+    /// </summary>
+    /// <param name="data">成功时返回的数据对象。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string SuccessString(object data)
+    {
+        return Success(data).ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象，并包含已序列化的数据字符串。
+    /// </summary>
+    /// <param name="data">成功时返回的已序列化JSON数据字符串。</param>
+    /// <returns>成功的HttpJsonResult实例。</returns>
+    public static HttpJsonResult Success(string data)
+    {
+        return new HttpJsonResult
+        {
+            Code = HttpJsonResultHelper.SuccessCode,
+            Message = string.Empty,
+            Data = data
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，并包含已序列化的数据字符串。
+    /// </summary>
+    /// <param name="data">成功时返回的已序列化JSON数据字符串。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string SuccessString(string data)
+    {
+        return Success(data).ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象，包含自定义消息和数据。
+    /// 使用默认成功状态码0。
+    /// </summary>
+    /// <param name="message">返回消息。</param>
+    /// <param name="data">返回数据。</param>
+    /// <returns>成功的HttpJsonResult实例。</returns>
+    public static HttpJsonResult Success(string message, string data)
+    {
+        return new HttpJsonResult
+        {
+            Code = HttpJsonResultHelper.SuccessCode,
+            Message = message,
+            Data = data
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，包含自定义消息和数据。
+    /// </summary>
+    /// <param name="message">返回消息。</param>
+    /// <param name="data">返回数据。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string SuccessString(string message, string data)
+    {
+        return Success(message, data).ToString();
+    }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象，并包含数据。
+    /// 此方法允许用户自定义返回的状态码和消息，同时提供数据内容。
+    /// </summary>
+    /// <param name="code">HTTP状态码，表示请求的处理结果。</param>
+    /// <param name="message">返回的消息，提供关于请求处理的详细信息。</param>
+    /// <param name="data">成功时返回的数据，通常为JSON格式的字符串。</param>
+    /// <returns>成功的HttpJsonResult实例，包含指定的状态码、消息和数据。</returns>
+    public static HttpJsonResult Success(int code, string message, string data)
+    {
+        return new HttpJsonResult
+        {
+            Code = code,
+            Message = message,
+            Data = data
+        };
+    }
+
+    /// <summary>
+    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，包含自定义状态码、消息和数据。
+    /// </summary>
+    /// <param name="code">HTTP状态码。</param>
+    /// <param name="message">返回消息。</param>
+    /// <param name="data">返回数据。</param>
+    /// <returns>序列化后的JSON字符串。</returns>
+    public static string SuccessString(int code, string message, string data)
+    {
+        return Success(code, message, data).ToString();
+    }
+
+    #endregion
+
+    #region Fail
 
     /// <summary>
     /// 创建一个表示失败的HttpJsonResult对象，并包含错误消息。
@@ -82,7 +201,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = -1,
+            Code = HttpJsonResultHelper.FailCode,
             Message = message,
         };
     }
@@ -123,6 +242,10 @@ public sealed class HttpJsonResult
         return Fail(code, message).ToString();
     }
 
+    #endregion
+
+    #region Error
+
     /// <summary>
     /// 创建一个表示特定错误的HttpJsonResult对象，并包含错误码和错误消息。
     /// 允许自定义错误码和消息，用于表示特定的错误情况。
@@ -150,6 +273,10 @@ public sealed class HttpJsonResult
         return Error(code, message).ToString();
     }
 
+    #endregion
+
+    #region ValidationError
+
     /// <summary>
     /// 创建一个表示验证失败的HttpJsonResult对象。
     /// 使用HTTP 400状态码表示请求参数验证失败。
@@ -159,8 +286,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 400,
-            Message = "Validation failed.",
+            Code = HttpJsonResultHelper.ValidationErrorCode,
+            Message = HttpJsonResultHelper.ValidationErrorMsg,
         };
     }
 
@@ -182,7 +309,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 400,
+            Code = HttpJsonResultHelper.ValidationErrorCode,
             Message = message,
         };
     }
@@ -197,119 +324,9 @@ public sealed class HttpJsonResult
         return ValidationError(message).ToString();
     }
 
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象，并包含数据。
-    /// 如果数据为null，则返回基本成功响应。
-    /// </summary>
-    /// <param name="data">成功时返回的数据对象，将被序列化为JSON字符串。</param>
-    /// <returns>成功的HttpJsonResult实例。</returns>
-    public static HttpJsonResult Success(object data)
-    {
-        if (data == null)
-        {
-            return Success();
-        }
+    #endregion
 
-        return new HttpJsonResult
-        {
-            Code = 0,
-            Message = string.Empty,
-            Data = JsonHelper.Serialize(data),
-        };
-    }
-
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，并包含数据。
-    /// </summary>
-    /// <param name="data">成功时返回的数据对象。</param>
-    /// <returns>序列化后的JSON字符串。</returns>
-    public static string SuccessString(object data)
-    {
-        return Success(data).ToString();
-    }
-
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象，并包含已序列化的数据字符串。
-    /// </summary>
-    /// <param name="data">成功时返回的已序列化JSON数据字符串。</param>
-    /// <returns>成功的HttpJsonResult实例。</returns>
-    public static HttpJsonResult Success(string data)
-    {
-        return new HttpJsonResult
-        {
-            Code = 0,
-            Message = string.Empty,
-            Data = data
-        };
-    }
-
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，并包含已序列化的数据字符串。
-    /// </summary>
-    /// <param name="data">成功时返回的已序列化JSON数据字符串。</param>
-    /// <returns>序列化后的JSON字符串。</returns>
-    public static string SuccessString(string data)
-    {
-        return Success(data).ToString();
-    }
-
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象，并包含数据。
-    /// 此方法允许用户自定义返回的状态码和消息，同时提供数据内容。
-    /// </summary>
-    /// <param name="code">HTTP状态码，表示请求的处理结果。</param>
-    /// <param name="message">返回的消息，提供关于请求处理的详细信息。</param>
-    /// <param name="data">成功时返回的数据，通常为JSON格式的字符串。</param>
-    /// <returns>成功的HttpJsonResult实例，包含指定的状态码、消息和数据。</returns>
-    public static HttpJsonResult Success(int code, string message, string data)
-    {
-        return new HttpJsonResult
-        {
-            Code = code,
-            Message = message,
-            Data = data
-        };
-    }
-
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，包含自定义状态码、消息和数据。
-    /// </summary>
-    /// <param name="code">HTTP状态码。</param>
-    /// <param name="message">返回消息。</param>
-    /// <param name="data">返回数据。</param>
-    /// <returns>序列化后的JSON字符串。</returns>
-    public static string SuccessString(int code, string message, string data)
-    {
-        return Success(code, message, data).ToString();
-    }
-
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象，包含自定义消息和数据。
-    /// 使用默认成功状态码0。
-    /// </summary>
-    /// <param name="message">返回消息。</param>
-    /// <param name="data">返回数据。</param>
-    /// <returns>成功的HttpJsonResult实例。</returns>
-    public static HttpJsonResult Success(string message, string data)
-    {
-        return new HttpJsonResult
-        {
-            Code = 0,
-            Message = message,
-            Data = data
-        };
-    }
-
-    /// <summary>
-    /// 创建一个表示成功的HttpJsonResult对象的JSON字符串，包含自定义消息和数据。
-    /// </summary>
-    /// <param name="message">返回消息。</param>
-    /// <param name="data">返回数据。</param>
-    /// <returns>序列化后的JSON字符串。</returns>
-    public static string SuccessString(string message, string data)
-    {
-        return Success(message, data).ToString();
-    }
+    #region Unauthorized
 
     /// <summary>
     /// 创建一个表示未授权的HttpJsonResult对象。
@@ -320,8 +337,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 401,
-            Message = "Unauthorized access."
+            Code = HttpJsonResultHelper.UnauthorizedCode,
+            Message = HttpJsonResultHelper.UnauthorizedMsg
         };
     }
 
@@ -343,7 +360,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 401,
+            Code = HttpJsonResultHelper.UnauthorizedCode,
             Message = message
         };
     }
@@ -358,6 +375,10 @@ public sealed class HttpJsonResult
         return Unauthorized(message).ToString();
     }
 
+    #endregion
+
+    #region NotFound
+
     /// <summary>
     /// 创建一个表示资源未找到的HttpJsonResult对象。
     /// 使用HTTP 404状态码表示请求的资源不存在。
@@ -367,8 +388,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 404,
-            Message = "Resource not found."
+            Code = HttpJsonResultHelper.NotFoundCode,
+            Message = HttpJsonResultHelper.NotFoundMsg
         };
     }
 
@@ -390,7 +411,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 404,
+            Code = HttpJsonResultHelper.NotFoundCode,
             Message = message
         };
     }
@@ -405,6 +426,10 @@ public sealed class HttpJsonResult
         return NotFound(message).ToString();
     }
 
+    #endregion
+
+    #region ServerError
+
     /// <summary>
     /// 创建一个表示服务器内部错误的HttpJsonResult对象。
     /// 使用HTTP 500状态码表示服务器内部错误。
@@ -414,8 +439,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 500,
-            Message = "Internal server error."
+            Code = HttpJsonResultHelper.ServerErrorCode,
+            Message = HttpJsonResultHelper.ServerErrorMsg
         };
     }
 
@@ -437,7 +462,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 500,
+            Code = HttpJsonResultHelper.ServerErrorCode,
             Message = message
         };
     }
@@ -452,6 +477,10 @@ public sealed class HttpJsonResult
         return ServerError(message).ToString();
     }
 
+    #endregion
+
+    #region ParamError
+
     /// <summary>
     /// 创建一个表示参数错误的HttpJsonResult对象。
     /// 使用HTTP 403状态码表示请求参数错误。
@@ -461,8 +490,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 403,
-            Message = "Parameter error."
+            Code = HttpJsonResultHelper.ParamErrorCode,
+            Message = HttpJsonResultHelper.ParamErrorMsg
         };
     }
 
@@ -484,7 +513,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 403,
+            Code = HttpJsonResultHelper.ParamErrorCode,
             Message = message
         };
     }
@@ -499,6 +528,10 @@ public sealed class HttpJsonResult
         return ParamError(message).ToString();
     }
 
+    #endregion
+
+    #region Illegal
+
     /// <summary>
     /// 创建一个表示非法请求的HttpJsonResult对象。
     /// 使用HTTP 401状态码表示非法的请求访问。
@@ -508,8 +541,8 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 401,
-            Message = "Illegal request."
+            Code = HttpJsonResultHelper.UnauthorizedCode,
+            Message = HttpJsonResultHelper.IllegalMsg
         };
     }
 
@@ -531,7 +564,7 @@ public sealed class HttpJsonResult
     {
         return new HttpJsonResult
         {
-            Code = 401,
+            Code = HttpJsonResultHelper.UnauthorizedCode,
             Message = message
         };
     }
@@ -545,4 +578,6 @@ public sealed class HttpJsonResult
     {
         return Illegal(message).ToString();
     }
+
+    #endregion
 }

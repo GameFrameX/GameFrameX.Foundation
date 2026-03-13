@@ -1,6 +1,5 @@
 using System.Text.Json.Serialization;
 using GameFrameX.Foundation.Json;
-using System.Text.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;
 
@@ -62,7 +61,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 0,
+            Code = HttpJsonResultHelper.SuccessCode,
             Message = string.Empty,
             IsSuccess = true
         };
@@ -86,7 +85,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 0,
+            Code = HttpJsonResultHelper.SuccessCode,
             Message = string.Empty,
             Data = data,
             IsSuccess = true
@@ -113,7 +112,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 0,
+            Code = HttpJsonResultHelper.SuccessCode,
             Message = message,
             Data = data,
             IsSuccess = true
@@ -175,7 +174,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = -1,
+            Code = HttpJsonResultHelper.FailCode,
             Message = message,
             IsSuccess = false
         };
@@ -262,8 +261,8 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 400,
-            Message = "Validation failed.",
+            Code = HttpJsonResultHelper.ValidationErrorCode,
+            Message = HttpJsonResultHelper.ValidationErrorMsg,
             IsSuccess = false
         };
     }
@@ -286,7 +285,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 400,
+            Code = HttpJsonResultHelper.ValidationErrorCode,
             Message = message,
             IsSuccess = false
         };
@@ -315,8 +314,8 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 401,
-            Message = "Unauthorized access.",
+            Code = HttpJsonResultHelper.UnauthorizedCode,
+            Message = HttpJsonResultHelper.UnauthorizedMsg,
             IsSuccess = false
         };
     }
@@ -339,7 +338,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 401,
+            Code = HttpJsonResultHelper.UnauthorizedCode,
             Message = message,
             IsSuccess = false
         };
@@ -368,8 +367,8 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 404,
-            Message = "Resource not found.",
+            Code = HttpJsonResultHelper.NotFoundCode,
+            Message = HttpJsonResultHelper.NotFoundMsg,
             IsSuccess = false
         };
     }
@@ -392,7 +391,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 404,
+            Code = HttpJsonResultHelper.NotFoundCode,
             Message = message,
             IsSuccess = false
         };
@@ -421,8 +420,8 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 500,
-            Message = "Internal server error.",
+            Code = HttpJsonResultHelper.ServerErrorCode,
+            Message = HttpJsonResultHelper.ServerErrorMsg,
             IsSuccess = false
         };
     }
@@ -445,7 +444,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 500,
+            Code = HttpJsonResultHelper.ServerErrorCode,
             Message = message,
             IsSuccess = false
         };
@@ -474,8 +473,8 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 403,
-            Message = "Parameter error.",
+            Code = HttpJsonResultHelper.ParamErrorCode,
+            Message = HttpJsonResultHelper.ParamErrorMsg,
             IsSuccess = false
         };
     }
@@ -498,7 +497,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 403,
+            Code = HttpJsonResultHelper.ParamErrorCode,
             Message = message,
             IsSuccess = false
         };
@@ -527,8 +526,8 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 401,
-            Message = "Illegal request.",
+            Code = HttpJsonResultHelper.UnauthorizedCode,
+            Message = HttpJsonResultHelper.IllegalMsg,
             IsSuccess = false
         };
     }
@@ -551,7 +550,7 @@ public sealed class HttpJsonResultData<T>
     {
         return new HttpJsonResultData<T>
         {
-            Code = 401,
+            Code = HttpJsonResultHelper.UnauthorizedCode,
             Message = message,
             IsSuccess = false
         };
