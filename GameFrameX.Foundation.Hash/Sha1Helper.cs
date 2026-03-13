@@ -24,10 +24,10 @@ public static class Sha1Helper
     public static string ComputeHash(string input, Encoding encoding = null)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        
-        if (input.Length == 0)
+
+        if (string.IsNullOrEmpty(input))
         {
-            return string.Empty;
+            return ComputeHash(Array.Empty<byte>());
         }
 
         encoding ??= Encoding.UTF8;
@@ -44,11 +44,6 @@ public static class Sha1Helper
     public static string ComputeHash(byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        
-        if (buffer.Length == 0)
-        {
-            return string.Empty;
-        }
 
         using var sha1 = SHA1.Create();
         var hash = sha1.ComputeHash(buffer);
