@@ -29,7 +29,7 @@ public static class ByteExtensions
         if (offset + requiredSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                $"Buffer too small: need {offset + requiredSize} bytes, have {buffer.Length}.");
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferWriteOutOfRange, offset + requiredSize, buffer.Length));
         }
     }
 
@@ -48,7 +48,8 @@ public static class ByteExtensions
 
         if (offset + requiredSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferWriteOutOfRange, offset + requiredSize, buffer.Length));
         }
     }
 
@@ -74,7 +75,8 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
 
-        var stringBuilder = new StringBuilder();
+        // 预分配容量: 每个字节最多 3 个字符（如 "255"）+ 1 个空格
+        var stringBuilder = new StringBuilder(bytes.Length * 4);
         foreach (var b in bytes)
         {
             stringBuilder.Append(b).Append(' ');
@@ -93,7 +95,8 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
 
-        var stringBuilder = new StringBuilder();
+        // 预分配容量: 每个字节 2 个十六进制字符
+        var stringBuilder = new StringBuilder(bytes.Length * 2);
         foreach (var b in bytes)
         {
             stringBuilder.Append(b.ToString("X2"));
@@ -113,7 +116,8 @@ public static class ByteExtensions
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
 
-        var stringBuilder = new StringBuilder();
+        // 预分配容量: 假设每个字节最多 4 个字符
+        var stringBuilder = new StringBuilder(bytes.Length * 4);
         foreach (var b in bytes)
         {
             stringBuilder.Append(b.ToString(format));
@@ -142,7 +146,8 @@ public static class ByteExtensions
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetCountExceedBufferLength), nameof(count));
         }
 
-        var stringBuilder = new StringBuilder();
+        // 预分配容量: 每个字节 2 个十六进制字符
+        var stringBuilder = new StringBuilder(count * 2);
         for (var i = offset; i < offset + count; ++i)
         {
             stringBuilder.Append(bytes[i].ToString("X2"));
@@ -1004,11 +1009,15 @@ public static class ByteExtensions
     /// 将 Base64 字符串转换为字节数组。
     /// </summary>
     /// <param name="base64String">Base64 编码的字符串。</param>
-    /// <returns>解码后的字节数组。</returns>
+    /// <returns>解码后的字节数组。如果输入为空字符串，返回空数组。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="base64String"/> 为 null 时抛出。</exception>
     public static byte[] ToByteArrayFromBase64(this string base64String)
     {
         ArgumentNullException.ThrowIfNull(base64String, nameof(base64String));
+        if (string.IsNullOrEmpty(base64String))
+        {
+            return Array.Empty<byte>();
+        }
         return Convert.FromBase64String(base64String);
     }
 
