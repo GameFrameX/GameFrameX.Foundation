@@ -158,7 +158,7 @@ public static class CollectionExtensions
     #region List<T>
 
     /// <summary>
-    /// 从列表中随机获取一个对象。
+    /// 从列表中随机获取一个元素。
     /// </summary>
     /// <typeparam name="T">列表元素的类型。</typeparam>
     /// <param name="list">要随机的列表，不能为 null 且不能为空。</param>
@@ -166,7 +166,7 @@ public static class CollectionExtensions
     /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 为 null 时抛出</exception>
     /// <exception cref="ArgumentException">当 <paramref name="list"/> 为空时抛出</exception>
     /// <remarks>使用System.Random.Shared来生成随机数，确保线程安全。</remarks>
-    public static T Random<T>(this List<T> list)
+    public static T RandomElement<T>(this List<T> list)
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
         if (list.Count == 0)
@@ -188,7 +188,7 @@ public static class CollectionExtensions
     /// <returns>从列表中随机选择的元素。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 或 <paramref name="random"/> 为 null 时抛出</exception>
     /// <exception cref="ArgumentException">当 <paramref name="list"/> 为空时抛出</exception>
-    public static T Random<T>(this List<T> list, Random random)
+    public static T RandomElement<T>(this List<T> list, Random random)
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
         ArgumentNullException.ThrowIfNull(random, nameof(random));
@@ -202,7 +202,7 @@ public static class CollectionExtensions
     }
 
     /// <summary>
-    /// 打乱列表中的元素顺序。
+    /// 打乱列表中的元素顺序（洗牌）。
     /// </summary>
     /// <typeparam name="T">列表元素的类型。</typeparam>
     /// <param name="list">要打乱顺序的列表，不能为 null。</param>
@@ -211,7 +211,7 @@ public static class CollectionExtensions
     /// 使用Fisher-Yates洗牌算法实现列表随机排序。
     /// 该方法会直接修改原列表的顺序。
     /// </remarks>
-    public static void Upset<T>(this List<T> list)
+    public static void Shuffle<T>(this List<T> list)
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
 
@@ -224,27 +224,21 @@ public static class CollectionExtensions
     }
 
     /// <summary>
-    /// 从列表中移除满足条件的元素。
+    /// 从列表中移除满足条件的所有元素。
     /// </summary>
     /// <typeparam name="T">列表元素的类型。</typeparam>
     /// <param name="list">要操作的列表，不能为 null。</param>
     /// <param name="condition">用于判断元素是否满足移除条件的委托，返回true表示需要移除，不能为 null。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 或 <paramref name="condition"/> 为 null 时抛出</exception>
     /// <remarks>
-    /// 此方法会重复查找并移除所有满足条件的元素，直到列表中不再存在满足条件的元素为止。
-    /// 注意：如果列表中有多个元素满足条件，会从前往后逐个移除。
+    /// 此方法使用 List{T}.RemoveAll 方法一次性移除所有满足条件的元素。
     /// </remarks>
     public static void RemoveIf<T>(this List<T> list, Predicate<T> condition)
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
 
-        var idx = list.FindIndex(condition);
-        while (idx >= 0)
-        {
-            list.RemoveAt(idx);
-            idx = list.FindIndex(condition);
-        }
+        list.RemoveAll(condition);
     }
 
     #endregion

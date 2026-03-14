@@ -74,7 +74,7 @@ string decrypted = AesHelper.Decrypt(encrypted, "your-key");
 
 // 扩展方法使用
 var list = new List<int> { 1, 2, 3, 4, 5 };
-var randomItem = list.Random(); // 随机获取元素
+var randomItem = list.RandomElement(); // 随机获取元素
 var isNullOrEmpty = myString.IsNullOrEmpty(); // 字符串检查
 
 // 字符串扩展
@@ -157,7 +157,7 @@ using GameFrameX.Foundation.Extensions;
 
 // 集合操作
 var list = new List<int> { 1, 2, 3, 4, 5 };
-var randomItem = list.Random(); // 随机获取元素
+var randomItem = list.RandomElement(); // 随机获取元素
 var isEmpty = list.IsNullOrEmpty(); // 检查是否为空
 
 // 字典扩展

@@ -279,36 +279,36 @@ public class CollectionExtensionsTests
 
     #endregion
 
-    #region Random Tests
+    #region RandomElement Tests
 
     [Fact]
-    public void Random_NullList_ShouldThrowArgumentNullException()
+    public void RandomElement_NullList_ShouldThrowArgumentNullException()
     {
         // Arrange
         List<string> list = null;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => list.Random());
+        Assert.Throws<ArgumentNullException>(() => list.RandomElement());
     }
 
     [Fact]
-    public void Random_EmptyList_ShouldThrowArgumentException()
+    public void RandomElement_EmptyList_ShouldThrowArgumentException()
     {
         // Arrange
         var list = new List<string>();
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => list.Random());
+        Assert.Throws<ArgumentException>(() => list.RandomElement());
     }
 
     [Fact]
-    public void Random_ValidList_ShouldReturnItem()
+    public void RandomElement_ValidList_ShouldReturnItem()
     {
         // Arrange
         var list = new List<string> { "item1", "item2", "item3" };
 
         // Act
-        var result = list.Random();
+        var result = list.RandomElement();
 
         // Assert
         Assert.Contains(result, list);
@@ -316,27 +316,27 @@ public class CollectionExtensionsTests
 
     #endregion
 
-    #region Upset Tests
+    #region Shuffle Tests
 
     [Fact]
-    public void Upset_NullList_ShouldThrowArgumentNullException()
+    public void Shuffle_NullList_ShouldThrowArgumentNullException()
     {
         // Arrange
         List<string> list = null;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => list.Upset());
+        Assert.Throws<ArgumentNullException>(() => list.Shuffle());
     }
 
     [Fact]
-    public void Upset_ValidList_ShouldNotThrow()
+    public void Shuffle_ValidList_ShouldNotThrow()
     {
         // Arrange
         var list = new List<string> { "item1", "item2", "item3" };
         var originalItems = new List<string>(list);
 
         // Act
-        list.Upset();
+        list.Shuffle();
 
         // Assert
         Assert.Equal(originalItems.Count, list.Count);
@@ -347,13 +347,13 @@ public class CollectionExtensionsTests
     }
 
     [Fact]
-    public void Upset_EmptyList_ShouldNotThrow()
+    public void Shuffle_EmptyList_ShouldNotThrow()
     {
         // Arrange
         var list = new List<string>();
 
         // Act & Assert
-        list.Upset(); // Should not throw
+        list.Shuffle(); // Should not throw
         Assert.Empty(list);
     }
 
