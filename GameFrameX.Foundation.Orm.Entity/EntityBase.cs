@@ -5,7 +5,6 @@
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using GameFrameX.Foundation.Orm.Entity.Filter;
 
 namespace GameFrameX.Foundation.Orm.Entity;
@@ -24,7 +23,6 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
     /// <summary>
     /// 创建时间
     /// </summary>
-    [Column]
     [Description("创建时间")]
     public virtual long? CreatedTime { get; set; }
 
@@ -86,7 +84,7 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
     /// 版本号（用于乐观锁）
     /// </summary>
     [Description("版本号（用于乐观锁）")]
-    public virtual long? Version { get; set; } = 1;
+    public virtual long? Version { get; set; } = 0;
 
     /// <summary>
     /// 是否启用该实体或功能的标识
@@ -103,6 +101,7 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
 /// </summary>
 /// <typeparam name="TKey">主键类型</typeparam>
 public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter, IVersionedEntity, ISafeEnabledFilter, ISafeCreatedFilter, ISafeUpdateFilter
+    where TKey : notnull
 {
     /// <summary>
     /// 创建人Id
@@ -113,7 +112,6 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter,
     /// <summary>
     /// 创建时间
     /// </summary>
-    [Column]
     [Description("创建时间")]
     public virtual long? CreatedTime { get; set; }
 
