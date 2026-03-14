@@ -108,6 +108,55 @@ public static class LocalizationKeys
         /// 参数: {0} - 对象类型, {1} - 目标类型
         /// </remarks>
         public const string ObjectTypeMismatch = "Extensions.Exceptions.ObjectTypeMismatch";
+
+        /// <summary>
+        /// 缓冲区空间不足的错误消息
+        /// </summary>
+        /// <remarks>
+        /// 键名: Extensions.Exceptions.BufferTooSmall
+        /// 用途: 当缓冲区空间不足以执行写入操作时使用
+        /// 参数: {0} - 需要的字节数, {1} - 缓冲区长度
+        /// </remarks>
+        public const string BufferTooSmall = "Extensions.Exceptions.BufferTooSmall";
+
+        /// <summary>
+        /// 偏移量超出缓冲区边界的错误消息
+        /// </summary>
+        /// <remarks>
+        /// 键名: Extensions.Exceptions.OffsetOutsideBufferBounds
+        /// 用途: 当读取操作的偏移量超出缓冲区边界时使用
+        /// 参数: {0} - 偏移量, {1} - 需要的字节数, {2} - 缓冲区长度
+        /// </remarks>
+        public const string OffsetOutsideBufferBounds = "Extensions.Exceptions.OffsetOutsideBufferBounds";
+
+        /// <summary>
+        /// 偏移量超出缓冲区边界的简单错误消息（无参数）
+        /// </summary>
+        /// <remarks>
+        /// 键名: Extensions.Exceptions.OffsetOutsideBufferBoundsSimple
+        /// 用途: 当读取操作的偏移量超出缓冲区边界时使用（无详细参数）
+        /// </remarks>
+        public const string OffsetOutsideBufferBoundsSimple = "Extensions.Exceptions.OffsetOutsideBufferBoundsSimple";
+
+        /// <summary>
+        /// 字符串过长的错误消息
+        /// </summary>
+        /// <remarks>
+        /// 键名: Extensions.Exceptions.StringTooLong
+        /// 用途: 当字符串长度超过最大允许值时使用
+        /// 参数: {0} - 最大允许长度
+        /// </remarks>
+        public const string StringTooLong = "Extensions.Exceptions.StringTooLong";
+
+        /// <summary>
+        /// 值超出范围的错误消息
+        /// </summary>
+        /// <remarks>
+        /// 键名: Extensions.Exceptions.ValueMustBeBetween
+        /// 用途: 当值不在指定的最小值和最大值之间时使用
+        /// 参数: {0} - 实际值, {1} - 最小值, {2} - 最大值
+        /// </remarks>
+        public const string ValueMustBeBetween = "Extensions.Exceptions.ValueMustBeBetween";
     }
 
     /// <summary>

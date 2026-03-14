@@ -1,11 +1,13 @@
 // GameFrameX 组织下的以及组织衍生的项目的版权、商标、专利和其他相关权利均受相应法律法规的保护。使用本项目应遵守相关法律法规和许可证的要求。
-// 
+//
 // 本项目主要遵循 MIT 许可证和 Apache 许可证（版本 2.0）进行分发和使用。许可证位于源代码树根目录中的 LICENSE 文件。
-// 
+//
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
 using System.Buffers.Binary;
 using System.Text;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Extensions.Localization;
 
 namespace GameFrameX.Foundation.Extensions;
 
@@ -29,7 +31,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.UIntSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.UIntSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteUInt32BigEndian(buffer[offset..], value);
@@ -50,7 +52,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.UShortSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.UShortSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteUInt16BigEndian(buffer[offset..], value);
@@ -71,7 +73,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ShortSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.ShortSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteInt16BigEndian(buffer[offset..], value);
@@ -93,7 +95,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.IntSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.IntSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteInt32BigEndian(buffer[offset..], value);
@@ -115,7 +117,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.LongSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.LongSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteInt64BigEndian(buffer[offset..], value);
@@ -135,7 +137,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ULongSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.ULongSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteUInt64BigEndian(buffer[offset..], value);
@@ -155,7 +157,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.FloatSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.FloatSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteSingleBigEndian(buffer[offset..], value);
@@ -176,7 +178,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.DoubleSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.DoubleSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteDoubleBigEndian(buffer[offset..], value);
@@ -197,7 +199,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ByteSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.ByteSize, buffer.Length));
         }
 
         buffer[offset] = value;
@@ -217,7 +219,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ByteSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.ByteSize, buffer.Length));
         }
 
         buffer[offset] = (byte)value;
@@ -237,7 +239,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.BoolSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.BoolSize, buffer.Length));
         }
 
         buffer[offset] = value ? (byte)1 : (byte)0;
@@ -259,7 +261,7 @@ public static class SpanExtensions
 
         if (offset + value.Length > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {value.Length}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, value.Length, buffer.Length));
         }
 
         fixed (byte* ptr = buffer, valPtr = value)
@@ -313,7 +315,7 @@ public static class SpanExtensions
 
         if (bytes.Length > ushort.MaxValue)
         {
-            throw new ArgumentOutOfRangeException(nameof(value), $"String is too long. Maximum length is {ushort.MaxValue} bytes.");
+            throw new ArgumentOutOfRangeException(nameof(value), LocalizationService.GetString(LocalizationKeys.Exceptions.StringTooLong, ushort.MaxValue));
         }
 
         WriteShortBigEndianValue(buffer, (short)bytes.Length, ref offset);
@@ -338,7 +340,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt32BigEndian(buffer[offset..]);
@@ -360,7 +363,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt16BigEndian(buffer[offset..]);
@@ -381,7 +385,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt16BigEndian(buffer[offset..]);
@@ -403,7 +408,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt32BigEndian(buffer[offset..]);
@@ -425,7 +431,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt64BigEndian(buffer[offset..]);
@@ -447,7 +454,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt64BigEndian(buffer[offset..]);
@@ -469,7 +477,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadSingleBigEndian(buffer[offset..]);
@@ -491,7 +500,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadDoubleBigEndian(buffer[offset..]);
@@ -513,7 +523,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = buffer[offset];
@@ -541,7 +552,8 @@ public static class SpanExtensions
 
         if (offset + len > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var data = buffer.Slice(offset, len).ToArray();
@@ -562,7 +574,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = (sbyte)buffer[offset];
@@ -590,7 +603,8 @@ public static class SpanExtensions
 
         if (offset + len > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = Encoding.UTF8.GetString(buffer.Slice(offset, len));
@@ -611,7 +625,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = buffer[offset] != 0;
@@ -636,7 +651,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.UIntSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.UIntSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteUInt32LittleEndian(buffer[offset..], value);
@@ -656,7 +671,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.UShortSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.UShortSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteUInt16LittleEndian(buffer[offset..], value);
@@ -676,7 +691,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ShortSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.ShortSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteInt16LittleEndian(buffer[offset..], value);
@@ -696,7 +711,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.IntSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.IntSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteInt32LittleEndian(buffer[offset..], value);
@@ -716,7 +731,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.LongSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.LongSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteInt64LittleEndian(buffer[offset..], value);
@@ -736,7 +751,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.ULongSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.ULongSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteUInt64LittleEndian(buffer[offset..], value);
@@ -756,7 +771,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.FloatSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.FloatSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteSingleLittleEndian(buffer[offset..], value);
@@ -776,7 +791,7 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Offset is outside the bounds of the buffer. Offset: {offset}, Required: {ConstBaseTypeSize.DoubleSize}, Available: {buffer.Length}");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, ConstBaseTypeSize.DoubleSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteDoubleLittleEndian(buffer[offset..], value);
@@ -800,7 +815,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt32LittleEndian(buffer[offset..]);
@@ -821,7 +837,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt16LittleEndian(buffer[offset..]);
@@ -842,7 +859,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt32LittleEndian(buffer[offset..]);
@@ -863,7 +881,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt16LittleEndian(buffer[offset..]);
@@ -884,7 +903,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt64LittleEndian(buffer[offset..]);
@@ -905,7 +925,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt64LittleEndian(buffer[offset..]);
@@ -926,7 +947,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadSingleLittleEndian(buffer[offset..]);
@@ -947,7 +969,8 @@ public static class SpanExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadDoubleLittleEndian(buffer[offset..]);

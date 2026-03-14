@@ -33,6 +33,26 @@
     <value>对象类型不匹配。对象类型：{0}，目标类型：{1}。</value>
   </data>
 
+  <data name="Extensions.Exceptions.BufferTooSmall" xml:space="preserve">
+    <value>缓冲区空间不足：需要 {0} 字节，当前 {1} 字节。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.OffsetOutsideBufferBounds" xml:space="preserve">
+    <value>偏移量超出缓冲区边界。偏移量：{0}，需要：{1}，可用：{2}。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.OffsetOutsideBufferBoundsSimple" xml:space="preserve">
+    <value>偏移量超出缓冲区边界。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.StringTooLong" xml:space="preserve">
+    <value>字符串过长。最大长度为 {0} 字节。</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ValueMustBeBetween" xml:space="preserve">
+    <value>值 {0} 必须在 {1} 和 {2} 之间（包含边界）。</value>
+  </data>
+
   <!-- 日志消息 -->
   <data name="Extensions.Logs.CollectionProcessed" xml:space="preserve">
     <value>集合处理完成。集合类型：{0}，元素数量：{1}。</value>

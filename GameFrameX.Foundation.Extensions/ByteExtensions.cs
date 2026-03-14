@@ -492,7 +492,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.FloatSize} bytes, have {buffer.Length}.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.FloatSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteSingleBigEndian(buffer.AsSpan()[offset..], value);
@@ -514,7 +515,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.DoubleSize} bytes, have {buffer.Length}.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.DoubleSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteDoubleBigEndian(buffer.AsSpan()[offset..], value);
@@ -538,7 +540,8 @@ public static class ByteExtensions
 
         if (offset + value.Length + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + value.Length + ConstBaseTypeSize.IntSize} bytes, have {buffer.Length}.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + value.Length + ConstBaseTypeSize.IntSize, buffer.Length));
         }
 
         buffer.WriteIntValue(value.Length, ref offset);
@@ -584,7 +587,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.SbyteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.SbyteSize} bytes, have {buffer.Length}.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.SbyteSize, buffer.Length));
         }
 
         buffer[offset] = (byte)value;
@@ -619,7 +623,8 @@ public static class ByteExtensions
 
         if (offset + len + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + len + ConstBaseTypeSize.ShortSize} bytes, have {buffer.Length}.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + len + ConstBaseTypeSize.ShortSize, buffer.Length));
         }
 
         Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + ConstBaseTypeSize.ShortSize);
@@ -642,7 +647,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), $"Buffer too small: need {offset + ConstBaseTypeSize.BoolSize} bytes, have {buffer.Length}.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.BoolSize, buffer.Length));
         }
 
         buffer[offset] = value ? (byte)1 : (byte)0;

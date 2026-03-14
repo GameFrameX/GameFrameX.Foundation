@@ -33,6 +33,26 @@
     <value>Object type mismatch. Object type: {0}, target type: {1}.</value>
   </data>
 
+  <data name="Extensions.Exceptions.BufferTooSmall" xml:space="preserve">
+    <value>Buffer too small: need {0} bytes, have {1}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.OffsetOutsideBufferBounds" xml:space="preserve">
+    <value>Offset is outside the bounds of the buffer. Offset: {0}, Required: {1}, Available: {2}.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.OffsetOutsideBufferBoundsSimple" xml:space="preserve">
+    <value>Offset is outside the bounds of the buffer.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.StringTooLong" xml:space="preserve">
+    <value>String is too long. Maximum length is {0} bytes.</value>
+  </data>
+
+  <data name="Extensions.Exceptions.ValueMustBeBetween" xml:space="preserve">
+    <value>Value {0} must be between {1} and {2} (inclusive).</value>
+  </data>
+
   <!-- Log messages -->
   <data name="Extensions.Logs.CollectionProcessed" xml:space="preserve">
     <value>Collection processing completed. Collection type: {0}, element count: {1}.</value>
