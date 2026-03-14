@@ -39,7 +39,11 @@ public static partial class TimerHelper
     /// <summary>
     /// 当前时区，默认为 UTC
     /// </summary>
-    private static TimeZoneInfo _currentTimeZone = TimeZoneInfo.Utc;
+    /// <remarks>
+    /// 使用 volatile 关键字确保多线程环境下的可见性。
+    /// 对于更复杂的线程安全需求，建议使用锁或其他同步机制。
+    /// </remarks>
+    private static volatile TimeZoneInfo _currentTimeZone = TimeZoneInfo.Utc;
 
     /// <summary>
     /// 获取当前时区
@@ -62,15 +66,22 @@ public static partial class TimerHelper
     /// 设置当前时区
     /// </summary>
     /// <param name="timeZoneId">时区ID，如 "China Standard Time" 或 "UTC"</param>
-    public static void SetTimeZone(string timeZoneId)
+    /// <returns>如果成功设置时区返回 <c>true</c>；如果时区ID无效则返回 <c>false</c> 并回退到 UTC</returns>
+    /// <remarks>
+    /// 当传入无效的时区ID时，方法会回退到 UTC 时区并返回 <c>false</c>。
+    /// 这允许调用者检测配置错误并采取适当的措施。
+    /// </remarks>
+    public static bool SetTimeZone(string timeZoneId)
     {
         try
         {
             _currentTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            return true;
         }
-        catch
+        catch (Exception)
         {
             _currentTimeZone = TimeZoneInfo.Utc;
+            return false;
         }
     }
 
