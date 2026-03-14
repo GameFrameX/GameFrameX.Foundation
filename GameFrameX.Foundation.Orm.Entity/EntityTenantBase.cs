@@ -25,6 +25,7 @@ public abstract class EntityTenantBase : EntityBase, ITenantIdFilter
 /// </summary>
 /// <typeparam name="TKey">主键类型</typeparam>
 public abstract class EntityTenantBase<TKey> : EntityBase<TKey>, ITenantIdFilter
+    where TKey : notnull
 {
     /// <summary>
     /// 租户Id

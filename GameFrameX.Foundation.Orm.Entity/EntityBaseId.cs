@@ -22,6 +22,7 @@ public abstract class EntityBaseId : IEntity<long>
 /// </summary>
 /// <typeparam name="TKey">主键类型</typeparam>
 public abstract class EntityBaseId<TKey> : IEntity<TKey>
+    where TKey : notnull
 {
     /// <summary>
     /// 主键Id
