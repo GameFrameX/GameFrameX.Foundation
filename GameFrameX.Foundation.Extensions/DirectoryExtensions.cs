@@ -43,10 +43,10 @@ public static class DirectoryExtensions
     /// <param name="isFile">是否为文件路径，如果为true，则创建文件所在的目录。默认为false。</param>
     /// <exception cref="ArgumentNullException">当path为null时抛出。</exception>
     /// <remarks>
-    /// 如果路径不存在，会递归创建所有必需的父目录
-    /// 当isFile为true时，会自动获取文件所在目录路径
-    /// 支持相对路径和绝对路径
-    /// 如果目录已存在，则不会进行任何操作
+    /// 此方法使用 <see cref="Directory.CreateDirectory"/> 实现，该方法会自动递归创建所有必要的父目录。
+    /// 当isFile为true时，会自动获取文件所在目录路径。
+    /// 支持相对路径和绝对路径。
+    /// 如果目录已存在，则不会进行任何操作。
     /// </remarks>
     public static void CreateAsDirectory(this string path, bool isFile = false)
     {
@@ -55,11 +55,15 @@ public static class DirectoryExtensions
         if (isFile)
         {
             path = Path.GetDirectoryName(path);
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
         }
 
         if (!Directory.Exists(path))
         {
-            CreateAsDirectory(path, true);
+            // Directory.CreateDirectory 会递归创建所有父目录
             Directory.CreateDirectory(path);
         }
     }
