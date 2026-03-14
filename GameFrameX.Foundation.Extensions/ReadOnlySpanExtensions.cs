@@ -5,6 +5,8 @@
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
 using System.Buffers.Binary;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Extensions.Localization;
 
 namespace GameFrameX.Foundation.Extensions;
 
@@ -26,7 +28,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt32BigEndian(buffer[offset..]);
@@ -47,7 +49,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt32BigEndian(buffer[offset..]);
@@ -68,7 +70,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt64BigEndian(buffer[offset..]);
@@ -89,7 +91,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt64BigEndian(buffer[offset..]);
@@ -110,7 +112,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt16BigEndian(buffer[offset..]);
@@ -131,7 +133,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt16BigEndian(buffer[offset..]);
@@ -152,7 +154,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadSingleBigEndian(buffer[offset..]);
@@ -173,7 +175,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadDoubleBigEndian(buffer[offset..]);
@@ -194,7 +196,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt32LittleEndian(buffer[offset..]);
@@ -215,7 +217,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt32LittleEndian(buffer[offset..]);
@@ -236,7 +238,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt64LittleEndian(buffer[offset..]);
@@ -257,7 +259,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt64LittleEndian(buffer[offset..]);
@@ -278,7 +280,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt16LittleEndian(buffer[offset..]);
@@ -299,7 +301,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt16LittleEndian(buffer[offset..]);
@@ -320,7 +322,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadSingleLittleEndian(buffer[offset..]);
@@ -341,7 +343,7 @@ public static class ReadOnlySpanExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Offset is outside the bounds of the buffer.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadDoubleLittleEndian(buffer[offset..]);
