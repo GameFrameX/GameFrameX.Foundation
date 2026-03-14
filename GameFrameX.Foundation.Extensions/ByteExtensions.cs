@@ -21,7 +21,7 @@ public static class ByteExtensions
     /// <param name="requiredSize">需要写入或读取的字节数。</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
-    private static void ValidateBufferBounds(byte[] buffer, int offset, int requiredSize)
+    private static void ValidateBounds(byte[] buffer, int offset, int requiredSize)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -29,27 +29,7 @@ public static class ByteExtensions
         if (offset + requiredSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferWriteOutOfRange, offset + requiredSize, buffer.Length));
-        }
-    }
-
-    /// <summary>
-    /// 验证读取缓冲区参数的有效性。
-    /// </summary>
-    /// <param name="buffer">要验证的缓冲区。</param>
-    /// <param name="offset">当前偏移量。</param>
-    /// <param name="requiredSize">需要读取的字节数。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
-    private static void ValidateReadBounds(byte[] buffer, int offset, int requiredSize)
-    {
-        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
-
-        if (offset + requiredSize > buffer.Length)
-        {
-            throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferWriteOutOfRange, offset + requiredSize, buffer.Length));
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.BufferWriteOutOfRange, offset + requiredSize, buffer.Length));
         }
     }
 
@@ -242,7 +222,7 @@ public static class ByteExtensions
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteUIntValue(this byte[] buffer, uint value, ref int offset)
     {
-        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.UIntSize);
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.UIntSize);
         BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.UIntSize;
     }
@@ -257,7 +237,7 @@ public static class ByteExtensions
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteIntValue(this byte[] buffer, int value, ref int offset)
     {
-        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.IntSize);
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.IntSize);
         BinaryPrimitives.WriteInt32BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.IntSize;
     }
@@ -272,7 +252,7 @@ public static class ByteExtensions
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteByteValue(this byte[] buffer, byte value, ref int offset)
     {
-        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.ByteSize);
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.ByteSize);
         buffer[offset] = value;
         offset += ConstBaseTypeSize.ByteSize;
     }
@@ -287,7 +267,7 @@ public static class ByteExtensions
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteShortValue(this byte[] buffer, short value, ref int offset)
     {
-        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.ShortSize);
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.ShortSize);
         BinaryPrimitives.WriteInt16BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.ShortSize;
     }
@@ -302,7 +282,7 @@ public static class ByteExtensions
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteUShortValue(this byte[] buffer, ushort value, ref int offset)
     {
-        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.UShortSize);
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.UShortSize);
         BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.UShortSize;
     }
@@ -317,7 +297,7 @@ public static class ByteExtensions
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteLongValue(this byte[] buffer, long value, ref int offset)
     {
-        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.LongSize);
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.LongSize);
         BinaryPrimitives.WriteInt64BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.LongSize;
     }
@@ -332,7 +312,7 @@ public static class ByteExtensions
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
     public static void WriteULongValue(this byte[] buffer, ulong value, ref int offset)
     {
-        ValidateBufferBounds(buffer, offset, ConstBaseTypeSize.ULongSize);
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.ULongSize);
         BinaryPrimitives.WriteUInt64BigEndian(buffer.AsSpan()[offset..], value);
         offset += ConstBaseTypeSize.ULongSize;
     }
@@ -352,7 +332,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.UShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt16BigEndian(buffer.AsSpan()[offset..]);
@@ -375,7 +356,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt16BigEndian(buffer.AsSpan()[offset..]);
@@ -398,7 +380,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.UIntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt32BigEndian(buffer.AsSpan()[offset..]);
@@ -421,7 +404,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.IntSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt32BigEndian(buffer.AsSpan()[offset..]);
@@ -444,7 +428,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.ULongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadUInt64BigEndian(buffer.AsSpan()[offset..]);
@@ -467,7 +452,8 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.LongSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadInt64BigEndian(buffer.AsSpan()[offset..]);
@@ -493,7 +479,7 @@ public static class ByteExtensions
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.FloatSize, buffer.Length));
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.FloatSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteSingleBigEndian(buffer.AsSpan()[offset..], value);
@@ -516,7 +502,7 @@ public static class ByteExtensions
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.DoubleSize, buffer.Length));
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.DoubleSize, buffer.Length));
         }
 
         BinaryPrimitives.WriteDoubleBigEndian(buffer.AsSpan()[offset..], value);
@@ -541,7 +527,7 @@ public static class ByteExtensions
         if (offset + value.Length + ConstBaseTypeSize.IntSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + value.Length + ConstBaseTypeSize.IntSize, buffer.Length));
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + value.Length + ConstBaseTypeSize.IntSize, buffer.Length));
         }
 
         buffer.WriteIntValue(value.Length, ref offset);
@@ -588,7 +574,7 @@ public static class ByteExtensions
         if (offset + ConstBaseTypeSize.SbyteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.SbyteSize, buffer.Length));
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.SbyteSize, buffer.Length));
         }
 
         buffer[offset] = (byte)value;
@@ -623,8 +609,7 @@ public static class ByteExtensions
 
         if (offset + len + ConstBaseTypeSize.ShortSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + len + ConstBaseTypeSize.ShortSize, buffer.Length));
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + len + ConstBaseTypeSize.ShortSize, buffer.Length));
         }
 
         Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + ConstBaseTypeSize.ShortSize);
@@ -647,12 +632,135 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.BoolSize, buffer.Length));
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + ConstBaseTypeSize.BoolSize, buffer.Length));
         }
 
         buffer[offset] = value ? (byte)1 : (byte)0;
         offset += ConstBaseTypeSize.BoolSize;
+    }
+
+    #endregion
+
+    #region Write LittleEndian
+
+    /// <summary>
+    /// 将一个16位有符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteShortValueLittleEndian(this byte[] buffer, short value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.ShortSize);
+        BinaryPrimitives.WriteInt16LittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.ShortSize;
+    }
+
+    /// <summary>
+    /// 将一个16位无符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteUShortValueLittleEndian(this byte[] buffer, ushort value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.UShortSize);
+        BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.UShortSize;
+    }
+
+    /// <summary>
+    /// 将一个32位有符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteIntValueLittleEndian(this byte[] buffer, int value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.IntSize);
+        BinaryPrimitives.WriteInt32LittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.IntSize;
+    }
+
+    /// <summary>
+    /// 将一个32位无符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteUIntValueLittleEndian(this byte[] buffer, uint value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.UIntSize);
+        BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.UIntSize;
+    }
+
+    /// <summary>
+    /// 将一个64位有符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteLongValueLittleEndian(this byte[] buffer, long value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.LongSize);
+        BinaryPrimitives.WriteInt64LittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.LongSize;
+    }
+
+    /// <summary>
+    /// 将一个64位无符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteULongValueLittleEndian(this byte[] buffer, ulong value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.ULongSize);
+        BinaryPrimitives.WriteUInt64LittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.ULongSize;
+    }
+
+    /// <summary>
+    /// 将一个单精度浮点数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteFloatValueLittleEndian(this byte[] buffer, float value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.FloatSize);
+        BinaryPrimitives.WriteSingleLittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.FloatSize;
+    }
+
+    /// <summary>
+    /// 将一个双精度浮点数以小端字节序写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteDoubleValueLittleEndian(this byte[] buffer, double value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.DoubleSize);
+        BinaryPrimitives.WriteDoubleLittleEndian(buffer.AsSpan()[offset..], value);
+        offset += ConstBaseTypeSize.DoubleSize;
     }
 
     #endregion
@@ -674,7 +782,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.FloatSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadSingleBigEndian(buffer.AsSpan(offset));
@@ -697,7 +805,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.DoubleSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = BinaryPrimitives.ReadDoubleBigEndian(buffer.AsSpan(offset));
@@ -720,7 +828,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = buffer[offset];
@@ -749,7 +857,7 @@ public static class ByteExtensions
 
         if (offset + len > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var data = new byte[len];
@@ -778,7 +886,7 @@ public static class ByteExtensions
 
         if (offset + len > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var data = new byte[len];
@@ -806,7 +914,7 @@ public static class ByteExtensions
 
         if (offset + len > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var data = new byte[len];
@@ -830,7 +938,7 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.SbyteSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = (sbyte)buffer[offset];
@@ -857,7 +965,7 @@ public static class ByteExtensions
 
         if (offset + len > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = Encoding.UTF8.GetString(buffer, offset, len);
@@ -880,11 +988,143 @@ public static class ByteExtensions
 
         if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
-            throw new ArgumentOutOfRangeException(nameof(offset), "Buffer read out of index.");
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = buffer[offset] != 0;
         offset += ConstBaseTypeSize.BoolSize;
+        return value;
+    }
+
+    #endregion
+
+    #region Read LittleEndian
+
+    /// <summary>
+    /// 从字节数组中以小端字节序读取16位有符号整数，并将偏移量前移。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的16位有符号整数。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static short ReadShortValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.ShortSize);
+        var value = BinaryPrimitives.ReadInt16LittleEndian(buffer.AsSpan()[offset..]);
+        offset += ConstBaseTypeSize.ShortSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从字节数组中以小端字节序读取16位无符号整数，并将偏移量向前移动。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的16位无符号整数。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static ushort ReadUShortValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.UShortSize);
+        var value = BinaryPrimitives.ReadUInt16LittleEndian(buffer.AsSpan()[offset..]);
+        offset += ConstBaseTypeSize.UShortSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从字节数组中以小端字节序读取32位有符号整数，并将偏移量向前移动。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的32位有符号整数。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static int ReadIntValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.IntSize);
+        var value = BinaryPrimitives.ReadInt32LittleEndian(buffer.AsSpan()[offset..]);
+        offset += ConstBaseTypeSize.IntSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从字节数组中以小端字节序读取32位无符号整数，并将偏移量向前移动。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的32位无符号整数。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static uint ReadUIntValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.UIntSize);
+        var value = BinaryPrimitives.ReadUInt32LittleEndian(buffer.AsSpan()[offset..]);
+        offset += ConstBaseTypeSize.UIntSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从字节数组中以小端字节序读取64位有符号整数，并将偏移量向前移动。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的64位有符号整数。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static long ReadLongValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.LongSize);
+        var value = BinaryPrimitives.ReadInt64LittleEndian(buffer.AsSpan()[offset..]);
+        offset += ConstBaseTypeSize.LongSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从字节数组中以小端字节序读取64位无符号整数，并将偏移量向前移动。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的64位无符号整数。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static ulong ReadULongValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.ULongSize);
+        var value = BinaryPrimitives.ReadUInt64LittleEndian(buffer.AsSpan()[offset..]);
+        offset += ConstBaseTypeSize.ULongSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从给定的字节缓冲区中以小端字节序读取浮点数，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">包含了要读取数据的字节缓冲区。</param>
+    /// <param name="offset">读取数据的起始位置，该方法会更新该值。</param>
+    /// <returns>从字节缓冲区中读取的浮点数。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static float ReadFloatValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.FloatSize);
+        var value = BinaryPrimitives.ReadSingleLittleEndian(buffer.AsSpan(offset));
+        offset += ConstBaseTypeSize.FloatSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从指定偏移量以小端字节序读取 double 类型数据。
+    /// </summary>
+    /// <param name="buffer">要操作的字节缓冲区。</param>
+    /// <param name="offset">操作的起始偏移量，操作完成后，会自动累加双精度浮点数的字节数。</param>
+    /// <returns>返回从缓冲区读取的 double 类型数据。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static double ReadDoubleValueLittleEndian(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, ConstBaseTypeSize.DoubleSize);
+        var value = BinaryPrimitives.ReadDoubleLittleEndian(buffer.AsSpan(offset));
+        offset += ConstBaseTypeSize.DoubleSize;
         return value;
     }
 
@@ -937,7 +1177,7 @@ public static class ByteExtensions
 
         if (startIndex + count > bytes.Length)
         {
-            throw new ArgumentException("The sum of startIndex and count is greater than the buffer length.", nameof(count));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength, bytes.Length, startIndex, count), nameof(count));
         }
 
         Array.Fill(bytes, value, startIndex, count);
@@ -970,7 +1210,7 @@ public static class ByteExtensions
 
         if (index + length > bytes.Length)
         {
-            throw new ArgumentException("The sum of index and length is greater than the buffer length.", nameof(length));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength, bytes.Length, index, length), nameof(length));
         }
 
         Array.Reverse(bytes, index, length);
@@ -1005,7 +1245,7 @@ public static class ByteExtensions
 
         if (offset + length > bytes.Length)
         {
-            throw new ArgumentException("The sum of offset and length is greater than the buffer length.", nameof(length));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength, bytes.Length, offset, length), nameof(length));
         }
 
         return Convert.ToBase64String(bytes, offset, length);
@@ -1024,6 +1264,7 @@ public static class ByteExtensions
         {
             return Array.Empty<byte>();
         }
+
         return Convert.FromBase64String(base64String);
     }
 
@@ -1301,7 +1542,7 @@ public static class ByteExtensions
 
         if (startIndex + length > bytes.Length)
         {
-            throw new ArgumentException("The sum of startIndex and length is greater than the buffer length.", nameof(length));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength, bytes.Length, startIndex, length), nameof(length));
         }
 
         var result = new byte[length];
