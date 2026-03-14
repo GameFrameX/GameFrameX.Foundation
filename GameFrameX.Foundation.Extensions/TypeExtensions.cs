@@ -29,11 +29,15 @@ public static partial class TypeExtensions
     /// 它会递归检查类型的继承链和接口实现。
     /// </remarks>
     /// <exception cref="ArgumentNullException">当<paramref name="targetType"/>或<paramref name="interfaceType"/>为null时抛出</exception>
+    /// <exception cref="ArgumentException">当<paramref name="interfaceType"/>不是接口类型时抛出</exception>
     public static bool HasInterface(Type targetType, Type interfaceType)
     {
-        if (targetType == null || interfaceType == null || !interfaceType.IsInterface)
+        ArgumentNullException.ThrowIfNull(targetType, nameof(targetType));
+        ArgumentNullException.ThrowIfNull(interfaceType, nameof(interfaceType));
+
+        if (!interfaceType.IsInterface)
         {
-            return false;
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.TargetTypeMustBeInterface), nameof(interfaceType));
         }
 
         return interfaceType.IsAssignableFrom(targetType);
