@@ -7,10 +7,12 @@
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 实体基础接口
+/// 实体基础接口（标记接口）
+/// <para>用于标识一个类为实体类型，支持类型约束和识别</para>
 /// </summary>
 public interface IEntity
 {
+    // 标记接口，用于类型约束和识别
 }
 
 /// <summary>
