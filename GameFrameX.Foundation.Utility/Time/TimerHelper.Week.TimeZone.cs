@@ -29,6 +29,9 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Utility.Localization;
+
 namespace GameFrameX.Foundation.Utility;
 
 public static partial class TimerHelper
@@ -47,18 +50,29 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期的中文星期表示
+    /// 获取指定日期的本地化星期表示
     /// </summary>
     /// <param name="date">指定日期</param>
-    /// <returns>返回中文星期字符串，如"星期一"、"星期日"</returns>
+    /// <returns>返回本地化的星期字符串，如中文环境返回"星期一"、"星期日"</returns>
     /// <remarks>
-    /// 根据传入日期的DayOfWeek属性返回对应的中文名称
+    /// 根据传入日期的DayOfWeek属性返回对应的本地化名称
     /// 支持从星期一到星期日的所有映射
+    /// 使用本地化服务获取星期名称
     /// </remarks>
     public static string GetChinaDayOfWeekWithTimeZone(DateTime date)
     {
-        string[] dayOfWeek = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六",];
-        return dayOfWeek[Convert.ToInt32(date.DayOfWeek.ToString("d"))];
+        var dayOfWeekKey = date.DayOfWeek switch
+        {
+            System.DayOfWeek.Sunday => LocalizationKeys.DayOfWeek.Sunday,
+            System.DayOfWeek.Monday => LocalizationKeys.DayOfWeek.Monday,
+            System.DayOfWeek.Tuesday => LocalizationKeys.DayOfWeek.Tuesday,
+            System.DayOfWeek.Wednesday => LocalizationKeys.DayOfWeek.Wednesday,
+            System.DayOfWeek.Thursday => LocalizationKeys.DayOfWeek.Thursday,
+            System.DayOfWeek.Friday => LocalizationKeys.DayOfWeek.Friday,
+            System.DayOfWeek.Saturday => LocalizationKeys.DayOfWeek.Saturday,
+            _ => string.Empty
+        };
+        return LocalizationService.GetString(dayOfWeekKey);
     }
 
     /// <summary>
@@ -191,7 +205,6 @@ public static partial class TimerHelper
         return now.AddDays(1 - dayOfWeek + 7).Date;
     }
 
-    /// <summary>
     /// <summary>
     /// 获取下周开始时间戳（基于设置时区）
     /// </summary>
