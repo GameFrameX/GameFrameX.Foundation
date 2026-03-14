@@ -25,8 +25,6 @@
 //  GitHub Repository: https://github.com/GameFrameX
 //  Gitee  仓库：https://gitee.com/GameFrameX
 //  Gitee Repository:  https://gitee.com/GameFrameX
-//  CNB  仓库：https://cnb.cool/GameFrameX
-//  CNB Repository:  https://cnb.cool/GameFrameX
 //  官方文档：https://gameframex.doc.alianblank.com/
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================

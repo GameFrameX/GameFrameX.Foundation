@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Text.Json.Serialization;
 using GameFrameX.Foundation.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;

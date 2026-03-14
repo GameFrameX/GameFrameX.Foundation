@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Buffers;
 using System.Buffers.Binary;
 using System.ComponentModel;
 

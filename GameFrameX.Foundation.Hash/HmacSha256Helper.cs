@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Security.Cryptography;
 using System.Text;
 
 namespace GameFrameX.Foundation.Hash;

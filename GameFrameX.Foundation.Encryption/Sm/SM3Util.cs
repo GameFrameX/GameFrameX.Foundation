@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Text;
 using Org.BouncyCastle.Utilities.Encoders;
 
 namespace GameFrameX.Foundation.Encryption.Sm;
