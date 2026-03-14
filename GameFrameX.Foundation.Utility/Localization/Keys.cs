@@ -68,5 +68,55 @@ public static class LocalizationKeys
         /// 参数: {0} - 最大允许的DatacenterId值
         /// </remarks>
         public const string DatacenterIdOutOfRange = "Utility.Exceptions.DatacenterIdOutOfRange";
+
+        /// <summary>
+        /// 小时参数超出范围的错误消息
+        /// </summary>
+        /// <remarks>
+        /// 键名: Utility.Exceptions.HourOutOfRange
+        /// 用途: 当传入的小时参数不在 0-23 范围内时使用
+        /// </remarks>
+        public const string HourOutOfRange = "Utility.Exceptions.HourOutOfRange";
+    }
+
+    /// <summary>
+    /// 星期名称本地化资源键
+    /// </summary>
+    public static class DayOfWeek
+    {
+        /// <summary>
+        /// 星期日
+        /// </summary>
+        public const string Sunday = "Utility.DayOfWeek.Sunday";
+
+        /// <summary>
+        /// 星期一
+        /// </summary>
+        public const string Monday = "Utility.DayOfWeek.Monday";
+
+        /// <summary>
+        /// 星期二
+        /// </summary>
+        public const string Tuesday = "Utility.DayOfWeek.Tuesday";
+
+        /// <summary>
+        /// 星期三
+        /// </summary>
+        public const string Wednesday = "Utility.DayOfWeek.Wednesday";
+
+        /// <summary>
+        /// 星期四
+        /// </summary>
+        public const string Thursday = "Utility.DayOfWeek.Thursday";
+
+        /// <summary>
+        /// 星期五
+        /// </summary>
+        public const string Friday = "Utility.DayOfWeek.Friday";
+
+        /// <summary>
+        /// 星期六
+        /// </summary>
+        public const string Saturday = "Utility.DayOfWeek.Saturday";
     }
 }

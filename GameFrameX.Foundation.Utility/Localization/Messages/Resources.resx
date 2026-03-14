@@ -17,6 +17,39 @@
     <value>Datacenter ID out of range, acceptable values are 0 to {0}.</value>
   </data>
 
+  <data name="Utility.Exceptions.HourOutOfRange" xml:space="preserve">
+    <value>Hour parameter out of range, acceptable values are 0 to 23.</value>
+  </data>
+
+  <!-- Day of week names -->
+  <data name="Utility.DayOfWeek.Sunday" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Saturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+
   <!-- Common exception messages -->
   <data name="ArgumentNull" xml:space="preserve">
     <value>Argument cannot be null.</value>

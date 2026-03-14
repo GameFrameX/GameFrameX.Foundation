@@ -17,6 +17,39 @@
     <value>数据中心ID超出有效范围，可接受值为 0 到 {0}。</value>
   </data>
 
+  <data name="Utility.Exceptions.HourOutOfRange" xml:space="preserve">
+    <value>小时参数超出有效范围，可接受值为 0 到 23。</value>
+  </data>
+
+  <!-- 星期名称 -->
+  <data name="Utility.DayOfWeek.Sunday" xml:space="preserve">
+    <value>星期日</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Monday" xml:space="preserve">
+    <value>星期一</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Tuesday" xml:space="preserve">
+    <value>星期二</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Wednesday" xml:space="preserve">
+    <value>星期三</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Thursday" xml:space="preserve">
+    <value>星期四</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Friday" xml:space="preserve">
+    <value>星期五</value>
+  </data>
+
+  <data name="Utility.DayOfWeek.Saturday" xml:space="preserve">
+    <value>星期六</value>
+  </data>
+
   <!-- 通用异常消息 -->
   <data name="ArgumentNull" xml:space="preserve">
     <value>参数不能为空。</value>
