@@ -44,7 +44,7 @@ public static partial class TimerHelper
     public static DateTime GetMonthStartTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
-        return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Local);
+        return new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Unspecified);
     }
 
     /// <summary>

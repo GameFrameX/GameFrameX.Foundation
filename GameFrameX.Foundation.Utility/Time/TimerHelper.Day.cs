@@ -29,6 +29,9 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Utility.Localization;
+
 namespace GameFrameX.Foundation.Utility;
 
 public static partial class TimerHelper
@@ -94,8 +97,9 @@ public static partial class TimerHelper
     /// </summary>
     /// <param name="startTime">起始时间。</param>
     /// <param name="endTime">结束时间。</param>
-    /// <param name="hour">用于判定跨日的小时阈值。</param>
+    /// <param name="hour">用于判定跨日的小时阈值，有效范围为 0-23。</param>
     /// <returns>跨越的天数。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="hour"/> 不在 0-23 范围内时抛出。</exception>
     /// <remarks>
     /// 此方法先计算两个日期（忽略具体时间部分）之间的天数差，再依据小时阈值调整结果。
     /// 如果 <paramref name="startTime"/> 的小时数小于阈值，则结果加一；
@@ -111,6 +115,11 @@ public static partial class TimerHelper
     /// </example>
     public static int GetCrossDays(DateTime startTime, DateTime endTime, int hour = 0)
     {
+        if (hour < 0 || hour > 23)
+        {
+            throw new ArgumentOutOfRangeException(nameof(hour), hour, LocalizationService.GetString(LocalizationKeys.Exceptions.HourOutOfRange));
+        }
+
         var days = (int)(endTime.Date - startTime.Date).TotalDays;
         if (startTime.Hour < hour)
         {
