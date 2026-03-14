@@ -72,7 +72,7 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
                 return comparable.CompareTo(nullObject.Item);
             }
 
-            return string.Compare(Item.ToString(), nullObject.Item.ToString(), StringComparison.Ordinal);
+            return string.Compare(Item?.ToString(), nullObject.Item?.ToString(), StringComparison.Ordinal);
         }
 
         if (value is T directValue)
