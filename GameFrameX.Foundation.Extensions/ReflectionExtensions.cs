@@ -3,15 +3,15 @@
 //  GameFrameX organization and its derivative projects' copyrights, trademarks, patents, and related rights
 //  均受中华人民共和国及相关国际法律法规保护。
 //  are protected by the laws of the People's Republic of China and relevant international regulations.
-// 
+//
 //  使用本项目须严格遵守相应法律法规及开源许可证之规定。
 //  Usage of this project must strictly comply with applicable laws, regulations, and open-source licenses.
-// 
+//
 //  本项目采用 MIT 许可证与 Apache License 2.0 双许可证分发，
 //  This project is dual-licensed under the MIT License and Apache License 2.0,
 //  完整许可证文本请参见源代码根目录下的 LICENSE 文件。
 //  please refer to the LICENSE file in the root directory of the source code for the full license text.
-// 
+//
 //  禁止利用本项目实施任何危害国家安全、破坏社会秩序、
 //  It is prohibited to use this project to engage in any activities that endanger national security, disrupt social order,
 //  侵犯他人合法权益等法律法规所禁止的行为！
@@ -20,7 +20,7 @@
 //  Any legal disputes and liabilities arising from secondary development based on this project
 //  本项目组织与贡献者概不承担。
 //  shall be borne solely by the developer; the project organization and contributors assume no responsibility.
-// 
+//
 //  GitHub 仓库：https://github.com/GameFrameX
 //  GitHub Repository: https://github.com/GameFrameX
 //  Gitee  仓库：https://gitee.com/GameFrameX
@@ -32,6 +32,29 @@
 using System.Reflection;
 
 namespace GameFrameX.Foundation.Extensions;
+
+/// <summary>
+/// 反射扩展类，/// </summary>
+/// <remarks>
+/// 此类中的所有扩展方法已过时。在现代 .NET（.NET 5+）中，Type 类已直接包含这些功能，
+/// 无需通过扩展方法调用。请直接使用 Type 类的实例方法/属性。
+///
+/// 迁移指南:
+/// <list type="bullet">
+///   <item><description>type.GetTypeInfo() -&gt; 直接使用 type（无需调用）</description></item>
+///   <item><description>type.GetGenericArguments() -&gt; type.GetGenericArguments()（使用实例方法）</description></item>
+///   <item><description>type.IsGenericType() -&gt; type.IsGenericType（使用属性）</description></item>
+///   <item><description>type.GetProperties() -&gt; type.GetProperties()（使用实例方法）</description></item>
+///   <item><description>type.GetProperty(name) -&gt; type.GetProperty(name)（使用实例方法）</description></item>
+///   <item><description>type.GetField(name) -&gt; type.GetField(name)（使用实例方法）</description></item>
+///   <item><description>type.IsEnum() -&gt; type.IsEnum（使用属性）</description></item>
+///   <item><description>type.GetMethod(...) -&gt; type.GetMethod(...)（使用实例方法）</description></item>
+///   <item><description>type.GetConstructor(types) -&gt; type.GetConstructor(types)（使用实例方法）</description></item>
+///   <item><description>type.IsValueType() -&gt; type.IsValueType（使用属性）</description></item>
+///   <item><description>type.IsEntity() -&gt; type.IsClass（使用属性）</description></item>
+/// </list>
+/// </remarks>
+[Obsolete("此扩展类中的所有方法在现代 .NET 中已不再需要，请直接使用 Type 类的实例方法/属性。")]
 
 /// <summary>
 /// 反射扩展类，提供了一系列用于反射操作的扩展方法
