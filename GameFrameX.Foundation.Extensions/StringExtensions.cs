@@ -150,7 +150,7 @@ public static partial class StringExtensions
     /// 例如："HelloWorld"转换为"hello_world"，"IsValid"转换为"is_valid"。
     /// 当字符串中已包含下划线时，直接返回原字符串。
     /// </remarks>
-    public static string ConvertToUnderLine(string str, bool isToUpper = false)
+    public static string ConvertToUnderLine(this string str, bool isToUpper = false)
     {
         ArgumentNullException.ThrowIfNull(str, nameof(str));
         if (str.Contains('_'))
