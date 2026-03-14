@@ -36,7 +36,7 @@ namespace GameFrameX.Foundation.Options;
 /// <summary>
 /// 命令行参数转换器
 /// </summary>
-public class CommandLineArgumentConverter
+public sealed class CommandLineArgumentConverter
 {
     /// <summary>
     /// 布尔参数格式
@@ -144,7 +144,8 @@ public class CommandLineArgumentConverter
                 {
                     var parts = arg.Split(new[] { '=' }, 2);
                     var key = parts[0];
-                    var value = parts[1];
+                    // 如果值部分为空（如 --key=），则使用空字符串
+                    var value = parts.Length > 1 ? parts[1] : string.Empty;
 
                     // 根据EnsurePrefixedKeys设置处理键
                     if (!key.StartsWith("-") && EnsurePrefixedKeys)
@@ -204,7 +205,7 @@ public class CommandLineArgumentConverter
                     if (!nextArg.StartsWith("-"))
                     {
                         // 对于布尔标志格式，检查是否为布尔值
-                        if (BoolFormat == BoolArgumentFormat.Flag && IsBooleanValue(nextArg))
+                        if (BoolFormat == BoolArgumentFormat.Flag && BooleanParser.IsBooleanValue(nextArg))
                         {
                             // 跳过布尔值，因为标志格式不需要显式值
                             i++;
@@ -225,21 +226,5 @@ public class CommandLineArgumentConverter
         {
             throw new ArgumentException($"处理命令行参数时发生错误 (An error occurred while processing command-line arguments): {ex.Message}", ex);
         }
-    }
-    
-    /// <summary>
-    /// 检查字符串值是否为Bool类型
-    /// </summary>
-    /// <param name="value">要检查的字符串值</param>
-    /// <returns>如果是Bool类型值则返回true，否则返回false</returns>
-    private static bool IsBooleanValue(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return false;
-        }
-
-        var normalizedValue = value.Trim().ToLowerInvariant();
-        return normalizedValue is "true" or "false" or "1" or "0" or "yes" or "no" or "on" or "off";
     }
 }

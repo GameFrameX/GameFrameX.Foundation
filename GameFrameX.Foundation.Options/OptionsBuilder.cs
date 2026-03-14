@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Collections.Concurrent;
 using System.Reflection;
 using GameFrameX.Foundation.Options.Attributes;
 
@@ -52,7 +53,7 @@ public class OptionsBuilder
     /// <returns>构建的配置选项对象</returns>
     public static TOptions Create<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
     {
-        var builder = new OptionsBuilder<TOptions>(args);
+        var builder = new OptionsBuilder<TOptions>(args ?? Array.Empty<string>());
         return builder.Build(skipValidation);
     }
 
@@ -73,7 +74,7 @@ public class OptionsBuilder
         bool useEnvironmentVariables = true,
         bool skipValidation = false) where TOptions : class, new()
     {
-        var builder = new OptionsBuilder<TOptions>(args, boolFormat, ensurePrefixedKeys, useEnvironmentVariables);
+        var builder = new OptionsBuilder<TOptions>(args ?? Array.Empty<string>(), boolFormat, ensurePrefixedKeys, useEnvironmentVariables);
         return builder.Build(skipValidation);
     }
 
@@ -86,7 +87,7 @@ public class OptionsBuilder
     /// <returns>构建的配置选项对象</returns>
     public static TOptions CreateFromArgsOnly<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
     {
-        var builder = new OptionsBuilder<TOptions>(args, useEnvironmentVariables: false);
+        var builder = new OptionsBuilder<TOptions>(args ?? Array.Empty<string>(), useEnvironmentVariables: false);
         return builder.Build(skipValidation);
     }
 
@@ -125,7 +126,7 @@ public class OptionsBuilder
     {
         try
         {
-            result = Create<TOptions>(args);
+            result = Create<TOptions>(args ?? Array.Empty<string>());
             error = null;
             return true;
         }
@@ -147,7 +148,7 @@ public class OptionsBuilder
     public static TOptions CreateWithDebug<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
     {
         // 创建配置选项
-        var result = Create<TOptions>(args, skipValidation);
+        var result = Create<TOptions>(args ?? Array.Empty<string>(), skipValidation);
 
         // 打印解析结果
         OptionsDebugger.PrintParsedOptions(result);
@@ -167,6 +168,23 @@ public class OptionsBuilder
 /// </remarks>
 public sealed class OptionsBuilder<T> where T : class, new()
 {
+    /// <summary>
+    /// 反射结果缓存，用于缓存类型的属性信息
+    /// Reflection result cache for caching type property information
+    /// </summary>
+    private static readonly ConcurrentDictionary<Type, PropertyInfo[]> PropertyCache = new();
+
+    /// <summary>
+    /// 获取指定类型的所有属性（带缓存）
+    /// Gets all properties of the specified type (with caching)
+    /// </summary>
+    /// <param name="type">要获取属性的类型 / The type to get properties for</param>
+    /// <returns>属性信息数组 / Array of property information</returns>
+    private static PropertyInfo[] GetCachedProperties(Type type)
+    {
+        return PropertyCache.GetOrAdd(type, t => t.GetProperties());
+    }
+
     private readonly string[] _args;
     private readonly bool _useEnvironmentVariables;
     private readonly bool _ensurePrefixedKeys;
@@ -267,7 +285,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// <param name="target">目标对象</param>
     private void ApplyDefaultValues(T target)
     {
-        var properties = typeof(T).GetProperties()
+        var properties = GetCachedProperties(typeof(T))
                                   .Where(p => p.CanWrite)
                                   .ToList();
 
@@ -310,7 +328,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// <param name="target">目标对象</param>
     private void ValidateRequiredOptions(T target)
     {
-        var properties = typeof(T).GetProperties();
+        var properties = GetCachedProperties(typeof(T));
         var missingOptions = new List<string>();
 
         foreach (var property in properties)
@@ -362,7 +380,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
         {
             // 获取所有环境变量
             var envVars = Environment.GetEnvironmentVariables();
-            var properties = typeof(T).GetProperties();
+            var properties = GetCachedProperties(typeof(T));
             var envVarMappings = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
 
             // 收集环境变量映射
@@ -371,7 +389,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 var envVarAttrs = property.GetCustomAttributes<EnvironmentVariableAttribute>().ToList();
                 foreach (var envVarAttr in envVarAttrs)
                 {
-                    if (envVarAttr != null && !string.IsNullOrEmpty(envVarAttr.Name))
+                    if (!string.IsNullOrEmpty(envVarAttr.Name))
                     {
                         envVarMappings[envVarAttr.Name] = property;
                     }
@@ -409,9 +427,9 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     }
 
                     // 处理布尔值
-                    if (property.PropertyType == typeof(bool) && IsBooleanValue(value))
+                    if (property.PropertyType == typeof(bool) && BooleanParser.IsBooleanValue(value))
                     {
-                        result[property.Name] = ParseBooleanValue(value);
+                        result[property.Name] = BooleanParser.ParseBooleanValue(value);
                     }
                     else
                     {
@@ -441,9 +459,9 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     if (matchedProperty != null)
                     {
                         // 处理布尔值
-                        if (matchedProperty.PropertyType == typeof(bool) && IsBooleanValue(value))
+                        if (matchedProperty.PropertyType == typeof(bool) && BooleanParser.IsBooleanValue(value))
                         {
-                            result[matchedProperty.Name] = ParseBooleanValue(value);
+                            result[matchedProperty.Name] = BooleanParser.ParseBooleanValue(value);
                         }
                         else
                         {
@@ -460,38 +478,6 @@ public sealed class OptionsBuilder<T> where T : class, new()
         }
 
         return result;
-    }
-
-    /// <summary>
-    /// 检查字符串值是否为Bool类型
-    /// </summary>
-    /// <param name="value">要检查的字符串值</param>
-    /// <returns>如果是Bool类型值则返回true，否则返回false</returns>
-    private static bool IsBooleanValue(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return false;
-        }
-
-        var normalizedValue = value.Trim().ToLowerInvariant();
-        return normalizedValue is "true" or "false" or "1" or "0" or "yes" or "no" or "on" or "off";
-    }
-
-    /// <summary>
-    /// 解析Bool类型字符串值
-    /// </summary>
-    /// <param name="value">要解析的字符串值</param>
-    /// <returns>解析后的Bool值</returns>
-    private static bool ParseBooleanValue(string value)
-    {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            return false;
-        }
-
-        var normalizedValue = value.Trim().ToLowerInvariant();
-        return normalizedValue is "true" or "1" or "yes" or "on";
     }
 
     /// <summary>
@@ -564,7 +550,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// <returns>如果对应布尔属性则返回true，否则返回false</returns>
     private bool IsBooleanProperty(string key)
     {
-        var properties = typeof(T).GetProperties();
+        var properties = GetCachedProperties(typeof(T));
         var optionMappings = GetOptionMappings();
 
         // 首先尝试通过选项映射查找属性
@@ -590,7 +576,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     private Dictionary<string, string> GetOptionMappings()
     {
         var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var properties = typeof(T).GetProperties();
+        var properties = GetCachedProperties(typeof(T));
 
         foreach (var property in properties)
         {
@@ -649,7 +635,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// <param name="options">选项字典</param>
     private void ApplyOptions(T target, Dictionary<string, object> options)
     {
-        var properties = typeof(T).GetProperties()
+        var properties = GetCachedProperties(typeof(T))
                                   .Where(p => p.CanWrite)
                                   .ToList();
 
@@ -686,7 +672,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     }
 
                     // 获取字符串值
-                    string stringValue = kvp.Value.ToString();
+                    string stringValue = kvp.Value?.ToString();
 
                     // 根据目标类型进行转换
                     object convertedValue = null;
@@ -859,15 +845,21 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 return string.Empty;
             }
 
-            key = parts[0];
+            var sb = new System.Text.StringBuilder(parts[0]);
 
             for (int i = 1; i < parts.Length; i++)
             {
-                if (!string.IsNullOrEmpty(parts[i]) && parts[i].Length > 0)
+                if (!string.IsNullOrEmpty(parts[i]))
                 {
-                    key += char.ToUpper(parts[i][0]) + (parts[i].Length > 1 ? parts[i].Substring(1) : "");
+                    sb.Append(char.ToUpperInvariant(parts[i][0]));
+                    if (parts[i].Length > 1)
+                    {
+                        sb.Append(parts[i].Substring(1));
+                    }
                 }
             }
+
+            return sb.ToString();
         }
 
         return key;
