@@ -27,9 +27,11 @@ public abstract class EntitySelectBase : EntityBase, ISelectFilter
 }
 
 /// <summary>
-/// 框架实体基类
+/// 泛型框架实体基类（支持选择查询）
 /// </summary>
-public abstract class EntitySelectBase<TKey> where TKey : EntityBase, ISelectFilter
+/// <typeparam name="TKey">主键类型</typeparam>
+public abstract class EntitySelectBase<TKey> : EntityBase<TKey>, ISelectFilter
+    where TKey : notnull
 {
     /// <summary>
     /// 名称
