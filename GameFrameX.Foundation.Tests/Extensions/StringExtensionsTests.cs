@@ -615,6 +615,98 @@ public class StringExtensionsTests
 
     #endregion
 
+    #region ConvertToUnderLine Tests
+
+    [Fact]
+    public void ConvertToUnderLine_NullString_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        string str = null;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => str.ConvertToUnderLine());
+    }
+
+    [Fact]
+    public void ConvertToUnderLine_EmptyString_ShouldReturnEmptyString()
+    {
+        // Arrange
+        var str = string.Empty;
+
+        // Act
+        var result = str.ConvertToUnderLine();
+
+        // Assert
+        Assert.Equal(string.Empty, result);
+    }
+
+    [Fact]
+    public void ConvertToUnderLine_CamelCase_ShouldConvertToLowerCaseWithUnderscores()
+    {
+        // Arrange
+        var str = "HelloWorld";
+
+        // Act
+        var result = str.ConvertToUnderLine();
+
+        // Assert
+        Assert.Equal("hello_world", result);
+    }
+
+    [Fact]
+    public void ConvertToUnderLine_CamelCaseToUpperCase_ShouldConvertToUpperCaseWithUnderscores()
+    {
+        // Arrange
+        var str = "HelloWorld";
+
+        // Act
+        var result = str.ConvertToUnderLine(true);
+
+        // Assert
+        Assert.Equal("HELLO_WORLD", result);
+    }
+
+    [Fact]
+    public void ConvertToUnderLine_AlreadyHasUnderscore_ShouldReturnOriginalString()
+    {
+        // Arrange
+        var str = "hello_world";
+
+        // Act
+        var result = str.ConvertToUnderLine();
+
+        // Assert
+        Assert.Equal("hello_world", result);
+    }
+
+    [Fact]
+    public void ConvertToUnderLine_SingleWord_ShouldConvertToLowerCase()
+    {
+        // Arrange
+        var str = "Hello";
+
+        // Act
+        var result = str.ConvertToUnderLine();
+
+        // Assert
+        Assert.Equal("hello", result);
+    }
+
+    [Fact]
+    public void ConvertToUnderLine_SingleWordToUpperCase_ShouldConvertToUpperCase()
+    {
+        // Arrange
+        var str = "Hello";
+
+        // Act
+        var result = str.ConvertToUnderLine(true);
+
+        // Assert
+        Assert.Equal("HELLO", result);
+    }
+
+    #endregion
+
     #region TrimZhCn Tests
 
     [Fact]
