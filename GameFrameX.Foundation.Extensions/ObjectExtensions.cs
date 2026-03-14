@@ -4,6 +4,7 @@
 //
 // 不得利用本项目从事危害国家安全、扰乱社会秩序、侵犯他人合法权益等法律法规禁止的活动！任何基于本项目二次开发而产生的一切法律纠纷和责任，我们不承担任何责任！
 
+using System.Diagnostics.CodeAnalysis;
 using GameFrameX.Foundation.Localization.Core;
 using GameFrameX.Foundation.Extensions.Localization;
 
@@ -24,7 +25,7 @@ public static class ObjectExtensions
     /// 此方法仅适用于引用类型，对值类型调用此方法会导致编译错误。
     /// 这是为了避免对值类型（永远不会为null）调用此方法产生误导性结果。
     /// </remarks>
-    public static bool IsNull<T>(this T self) where T : class
+    public static bool IsNull<T>([NotNullWhen(false)] this T self) where T : class
     {
         return self is null;
     }
@@ -39,7 +40,7 @@ public static class ObjectExtensions
     /// 此方法仅适用于引用类型，对值类型调用此方法会导致编译错误。
     /// 这是为了避免对值类型（永远不会为null）调用此方法产生误导性结果。
     /// </remarks>
-    public static bool IsNotNull<T>(this T self) where T : class
+    public static bool IsNotNull<T>([NotNullWhen(true)] this T self) where T : class
     {
         return self is not null;
     }
