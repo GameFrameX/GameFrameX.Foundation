@@ -33,36 +33,6 @@ namespace GameFrameX.Foundation.Utility;
 
 public static partial class TimerHelper
 {
-    // /// <summary>
-    // /// 判断指定Unix时间戳(秒)是否与当前UTC时间是同一周
-    // /// </summary>
-    // /// <param name="timestampSeconds">Unix时间戳(秒)</param>
-    // /// <returns>如果是同一周返回true,否则返回false</returns>
-    // /// <remarks>
-    // /// 此方法将Unix秒级时间戳转换为UTC DateTime后进行比较
-    // /// 适用于跨时区判定是否同周的场景
-    // /// </remarks>
-    // public static bool IsUnixSameWeekFromTimestamp(long timestampSeconds)
-    // {
-    //     var dateTime = UtcSecondsToUtcDateTime(timestampSeconds);
-    //     return IsNowSameWeekUtc(dateTime);
-    // }
-    //
-    // /// <summary>
-    // /// 判断指定Unix时间戳(毫秒)是否与当前UTC时间是同一周
-    // /// </summary>
-    // /// <param name="timestampMilliseconds">Unix时间戳(毫秒)</param>
-    // /// <returns>如果是同一周返回true,否则返回false</returns>
-    // /// <remarks>
-    // /// 此方法将Unix毫秒级时间戳转换为UTC DateTime后进行比较
-    // /// 适用于跨时区判定是否同周的场景
-    // /// </remarks>
-    // public static bool IsUnixSameWeekFromTimestampMilliseconds(long timestampMilliseconds)
-    // {
-    //     var dateTime = UtcMillisecondsToUtcDateTime(timestampMilliseconds);
-    //     return IsNowSameWeekUtc(dateTime);
-    // }
-
     /// <summary>
     /// 获取本周指定星期几的UTC时间
     /// </summary>
