@@ -37,6 +37,7 @@ namespace GameFrameX.Foundation.Options.Attributes;
 /// 表示一个命令行选项的特性
 /// </summary>
 [AttributeUsage(AttributeTargets.Property)]
+[System.Diagnostics.DebuggerDisplay("LongName = {LongName}, Required = {Required}, DefaultValue = {DefaultValue}")]
 public class OptionAttribute : Attribute
 {
     /// <summary>

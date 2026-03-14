@@ -41,16 +41,18 @@ namespace GameFrameX.Foundation.Options
     /// </summary>
     public static class OptionsDebugger
     {
-        const string OptionHeader = "选项 (Option)";
-        const string ValueHeader = "值 (Value)";
-        const string RequiredHeader = "必需 (Required)";
-        const string TypeNameHeader = "类型 (Type)";
-        const string DescriptionHeader = "描述 (Description)";
-        const string DefaultValueHeader = "默认值 (Default)";
-        const string RequiredYesLabel = "是 (Yes)";
-        const string RequiredNoLabel = "否 (No)";
-        const string NoDescriptionLabel = "无描述 (No Description)";
-        const string NoOptionAttributeLabel = "无选项特性 (No Option Attribute)";
+        private const string OptionHeader = "选项 (Option)";
+        private const string ValueHeader = "值 (Value)";
+        private const string RequiredHeader = "必需 (Required)";
+        private const string TypeNameHeader = "类型 (Type)";
+        private const string DescriptionHeader = "描述 (Description)";
+        private const string DefaultValueHeader = "默认值 (Default)";
+        private const string RequiredYesLabel = "是 (Yes)";
+        private const string RequiredNoLabel = "否 (No)";
+        private const string NoDescriptionLabel = "无描述 (No Description)";
+        private const string NoOptionAttributeLabel = "无选项特性 (No Option Attribute)";
+        private const int MaxDisplayElements = 5;
+        private const int DefaultConsoleWidth = 120;
 
         /// <summary>
         /// 打印解析完成后的选项对象
@@ -174,7 +176,7 @@ namespace GameFrameX.Foundation.Options
                 }
                 catch
                 {
-                    consoleWidth = 120;
+                    consoleWidth = DefaultConsoleWidth;
                 }
 
                 int maxTableWidth = Math.Max(60, consoleWidth - 1);
@@ -452,13 +454,13 @@ namespace GameFrameX.Foundation.Options
             {
                 var array = (Array)value;
                 var elements = new List<string>();
-                for (int i = 0; i < Math.Min(array.Length, 5); i++)
+                for (int i = 0; i < Math.Min(array.Length, MaxDisplayElements); i++)
                 {
                     elements.Add(array.GetValue(i)?.ToString() ?? "null");
                 }
 
                 var result = $"[{string.Join(", ", elements)}]";
-                if (array.Length > 5)
+                if (array.Length > MaxDisplayElements)
                 {
                     result += $" (Total {array.Length} elements / 共{array.Length}个元素)";
                 }
@@ -470,13 +472,13 @@ namespace GameFrameX.Foundation.Options
             {
                 var list = (System.Collections.IList)value;
                 var elements = new List<string>();
-                for (int i = 0; i < Math.Min(list.Count, 5); i++)
+                for (int i = 0; i < Math.Min(list.Count, MaxDisplayElements); i++)
                 {
                     elements.Add(list[i]?.ToString() ?? "null");
                 }
 
                 var result = $"[{string.Join(", ", elements)}]";
-                if (list.Count > 5)
+                if (list.Count > MaxDisplayElements)
                 {
                     result += $" (Total {list.Count} elements / 共{list.Count}个元素)";
                 }
@@ -539,7 +541,7 @@ namespace GameFrameX.Foundation.Options
 
             if (type.IsArray)
             {
-                return $"Array of {GetFriendlyTypeName(type.GetElementType())} ";
+                return $"Array of {GetFriendlyTypeName(type.GetElementType())}";
             }
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))

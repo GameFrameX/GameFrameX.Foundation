@@ -152,10 +152,10 @@ public static class OptionsProvider
         var options = builder.Build(skipValidation);
 
         // 缓存选项（使用 GetOrAdd 确保线程安全）
-        var cachedOptions2 = OptionsCache.GetOrAdd(type, options);
+        var finalOptions = OptionsCache.GetOrAdd(type, options);
 
         // 如果是刚添加的，使用新构建的 options；如果是其他线程已添加的，使用缓存的
-        var result = ReferenceEquals(cachedOptions2, options) ? options : (T)cachedOptions2;
+        var result = ReferenceEquals(finalOptions, options) ? options : (T)finalOptions;
 
         // 如果启用调试输出，打印解析后的选项对象
         if (shouldDebug)
@@ -221,8 +221,10 @@ public static class OptionsProvider
     /// </summary>
     /// <typeparam name="T">选项类型</typeparam>
     /// <param name="options">选项对象</param>
+    /// <exception cref="ArgumentNullException">当 options 为 null 时抛出</exception>
     public static void PrintOptionsInfo<T>(T options) where T : class
     {
+        ArgumentNullException.ThrowIfNull(options);
         OptionsDebugger.PrintParsedOptions(options);
     }
 
