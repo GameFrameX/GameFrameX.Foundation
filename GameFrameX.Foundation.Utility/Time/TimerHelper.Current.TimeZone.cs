@@ -11,7 +11,7 @@
 //  This project is dual-licensed under the MIT License and Apache License 2.0,
 //  完整许可证文本请参见源代码根目录下的 LICENSE 文件。
 //  please refer to the LICENSE file in the root directory of the source code for the full license text.
-// 
+//
 //  禁止利用本项目实施任何危害国家安全、破坏社会秩序、
 //  It is prohibited to use this project to engage in any activities that endanger national security, disrupt social order,
 //  侵犯他人合法权益等法律法规所禁止的行为！
