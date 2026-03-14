@@ -15,21 +15,31 @@ namespace GameFrameX.Foundation.Extensions;
 public static class ObjectExtensions
 {
     /// <summary>
-    /// 检查对象是否为null
+    /// 检查引用类型对象是否为null
     /// </summary>
+    /// <typeparam name="T">对象的类型，必须为引用类型</typeparam>
     /// <param name="self">要检查的对象</param>
     /// <returns>如果对象为null，则返回true；否则返回false</returns>
-    public static bool IsNull(this object self)
+    /// <remarks>
+    /// 此方法仅适用于引用类型，对值类型调用此方法会导致编译错误。
+    /// 这是为了避免对值类型（永远不会为null）调用此方法产生误导性结果。
+    /// </remarks>
+    public static bool IsNull<T>(this T self) where T : class
     {
         return self is null;
     }
 
     /// <summary>
-    /// 检查对象是否不为null
+    /// 检查引用类型对象是否不为null
     /// </summary>
+    /// <typeparam name="T">对象的类型，必须为引用类型</typeparam>
     /// <param name="self">要检查的对象</param>
     /// <returns>如果对象不为null，则返回true；否则返回false</returns>
-    public static bool IsNotNull(this object self)
+    /// <remarks>
+    /// 此方法仅适用于引用类型，对值类型调用此方法会导致编译错误。
+    /// 这是为了避免对值类型（永远不会为null）调用此方法产生误导性结果。
+    /// </remarks>
+    public static bool IsNotNull<T>(this T self) where T : class
     {
         return self is not null;
     }
