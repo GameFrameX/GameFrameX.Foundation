@@ -8,6 +8,9 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputPath>..\bin\app</OutputPath>
     </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\GameFrameX.Foundation.Logger.xml</DocumentationFile>
+    </PropertyGroup>
     <ItemGroup>
         <None Include="..\logo.png">
             <Pack>True</Pack>
@@ -22,14 +25,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
-        <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.3.2" />
-        <PackageReference Include="Serilog.Sinks.MongoDB" Version="7.2.0" />
+        <PackageReference Include="Serilog.AspNetCore" Version="10.0.0"/>
+        <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="8.3.2"/>
+        <PackageReference Include="Serilog.Sinks.MongoDB" Version="7.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GameFrameX.Foundation.Extensions\GameFrameX.Foundation.Extensions.csproj" />
-      <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj" />
+        <ProjectReference Include="..\GameFrameX.Foundation.Extensions\GameFrameX.Foundation.Extensions.csproj"/>
+        <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj"/>
     </ItemGroup>
 
 </Project>

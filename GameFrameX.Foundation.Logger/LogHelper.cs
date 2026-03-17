@@ -34,6 +34,7 @@
 using System.Diagnostics;
 using System.Text;
 using Serilog;
+using GameFrameX.Foundation.Logger.Internal;
 
 namespace GameFrameX.Foundation.Logger;
 
@@ -54,7 +55,7 @@ public static partial class LogHelper
     /// </remarks>
     public static void FlushAndSave()
     {
-        Serilog.Log.CloseAndFlush();
+        Log.CloseAndFlush();
     }
 
     /// <summary>
@@ -65,13 +66,18 @@ public static partial class LogHelper
     /// </remarks>
     public static async void CloseAndFlushAsync()
     {
-        await Serilog.Log.CloseAndFlushAsync();
+        await Log.CloseAndFlushAsync();
     }
 
     /// <summary>
     /// 内部日志记录器实例
     /// </summary>
     private static ILogger _logger;
+
+    /// <summary>
+    /// 临时日志记录器实例，用于在正式日志系统初始化前提供日志输出
+    /// </summary>
+    private static InternalTempLogger _tempLogger;
 
     /// <summary>
     /// 用于保护 _logger 字段的锁对象
@@ -88,6 +94,10 @@ public static partial class LogHelper
         ArgumentNullException.ThrowIfNull(logger);
         lock (_loggerLock)
         {
+            _tempLogger?.FlushTo(logger);
+            _tempLogger?.Dispose();
+            _tempLogger = null;
+
             _logger = logger;
         }
     }
@@ -95,12 +105,22 @@ public static partial class LogHelper
     /// <summary>
     /// 获取当前使用的日志记录器
     /// </summary>
-    /// <returns>返回当前设置的日志记录器，如果未设置则返回Serilog的默认Logger</returns>
+    /// <returns>返回当前设置的日志记录器，如果未设置则返回临时日志记录器</returns>
     private static ILogger GetLogger()
     {
         lock (_loggerLock)
         {
-            return _logger ?? Log.Logger;
+            if (_logger != null)
+            {
+                return _logger;
+            }
+
+            if (_tempLogger == null)
+            {
+                _tempLogger = new InternalTempLogger();
+            }
+
+            return _tempLogger.Logger;
         }
     }
 
