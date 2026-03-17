@@ -200,7 +200,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// <param name="useEnvironmentVariables">是否使用环境变量</param>
     public OptionsBuilder(string[] args, BoolArgumentFormat boolFormat = BoolArgumentFormat.Flag, bool ensurePrefixedKeys = true, bool useEnvironmentVariables = true)
     {
-        _args = args;
+        _args = args ?? Array.Empty<string>();
         _boolFormat = boolFormat;
         _useEnvironmentVariables = useEnvironmentVariables;
         _ensurePrefixedKeys = ensurePrefixedKeys;
@@ -295,7 +295,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
             var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
             foreach (var optionAttr in optionAttrs)
             {
-                if (optionAttr != null && optionAttr.DefaultValue != null)
+                if (optionAttr.DefaultValue != null)
                 {
                     try
                     {
@@ -304,10 +304,23 @@ public sealed class OptionsBuilder<T> where T : class, new()
                         property.SetValue(target, convertedValue);
                         break; // 只应用第一个找到的默认值
                     }
-                    catch (Exception ex)
+                    catch (InvalidCastException ex)
                     {
-                        Console.WriteLine($"设置属性 {property.Name} 的默认值时发生错误 (An error occurred while setting default value for property {property.Name}): {ex.Message}");
-                        Console.WriteLine(ex);
+                        // 类型转换失败，保持属性的默认状态
+                        // Type conversion failed, keep the property's default state
+                        System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生类型转换错误: {ex.Message}");
+                    }
+                    catch (FormatException ex)
+                    {
+                        // 格式转换失败，保持属性的默认状态
+                        // Format conversion failed, keep the property's default state
+                        System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生格式错误: {ex.Message}");
+                    }
+                    catch (OverflowException ex)
+                    {
+                        // 数值溢出，保持属性的默认状态
+                        // Numeric overflow, keep the property's default state
+                        System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生溢出错误: {ex.Message}");
                     }
                 }
             }
@@ -473,8 +486,9 @@ public sealed class OptionsBuilder<T> where T : class, new()
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"获取环境变量时发生错误 (An error occurred while retrieving environment variables): {ex.Message}");
-            Console.WriteLine(ex);
+            // 忽略环境变量获取错误，返回空字典
+            // Ignore environment variable retrieval errors, return empty dictionary
+            System.Diagnostics.Debug.WriteLine($"获取环境变量时发生错误: {ex.Message}");
         }
 
         return result;
@@ -783,9 +797,17 @@ public sealed class OptionsBuilder<T> where T : class, new()
                             {
                                 convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
                             }
-                            catch
+                            catch (FormatException)
                             {
                                 // 转换失败，使用默认值
+                                // Conversion failed, use default value
+                                System.Diagnostics.Debug.WriteLine($"属性 {property.Name} 的值 '{stringValue}' 转换为 {property.PropertyType.Name} 失败");
+                            }
+                            catch (InvalidCastException)
+                            {
+                                // 类型转换失败，使用默认值
+                                // Type conversion failed, use default value
+                                System.Diagnostics.Debug.WriteLine($"属性 {property.Name} 无法将值 '{stringValue}' 转换为 {property.PropertyType.Name}");
                             }
                         }
                     }
@@ -796,10 +818,29 @@ public sealed class OptionsBuilder<T> where T : class, new()
                         property.SetValue(target, convertedValue);
                     }
                 }
-                catch (Exception ex)
+                catch (ArgumentException ex)
                 {
-                    Console.WriteLine($"设置属性 {property.Name} 时发生错误 (An error occurred while setting property {property.Name}): {ex.Message}");
-                    Console.WriteLine(ex);
+                    // 属性设置参数错误，保持属性的默认状态
+                    // Property setting argument error, keep the property's default state
+                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生参数错误: {ex.Message}");
+                }
+                catch (TargetInvocationException ex)
+                {
+                    // 属性设置调用错误，保持属性的默认状态
+                    // Property setting invocation error, keep the property's default state
+                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生调用错误: {ex.InnerException?.Message ?? ex.Message}");
+                }
+                catch (FormatException ex)
+                {
+                    // 格式转换错误，保持属性的默认状态
+                    // Format conversion error, keep the property's default state
+                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生格式错误: {ex.Message}");
+                }
+                catch (InvalidCastException ex)
+                {
+                    // 类型转换错误，保持属性的默认状态
+                    // Type conversion error, keep the property's default state
+                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生类型转换错误: {ex.Message}");
                 }
             }
         }
