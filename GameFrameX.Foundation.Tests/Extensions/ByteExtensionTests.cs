@@ -1826,4 +1826,606 @@ public class ByteExtensionTests
     }
 
     #endregion
+
+    #region WriteBytesWithoutLength Tests
+
+    [Fact]
+    public void WriteBytesWithoutLengthBigEndian_ValidData_ShouldWriteCorrectly()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = { 0x01, 0x02, 0x03, 0x04 };
+        int offset = 0;
+
+        // Act
+        buffer.WriteBytesWithoutLengthBigEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(4, offset);
+        Assert.Equal(0x01, buffer[0]);
+        Assert.Equal(0x02, buffer[1]);
+        Assert.Equal(0x03, buffer[2]);
+        Assert.Equal(0x04, buffer[3]);
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthBigEndian_NullBuffer_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = null;
+        byte[] value = { 0x01, 0x02 };
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.WriteBytesWithoutLengthBigEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthBigEndian_NullValue_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = null;
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.WriteBytesWithoutLengthBigEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthBigEndian_NegativeOffset_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = { 0x01, 0x02 };
+        int offset = -1;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.WriteBytesWithoutLengthBigEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthBigEndian_InsufficientBuffer_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = new byte[2];
+        byte[] value = { 0x01, 0x02, 0x03, 0x04 };
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.WriteBytesWithoutLengthBigEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthBigEndian_EmptyArray_ShouldNotModifyOffset()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = Array.Empty<byte>();
+        int offset = 5;
+
+        // Act
+        buffer.WriteBytesWithoutLengthBigEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset);
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthLittleEndian_ValidData_ShouldWriteCorrectly()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = { 0x01, 0x02, 0x03, 0x04 };
+        int offset = 0;
+
+        // Act
+        buffer.WriteBytesWithoutLengthLittleEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(4, offset);
+        Assert.Equal(0x01, buffer[0]);
+        Assert.Equal(0x02, buffer[1]);
+        Assert.Equal(0x03, buffer[2]);
+        Assert.Equal(0x04, buffer[3]);
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthLittleEndian_NullBuffer_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = null;
+        byte[] value = { 0x01, 0x02 };
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.WriteBytesWithoutLengthLittleEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthLittleEndian_NullValue_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = null;
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.WriteBytesWithoutLengthLittleEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthLittleEndian_NegativeOffset_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = { 0x01, 0x02 };
+        int offset = -1;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.WriteBytesWithoutLengthLittleEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthLittleEndian_InsufficientBuffer_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = new byte[2];
+        byte[] value = { 0x01, 0x02, 0x03, 0x04 };
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.WriteBytesWithoutLengthLittleEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteBytesWithoutLengthLittleEndian_EmptyArray_ShouldNotModifyOffset()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] value = Array.Empty<byte>();
+        int offset = 5;
+
+        // Act
+        buffer.WriteBytesWithoutLengthLittleEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset);
+    }
+
+    #endregion
+
+    #region WriteStringWithoutLength Tests
+
+    [Fact]
+    public void WriteStringWithoutLengthBigEndian_ValidString_ShouldWriteCorrectly()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = "Hello";
+        int offset = 0;
+
+        // Act
+        buffer.WriteStringWithoutLengthBigEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset); // "Hello" is 5 bytes in UTF-8
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthBigEndian_NullBuffer_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = null;
+        string value = "Hello";
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.WriteStringWithoutLengthBigEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthBigEndian_NullString_ShouldNotModifyOffset()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = null;
+        int offset = 5;
+
+        // Act
+        buffer.WriteStringWithoutLengthBigEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset);
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthBigEndian_EmptyString_ShouldNotModifyOffset()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = string.Empty;
+        int offset = 5;
+
+        // Act
+        buffer.WriteStringWithoutLengthBigEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset);
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthBigEndian_InsufficientBuffer_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = new byte[2];
+        string value = "Hello";
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.WriteStringWithoutLengthBigEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthBigEndian_ChineseCharacters_ShouldWriteCorrectly()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = "你好世界";
+        int offset = 0;
+
+        // Act
+        buffer.WriteStringWithoutLengthBigEndian(value, ref offset);
+
+        // Assert
+        Assert.True(offset > 0);
+        // Verify round-trip
+        int readOffset = 0;
+        var result = buffer.ReadStringBigEndianValue(ref readOffset, offset);
+        Assert.Equal(value, result);
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthLittleEndian_ValidString_ShouldWriteCorrectly()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = "Hello";
+        int offset = 0;
+
+        // Act
+        buffer.WriteStringWithoutLengthLittleEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset); // "Hello" is 5 bytes in UTF-8
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthLittleEndian_NullBuffer_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = null;
+        string value = "Hello";
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.WriteStringWithoutLengthLittleEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthLittleEndian_NullString_ShouldNotModifyOffset()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = null;
+        int offset = 5;
+
+        // Act
+        buffer.WriteStringWithoutLengthLittleEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset);
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthLittleEndian_EmptyString_ShouldNotModifyOffset()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = string.Empty;
+        int offset = 5;
+
+        // Act
+        buffer.WriteStringWithoutLengthLittleEndian(value, ref offset);
+
+        // Assert
+        Assert.Equal(5, offset);
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthLittleEndian_InsufficientBuffer_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = new byte[2];
+        string value = "Hello";
+        int offset = 0;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.WriteStringWithoutLengthLittleEndian(value, ref offset));
+    }
+
+    [Fact]
+    public void WriteStringWithoutLengthLittleEndian_ChineseCharacters_ShouldWriteCorrectly()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string value = "你好世界";
+        int offset = 0;
+
+        // Act
+        buffer.WriteStringWithoutLengthLittleEndian(value, ref offset);
+
+        // Assert
+        Assert.True(offset > 0);
+        // Verify round-trip
+        int readOffset = 0;
+        var result = buffer.ReadStringLittleEndianValue(ref readOffset, offset);
+        Assert.Equal(value, result);
+    }
+
+    #endregion
+
+    #region ReadStringWithLength Tests
+
+    [Fact]
+    public void ReadStringBigEndianValue_WithLength_ValidData_ShouldReadCorrectly()
+    {
+        // Arrange
+        string testString = "Hello";
+        byte[] buffer = new byte[100];
+        int writeOffset = 0;
+        buffer.WriteStringWithoutLengthBigEndian(testString, ref writeOffset);
+
+        int readOffset = 0;
+
+        // Act
+        var result = buffer.ReadStringBigEndianValue(ref readOffset, writeOffset);
+
+        // Assert
+        Assert.Equal(testString, result);
+        Assert.Equal(writeOffset, readOffset);
+    }
+
+    [Fact]
+    public void ReadStringBigEndianValue_WithLength_NullBuffer_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = null;
+        int offset = 0;
+        int len = 5;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.ReadStringBigEndianValue(ref offset, len));
+    }
+
+    [Fact]
+    public void ReadStringBigEndianValue_WithLength_NegativeOffset_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+        int offset = -1;
+        int len = 3;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ReadStringBigEndianValue(ref offset, len));
+    }
+
+    [Fact]
+    public void ReadStringBigEndianValue_WithLength_ZeroLength_ShouldReturnEmptyString()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+        int offset = 0;
+        int len = 0;
+
+        // Act
+        var result = buffer.ReadStringBigEndianValue(ref offset, len);
+
+        // Assert
+        Assert.Equal(string.Empty, result);
+        Assert.Equal(0, offset);
+    }
+
+    [Fact]
+    public void ReadStringBigEndianValue_WithLength_NegativeLength_ShouldReturnEmptyString()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+        int offset = 0;
+        int len = -1;
+
+        // Act
+        var result = buffer.ReadStringBigEndianValue(ref offset, len);
+
+        // Assert
+        Assert.Equal(string.Empty, result);
+        Assert.Equal(0, offset);
+    }
+
+    [Fact]
+    public void ReadStringBigEndianValue_WithLength_InsufficientBuffer_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03 };
+        int offset = 0;
+        int len = 10;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ReadStringBigEndianValue(ref offset, len));
+    }
+
+    [Fact]
+    public void ReadStringLittleEndianValue_WithLength_ValidData_ShouldReadCorrectly()
+    {
+        // Arrange
+        string testString = "Hello";
+        byte[] buffer = new byte[100];
+        int writeOffset = 0;
+        buffer.WriteStringWithoutLengthLittleEndian(testString, ref writeOffset);
+
+        int readOffset = 0;
+
+        // Act
+        var result = buffer.ReadStringLittleEndianValue(ref readOffset, writeOffset);
+
+        // Assert
+        Assert.Equal(testString, result);
+        Assert.Equal(writeOffset, readOffset);
+    }
+
+    [Fact]
+    public void ReadStringLittleEndianValue_WithLength_NullBuffer_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        byte[] buffer = null;
+        int offset = 0;
+        int len = 5;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => buffer.ReadStringLittleEndianValue(ref offset, len));
+    }
+
+    [Fact]
+    public void ReadStringLittleEndianValue_WithLength_NegativeOffset_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+        int offset = -1;
+        int len = 3;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ReadStringLittleEndianValue(ref offset, len));
+    }
+
+    [Fact]
+    public void ReadStringLittleEndianValue_WithLength_ZeroLength_ShouldReturnEmptyString()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+        int offset = 0;
+        int len = 0;
+
+        // Act
+        var result = buffer.ReadStringLittleEndianValue(ref offset, len);
+
+        // Assert
+        Assert.Equal(string.Empty, result);
+        Assert.Equal(0, offset);
+    }
+
+    [Fact]
+    public void ReadStringLittleEndianValue_WithLength_NegativeLength_ShouldReturnEmptyString()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+        int offset = 0;
+        int len = -1;
+
+        // Act
+        var result = buffer.ReadStringLittleEndianValue(ref offset, len);
+
+        // Assert
+        Assert.Equal(string.Empty, result);
+        Assert.Equal(0, offset);
+    }
+
+    [Fact]
+    public void ReadStringLittleEndianValue_WithLength_InsufficientBuffer_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03 };
+        int offset = 0;
+        int len = 10;
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ReadStringLittleEndianValue(ref offset, len));
+    }
+
+    #endregion
+
+    #region Round-trip WithoutLength Tests
+
+    [Fact]
+    public void RoundTrip_WriteBytesWithoutLengthBigEndian_ReadBytesBigEndianValue_ShouldMatch()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] originalData = { 0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x11, 0x22 };
+        int writeOffset = 0;
+        int readOffset = 0;
+
+        // Act
+        buffer.WriteBytesWithoutLengthBigEndian(originalData, ref writeOffset);
+        var readData = buffer.ReadBytesBigEndianValue(ref readOffset, originalData.Length);
+
+        // Assert
+        Assert.Equal(originalData, readData);
+        Assert.Equal(writeOffset, readOffset);
+    }
+
+    [Fact]
+    public void RoundTrip_WriteBytesWithoutLengthLittleEndian_ReadBytesLittleEndianValue_ShouldMatch()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        byte[] originalData = { 0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x11, 0x22 };
+        int writeOffset = 0;
+        int readOffset = 0;
+
+        // Act
+        buffer.WriteBytesWithoutLengthLittleEndian(originalData, ref writeOffset);
+        var readData = buffer.ReadBytesLittleEndianValue(ref readOffset, originalData.Length);
+
+        // Assert
+        Assert.Equal(originalData, readData);
+        Assert.Equal(writeOffset, readOffset);
+    }
+
+    [Fact]
+    public void RoundTrip_WriteStringWithoutLengthBigEndian_ReadStringBigEndianValue_ShouldMatch()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string originalString = "Hello, World! 你好世界 🌍";
+        int writeOffset = 0;
+        int readOffset = 0;
+
+        // Act
+        buffer.WriteStringWithoutLengthBigEndian(originalString, ref writeOffset);
+        var readString = buffer.ReadStringBigEndianValue(ref readOffset, writeOffset);
+
+        // Assert
+        Assert.Equal(originalString, readString);
+        Assert.Equal(writeOffset, readOffset);
+    }
+
+    [Fact]
+    public void RoundTrip_WriteStringWithoutLengthLittleEndian_ReadStringLittleEndianValue_ShouldMatch()
+    {
+        // Arrange
+        byte[] buffer = new byte[100];
+        string originalString = "Hello, World! 你好世界 🌍";
+        int writeOffset = 0;
+        int readOffset = 0;
+
+        // Act
+        buffer.WriteStringWithoutLengthLittleEndian(originalString, ref writeOffset);
+        var readString = buffer.ReadStringLittleEndianValue(ref readOffset, writeOffset);
+
+        // Assert
+        Assert.Equal(originalString, readString);
+        Assert.Equal(writeOffset, readOffset);
+    }
+
+    #endregion
 }
