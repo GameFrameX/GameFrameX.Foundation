@@ -84,22 +84,22 @@ public static class LogHandler
     /// <summary>
     /// 控制台输出模板，用于格式化控制台日志输出。
     /// </summary>
-    const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
+    private const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 控制台输出模板，用于格式化控制台日志输出，包含标签名称。
     /// </summary>
-    const string ConsoleOutputTagNameTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
+    private const string ConsoleOutputTagNameTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 文件输出模板，用于格式化文件日志输出。
     /// </summary>
-    const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
+    private const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 文件输出模板，用于格式化文件日志输出，包含标签名称。
     /// </summary>
-    const string FileOutputTagNameTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
+    private const string FileOutputTagNameTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 启动并配置日志系统。
@@ -210,7 +210,7 @@ public static class LogHandler
                     lokiGzipHttpClient.SetCredentials(lokiCredentials);
                     lokiGzipHttpClient.SetTenant(null);
                     // 根据源码的实际参数配置 GrafanaLoki
-                    logger.WriteTo.GrafanaLoki(uri: logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials, null, LogEventLevel.Verbose, 1000, null, TimeSpan.FromSeconds(2), null, lokiGzipHttpClient);
+                    logger.WriteTo.GrafanaLoki(logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials, null, LogEventLevel.Verbose, 1000, null, TimeSpan.FromSeconds(2), null, lokiGzipHttpClient);
                 }
                 else
                 {
@@ -219,8 +219,8 @@ public static class LogHandler
             }
 
             configurationAction?.Invoke(logger);
-            string consoleOutputTemplate = ConsoleOutputTemplate;
-            string fileOutputTemplate = FileOutputTemplate;
+            var consoleOutputTemplate = ConsoleOutputTemplate;
+            var fileOutputTemplate = FileOutputTemplate;
             if (logOptions.LogTagName.IsNotNullOrEmptyOrWhiteSpace())
             {
                 consoleOutputTemplate = ConsoleOutputTagNameTemplate;
@@ -230,8 +230,8 @@ public static class LogHandler
             if (logOptions.IsWriteToMongoDb)
             {
                 logger.WriteTo.MongoDBBson(
-                    databaseUrl: logOptions.MongoDbDatabaseUrl,
-                    collectionName: logOptions.LogSavePath,
+                    logOptions.MongoDbDatabaseUrl,
+                    logOptions.LogSavePath,
                     cappedMaxSizeMb: logOptions.MongoDbCappedMaxSizeMb,
                     cappedMaxDocuments: logOptions.MongoDbCappedMaxDocuments,
                     rollingInterval: (Serilog.Sinks.MongoDB.RollingInterval)logOptions.RollingInterval,

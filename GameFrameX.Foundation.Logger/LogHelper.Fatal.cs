@@ -47,7 +47,7 @@ public static partial class LogHelper
     /// </remarks>
     public static void Fatal(string message)
     {
-        var newMessage = ($"{message}\n{new StackTrace(1, true)}");
+        var newMessage = $"{message}\n{new StackTrace(1, true)}";
 
         GetLogger().Fatal(newMessage);
     }
@@ -175,7 +175,7 @@ public static partial class LogHelper
     public static void Fatal(ILogger logger, string message)
     {
         ArgumentNullException.ThrowIfNull(logger);
-        var newMessage = ($"{message}\n{new StackTrace(1, true)}");
+        var newMessage = $"{message}\n{new StackTrace(1, true)}";
         logger.Fatal(newMessage);
     }
 
@@ -338,7 +338,7 @@ public static partial class LogHelper
     /// </remarks>
     public static void Fatal(Exception exception)
     {
-        var newMessage = ($"{exception}\n{new StackTrace(1, true)}");
+        var newMessage = $"{exception}\n{new StackTrace(1, true)}";
 
         GetLogger().Fatal(newMessage);
     }
@@ -352,7 +352,7 @@ public static partial class LogHelper
     public static void Fatal(ILogger logger, Exception exception)
     {
         ArgumentNullException.ThrowIfNull(logger);
-        var newMessage = ($"{exception}\n{new StackTrace(1, true)}");
+        var newMessage = $"{exception}\n{new StackTrace(1, true)}";
         logger.Fatal(newMessage);
     }
 

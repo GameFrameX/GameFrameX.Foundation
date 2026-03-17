@@ -126,7 +126,7 @@ internal sealed class LogConsole
     public void ShowMaxTitle(string title, string title2 = "", string title3 = "")
     {
         // 生成顶部边框字符串，长度为框架宽度减去左右边框字符
-        string character = '═'.RepeatChar(_frameLength - 2);
+        var character = '═'.RepeatChar(_frameLength - 2);
         Console.WriteLine($"╔{character}╗");
         WriteTitle(title);
 
@@ -181,7 +181,7 @@ internal sealed class LogConsole
         }
 
         remaining /= 2;
-        string padding = ' '.RepeatChar(remaining);
+        var padding = ' '.RepeatChar(remaining);
         Console.WriteLine($"║{padding}{title}{padding}║");
     }
 
@@ -216,12 +216,12 @@ internal sealed class LogConsole
         ArgumentNullException.ThrowIfNull(title, nameof(title));
         ArgumentNullException.ThrowIfNull(content, nameof(content));
         // 计算标题的显示宽度并生成居中的顶部边框
-        int stringWidth = title.GetDisplayWidth();
-        int remaining = _frameLength - stringWidth - 2;
+        var stringWidth = title.GetDisplayWidth();
+        var remaining = _frameLength - stringWidth - 2;
         remaining /= 2;
-        string padding = '═'.RepeatChar(remaining);
+        var padding = '═'.RepeatChar(remaining);
         // 生成底部边框，使用完整的等号字符填充
-        string character = '═'.RepeatChar(_frameLength - 2);
+        var character = '═'.RepeatChar(_frameLength - 2);
         Console.WriteLine($"╔{padding}{title}{padding}╗");
         Console.WriteLine(content);
         Console.WriteLine($"╚{character}╝");
@@ -280,7 +280,7 @@ internal sealed class LogConsole
             remaining /= 2;
             var padding = '═'.RepeatChar(remaining);
             // 输出居中的分隔线，标题两侧用等号字符填充
-            Console.WriteLine((padding + title + padding));
+            Console.WriteLine(padding + title + padding);
         }
 
         // 添加空行以便与后续内容分隔

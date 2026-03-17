@@ -373,18 +373,18 @@ var logOptions = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ==
 ### 常见问题
 
 1. **日志文件未创建**
-   - 检查日志目录权限
-   - 确认LogSavePath路径正确
-   - 查看控制台是否有Serilog自诊断信息
+    - 检查日志目录权限
+    - 确认LogSavePath路径正确
+    - 查看控制台是否有Serilog自诊断信息
 
 2. **日志级别过滤不生效**
-   - 确认LogEventLevel设置正确
-   - 检查是否有多个Logger实例冲突
+    - 确认LogEventLevel设置正确
+    - 检查是否有多个Logger实例冲突
 
 3. **Grafana Loki连接失败**
-   - 验证GrafanaLokiUrl地址和端口
-   - 检查网络连接和防火墙设置
-   - 确认用户名密码正确
+    - 验证GrafanaLokiUrl地址和端口
+    - 检查网络连接和防火墙设置
+    - 确认用户名密码正确
 
 ### 调试信息
 

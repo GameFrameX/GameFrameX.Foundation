@@ -65,7 +65,7 @@ public sealed class LogOptions
     /// <remarks>
     /// 使用此静态实例可以快速获取一个包含默认设置的日志配置对象。
     /// </remarks>
-    public static readonly LogOptions Default = new LogOptions();
+    public static readonly LogOptions Default = new();
 
     /// <summary>
     /// 是否写入文件，默认为 true。
@@ -164,12 +164,12 @@ public sealed class LogOptions
     /// <summary>
     /// GrafanaLoki 标签
     /// </summary>
-    public Dictionary<string, string> GrafanaLokiLabels { get; set; } = new Dictionary<string, string>();
+    public Dictionary<string, string> GrafanaLokiLabels { get; set; } = new();
 
     /// <summary>
     /// GrafanaLoki 其他属性
     /// </summary>
-    public Dictionary<string, string> GrafanaLokiProperty { get; set; } = new Dictionary<string, string>();
+    public Dictionary<string, string> GrafanaLokiProperty { get; set; } = new();
 
     /// <summary>
     /// GrafanaLoki 用户名

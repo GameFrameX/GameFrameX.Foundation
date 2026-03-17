@@ -456,7 +456,7 @@ public static partial class LogHelper
     public static void Error(string tag, string message, params object[] args)
     {
         var st = new StackTrace(1, true);
-        var newMessage = ($"[{tag}] {string.Format(message, args)}\n{st}");
+        var newMessage = $"[{tag}] {string.Format(message, args)}\n{st}";
 
         GetLogger().Error(newMessage);
     }
@@ -473,7 +473,7 @@ public static partial class LogHelper
     {
         ArgumentNullException.ThrowIfNull(logger);
         var st = new StackTrace(1, true);
-        var newMessage = ($"[{tag}] {string.Format(message, args)}\n{st}");
+        var newMessage = $"[{tag}] {string.Format(message, args)}\n{st}";
         logger.Error(newMessage);
     }
 

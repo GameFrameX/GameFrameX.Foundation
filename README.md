@@ -13,7 +13,7 @@
 | GameFrameX.Foundation.Http.Extension     | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension`     | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         |
 | GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化    | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
 | GameFrameX.Foundation.Json               | JSON 序列化工具    | `GameFrameX.Foundation.Json`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             |
-| GameFrameX.Foundation.Localization      | 本地化框架         | `GameFrameX.Foundation.Localization`      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)                 |
+| GameFrameX.Foundation.Localization       | 本地化框架         | `GameFrameX.Foundation.Localization`       | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)             |
 | GameFrameX.Foundation.Logger             | Serilog 日志配置  | `GameFrameX.Foundation.Logger`             | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         |
 | GameFrameX.Foundation.Options            | 命令行参数处理       | `GameFrameX.Foundation.Options`            | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       |
 | GameFrameX.Foundation.Orm.Attribute      | ORM 特性标注      | `GameFrameX.Foundation.Orm.Attribute`      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           |
@@ -464,12 +464,12 @@ if (JsonHelper.TryDeserialize<MyClass>(json, out var result))
 
 #### 核心组件
 
-| 组件 | 文件名 | 功能 |
-|------|--------|------|
-| **本地化服务** | `LocalizationService.cs` | 统一的本地化入口点，提供静态方法API |
-| **资源管理器** | `ResourceManager.cs` | 管理多个资源提供者，实现优先级解析 |
-| **默认提供者** | `DefaultResourceProvider.cs` | 提供英文默认消息，包含50+常用消息 |
-| **程序集提供者** | `AssemblyResourceProvider.cs` | 从.resx文件加载本地化资源 |
+| 组件         | 文件名                           | 功能                  |
+|------------|-------------------------------|---------------------|
+| **本地化服务**  | `LocalizationService.cs`      | 统一的本地化入口点，提供静态方法API |
+| **资源管理器**  | `ResourceManager.cs`          | 管理多个资源提供者，实现优先级解析   |
+| **默认提供者**  | `DefaultResourceProvider.cs`  | 提供英文默认消息，包含50+常用消息  |
+| **程序集提供者** | `AssemblyResourceProvider.cs` | 从.resx文件加载本地化资源     |
 
 #### 基础使用
 
@@ -636,22 +636,22 @@ foreach (var provider in providers)
 
 - **模式**: `{模块名}.{类别}.{具体键名}`
 - **示例**:
-  - `Utility.Exceptions.TimestampOutOfRange`
-  - `Encryption.InvalidKeySize`
-  - `Authentication.UserNotFound`
-  - `Success`
-  - `ArgumentNull`
+    - `Utility.Exceptions.TimestampOutOfRange`
+    - `Encryption.InvalidKeySize`
+    - `Authentication.UserNotFound`
+    - `Success`
+    - `ArgumentNull`
 
 #### 已集成的模块
 
 目前以下模块已完成本地化集成：
 
-| 模块 | 本地化键数量 | 状态 |
-|------|-------------|------|
-| GameFrameX.Foundation.Utility | 4 | ✅ 完成 |
-| GameFrameX.Foundation.Encryption | 20+ | ✅ 完成 |
-| GameFrameX.Foundation.Extensions | 7 | ✅ 完成 |
-| GameFrameX.Foundation.Hash | 2 | ✅ 完成 |
+| 模块                               | 本地化键数量 | 状态   |
+|----------------------------------|--------|------|
+| GameFrameX.Foundation.Utility    | 4      | ✅ 完成 |
+| GameFrameX.Foundation.Encryption | 20+    | ✅ 完成 |
+| GameFrameX.Foundation.Extensions | 7      | ✅ 完成 |
+| GameFrameX.Foundation.Hash       | 2      | ✅ 完成 |
 
 #### 高级功能
 
@@ -712,6 +712,7 @@ public class LocalizationDiagnostics
 ```
 
 更多详细信息请参考：
+
 - [本地化框架完整文档](GameFrameX.Foundation.Localization/README.Localization.md)
 - [使用示例和最佳实践](GameFrameX.Foundation.Localization/USAGE_EXAMPLES.md)
 
@@ -2677,20 +2678,20 @@ namespace MyApplication
 #### 🌐 本地化框架测试 (Localization)
 
 - **LocalizationServiceTests**: 本地化服务核心功能测试
-  - 单例模式验证测试
-  - 本地化字符串获取测试
-  - 参数化消息格式化测试
-  - 未知键处理测试
-  - 线程安全并发测试
+    - 单例模式验证测试
+    - 本地化字符串获取测试
+    - 参数化消息格式化测试
+    - 未知键处理测试
+    - 线程安全并发测试
 - **ResourceManagerTests**: 资源管理器测试
-  - 提供者优先级测试
-  - 懒加载机制测试
-  - 统计信息验证测试
+    - 提供者优先级测试
+    - 懒加载机制测试
+    - 统计信息验证测试
 - **DefaultResourceProviderTests**: 默认资源提供者测试
 - **AssemblyResourceProviderTests**: 程序集资源提供者测试
-  - .resx文件加载测试
-  - 多文化支持测试
-  - 资源缓存机制测试
+    - .resx文件加载测试
+    - 多文化支持测试
+    - 资源缓存机制测试
 
 #### 🔗 哈希工具库测试 (Hash)
 
