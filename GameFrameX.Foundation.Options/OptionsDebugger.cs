@@ -219,16 +219,34 @@ namespace GameFrameX.Foundation.Options
 
                 string BuildBorder(char left, char sep, char right, char fill)
                 {
-                    return string.Concat(
-                        left,
-                        new string(fill, nameWidth + 2), sep,
-                        new string(fill, valueWidth + 2), sep,
-                        new string(fill, requiredWidth + 2), sep,
-                        new string(fill, typeWidth + 2), sep,
-                        new string(fill, descWidth + 2), sep,
-                        new string(fill, defaultWidth + 2),
-                        right
-                    );
+                    // 使用 string.Create 优化：单次分配创建边框字符串
+                    // Use string.Create for optimization: create border string with single allocation
+                    int totalLength = 1 + (nameWidth + 2) + 1 + (valueWidth + 2) + 1 + (requiredWidth + 2) + 1 + (typeWidth + 2) + 1 + (descWidth + 2) + 1 + (defaultWidth + 2) + 1;
+                    return string.Create(totalLength, (left, sep, right, fill, nameWidth, valueWidth, requiredWidth, typeWidth, descWidth, defaultWidth), static (span, state) =>
+                    {
+                        int pos = 0;
+                        var (l, s, r, f, nw, vw, rw, tw, dw, dfw) = state;
+
+                        span[pos++] = l;
+                        span.Slice(pos, nw + 2).Fill(f);
+                        pos += nw + 2;
+                        span[pos++] = s;
+                        span.Slice(pos, vw + 2).Fill(f);
+                        pos += vw + 2;
+                        span[pos++] = s;
+                        span.Slice(pos, rw + 2).Fill(f);
+                        pos += rw + 2;
+                        span[pos++] = s;
+                        span.Slice(pos, tw + 2).Fill(f);
+                        pos += tw + 2;
+                        span[pos++] = s;
+                        span.Slice(pos, dw + 2).Fill(f);
+                        pos += dw + 2;
+                        span[pos++] = s;
+                        span.Slice(pos, dfw + 2).Fill(f);
+                        pos += dfw + 2;
+                        span[pos] = r;
+                    });
                 }
 
 
@@ -306,19 +324,7 @@ namespace GameFrameX.Foundation.Options
             var sb = new StringBuilder();
             foreach (var rune in s.EnumerateRunes())
             {
-                int v = rune.Value;
-                bool wide =
-                    (v >= 0x4E00 && v <= 0x9FFF) ||
-                    (v >= 0x3400 && v <= 0x4DBF) ||
-                    (v >= 0x3000 && v <= 0x303F) ||
-                    (v >= 0x3040 && v <= 0x309F) ||
-                    (v >= 0x30A0 && v <= 0x30FF) ||
-                    (v >= 0xAC00 && v <= 0xD7AF) ||
-                    (v >= 0xF900 && v <= 0xFAFF) ||
-                    (v >= 0xFF01 && v <= 0xFF60) ||
-                    (v >= 0xFFE0 && v <= 0xFFE6) ||
-                    (v >= 0x1F300 && v <= 0x1FAFF);
-                int rw = wide ? 2 : 1;
+                int rw = IsWideCharacter(rune.Value) ? 2 : 1;
                 if (w + rw > width)
                 {
                     if (width > 1)
@@ -356,19 +362,7 @@ namespace GameFrameX.Foundation.Options
             int w = 0;
             foreach (var rune in s.EnumerateRunes())
             {
-                int v = rune.Value;
-                bool wide =
-                    (v >= 0x4E00 && v <= 0x9FFF) ||
-                    (v >= 0x3400 && v <= 0x4DBF) ||
-                    (v >= 0x3000 && v <= 0x303F) ||
-                    (v >= 0x3040 && v <= 0x309F) ||
-                    (v >= 0x30A0 && v <= 0x30FF) ||
-                    (v >= 0xAC00 && v <= 0xD7AF) ||
-                    (v >= 0xF900 && v <= 0xFAFF) ||
-                    (v >= 0xFF01 && v <= 0xFF60) ||
-                    (v >= 0xFFE0 && v <= 0xFFE6) ||
-                    (v >= 0x1F300 && v <= 0x1FAFF);
-                int rw = wide ? 2 : 1;
+                int rw = IsWideCharacter(rune.Value) ? 2 : 1;
 
                 if (w + rw > width)
                 {
@@ -402,6 +396,7 @@ namespace GameFrameX.Foundation.Options
         }
 
         // 显示宽度相关函数：中文及全角字符按双列宽处理
+        // Display width function: CJK and fullwidth characters are treated as double-width
         static int GetDisplayWidth(string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -412,22 +407,91 @@ namespace GameFrameX.Foundation.Options
             int w = 0;
             foreach (var rune in s.EnumerateRunes())
             {
-                int v = rune.Value;
-                bool wide =
-                    (v >= 0x4E00 && v <= 0x9FFF) || // CJK Unified Ideographs
-                    (v >= 0x3400 && v <= 0x4DBF) || // CJK Ext A
-                    (v >= 0x3000 && v <= 0x303F) || // CJK Symbols & Punctuation
-                    (v >= 0x3040 && v <= 0x309F) || // Hiragana
-                    (v >= 0x30A0 && v <= 0x30FF) || // Katakana
-                    (v >= 0xAC00 && v <= 0xD7AF) || // Hangul Syllables
-                    (v >= 0xF900 && v <= 0xFAFF) || // CJK Compatibility Ideographs
-                    (v >= 0xFF01 && v <= 0xFF60) || // Fullwidth ASCII variants
-                    (v >= 0xFFE0 && v <= 0xFFE6) || // Fullwidth symbols
-                    (v >= 0x1F300 && v <= 0x1FAFF); // Emoji & Symbols (approx)
-                w += wide ? 2 : 1;
+                w += IsWideCharacter(rune.Value) ? 2 : 1;
             }
 
             return w;
+        }
+
+        /// <summary>
+        /// 判断字符是否为宽字符（在终端中占用两个字符宽度）
+        /// Determines if a character is wide (occupies two character widths in terminal)
+        /// </summary>
+        /// <param name="codePoint">Unicode 码点 / Unicode code point</param>
+        /// <returns>是否为宽字符 / Whether the character is wide</returns>
+        static bool IsWideCharacter(int codePoint)
+        {
+            // 基于 Unicode 标准的宽字符范围判断
+            // Based on Unicode standard wide character ranges
+            return codePoint switch
+            {
+                // CJK 统一汉字 / CJK Unified Ideographs
+                >= 0x4E00 and <= 0x9FFF => true,
+                // CJK 扩展 A / CJK Extension A
+                >= 0x3400 and <= 0x4DBF => true,
+                // CJK 扩展 B-F / CJK Extensions B-F
+                >= 0x20000 and <= 0x2CEAF => true,
+                // CJK 扩展 G / CJK Extension G
+                >= 0x30000 and <= 0x3134F => true,
+                // CJK 兼容汉字 / CJK Compatibility Ideographs
+                >= 0xF900 and <= 0xFAFF => true,
+                // CJK 兼容补充 / CJK Compatibility Supplement
+                >= 0x2F800 and <= 0x2FA1F => true,
+                // CJK 符号和标点 / CJK Symbols & Punctuation
+                >= 0x3000 and <= 0x303F => true,
+                // 平假名 / Hiragana
+                >= 0x3040 and <= 0x309F => true,
+                // 片假名 / Katakana
+                >= 0x30A0 and <= 0x30FF => true,
+                // 日文兼容片假名 / Katakana Phonetic Extensions
+                >= 0x31F0 and <= 0x31FF => true,
+                // 韩文字母 / Hangul
+                >= 0xAC00 and <= 0xD7AF => true,
+                // 韩文兼容字母 / Hangul Jamo
+                >= 0x1100 and <= 0x11FF => true,
+                // 全角 ASCII 变体 / Fullwidth ASCII variants
+                >= 0xFF01 and <= 0xFF60 => true,
+                // 全角符号 / Fullwidth symbols
+                >= 0xFFE0 and <= 0xFFE6 => true,
+                // 箭头符号 / Arrows
+                >= 0x2190 and <= 0x21FF => true,
+                // 数学运算符 / Mathematical Operators
+                >= 0x2200 and <= 0x22FF => true,
+                // 制表符 / Box Drawing
+                >= 0x2500 and <= 0x257F => true,
+                // 方块元素 / Block Elements
+                >= 0x2580 and <= 0x259F => true,
+                // 几何图形 / Geometric Shapes
+                >= 0x25A0 and <= 0x25FF => true,
+                // 杂项符号 / Miscellaneous Symbols
+                >= 0x2600 and <= 0x26FF => true,
+                // 丁贝符 / Dingbats
+                >= 0x2700 and <= 0x27BF => true,
+                // 表情符号 / Emoji & Symbols
+                >= 0x1F000 and <= 0x1FAFF => true,
+                // 音乐符号 / Musical Symbols
+                >= 0x1D000 and <= 0x1D24F => true,
+                // 古代符号 / Ancient Symbols
+                >= 0x10100 and <= 0x1013F => true,
+                // 货币符号 / Currency Symbols (部分为宽字符)
+                >= 0x20A0 and <= 0x20CF => true,
+                // 字母式符号 / Letterlike Symbols
+                >= 0x2100 and <= 0x214F => true,
+                // 数字形式 / Number Forms
+                >= 0x2150 and <= 0x218F => true,
+                // 泰文 / Thai (部分为宽字符)
+                >= 0x0E01 and <= 0x0E7F => true,
+                // 藏文 / Tibetan
+                >= 0x0F00 and <= 0x0FFF => true,
+                // 蒙古文 / Mongolian
+                >= 0x1800 and <= 0x18AF => true,
+                // 彝文 / Yi
+                >= 0xA000 and <= 0xA48F => true,
+                // 傈僳文 / Lisu
+                >= 0xA4D0 and <= 0xA4FF => true,
+                // 预设：窄字符 / Default: narrow character
+                _ => false
+            };
         }
 
         /// <summary>
