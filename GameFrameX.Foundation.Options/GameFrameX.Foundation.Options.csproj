@@ -9,6 +9,9 @@
         <OutputPath>..\bin\app</OutputPath>
     </PropertyGroup>
     <ItemGroup>
+        <InternalsVisibleTo Include="GameFrameX.Foundation.Tests, PublicKey=0024000004800000140100000602000000240000525341310008000001000100dbdd8ce8567465b0c7a56029b2f252989170cd00f15cd79b53c1cb8ecea09065a7fec9bfd5e241999707748cd59c25b4d8a721a1fe741495720642bae68ee134ba578cb153bd380d440e1908191e5a27ae79534f7dbd8c70c6fc18f26c1afaafe76d0b95d366b1bc81bffcf317673f37c839533a14f8939274c75fc8588134edad6d08f783a29916954fa5df678ed4dc9395c9618000d05be87d9caf15005987b48b224bdfcb07ea467ecc8be679620662a75b6a5b6748154664c8aa831c65428af7e5a955aa4eef974c0351a7865b9868d1c81a599eeda487bc5b46d0cbfd67729ae7d8e4c81b651bbbcc33e493f8d978b45350c7191e92989585ab7bf693bf" />
+    </ItemGroup>
+    <ItemGroup>
         <None Include="..\logo.png">
             <Pack>True</Pack>
             <PackagePath>\</PackagePath>
