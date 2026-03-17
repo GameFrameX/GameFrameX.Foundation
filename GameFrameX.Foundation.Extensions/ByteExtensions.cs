@@ -669,4 +669,101 @@ public static partial class ByteExtensions
     }
 
     #endregion
+
+    #region Primitive Type Read/Write
+
+    /// <summary>
+    /// 将一个字节写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteByteValue(this byte[] buffer, byte value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, 1);
+        buffer[offset] = value;
+        offset += 1;
+    }
+
+    /// <summary>
+    /// 从字节数组中读取一个字节，并将偏移量前移。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的字节。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static byte ReadByteValue(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, 1);
+        var value = buffer[offset];
+        offset += 1;
+        return value;
+    }
+
+    /// <summary>
+    /// 将一个带符号字节写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteSByteValue(this byte[] buffer, sbyte value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, 1);
+        buffer[offset] = (byte)value;
+        offset += 1;
+    }
+
+    /// <summary>
+    /// 从字节数组中读取一个带符号字节，并将偏移量前移。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的带符号字节。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static sbyte ReadSByteValue(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, 1);
+        var value = (sbyte)buffer[offset];
+        offset += 1;
+        return value;
+    }
+
+    /// <summary>
+    /// 将一个布尔值写入指定的缓冲区，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的值。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteBoolValue(this byte[] buffer, bool value, ref int offset)
+    {
+        ValidateBounds(buffer, offset, 1);
+        buffer[offset] = value ? (byte)1 : (byte)0;
+        offset += 1;
+    }
+
+    /// <summary>
+    /// 从字节数组中读取一个布尔值，并将偏移量前移。
+    /// </summary>
+    /// <param name="buffer">要读取的字节数组。</param>
+    /// <param name="offset">引用偏移量。</param>
+    /// <returns>返回读取的布尔值。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static bool ReadBoolValue(this byte[] buffer, ref int offset)
+    {
+        ValidateBounds(buffer, offset, 1);
+        var value = buffer[offset] != 0;
+        offset += 1;
+        return value;
+    }
+
+    #endregion
 }
