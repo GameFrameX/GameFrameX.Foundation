@@ -1965,7 +1965,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-### � 日志工具库 (GameFrameX.Foundation.Logger)
+### 🖊️ 日志工具库 (GameFrameX.Foundation.Logger)
 
 基于 Serilog 的日志配置工具，提供简单易用的日志记录功能。
 
@@ -1975,6 +1975,31 @@ public void ConfigureServices(IServiceCollection services)
 - 灵活的输出配置
 - 支持自定义日志提供程序
 - 提供日志自我诊断
+- ✅ **预初始化日志支持**: 无需手动初始化，直接使用 LogHelper 即可输出日志
+- ✅ **日志自动合并**: 初始化前后的日志会自动合并到正式日志系统
+
+#### 预初始化日志功能
+
+在正式日志系统初始化之前，可以直接使用 LogHelper 输出日志到控制台。当调用 `LogHandler.Create()` 初始化正式日志后，之前的临时日志会自动合并到新日志系统中，确保日志不丢失。
+
+```csharp
+class Program
+{
+    static void Main(string[] args)
+    {
+        // 无需任何初始化，直接使用 LogHelper
+        LogHelper.Info("正在加载配置...");
+        LogHelper.Debug("参数: {Args}", string.Join(", ", args));
+        LogHelper.Warning("配置不存在，使用默认值");
+
+        // 初始化正式日志系统
+        var logger = LogHandler.Create(options);
+
+        // 之前的临时日志已自动合并到新日志
+        LogHelper.Info("系统启动完成");
+    }
+}
+```
 
 #### 使用示例
 
