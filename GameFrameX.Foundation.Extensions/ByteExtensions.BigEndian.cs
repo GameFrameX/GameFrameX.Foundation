@@ -192,6 +192,30 @@ public static partial class ByteExtensions
     }
 
     /// <summary>
+    /// 将字节数组直接写入指定的缓冲区，不包含长度前缀，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的字节数组，不能为 null。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 或 <paramref name="value"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteBytesWithoutLengthBigEndian(this byte[] buffer, byte[] value, ref int offset)
+    {
+        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (offset + value.Length > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset),
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + value.Length, buffer.Length));
+        }
+
+        value.AsSpan().CopyTo(buffer.AsSpan(offset, value.Length));
+        offset += value.Length;
+    }
+
+    /// <summary>
     /// 将一个字符串以大端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
     /// <param name="buffer">要写入的缓冲区。</param>
@@ -223,6 +247,40 @@ public static partial class ByteExtensions
 
         Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset + ConstBaseTypeSize.ShortSize);
         WriteShortBigEndianValue(buffer, (short)len, ref offset);
+        offset += len;
+    }
+
+    /// <summary>
+    /// 将字符串直接写入指定的缓冲区，不包含长度前缀，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的缓冲区。</param>
+    /// <param name="value">要写入的字符串。</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteStringWithoutLengthBigEndian(this byte[] buffer, string value, ref int offset)
+    {
+        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (value == null)
+        {
+            return;
+        }
+
+        var len = Encoding.UTF8.GetByteCount(value);
+
+        if (len == 0)
+        {
+            return;
+        }
+
+        if (offset + len > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + len, buffer.Length));
+        }
+
+        Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, offset);
         offset += len;
     }
 
@@ -456,6 +514,35 @@ public static partial class ByteExtensions
     public static string ReadStringBigEndianValue(this byte[] buffer, ref int offset)
     {
         var len = ReadShortBigEndianValue(buffer, ref offset);
+
+        if (len <= 0)
+        {
+            return string.Empty;
+        }
+
+        if (offset + len > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
+        }
+
+        var value = Encoding.UTF8.GetString(buffer, offset, len);
+        offset += len;
+        return value;
+    }
+
+    /// <summary>
+    /// 从字节数组中以指定偏移量读取指定长度的字符串（大端字节序）。
+    /// </summary>
+    /// <param name="buffer">要从中读取数据的字节数组。</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
+    /// <param name="len">要读取的字符串字节长度。</param>
+    /// <returns>读取的字符串，若读取长度小于等于0或偏移量超出数组长度，返回空字符串。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    public static string ReadStringBigEndianValue(this byte[] buffer, ref int offset, int len)
+    {
+        ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
 
         if (len <= 0)
         {

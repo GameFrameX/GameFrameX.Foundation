@@ -203,6 +203,110 @@ public static partial class SpanExtensions
         offset += ConstBaseTypeSize.DoubleSize;
     }
 
+    /// <summary>
+    /// 在给定的偏移量位置，向缓冲区中写入字节序列，包含长度信息。
+    /// </summary>
+    /// <param name="buffer">要写入的字节跨度。</param>
+    /// <param name="value">要写入的字节数组。</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数（4字节长度 + 数据长度）。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    public static void WriteBytesLittleEndianValue(this Span<byte> buffer, byte[] value, ref int offset)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        WriteIntLittleEndianValue(buffer, value.Length, ref offset);
+
+        if (value.Length > 0)
+        {
+            WriteBytesWithoutLengthLittleEndian(buffer, value, ref offset);
+        }
+    }
+
+    /// <summary>
+    /// 在给定的偏移量位置，向缓冲区中写入字节序列，不包含长度信息。
+    /// </summary>
+    /// <param name="buffer">要写入的字节跨度。</param>
+    /// <param name="value">要写入的字节数组。</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    public static void WriteBytesWithoutLengthLittleEndian(this Span<byte> buffer, byte[] value, ref int offset)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (offset + value.Length > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, value.Length, buffer.Length));
+        }
+
+        value.AsSpan().CopyTo(buffer[offset..]);
+        offset += value.Length;
+    }
+
+    /// <summary>
+    /// 在给定的偏移量位置，向缓冲区中写入字符串，包含长度信息。
+    /// </summary>
+    /// <param name="buffer">要写入的字节跨度。</param>
+    /// <param name="value">要写入的字符串，使用 UTF-8 编码。</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数（2字节长度 + UTF-8字节数据）。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数、超出缓冲区边界或字符串过长（超过65535字节）时抛出。</exception>
+    public static void WriteStringLittleEndianValue(this Span<byte> buffer, string value, ref int offset)
+    {
+        ArgumentNullException.ThrowIfNull(value);
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (string.IsNullOrEmpty(value))
+        {
+            WriteShortLittleEndianValue(buffer, 0, ref offset);
+            return;
+        }
+
+        var bytes = Encoding.UTF8.GetBytes(value);
+
+        if (bytes.Length > ushort.MaxValue)
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), LocalizationService.GetString(LocalizationKeys.Exceptions.StringTooLong, ushort.MaxValue));
+        }
+
+        WriteShortLittleEndianValue(buffer, (short)bytes.Length, ref offset);
+        WriteBytesWithoutLengthLittleEndian(buffer, bytes, ref offset);
+    }
+
+    /// <summary>
+    /// 将字符串直接写入指定的缓冲区，不包含长度前缀，并更新偏移量。
+    /// </summary>
+    /// <param name="buffer">要写入的字节跨度。</param>
+    /// <param name="value">要写入的字符串。</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数。</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    public static void WriteStringWithoutLengthLittleEndian(this Span<byte> buffer, string value, ref int offset)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (value == null)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(value))
+        {
+            return;
+        }
+
+        var bytes = Encoding.UTF8.GetBytes(value);
+
+        if (offset + bytes.Length > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.BufferTooSmall, offset + bytes.Length, buffer.Length));
+        }
+
+        WriteBytesWithoutLengthLittleEndian(buffer, bytes, ref offset);
+    }
+
     #endregion
 
     #region Read LittleEndian
@@ -380,6 +484,118 @@ public static partial class SpanExtensions
 
         var value = BinaryPrimitives.ReadDoubleLittleEndian(buffer[offset..]);
         offset += ConstBaseTypeSize.DoubleSize;
+        return value;
+    }
+
+    /// <summary>
+    /// 从指定的字节缓冲区和偏移量读取一个字节数组，包含长度信息。
+    /// </summary>
+    /// <param name="buffer">要读取的字节跨度。</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数（4字节长度 + 数据长度）。</param>
+    /// <returns>返回读取的字节数组，如果长度为0则返回空数组。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    public static byte[] ReadBytesLittleEndianValue(this Span<byte> buffer, ref int offset)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        var length = ReadIntLittleEndianValue(buffer, ref offset);
+
+        if (length <= 0)
+        {
+            return Array.Empty<byte>();
+        }
+
+        if (offset + length > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
+        }
+
+        var data = new byte[length];
+        buffer.Slice(offset, length).CopyTo(data);
+        offset += length;
+        return data;
+    }
+
+    /// <summary>
+    /// 从指定的字节缓冲区和偏移量读取一个字符串，包含长度信息。
+    /// </summary>
+    /// <param name="buffer">要读取的字节跨度。</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数（2字节长度 + UTF-8字节数据）。</param>
+    /// <returns>返回读取的字符串，使用 UTF-8 解码，如果长度为0则返回空字符串。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    public static string ReadStringLittleEndianValue(this Span<byte> buffer, ref int offset)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        var length = ReadShortLittleEndianValue(buffer, ref offset);
+
+        if (length <= 0)
+        {
+            return string.Empty;
+        }
+
+        if (offset + length > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
+        }
+
+        var value = Encoding.UTF8.GetString(buffer.Slice(offset, length));
+        offset += length;
+        return value;
+    }
+
+    /// <summary>
+    /// 从指定偏移量开始读取指定长度的字节数组。
+    /// </summary>
+    /// <param name="buffer">要读取的字节跨度。</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数。</param>
+    /// <param name="len">需要读取的字节数组长度。</param>
+    /// <returns>返回从缓冲区读取的字节数组，如果长度小于等于0则返回空数组。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    public static byte[] ReadBytesLittleEndianValue(this Span<byte> buffer, ref int offset, int len)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (len <= 0)
+        {
+            return Array.Empty<byte>();
+        }
+
+        if (offset + len > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
+        }
+
+        var data = new byte[len];
+        buffer.Slice(offset, len).CopyTo(data);
+        offset += len;
+        return data;
+    }
+
+    /// <summary>
+    /// 从指定偏移量开始读取指定长度的字符串。
+    /// </summary>
+    /// <param name="buffer">要读取的字节跨度。</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数。</param>
+    /// <param name="len">要读取的字符串字节长度。</param>
+    /// <returns>返回读取的字符串，使用 UTF-8 解码，如果长度小于等于0则返回空字符串。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    public static string ReadStringLittleEndianValue(this Span<byte> buffer, ref int offset, int len)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+
+        if (len <= 0)
+        {
+            return string.Empty;
+        }
+
+        if (offset + len > buffer.Length)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
+        }
+
+        var value = Encoding.UTF8.GetString(buffer.Slice(offset, len));
+        offset += len;
         return value;
     }
 
