@@ -173,6 +173,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// Reflection result cache for caching type property information
     /// </summary>
     private static readonly ConcurrentDictionary<Type, PropertyInfo[]> PropertyCache = new();
+    private static readonly ConcurrentDictionary<Type, Dictionary<string, string>> OptionMappingsCache = new();
 
     /// <summary>
     /// 获取指定类型的所有属性（带缓存）
@@ -584,36 +585,40 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 获取选项映射
+    /// 获取选项映射（带缓存）
+    /// Gets option mappings (with caching)
     /// </summary>
-    /// <returns>选项映射字典</returns>
+    /// <returns>选项映射字典 / Option mapping dictionary</returns>
     private Dictionary<string, string> GetOptionMappings()
     {
-        var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        var properties = GetCachedProperties(typeof(T));
-
-        foreach (var property in properties)
+        return OptionMappingsCache.GetOrAdd(typeof(T), _ =>
         {
-            // 处理所有 OptionAttribute 及其派生类
-            var optionAttrs = property.GetCustomAttributes(typeof(OptionAttribute), true)
-                                      .Cast<OptionAttribute>()
-                                      .ToList();
+            var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var properties = GetCachedProperties(typeof(T));
 
-            foreach (var optionAttr in optionAttrs)
+            foreach (var property in properties)
             {
-                // 添加长名称映射
-                if (!string.IsNullOrEmpty(optionAttr.LongName))
+                // 处理所有 OptionAttribute 及其派生类
+                var optionAttrs = property.GetCustomAttributes(typeof(OptionAttribute), true)
+                                          .Cast<OptionAttribute>()
+                                          .ToList();
+
+                foreach (var optionAttr in optionAttrs)
                 {
-                    result[optionAttr.LongName] = property.Name;
+                    // 添加长名称映射
+                    if (!string.IsNullOrEmpty(optionAttr.LongName))
+                    {
+                        result[optionAttr.LongName] = property.Name;
+                    }
                 }
+
+                // 默认使用属性名作为选项名
+                result[property.Name.ToLowerInvariant()] = property.Name;
+                result[property.Name.ToLowerInvariant().Replace("_", "-")] = property.Name;
             }
 
-            // 默认使用属性名作为选项名
-            result[property.Name.ToLowerInvariant()] = property.Name;
-            result[property.Name.ToLowerInvariant().Replace("_", "-")] = property.Name;
-        }
-
-        return result;
+            return result;
+        });
     }
 
     /// <summary>
