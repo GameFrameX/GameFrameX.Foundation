@@ -74,20 +74,6 @@ jobs:
           git add Version.props CHANGELOG.md
           git commit -m "chore(release): ${{ steps.version.outputs.version }}"
 
-      - name: Create tag
-        if: steps.check.outputs.need_release == 'true'
-        run: |
-          git tag ${{ steps.version.outputs.version }}
-
-      - name: Create GitHub Release
-        if: steps.check.outputs.need_release == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.version }}
-          body_path: CHANGELOG.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build
         if: steps.check.outputs.need_release == 'true'
         run: dotnet build --configuration Release
@@ -102,4 +88,16 @@ jobs:
 
       - name: Push changes
         if: steps.check.outputs.need_release == 'true'
-        run: git push origin main
+        run: |
+          git push origin main
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
+
+      - name: Create GitHub Release
+        if: steps.check.outputs.need_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
