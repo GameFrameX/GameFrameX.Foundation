@@ -102,6 +102,4 @@ jobs:
 
       - name: Push changes
         if: steps.check.outputs.need_release == 'true'
-        run: |
-          git push origin main
-          git push origin ${{ steps.version.outputs.version }}
+        run: git push origin main
