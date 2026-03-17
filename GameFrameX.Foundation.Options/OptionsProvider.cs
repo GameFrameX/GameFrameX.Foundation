@@ -40,7 +40,7 @@ public static class OptionsProvider
 {
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, object> OptionsCache = new();
     private static readonly object _lock = new();
-    private static string[] _args;
+    private static volatile string[] _args;
 
     /// <summary>
     /// 初始化选项提供者
@@ -124,7 +124,7 @@ public static class OptionsProvider
         var type = typeof(T);
         var shouldDebug = ShouldEnableDebugOutput(enableDebugOutput);
 
-        // 如果缓存中已存在，直接返回
+        // 第一次检查缓存（无锁快速路径）
         if (OptionsCache.TryGetValue(type, out var cachedOptions))
         {
             var cachedResult = (T)cachedOptions;
@@ -139,16 +139,22 @@ public static class OptionsProvider
             return cachedResult;
         }
 
-        // 创建选项构建器
+        // 缓存未命中，进入锁保护区域
         string[] args;
         lock (_lock)
         {
+            // 双重检查：再次检查缓存（可能在等待锁时被其他线程填充）
+            if (OptionsCache.TryGetValue(type, out cachedOptions))
+            {
+                return (T)cachedOptions;
+            }
+
+            // 获取参数（在同一个锁内，确保与 Initialize 同步）
             args = _args ?? Array.Empty<string>();
         }
 
+        // 在锁外构建选项（避免长时间持有锁）
         var builder = new OptionsBuilder<T>(args);
-
-        // 构建选项
         var options = builder.Build(skipValidation);
 
         // 缓存选项（使用 GetOrAdd 确保线程安全）
