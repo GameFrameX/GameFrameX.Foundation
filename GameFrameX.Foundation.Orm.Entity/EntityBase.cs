@@ -51,7 +51,7 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
     /// 创建时间
     /// </summary>
     [Description("创建时间")]
-    public virtual long? CreatedTime { get; set; }
+    public virtual long CreatedTime { get; set; }
 
     /// <summary>
     /// 创建人姓名
@@ -140,7 +140,7 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter,
     /// 创建时间
     /// </summary>
     [Description("创建时间")]
-    public virtual long? CreatedTime { get; set; }
+    public virtual long CreatedTime { get; set; }
 
     /// <summary>
     /// 创建人姓名

@@ -46,7 +46,7 @@ public interface ISafeCreatedFilter
     /// <summary>
     /// 创建时间
     /// </summary>
-    long? CreatedTime { get; set; }
+    long CreatedTime { get; set; }
 
     /// <summary>
     /// 创建人姓名
