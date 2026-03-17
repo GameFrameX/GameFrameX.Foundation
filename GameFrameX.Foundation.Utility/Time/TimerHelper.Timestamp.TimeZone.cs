@@ -55,4 +55,25 @@ public static partial class TimerHelper
         // 直接将秒数转换为TimeSpan
         return TimeSpan.FromSeconds(timestamp);
     }
+
+    /// <summary>
+    /// 将给定的毫秒时间戳转换为相对于Epoch的 TimeSpan 对象（基于TimeZone）
+    /// </summary>
+    /// <param name="timestampMilliseconds">自1970年1月1日午夜以来经过的毫秒数。</param>
+    /// <returns>一个 TimeSpan 对象，表示从Epoch到给定毫秒时间戳的间隔。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当毫秒时间戳超出有效范围时抛出此异常</exception>
+    /// <remarks>
+    /// 此方法将毫秒时间戳转换为TimeSpan对象
+    /// 使用当前时区 (<see cref="CurrentTimeZone"/>) 的纪元时间作为基准
+    /// </remarks>
+    public static TimeSpan TimeSpanWithTimestampWithTimeZoneMs(long timestampMilliseconds)
+    {
+        if (timestampMilliseconds < -62135596800000L || timestampMilliseconds > 253402300799999L)
+        {
+            throw new ArgumentOutOfRangeException(nameof(timestampMilliseconds), "Timestamp is out of range.");
+        }
+
+        // 直接将毫秒数转换为TimeSpan
+        return TimeSpan.FromMilliseconds(timestampMilliseconds);
+    }
 }
