@@ -88,9 +88,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build
+        if: steps.check.outputs.need_release == 'true'
+        run: dotnet build --configuration Release
+
       - name: Pack NuGet packages
         if: steps.check.outputs.need_release == 'true'
-        run: dotnet pack --configuration Release --output ./artifacts
+        run: dotnet pack --configuration Release --no-build --output ./artifacts
 
       - name: Publish to NuGet
         if: steps.check.outputs.need_release == 'true'
