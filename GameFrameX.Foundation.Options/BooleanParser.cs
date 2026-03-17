@@ -61,7 +61,10 @@ internal static class BooleanParser
     /// Parses a boolean string value
     /// </summary>
     /// <param name="value">要解析的字符串值 / The string value to parse</param>
-    /// <returns>解析后的布尔值 / The parsed boolean value</returns>
+    /// <returns>
+    /// 解析后的布尔值。如果值为 null、空白或无法识别，则返回 false。
+    /// The parsed boolean value. Returns false if the value is null, whitespace, or unrecognized.
+    /// </returns>
     public static bool ParseBooleanValue(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
