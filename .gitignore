@@ -401,3 +401,9 @@ FodyWeavers.xsd
 .idea
 **/CODE_REVIEW*.md
 **/CODE_REVIEW.md
+
+# Claude Code
+.claude/
+
+# Scripts
+scripts/
