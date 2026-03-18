@@ -34,20 +34,23 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 只读表特性，用于标记实体类对应的数据库表为只读表
+/// 只读表特性，用于标记实体类对应的数据库表为只读表。
 /// </summary>
 /// <remarks>
-/// 此特性应用于实体类，用于标识该实体对应的数据库表是只读的。
-/// 在ORM框架中，当实体类标记了此特性时，框架会禁用对该表的写入操作（INSERT、UPDATE、DELETE），
-/// 并可以启用相应的查询优化策略，如查询缓存、读写分离等。
-/// 
-/// 只读表通常用于以下场景：
-/// - 静态配置数据表
-/// - 历史数据归档表
-/// - 数据仓库的维度表
-/// - 报表和统计数据表
-/// - 第三方系统的数据视图
-/// - 基础数据字典表
+/// Read-only table attribute for marking entity classes whose corresponding database tables are read-only.
+/// When an entity class is marked with this attribute, the ORM framework disables write operations (INSERT, UPDATE, DELETE) on the table,
+/// and can enable corresponding query optimization strategies such as query caching and read-write splitting.
+/// <para>
+/// Read-only tables are typically used in the following scenarios:
+/// </para>
+/// <list type="bullet">
+/// <item><description>Static configuration data tables</description></item>
+/// <item><description>Historical data archive tables</description></item>
+/// <item><description>Data warehouse dimension tables</description></item>
+/// <item><description>Report and statistics data tables</description></item>
+/// <item><description>Data views from third-party systems</description></item>
+/// <item><description>Basic data dictionary tables</description></item>
+/// </list>
 /// </remarks>
 /// <example>
 /// <code>
@@ -58,7 +61,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 ///     public string Name { get; set; }
 ///     public string Region { get; set; }
 /// }
-/// 
+///
 /// [ReadOnlyTable(AllowRefresh = true)]
 /// public class StaticConfiguration
 /// {
@@ -72,47 +75,68 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class ReadOnlyTableAttribute : System.Attribute
 {
     /// <summary>
-    /// 获取或设置是否启用缓存
+    /// 获取或设置是否启用缓存。
     /// </summary>
-    /// <value>指示是否对只读表启用查询缓存，默认为 true</value>
+    /// <remarks>
+    /// Gets or sets whether to enable caching for the read-only table.
+    /// </remarks>
+    /// <value>指示是否对只读表启用查询缓存，默认为 <c>true</c> / Indicates whether to enable query caching for read-only table, default is <c>true</c></value>
     public bool EnableCache { get; set; } = true;
 
     /// <summary>
-    /// 获取或设置缓存时间（分钟）
+    /// 获取或设置缓存时间（分钟）。
     /// </summary>
-    /// <value>查询结果的缓存时间，单位为分钟，默认为60分钟</value>
+    /// <remarks>
+    /// Gets or sets the cache duration in minutes for query results.
+    /// </remarks>
+    /// <value>查询结果的缓存时间，单位为分钟，默认为60分钟 / Cache duration for query results in minutes, default is 60 minutes</value>
     public int CacheMinutes { get; set; } = 60;
 
     /// <summary>
-    /// 获取或设置是否允许刷新数据
+    /// 获取或设置是否允许刷新数据。
     /// </summary>
-    /// <value>指示是否允许通过特殊操作刷新只读表数据，默认为 false</value>
+    /// <remarks>
+    /// Gets or sets whether to allow refreshing read-only table data through special operations.
+    /// </remarks>
+    /// <value>指示是否允许通过特殊操作刷新只读表数据，默认为 <c>false</c> / Indicates whether to allow refreshing read-only table data through special operations, default is <c>false</c></value>
     public bool AllowRefresh { get; set; } = false;
 
     /// <summary>
-    /// 获取或设置错误处理策略
+    /// 获取或设置错误处理策略。
     /// </summary>
-    /// <value>当尝试对只读表进行写操作时的错误处理策略</value>
+    /// <remarks>
+    /// Gets or sets the error handling strategy when attempting write operations on read-only tables.
+    /// </remarks>
+    /// <value>当尝试对只读表进行写操作时的错误处理策略 / Error handling strategy when attempting write operations on read-only tables</value>
     public ReadOnlyErrorHandling ErrorHandling { get; set; } = ReadOnlyErrorHandling.ThrowException;
 
     /// <summary>
-    /// 获取或设置自定义错误消息
+    /// 获取或设置自定义错误消息。
     /// </summary>
-    /// <value>当违反只读约束时显示的自定义错误消息</value>
+    /// <remarks>
+    /// Gets or sets the custom error message displayed when read-only constraint is violated.
+    /// </remarks>
+    /// <value>当违反只读约束时显示的自定义错误消息 / Custom error message displayed when read-only constraint is violated</value>
     public string? CustomErrorMessage { get; set; }
 
     /// <summary>
-    /// 初始化 <see cref="ReadOnlyTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="ReadOnlyTableAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ReadOnlyTableAttribute"/> class.
+    /// </remarks>
     public ReadOnlyTableAttribute()
     {
     }
 
     /// <summary>
-    /// 初始化 <see cref="ReadOnlyTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="ReadOnlyTableAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="enableCache">是否启用缓存</param>
-    /// <param name="cacheMinutes">缓存时间（分钟）</param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ReadOnlyTableAttribute"/> class with the specified cache settings.
+    /// </remarks>
+    /// <param name="enableCache">是否启用缓存 / Whether to enable caching</param>
+    /// <param name="cacheMinutes">缓存时间（分钟） / Cache duration in minutes</param>
     public ReadOnlyTableAttribute(bool enableCache, int cacheMinutes = 60)
     {
         EnableCache = enableCache;
@@ -121,27 +145,42 @@ public sealed class ReadOnlyTableAttribute : System.Attribute
 }
 
 /// <summary>
-/// 只读表错误处理策略枚举
+/// 只读表错误处理策略枚举。
 /// </summary>
+/// <remarks>
+/// Read-only table error handling strategy enumeration.
+/// </remarks>
 public enum ReadOnlyErrorHandling
 {
     /// <summary>
-    /// 抛出异常
+    /// 抛出异常。
     /// </summary>
+    /// <remarks>
+    /// Throw exception.
+    /// </remarks>
     ThrowException = 0,
 
     /// <summary>
-    /// 静默忽略
+    /// 静默忽略。
     /// </summary>
+    /// <remarks>
+    /// Silently ignore.
+    /// </remarks>
     SilentIgnore = 1,
 
     /// <summary>
-    /// 记录警告日志
+    /// 记录警告日志。
     /// </summary>
+    /// <remarks>
+    /// Log warning.
+    /// </remarks>
     LogWarning = 2,
 
     /// <summary>
-    /// 自定义处理
+    /// 自定义处理。
     /// </summary>
+    /// <remarks>
+    /// Custom handling.
+    /// </remarks>
     Custom = 3
 }

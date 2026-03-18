@@ -34,18 +34,21 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 软删除特性，用于标记实体类支持软删除功能
+/// 软删除特性，用于标记实体类支持软删除功能。
 /// </summary>
 /// <remarks>
-/// 此特性应用于实体类，用于标识该实体支持软删除功能。
-/// 软删除是指在删除数据时不真正从数据库中移除记录，而是通过标记字段来表示数据已被删除。
-/// 这样可以保留数据的完整性，支持数据恢复，并满足审计要求。
-/// 
-/// 软删除的优势：
-/// - 数据安全：避免误删除造成的数据丢失
-/// - 审计跟踪：保留删除操作的历史记录
-/// - 数据恢复：支持已删除数据的恢复
-/// - 关联完整性：保持外键关联的完整性
+/// Soft delete attribute for marking entity classes that support soft delete functionality.
+/// Soft delete means that when deleting data, records are not actually removed from the database but are marked as deleted through a field.
+/// This preserves data integrity, supports data recovery, and meets auditing requirements.
+/// <para>
+/// Advantages of soft delete:
+/// </para>
+/// <list type="bullet">
+/// <item><description>Data security: Avoids data loss from accidental deletion</description></item>
+/// <item><description>Audit trail: Preserves history of delete operations</description></item>
+/// <item><description>Data recovery: Supports recovery of deleted data</description></item>
+/// <item><description>Referential integrity: Maintains foreign key relationship integrity</description></item>
+/// </list>
 /// </remarks>
 /// <example>
 /// <code>
@@ -58,7 +61,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 ///     public DateTime? DeletedTime { get; set; }
 ///     public string? DeletedBy { get; set; }
 /// }
-/// 
+///
 /// [SoftDelete("Status", DeletedValue = "DELETED")]
 /// public class Product
 /// {
@@ -72,57 +75,81 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class SoftDeleteAttribute : System.Attribute
 {
     /// <summary>
-    /// 获取或设置软删除标记字段名称
+    /// 获取或设置软删除标记字段名称。
     /// </summary>
-    /// <value>用于标记记录是否被删除的字段名称</value>
+    /// <remarks>
+    /// Gets or sets the field name for marking records as deleted.
+    /// </remarks>
+    /// <value>用于标记记录是否被删除的字段名称 / Field name for marking whether a record is deleted</value>
     public string DeletedField { get; set; }
 
     /// <summary>
-    /// 获取或设置删除时间字段名称
+    /// 获取或设置删除时间字段名称。
     /// </summary>
-    /// <value>记录删除时间的字段名称，可以为空</value>
+    /// <remarks>
+    /// Gets or sets the field name for recording deletion time.
+    /// </remarks>
+    /// <value>记录删除时间的字段名称，可以为空 / Field name for recording deletion time, can be null</value>
     public string? DeletedTimeField { get; set; }
 
     /// <summary>
-    /// 获取或设置删除用户字段名称
+    /// 获取或设置删除用户字段名称。
     /// </summary>
-    /// <value>记录删除操作用户的字段名称，可以为空</value>
+    /// <remarks>
+    /// Gets or sets the field name for recording the user who performed the deletion.
+    /// </remarks>
+    /// <value>记录删除操作用户的字段名称，可以为空 / Field name for recording the user who performed deletion, can be null</value>
     public string? DeletedByField { get; set; }
 
     /// <summary>
-    /// 获取或设置表示已删除的值
+    /// 获取或设置表示已删除的值。
     /// </summary>
-    /// <value>标记字段中表示已删除状态的值，默认为 true</value>
+    /// <remarks>
+    /// Gets or sets the value representing the deleted state in the marker field.
+    /// </remarks>
+    /// <value>标记字段中表示已删除状态的值，默认为 <c>true</c> / Value representing deleted state in marker field, default is <c>true</c></value>
     public object DeletedValue { get; set; } = true;
 
     /// <summary>
-    /// 获取或设置表示未删除的值
+    /// 获取或设置表示未删除的值。
     /// </summary>
-    /// <value>标记字段中表示未删除状态的值，默认为 false</value>
+    /// <remarks>
+    /// Gets or sets the value representing the not-deleted state in the marker field.
+    /// </remarks>
+    /// <value>标记字段中表示未删除状态的值，默认为 <c>false</c> / Value representing not-deleted state in marker field, default is <c>false</c></value>
     public object NotDeletedValue { get; set; } = false;
 
     /// <summary>
-    /// 获取或设置是否在查询时自动过滤已删除记录
+    /// 获取或设置是否在查询时自动过滤已删除记录。
     /// </summary>
-    /// <value>指示是否在查询时自动排除已删除的记录，默认为 true</value>
+    /// <remarks>
+    /// Gets or sets whether to automatically filter out deleted records in queries.
+    /// </remarks>
+    /// <value>指示是否在查询时自动排除已删除的记录，默认为 <c>true</c> / Indicates whether to automatically exclude deleted records in queries, default is <c>true</c></value>
     public bool AutoFilter { get; set; } = true;
 
     /// <summary>
-    /// 初始化 <see cref="SoftDeleteAttribute"/> 类的新实例
+    /// 初始化 <see cref="SoftDeleteAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="deletedField">软删除标记字段名称</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="deletedField"/> 为 null 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="SoftDeleteAttribute"/> class with the specified deleted field.
+    /// </remarks>
+    /// <param name="deletedField">软删除标记字段名称 / Soft delete marker field name</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="deletedField"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="deletedField"/> is <c>null</c></exception>
     public SoftDeleteAttribute(string deletedField)
     {
         DeletedField = deletedField ?? throw new ArgumentNullException(nameof(deletedField));
     }
 
     /// <summary>
-    /// 初始化 <see cref="SoftDeleteAttribute"/> 类的新实例
+    /// 初始化 <see cref="SoftDeleteAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="deletedField">软删除标记字段名称</param>
-    /// <param name="deletedTimeField">删除时间字段名称</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="deletedField"/> 为 null 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="SoftDeleteAttribute"/> class with the specified deleted field and time field.
+    /// </remarks>
+    /// <param name="deletedField">软删除标记字段名称 / Soft delete marker field name</param>
+    /// <param name="deletedTimeField">删除时间字段名称 / Deletion time field name</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="deletedField"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="deletedField"/> is <c>null</c></exception>
     public SoftDeleteAttribute(string deletedField, string? deletedTimeField)
     {
         DeletedField = deletedField ?? throw new ArgumentNullException(nameof(deletedField));
@@ -130,12 +157,15 @@ public sealed class SoftDeleteAttribute : System.Attribute
     }
 
     /// <summary>
-    /// 初始化 <see cref="SoftDeleteAttribute"/> 类的新实例
+    /// 初始化 <see cref="SoftDeleteAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="deletedField">软删除标记字段名称</param>
-    /// <param name="deletedTimeField">删除时间字段名称</param>
-    /// <param name="deletedByField">删除用户字段名称</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="deletedField"/> 为 null 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="SoftDeleteAttribute"/> class with the specified deleted field, time field, and user field.
+    /// </remarks>
+    /// <param name="deletedField">软删除标记字段名称 / Soft delete marker field name</param>
+    /// <param name="deletedTimeField">删除时间字段名称 / Deletion time field name</param>
+    /// <param name="deletedByField">删除用户字段名称 / Deletion user field name</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="deletedField"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="deletedField"/> is <c>null</c></exception>
     public SoftDeleteAttribute(string deletedField, string? deletedTimeField, string? deletedByField)
     {
         DeletedField = deletedField ?? throw new ArgumentNullException(nameof(deletedField));

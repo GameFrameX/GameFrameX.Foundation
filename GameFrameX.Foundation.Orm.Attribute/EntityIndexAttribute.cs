@@ -35,20 +35,27 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
 /// 实体索引特性，用于标记需要建立索引的实体属性。
-/// 支持设置索引名称、是否唯一以及排序方式。
-/// 该特性主要用于ORM框架中的实体类属性，用于指示数据库表字段需要建立索引以提高查询性能。
 /// </summary>
 /// <remarks>
-/// <para>索引是数据库中用于提高查询性能的重要机制。通过在实体属性上应用此特性，可以指示ORM框架在数据库表中为对应字段创建索引。</para>
-/// <para>索引类型包括：</para>
+/// Entity index attribute for marking entity properties that need to be indexed.
+/// Supports setting index name, uniqueness, and sort order.
+/// This attribute is primarily used for entity class properties in ORM frameworks to indicate that database table fields need indexes to improve query performance.
+/// <para>
+/// Indexes are important mechanisms in databases for improving query performance. By applying this attribute to entity properties, you can instruct the ORM framework to create indexes for corresponding fields in database tables.
+/// </para>
+/// <para>
+/// Index types include:
+/// </para>
 /// <list type="bullet">
-/// <item><description>普通索引：允许重复值，用于提高查询速度</description></item>
-/// <item><description>唯一索引：不允许重复值，既保证数据唯一性又提高查询速度</description></item>
+/// <item><description>Regular index: Allows duplicate values, used to improve query speed</description></item>
+/// <item><description>Unique index: Does not allow duplicate values, ensures data uniqueness while improving query speed</description></item>
 /// </list>
-/// <para>排序方式包括：</para>
+/// <para>
+/// Sort orders include:
+/// </para>
 /// <list type="bullet">
-/// <item><description>升序（ASC）：数据按从小到大排列，默认方式</description></item>
-/// <item><description>降序（DESC）：数据按从大到小排列</description></item>
+/// <item><description>Ascending (ASC): Data sorted from small to large, default order</description></item>
+/// <item><description>Descending (DESC): Data sorted from large to small</description></item>
 /// </list>
 /// </remarks>
 /// <example>
@@ -57,114 +64,82 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 /// {
 ///     [EntityIndex(Name = "IX_User_Email", Unique = true)]
 ///     public string Email { get; set; }
-///     
+///
 ///     [EntityIndex(Name = "IX_User_CreateTime", IsAscending = false)]
 ///     public DateTime CreateTime { get; set; }
-///     
+///
 ///     [EntityIndex(Name = "IX_User_Status")]
 ///     public int Status { get; set; }
 /// }
 /// </code>
 /// </example>
-/// <seealso cref="System.Attribute"/>
-/// <seealso cref="System.AttributeUsageAttribute"/>
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 public sealed class EntityIndexAttribute : System.Attribute
 {
     /// <summary>
     /// 获取或设置该索引是否为唯一索引。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets whether the index is unique.
+    /// Unique indexes not only improve query performance but also ensure data uniqueness constraints.
+    /// When set as unique, the database checks field value uniqueness during insert or update operations.
+    /// </remarks>
     /// <value>
     /// 如果为 <c>true</c>，表示该索引为唯一索引，不允许重复值；
     /// 如果为 <c>false</c>，表示该索引为普通索引，允许重复值。
     /// 默认值为 <c>false</c>。
+    /// <para>
+    /// If <c>true</c>, indicates a unique index that does not allow duplicate values;
+    /// If <c>false</c>, indicates a regular index that allows duplicate values.
+    /// Default is <c>false</c>.
+    /// </para>
     /// </value>
-    /// <remarks>
-    /// <para>唯一索引不仅能提高查询性能，还能保证数据的唯一性约束。</para>
-    /// <para>当设置为唯一索引时，数据库会在插入或更新数据时检查该字段值的唯一性。</para>
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// [EntityIndex(Name = "IX_User_Email", Unique = true)]
-    /// public string Email { get; set; }
-    /// </code>
-    /// </example>
     public bool Unique { get; set; } = false;
 
     /// <summary>
     /// 获取或设置索引的名称。
     /// </summary>
-    /// <value>
-    /// 索引的名称字符串。不能为 <c>null</c> 或空字符串。
-    /// </value>
     /// <remarks>
-    /// <para>索引名称在数据库中必须唯一，建议使用有意义的命名规则。</para>
-    /// <para>推荐的命名规则：IX_表名_字段名，例如：IX_User_Email</para>
-    /// <para>如果未指定名称，某些ORM框架可能会按照默认规则自动生成索引名称。</para>
+    /// Gets or sets the index name.
+    /// Index names must be unique in the database; meaningful naming conventions are recommended.
+    /// Recommended naming convention: IX_TableName_FieldName, e.g., IX_User_Email.
+    /// If no name is specified, some ORM frameworks may auto-generate index names using default rules.
     /// </remarks>
-    /// <exception cref="System.ArgumentException">当设置的值为 <c>null</c> 或空字符串时抛出。</exception>
-    /// <example>
-    /// <code>
-    /// [EntityIndex(Name = "IX_User_CreateTime")]
-    /// public DateTime CreateTime { get; set; }
-    /// </code>
-    /// </example>
+    /// <value>索引的名称字符串，不能为 <c>null</c> 或空字符串 / Index name string, cannot be <c>null</c> or empty string</value>
+    /// <exception cref="ArgumentException">当设置的值为 <c>null</c> 或空字符串时抛出 / Thrown when the value is <c>null</c> or empty string</exception>
     public string Name { get; set; }
 
     /// <summary>
     /// 获取或设置该索引的排序方向。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the sort direction of the index.
+    /// Sort direction affects index storage order and query performance.
+    /// Ascending indexes are suitable for minimum value lookups in range queries, while descending indexes are suitable for maximum value lookups.
+    /// For time fields, if frequently querying recent records, descending indexes are recommended.
+    /// </remarks>
     /// <value>
     /// 如果为 <c>true</c>，表示升序排列（ASC）；
     /// 如果为 <c>false</c>，表示降序排列（DESC）。
     /// 默认值为 <c>true</c>。
+    /// <para>
+    /// If <c>true</c>, indicates ascending order (ASC);
+    /// If <c>false</c>, indicates descending order (DESC).
+    /// Default is <c>true</c>.
+    /// </para>
     /// </value>
-    /// <remarks>
-    /// <para>排序方向影响索引的存储顺序和查询性能。</para>
-    /// <para>升序索引适合范围查询中的最小值查找，降序索引适合最大值查找。</para>
-    /// <para>对于时间字段，如果经常查询最新记录，建议使用降序索引。</para>
-    /// </remarks>
-    /// <example>
-    /// <code>
-    /// // 升序索引，适合查询最早的记录
-    /// [EntityIndex(Name = "IX_User_CreateTime_ASC", IsAscending = true)]
-    /// public DateTime CreateTime { get; set; }
-    /// 
-    /// // 降序索引，适合查询最新的记录
-    /// [EntityIndex(Name = "IX_User_LastLoginTime_DESC", IsAscending = false)]
-    /// public DateTime LastLoginTime { get; set; }
-    /// </code>
-    /// </example>
     public bool IsAscending { get; set; } = true;
 
     /// <summary>
     /// 初始化 <see cref="EntityIndexAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="name">索引的名称。不能为 <c>null</c>、空字符串或仅包含空白字符。</param>
-    /// <exception cref="System.ArgumentException">当 <paramref name="name"/> 为 <c>null</c>、空字符串或仅包含空白字符时抛出。</exception>
     /// <remarks>
-    /// <para>此构造函数创建一个具有指定名称的索引特性实例。</para>
-    /// <para>默认情况下，创建的索引为非唯一索引（<see cref="Unique"/> = <c>false</c>）且为升序排列（<see cref="IsAscending"/> = <c>true</c>）。</para>
-    /// <para>如果需要创建唯一索引或降序索引，请在创建实例后设置相应的属性值。</para>
+    /// Initializes a new instance of the <see cref="EntityIndexAttribute"/> class with the specified name.
+    /// By default, creates a non-unique index (<see cref="Unique"/> = <c>false</c>) with ascending order (<see cref="IsAscending"/> = <c>true</c>).
+    /// To create a unique or descending index, set the corresponding property values after creating the instance.
     /// </remarks>
-    /// <example>
-    /// <code>
-    /// // 创建普通索引
-    /// [EntityIndex("IX_User_Email")]
-    /// public string Email { get; set; }
-    /// 
-    /// // 创建唯一索引
-    /// [EntityIndex("IX_User_Username", Unique = true)]
-    /// public string Username { get; set; }
-    /// 
-    /// // 创建降序索引
-    /// [EntityIndex("IX_User_CreateTime", IsAscending = false)]
-    /// public DateTime CreateTime { get; set; }
-    /// </code>
-    /// </example>
-    /// <seealso cref="Name"/>
-    /// <seealso cref="Unique"/>
-    /// <seealso cref="IsAscending"/>
+    /// <param name="name">索引的名称，不能为 <c>null</c>、空字符串或仅包含空白字符 / Index name, cannot be <c>null</c>, empty, or whitespace only</param>
+    /// <exception cref="ArgumentException">当 <paramref name="name"/> 为 <c>null</c>、空字符串或仅包含空白字符时抛出 / Thrown when <paramref name="name"/> is <c>null</c>, empty, or whitespace only</exception>
     public EntityIndexAttribute(string name)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name, nameof(name));

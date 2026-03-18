@@ -34,32 +34,35 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 增量种子特性，用于标记实体类支持自增种子值功能
+/// 增量种子特性，用于标记实体类支持自增种子值功能。
 /// </summary>
 /// <remarks>
-/// 此特性应用于实体类，用于标识该实体在数据库中使用自增种子值作为主键或唯一标识。
-/// 在ORM框架中，当实体类标记了此特性时，框架会自动处理主键的自增逻辑，
-/// 确保每次插入新记录时都能获得唯一的递增标识符。
-/// 
-/// 通常用于以下场景：
-/// - 数据库表的主键使用自增整数
-/// - 需要保证插入顺序的业务场景
-/// - 分布式环境下的唯一ID生成
+/// Increment seed attribute for marking entity classes that support auto-increment seed value functionality.
+/// When an entity class is marked with this attribute, the ORM framework automatically handles the primary key auto-increment logic,
+/// ensuring that each new record insertion receives a unique incrementing identifier.
+/// <para>
+/// Typically used in the following scenarios:
+/// </para>
+/// <list type="bullet">
+/// <item><description>Database tables using auto-increment integers as primary keys</description></item>
+/// <item><description>Business scenarios requiring insertion order guarantees</description></item>
+/// <item><description>Unique ID generation in distributed environments</description></item>
+/// </list>
 /// </remarks>
 /// <example>
 /// <code>
 /// [IncrementSeed]
 /// public class User
 /// {
-///     public int Id { get; set; }  // 自增主键
+///     public int Id { get; set; }  // Auto-increment primary key
 ///     public string Name { get; set; }
 ///     public DateTime CreateTime { get; set; }
 /// }
-/// 
+///
 /// [IncrementSeed]
 /// public class OrderLog
 /// {
-///     public long LogId { get; set; }  // 自增日志ID
+///     public long LogId { get; set; }  // Auto-increment log ID
 ///     public string Content { get; set; }
 /// }
 /// </code>
@@ -68,8 +71,11 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class IncrementSeedAttribute : System.Attribute
 {
     /// <summary>
-    /// 初始化 <see cref="IncrementSeedAttribute"/> 类的新实例
+    /// 初始化 <see cref="IncrementSeedAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="IncrementSeedAttribute"/> class.
+    /// </remarks>
     public IncrementSeedAttribute()
     {
     }

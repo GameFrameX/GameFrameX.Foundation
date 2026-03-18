@@ -34,19 +34,22 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 缓存表特性，用于标记实体类对应的数据库表支持缓存策略
+/// 缓存表特性，用于标记实体类对应的数据库表支持缓存策略。
 /// </summary>
 /// <remarks>
-/// 此特性应用于实体类，用于标识该实体对应的数据库表支持缓存功能。
-/// 在ORM框架中，当实体类标记了此特性时，框架会启用相应的缓存策略，
-/// 例如查询结果缓存、实体缓存、分布式缓存等，以提高数据访问性能。
-/// 
-/// 缓存表通常具有以下特征：
-/// - 数据读取频率高，写入频率相对较低
-/// - 数据相对稳定，不经常变化
-/// - 对查询性能有较高要求
-/// - 可以容忍一定程度的数据延迟
-/// - 需要考虑缓存失效和更新策略
+/// Cache table attribute for marking entity classes whose corresponding database tables support caching strategies.
+/// When an entity class is marked with this attribute, the ORM framework enables corresponding caching strategies,
+/// such as query result caching, entity caching, and distributed caching to improve data access performance.
+/// <para>
+/// Cache tables typically have the following characteristics:
+/// </para>
+/// <list type="bullet">
+/// <item><description>High read frequency, relatively low write frequency</description></item>
+/// <item><description>Relatively stable data, not frequently changing</description></item>
+/// <item><description>High requirements for query performance</description></item>
+/// <item><description>Can tolerate some degree of data latency</description></item>
+/// <item><description>Need to consider cache invalidation and update strategies</description></item>
+/// </list>
 /// </remarks>
 /// <example>
 /// <code>
@@ -58,7 +61,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 ///     public decimal Price { get; set; }
 ///     public DateTime LastModified { get; set; }
 /// }
-/// 
+///
 /// [CacheTable(CacheType = "Memory", ExpireMinutes = 10)]
 /// public class SystemConfiguration
 /// {
@@ -72,41 +75,60 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class CacheTableAttribute : System.Attribute
 {
     /// <summary>
-    /// 获取或设置缓存类型
+    /// 获取或设置缓存类型。
     /// </summary>
-    /// <value>缓存类型，如 "Memory"、"Redis"、"Distributed" 等</value>
+    /// <remarks>
+    /// Gets or sets the cache type, such as "Memory", "Redis", "Distributed", etc.
+    /// </remarks>
+    /// <value>缓存类型，如 "Memory"、"Redis"、"Distributed" 等 / Cache type, such as "Memory", "Redis", "Distributed", etc.</value>
     public string CacheType { get; set; } = "Memory";
 
     /// <summary>
-    /// 获取或设置缓存过期时间（分钟）
+    /// 获取或设置缓存过期时间（分钟）。
     /// </summary>
-    /// <value>缓存过期时间，单位为分钟，默认为30分钟</value>
+    /// <remarks>
+    /// Gets or sets the cache expiration time in minutes.
+    /// </remarks>
+    /// <value>缓存过期时间，单位为分钟，默认为30分钟 / Cache expiration time in minutes, default is 30 minutes</value>
     public int ExpireMinutes { get; set; } = 30;
 
     /// <summary>
-    /// 获取或设置缓存键前缀
+    /// 获取或设置缓存键前缀。
     /// </summary>
-    /// <value>缓存键的前缀，用于区分不同的缓存数据</value>
+    /// <remarks>
+    /// Gets or sets the cache key prefix for distinguishing different cache data.
+    /// </remarks>
+    /// <value>缓存键的前缀，用于区分不同的缓存数据 / Prefix for cache keys to distinguish different cache data</value>
     public string? KeyPrefix { get; set; }
 
     /// <summary>
-    /// 获取或设置是否启用缓存
+    /// 获取或设置是否启用缓存。
     /// </summary>
-    /// <value>指示是否启用缓存功能，默认为 true</value>
+    /// <remarks>
+    /// Gets or sets whether caching is enabled.
+    /// </remarks>
+    /// <value>指示是否启用缓存功能，默认为 <c>true</c> / Indicates whether caching is enabled, default is <c>true</c></value>
     public bool Enabled { get; set; } = true;
 
     /// <summary>
-    /// 初始化 <see cref="CacheTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="CacheTableAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="CacheTableAttribute"/> class.
+    /// </remarks>
     public CacheTableAttribute()
     {
     }
 
     /// <summary>
-    /// 初始化 <see cref="CacheTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="CacheTableAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="cacheType">缓存类型</param>
-    /// <param name="expireMinutes">缓存过期时间（分钟）</param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="CacheTableAttribute"/> class with the specified cache type and expiration time.
+    /// </remarks>
+    /// <param name="cacheType">缓存类型 / Cache type</param>
+    /// <param name="expireMinutes">缓存过期时间（分钟） / Cache expiration time in minutes</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="cacheType"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="cacheType"/> is <c>null</c></exception>
     public CacheTableAttribute(string cacheType, int expireMinutes = 30)
     {
         CacheType = cacheType ?? throw new ArgumentNullException(nameof(cacheType));

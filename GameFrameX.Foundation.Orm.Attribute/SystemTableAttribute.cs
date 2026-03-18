@@ -34,20 +34,23 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 系统表特性，用于标记实体类对应的数据库表为系统表
+/// 系统表特性，用于标记实体类对应的数据库表为系统表。
 /// </summary>
 /// <remarks>
-/// 此特性应用于实体类，用于标识该实体对应的数据库表是系统表。
-/// 在ORM框架中，当实体类标记了此特性时，框架会启用系统表相关的功能，
-/// 例如特殊的权限控制、系统级别的缓存策略、特殊的备份和恢复策略等。
-/// 
-/// 系统表通常具有以下特征：
-/// - 存储系统核心配置和元数据
-/// - 对数据一致性和完整性要求极高
-/// - 通常需要特殊的访问权限控制
-/// - 可能需要特殊的备份和恢复策略
-/// - 数据变更需要严格的审计和监控
-/// - 通常不允许普通用户直接操作
+/// System table attribute for marking entity classes whose corresponding database tables are system tables.
+/// When an entity class is marked with this attribute, the ORM framework enables system table-related features,
+/// such as special permission controls, system-level caching strategies, and special backup and recovery strategies.
+/// <para>
+/// System tables typically have the following characteristics:
+/// </para>
+/// <list type="bullet">
+/// <item><description>Store system core configurations and metadata</description></item>
+/// <item><description>High requirements for data consistency and integrity</description></item>
+/// <item><description>Usually require special access permission controls</description></item>
+/// <item><description>May require special backup and recovery strategies</description></item>
+/// <item><description>Data changes require strict auditing and monitoring</description></item>
+/// <item><description>Usually do not allow direct operations by ordinary users</description></item>
+/// </list>
 /// </remarks>
 /// <example>
 /// <code>
@@ -55,23 +58,23 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 /// public class SystemConfiguration
 /// {
 ///     public int Id { get; set; }
-///     public string ConfigKey { get; set; }    // 配置键
-///     public string ConfigValue { get; set; }  // 配置值
-///     public string Description { get; set; }  // 配置描述
-///     public bool IsActive { get; set; }       // 是否启用
+///     public string ConfigKey { get; set; }    // Configuration key
+///     public string ConfigValue { get; set; }  // Configuration value
+///     public string Description { get; set; }  // Configuration description
+///     public bool IsActive { get; set; }       // Is active
 ///     public DateTime CreatedTime { get; set; }
 ///     public DateTime? ModifiedTime { get; set; }
 /// }
-/// 
+///
 /// [SystemTable]
 /// public class SystemPermission
 /// {
 ///     public int Id { get; set; }
-///     public string PermissionCode { get; set; }  // 权限代码
-///     public string PermissionName { get; set; }  // 权限名称
-///     public string Module { get; set; }          // 所属模块
-///     public int Level { get; set; }              // 权限级别
-///     public bool IsSystemLevel { get; set; }     // 是否系统级权限
+///     public string PermissionCode { get; set; }  // Permission code
+///     public string PermissionName { get; set; }  // Permission name
+///     public string Module { get; set; }          // Module
+///     public int Level { get; set; }              // Permission level
+///     public bool IsSystemLevel { get; set; }     // Is system-level permission
 /// }
 /// </code>
 /// </example>
@@ -79,8 +82,11 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class SystemTableAttribute : System.Attribute
 {
     /// <summary>
-    /// 初始化 <see cref="SystemTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="SystemTableAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="SystemTableAttribute"/> class.
+    /// </remarks>
     public SystemTableAttribute()
     {
     }

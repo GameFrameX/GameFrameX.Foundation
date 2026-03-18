@@ -34,19 +34,22 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 日志表特性，用于标记实体类对应的数据库表为日志表
+/// 日志表特性，用于标记实体类对应的数据库表为日志表。
 /// </summary>
 /// <remarks>
-/// 此特性应用于实体类，用于标识该实体对应的数据库表是日志表。
-/// 在ORM框架中，当实体类标记了此特性时，框架会启用日志表相关的功能，
-/// 例如自动记录操作日志、审计跟踪、数据变更历史等。
-/// 
-/// 日志表通常具有以下特征：
-/// - 只允许插入操作，不允许更新和删除
-/// - 包含时间戳字段记录操作时间
-/// - 包含操作类型字段（INSERT、UPDATE、DELETE等）
-/// - 可能包含操作用户信息
-/// - 数据量通常较大，需要考虑分区和归档策略
+/// Log table attribute for marking entity classes whose corresponding database tables are log tables.
+/// When an entity class is marked with this attribute, the ORM framework enables log table-related features,
+/// such as automatic operation logging, audit tracking, and data change history.
+/// <para>
+/// Log tables typically have the following characteristics:
+/// </para>
+/// <list type="bullet">
+/// <item><description>Only insert operations allowed, no updates or deletes</description></item>
+/// <item><description>Contains timestamp fields for recording operation time</description></item>
+/// <item><description>Contains operation type fields (INSERT, UPDATE, DELETE, etc.)</description></item>
+/// <item><description>May contain operation user information</description></item>
+/// <item><description>Large data volume, requiring partitioning and archiving strategies</description></item>
+/// </list>
 /// </remarks>
 /// <example>
 /// <code>
@@ -55,14 +58,14 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 /// {
 ///     public long Id { get; set; }
 ///     public int UserId { get; set; }
-///     public string Operation { get; set; }  // 操作类型
-///     public string TableName { get; set; }  // 操作的表名
-///     public string OldValue { get; set; }   // 操作前的值
-///     public string NewValue { get; set; }   // 操作后的值
-///     public DateTime CreatedTime { get; set; }  // 操作时间
-///     public string CreatedBy { get; set; }  // 操作用户
+///     public string Operation { get; set; }  // Operation type
+///     public string TableName { get; set; }  // Table name operated on
+///     public string OldValue { get; set; }   // Value before operation
+///     public string NewValue { get; set; }   // Value after operation
+///     public DateTime CreatedTime { get; set; }  // Operation time
+///     public string CreatedBy { get; set; }  // Operation user
 /// }
-/// 
+///
 /// [LogTable]
 /// public class SystemErrorLog
 /// {
@@ -71,7 +74,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 ///     public string StackTrace { get; set; }
 ///     public string Source { get; set; }
 ///     public DateTime LogTime { get; set; }
-///     public string Level { get; set; }  // ERROR, WARN, INFO等
+///     public string Level { get; set; }  // ERROR, WARN, INFO, etc.
 /// }
 /// </code>
 /// </example>
@@ -79,8 +82,11 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class LogTableAttribute : System.Attribute
 {
     /// <summary>
-    /// 初始化 <see cref="LogTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="LogTableAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="LogTableAttribute"/> class.
+    /// </remarks>
     public LogTableAttribute()
     {
     }

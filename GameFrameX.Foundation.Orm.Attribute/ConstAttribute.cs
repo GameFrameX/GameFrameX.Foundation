@@ -34,11 +34,12 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 常量特性，用于标记类、方法、属性等为常量定义
+/// 常量特性，用于标记类、方法、属性等为常量定义。
 /// </summary>
 /// <remarks>
-/// 此特性可以应用于任何目标元素，用于标识该元素包含常量定义或具有常量性质。
-/// 在ORM框架中，可以用于标记数据库常量、配置常量等。
+/// Constant attribute for marking classes, methods, or properties as constant definitions.
+/// This attribute can be applied to any target element to indicate that the element contains constant definitions or has constant nature.
+/// In ORM frameworks, it can be used to mark database constants, configuration constants, etc.
 /// </remarks>
 /// <example>
 /// <code>
@@ -47,7 +48,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 /// {
 ///     public const string Version = "1.0.0";
 /// }
-/// 
+///
 /// [Const("StatusCode")]
 /// public enum UserStatus
 /// {
@@ -60,16 +61,22 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class ConstAttribute : System.Attribute
 {
     /// <summary>
-    /// 获取或设置常量的名称
+    /// 获取或设置常量的名称。
     /// </summary>
-    /// <value>常量的名称标识符</value>
+    /// <remarks>
+    /// Gets or sets the constant name.
+    /// </remarks>
+    /// <value>常量的名称标识符 / Constant name identifier</value>
     public string Name { get; set; }
 
     /// <summary>
-    /// 初始化 <see cref="ConstAttribute"/> 类的新实例
+    /// 初始化 <see cref="ConstAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="name">常量的名称，用于标识该常量的用途或类型</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="name"/> 为 null 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ConstAttribute"/> class with the specified name.
+    /// </remarks>
+    /// <param name="name">常量的名称，用于标识该常量的用途或类型 / Constant name for identifying the purpose or type of the constant</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="name"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="name"/> is <c>null</c></exception>
     public ConstAttribute(string name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));

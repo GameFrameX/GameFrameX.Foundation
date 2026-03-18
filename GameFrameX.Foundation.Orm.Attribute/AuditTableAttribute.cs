@@ -34,19 +34,22 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 审计表特性，用于标记实体类对应的数据库表需要进行审计跟踪
+/// 审计表特性，用于标记实体类对应的数据库表需要进行审计跟踪。
 /// </summary>
 /// <remarks>
-/// 此特性应用于实体类，用于标识该实体对应的数据库表需要进行审计跟踪。
-/// 在ORM框架中，当实体类标记了此特性时，框架会自动记录数据的变更历史，
-/// 包括创建、更新、删除等操作的详细信息，用于合规性要求和安全审计。
-/// 
-/// 审计表通常记录以下信息：
-/// - 操作类型（INSERT、UPDATE、DELETE）
-/// - 操作时间和操作用户
-/// - 变更前后的数据值
-/// - 操作来源（IP地址、应用程序等）
-/// - 业务上下文信息
+/// Audit table attribute for marking entity classes that require audit tracking for their corresponding database tables.
+/// When an entity class is marked with this attribute, the ORM framework automatically records data change history,
+/// including detailed information about create, update, and delete operations for compliance and security auditing.
+/// <para>
+/// Audit tables typically record the following information:
+/// </para>
+/// <list type="bullet">
+/// <item><description>Operation type (INSERT, UPDATE, DELETE)</description></item>
+/// <item><description>Operation timestamp and user</description></item>
+/// <item><description>Before and after data values</description></item>
+/// <item><description>Operation source (IP address, application, etc.)</description></item>
+/// <item><description>Business context information</description></item>
+/// </list>
 /// </remarks>
 /// <example>
 /// <code>
@@ -58,7 +61,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 ///     public decimal Balance { get; set; }
 ///     public DateTime LastLoginTime { get; set; }
 /// }
-/// 
+///
 /// [AuditTable(AuditLevel = AuditLevel.ChangesOnly)]
 /// public class SystemSettings
 /// {
@@ -72,46 +75,67 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class AuditTableAttribute : System.Attribute
 {
     /// <summary>
-    /// 获取或设置审计级别
+    /// 获取或设置审计级别。
     /// </summary>
-    /// <value>审计级别，控制审计的详细程度</value>
+    /// <remarks>
+    /// Gets or sets the audit level, which controls the level of detail for auditing.
+    /// </remarks>
+    /// <value>审计级别，控制审计的详细程度 / Audit level, controls the level of detail for auditing</value>
     public AuditLevel AuditLevel { get; set; } = AuditLevel.ChangesOnly;
 
     /// <summary>
-    /// 获取或设置是否包含用户信息
+    /// 获取或设置是否包含用户信息。
     /// </summary>
-    /// <value>指示是否在审计记录中包含操作用户信息，默认为 true</value>
+    /// <remarks>
+    /// Gets or sets whether to include user information in audit records.
+    /// </remarks>
+    /// <value>指示是否在审计记录中包含操作用户信息，默认为 <c>true</c> / Indicates whether to include operating user information in audit records, default is <c>true</c></value>
     public bool IncludeUserInfo { get; set; } = true;
 
     /// <summary>
-    /// 获取或设置是否包含IP地址
+    /// 获取或设置是否包含IP地址。
     /// </summary>
-    /// <value>指示是否在审计记录中包含客户端IP地址，默认为 false</value>
+    /// <remarks>
+    /// Gets or sets whether to include IP address in audit records.
+    /// </remarks>
+    /// <value>指示是否在审计记录中包含客户端IP地址，默认为 <c>false</c> / Indicates whether to include client IP address in audit records, default is <c>false</c></value>
     public bool IncludeIpAddress { get; set; } = false;
 
     /// <summary>
-    /// 获取或设置审计表名称
+    /// 获取或设置审计表名称。
     /// </summary>
-    /// <value>存储审计记录的表名称，如果为空则使用默认命名规则</value>
+    /// <remarks>
+    /// Gets or sets the audit table name. If null, the default naming convention is used.
+    /// </remarks>
+    /// <value>存储审计记录的表名称，如果为空则使用默认命名规则 / Table name for storing audit records, uses default naming convention if null</value>
     public string? AuditTableName { get; set; }
 
     /// <summary>
-    /// 获取或设置是否启用审计
+    /// 获取或设置是否启用审计。
     /// </summary>
-    /// <value>指示是否启用审计功能，默认为 true</value>
+    /// <remarks>
+    /// Gets or sets whether auditing is enabled.
+    /// </remarks>
+    /// <value>指示是否启用审计功能，默认为 <c>true</c> / Indicates whether auditing is enabled, default is <c>true</c></value>
     public bool Enabled { get; set; } = true;
 
     /// <summary>
-    /// 初始化 <see cref="AuditTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="AuditTableAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="AuditTableAttribute"/> class.
+    /// </remarks>
     public AuditTableAttribute()
     {
     }
 
     /// <summary>
-    /// 初始化 <see cref="AuditTableAttribute"/> 类的新实例
+    /// 初始化 <see cref="AuditTableAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="auditLevel">审计级别</param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="AuditTableAttribute"/> class with the specified audit level.
+    /// </remarks>
+    /// <param name="auditLevel">审计级别 / The audit level</param>
     public AuditTableAttribute(AuditLevel auditLevel)
     {
         AuditLevel = auditLevel;
@@ -119,27 +143,42 @@ public sealed class AuditTableAttribute : System.Attribute
 }
 
 /// <summary>
-/// 审计级别枚举
+/// 审计级别枚举。
 /// </summary>
+/// <remarks>
+/// Audit level enumeration.
+/// </remarks>
 public enum AuditLevel
 {
     /// <summary>
-    /// 不进行审计
+    /// 不进行审计。
     /// </summary>
+    /// <remarks>
+    /// No auditing.
+    /// </remarks>
     None = 0,
 
     /// <summary>
-    /// 仅审计数据变更
+    /// 仅审计数据变更。
     /// </summary>
+    /// <remarks>
+    /// Audit data changes only.
+    /// </remarks>
     ChangesOnly = 1,
 
     /// <summary>
-    /// 审计所有操作（包括查询）
+    /// 审计所有操作（包括查询）。
     /// </summary>
+    /// <remarks>
+    /// Audit all operations (including queries).
+    /// </remarks>
     Full = 2,
 
     /// <summary>
-    /// 自定义审计规则
+    /// 自定义审计规则。
     /// </summary>
+    /// <remarks>
+    /// Custom audit rules.
+    /// </remarks>
     Custom = 3
 }

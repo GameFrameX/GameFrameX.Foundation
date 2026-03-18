@@ -34,12 +34,13 @@
 namespace GameFrameX.Foundation.Orm.Attribute;
 
 /// <summary>
-/// 自定义统一结果特性，用于标记需要自定义结果统一处理的类或方法
+/// 自定义统一结果特性，用于标记需要自定义结果统一处理的类或方法。
 /// </summary>
 /// <remarks>
-/// 此特性用于在ORM框架中标识需要进行自定义结果统一处理的元素。
-/// 当应用此特性时，框架会根据指定的名称应用相应的结果统一策略，
-/// 例如数据格式转换、结果包装、异常处理等。
+/// Custom unified result attribute for marking classes or methods that require custom result unification handling.
+/// This attribute is used in ORM frameworks to identify elements that need custom result unification processing.
+/// When this attribute is applied, the framework applies the corresponding result unification strategy based on the specified name,
+/// such as data format conversion, result wrapping, and exception handling.
 /// </remarks>
 /// <example>
 /// <code>
@@ -48,7 +49,7 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 /// {
 ///     public User GetUser(int id) => userService.GetById(id);
 /// }
-/// 
+///
 /// [CustomUnifyResult("DatabaseResult")]
 /// public class UserRepository
 /// {
@@ -60,16 +61,22 @@ namespace GameFrameX.Foundation.Orm.Attribute;
 public sealed class CustomUnifyResultAttribute : System.Attribute
 {
     /// <summary>
-    /// 获取或设置自定义统一结果处理器的名称
+    /// 获取或设置自定义统一结果处理器的名称。
     /// </summary>
-    /// <value>统一结果处理器的名称标识符</value>
+    /// <remarks>
+    /// Gets or sets the name of the custom unified result handler.
+    /// </remarks>
+    /// <value>统一结果处理器的名称标识符 / Unified result handler name identifier</value>
     public string Name { get; set; }
 
     /// <summary>
-    /// 初始化 <see cref="CustomUnifyResultAttribute"/> 类的新实例
+    /// 初始化 <see cref="CustomUnifyResultAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="name">自定义统一结果处理器的名称，用于标识使用哪种结果统一策略</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="name"/> 为 null 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="CustomUnifyResultAttribute"/> class with the specified handler name.
+    /// </remarks>
+    /// <param name="name">自定义统一结果处理器的名称，用于标识使用哪种结果统一策略 / Custom unified result handler name for identifying which result unification strategy to use</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="name"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="name"/> is <c>null</c></exception>
     public CustomUnifyResultAttribute(string name)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
