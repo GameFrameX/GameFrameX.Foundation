@@ -34,12 +34,19 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 机构Id接口过滤器
+/// 机构Id接口过滤器。
 /// </summary>
+/// <remarks>
+/// Organization ID filter interface.
+/// </remarks>
 public interface IOrganizationIdFilter
 {
     /// <summary>
-    /// 创建者部门Id
+    /// 获取或设置创建者部门Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator's organization ID.
+    /// </remarks>
+    /// <value>创建者部门Id / Creator's organization ID</value>
     long? CreateOrganizationId { get; set; }
 }

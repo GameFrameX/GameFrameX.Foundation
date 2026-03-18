@@ -36,43 +36,70 @@ using System.ComponentModel;
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 可审计实体接口
+/// 可审计实体接口。
 /// </summary>
+/// <remarks>
+/// Auditable entity interface.
+/// </remarks>
 public interface IAuditableEntity
 {
     /// <summary>
-    /// 创建时间
+    /// 获取或设置创建时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creation time.
+    /// </remarks>
+    /// <value>创建时间 / Creation time</value>
     [Description("创建时间")]
     DateTime? CreateTime { get; set; }
 
     /// <summary>
-    /// 更新时间
+    /// 获取或设置更新时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the update time.
+    /// </remarks>
+    /// <value>更新时间 / Update time</value>
     [Description("更新时间")]
     DateTime? UpdateTime { get; set; }
 
     /// <summary>
-    /// 创建者Id
+    /// 获取或设置创建者Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator ID.
+    /// </remarks>
+    /// <value>创建者Id / Creator ID</value>
     [Description("创建者Id")]
     long? CreateUserId { get; set; }
 
     /// <summary>
-    /// 创建者姓名
+    /// 获取或设置创建者姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator name.
+    /// </remarks>
+    /// <value>创建者姓名 / Creator name</value>
     [Description("创建者姓名")]
     string? CreateUserName { get; set; }
 
     /// <summary>
-    /// 修改者Id
+    /// 获取或设置修改者Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the modifier ID.
+    /// </remarks>
+    /// <value>修改者Id / Modifier ID</value>
     [Description("修改者Id")]
     long? UpdateUserId { get; set; }
 
     /// <summary>
-    /// 修改者姓名
+    /// 获取或设置修改者姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the modifier name.
+    /// </remarks>
+    /// <value>修改者姓名 / Modifier name</value>
     [Description("修改者姓名")]
     string? UpdateUserName { get; set; }
 }

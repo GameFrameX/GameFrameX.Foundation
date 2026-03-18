@@ -36,27 +36,41 @@ using GameFrameX.Foundation.Orm.Entity.Filter;
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 支持多租户的实体基类
+/// 支持多租户的实体基类。
 /// </summary>
+/// <remarks>
+/// Entity base class with multi-tenant support.
+/// </remarks>
 public abstract class EntityTenantBase : EntityBase, ITenantIdFilter
 {
     /// <summary>
-    /// 租户Id
+    /// 获取或设置租户Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the tenant ID.
+    /// </remarks>
+    /// <value>租户Id / Tenant ID</value>
     [System.ComponentModel.Description("租户Id")]
     public virtual long? TenantId { get; set; }
 }
 
 /// <summary>
-/// 支持多租户的泛型实体基类
+/// 支持多租户的泛型实体基类。
 /// </summary>
-/// <typeparam name="TKey">主键类型</typeparam>
+/// <remarks>
+/// Generic entity base class with multi-tenant support.
+/// </remarks>
+/// <typeparam name="TKey">主键类型 / Primary key type</typeparam>
 public abstract class EntityTenantBase<TKey> : EntityBase<TKey>, ITenantIdFilter
     where TKey : notnull
 {
     /// <summary>
-    /// 租户Id
+    /// 获取或设置租户Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the tenant ID.
+    /// </remarks>
+    /// <value>租户Id / Tenant ID</value>
     [System.ComponentModel.Description("租户Id")]
     public virtual long? TenantId { get; set; }
 }

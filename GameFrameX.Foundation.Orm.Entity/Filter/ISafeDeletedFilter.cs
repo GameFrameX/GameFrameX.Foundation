@@ -34,27 +34,46 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 软删除标记
+/// 软删除标记接口过滤器。
 /// </summary>
+/// <remarks>
+/// Soft delete filter interface.
+/// </remarks>
 public interface ISafeDeletedFilter
 {
     /// <summary>
-    /// 是否删除
+    /// 获取或设置是否删除。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets whether the entity is deleted.
+    /// </remarks>
+    /// <value><c>true</c> 表示已删除；<c>false</c> 表示未删除 / <c>true</c> for deleted; <c>false</c> for not deleted</value>
     bool? IsDeleted { get; set; }
 
     /// <summary>
-    /// 删除时间
+    /// 获取或设置删除时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deletion time.
+    /// </remarks>
+    /// <value>删除时间 / Deletion time</value>
     long? DeleteTime { get; set; }
 
     /// <summary>
-    /// 删除人Id
+    /// 获取或设置删除人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deleter ID.
+    /// </remarks>
+    /// <value>删除人Id / Deleter ID</value>
     long? DeletedId { get; set; }
 
     /// <summary>
-    /// 删除人姓名
+    /// 获取或设置删除人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deleter name.
+    /// </remarks>
+    /// <value>删除人姓名 / Deleter name</value>
     string? DeletedName { get; set; }
 }

@@ -36,13 +36,20 @@ using System.ComponentModel.DataAnnotations;
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 框架实体基类Id
+/// 框架实体基类Id。
 /// </summary>
+/// <remarks>
+/// Framework entity base class with ID.
+/// </remarks>
 public abstract class EntityBaseId : IEntity<long>
 {
     /// <summary>
-    /// 主键Id
+    /// 获取或设置主键Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the primary key ID.
+    /// </remarks>
+    /// <value>主键Id / Primary key ID</value>
     [Key]
     [Required]
     [Editable(false, AllowInitialValue = true)]
@@ -51,15 +58,22 @@ public abstract class EntityBaseId : IEntity<long>
 }
 
 /// <summary>
-/// 泛型实体基类Id
+/// 泛型实体基类Id。
 /// </summary>
-/// <typeparam name="TKey">主键类型</typeparam>
+/// <remarks>
+/// Generic entity base class with ID.
+/// </remarks>
+/// <typeparam name="TKey">主键类型 / Primary key type</typeparam>
 public abstract class EntityBaseId<TKey> : IEntity<TKey>
     where TKey : notnull
 {
     /// <summary>
-    /// 主键Id
+    /// 获取或设置主键Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the primary key ID.
+    /// </remarks>
+    /// <value>主键Id / Primary key ID</value>
     [Key]
     [Required]
     [Editable(false, AllowInitialValue = true)]

@@ -34,17 +34,28 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 搜索查询过滤器
+/// 搜索查询过滤器接口。
 /// </summary>
+/// <remarks>
+/// Search query filter interface.
+/// </remarks>
 public interface ISelectFilter
 {
     /// <summary>
-    /// 名称
+    /// 获取或设置名称。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the name.
+    /// </remarks>
+    /// <value>名称 / Name</value>
     string? Name { get; set; }
 
     /// <summary>
-    /// 详细描述
+    /// 获取或设置详细描述。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the detailed description.
+    /// </remarks>
+    /// <value>详细描述 / Detailed description</value>
     string? Description { get; set; }
 }

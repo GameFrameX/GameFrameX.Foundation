@@ -34,27 +34,46 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 更新标记
+/// 更新标记接口过滤器。
 /// </summary>
+/// <remarks>
+/// Update filter interface.
+/// </remarks>
 public interface ISafeUpdateFilter
 {
     /// <summary>
-    /// 更新次数
+    /// 获取或设置更新次数。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the update count.
+    /// </remarks>
+    /// <value>更新次数 / Update count</value>
     int? UpdateCount { get; set; }
 
     /// <summary>
-    /// 更新时间
+    /// 获取或设置更新时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the update time.
+    /// </remarks>
+    /// <value>更新时间 / Update time</value>
     long? UpdateTime { get; set; }
 
     /// <summary>
-    /// 更新人Id
+    /// 获取或设置更新人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the updater ID.
+    /// </remarks>
+    /// <value>更新人Id / Updater ID</value>
     long? UpdatedId { get; set; }
 
     /// <summary>
-    /// 更新人姓名
+    /// 获取或设置更新人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the updater name.
+    /// </remarks>
+    /// <value>更新人姓名 / Updater name</value>
     string? UpdatedName { get; set; }
 }

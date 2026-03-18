@@ -36,39 +36,61 @@ using GameFrameX.Foundation.Orm.Entity.Filter;
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 框架实体基类
+/// 支持选择查询的框架实体基类。
 /// </summary>
+/// <remarks>
+/// Framework entity base class with select filter support.
+/// </remarks>
 public abstract class EntitySelectBase : EntityBase, ISelectFilter
 {
     /// <summary>
-    /// 名称
+    /// 获取或设置名称。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the name.
+    /// </remarks>
+    /// <value>名称 / Name</value>
     [System.ComponentModel.Description("名称")]
     public virtual string? Name { get; set; }
 
     /// <summary>
-    /// 详细描述
+    /// 获取或设置详细描述。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the detailed description.
+    /// </remarks>
+    /// <value>详细描述 / Detailed description</value>
     [System.ComponentModel.Description("详细描述")]
     public virtual string? Description { get; set; }
 }
 
 /// <summary>
-/// 泛型框架实体基类（支持选择查询）
+/// 支持选择查询的泛型框架实体基类。
 /// </summary>
-/// <typeparam name="TKey">主键类型</typeparam>
+/// <remarks>
+/// Generic framework entity base class with select filter support.
+/// </remarks>
+/// <typeparam name="TKey">主键类型 / Primary key type</typeparam>
 public abstract class EntitySelectBase<TKey> : EntityBase<TKey>, ISelectFilter
     where TKey : notnull
 {
     /// <summary>
-    /// 名称
+    /// 获取或设置名称。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the name.
+    /// </remarks>
+    /// <value>名称 / Name</value>
     [System.ComponentModel.Description("名称")]
     public virtual string? Name { get; set; }
 
     /// <summary>
-    /// 详细描述
+    /// 获取或设置详细描述。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the detailed description.
+    /// </remarks>
+    /// <value>详细描述 / Detailed description</value>
     [System.ComponentModel.Description("详细描述")]
     public virtual string? Description { get; set; }
 }

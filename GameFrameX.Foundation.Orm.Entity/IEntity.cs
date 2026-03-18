@@ -34,23 +34,33 @@
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 实体基础接口（标记接口）
-/// <para>用于标识一个类为实体类型，支持类型约束和识别</para>
+/// 实体基础接口（标记接口）。
 /// </summary>
+/// <remarks>
+/// <para>用于标识一个类为实体类型，支持类型约束和识别。</para>
+/// <para>Marker interface used to identify a class as an entity type, supporting type constraints and recognition.</para>
+/// </remarks>
 public interface IEntity
 {
     // 标记接口，用于类型约束和识别
 }
 
 /// <summary>
-/// 带主键的实体接口
+/// 带主键的实体接口。
 /// </summary>
-/// <typeparam name="TKey">主键类型</typeparam>
+/// <remarks>
+/// Entity interface with primary key.
+/// </remarks>
+/// <typeparam name="TKey">主键类型 / Primary key type</typeparam>
 public interface IEntity<TKey> : IEntity
 {
     /// <summary>
-    /// 主键
+    /// 获取或设置主键。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the primary key.
+    /// </remarks>
+    /// <value>主键Id / Primary key ID</value>
     [System.ComponentModel.Description("主键Id")]
     TKey Id { get; set; }
 }

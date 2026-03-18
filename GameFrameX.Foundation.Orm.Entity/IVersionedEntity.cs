@@ -36,13 +36,20 @@ using System.ComponentModel;
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 版本控制实体接口（乐观锁）
+/// 版本控制实体接口（乐观锁）。
 /// </summary>
+/// <remarks>
+/// Versioned entity interface (optimistic locking).
+/// </remarks>
 public interface IVersionedEntity
 {
     /// <summary>
-    /// 版本号（用于乐观锁）
+    /// 获取或设置版本号（用于乐观锁）。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the version number (used for optimistic locking).
+    /// </remarks>
+    /// <value>版本号（用于乐观锁） / Version number (for optimistic locking)</value>
     [Description("版本号（用于乐观锁）")]
     long? Version { get; set; }
 }

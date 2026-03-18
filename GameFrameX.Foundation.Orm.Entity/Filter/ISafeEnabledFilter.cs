@@ -34,12 +34,19 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 数据启用状态接口过滤器
+/// 数据启用状态接口过滤器。
 /// </summary>
+/// <remarks>
+/// Data enabled status filter interface.
+/// </remarks>
 public interface ISafeEnabledFilter
 {
     /// <summary>
-    /// 是否启用,true:启用，false:禁用，null:未设置(启用)
+    /// 获取或设置是否启用。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets whether the entity is enabled.
+    /// </remarks>
+    /// <value><c>true</c> 表示启用；<c>false</c> 表示禁用；<c>null</c> 表示未设置（启用） / <c>true</c> for enabled; <c>false</c> for disabled; <c>null</c> for unset (enabled)</value>
     bool? IsEnabled { get; set; }
 }

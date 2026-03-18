@@ -34,12 +34,19 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 租户Id接口过滤器
+/// 租户Id接口过滤器。
 /// </summary>
+/// <remarks>
+/// Tenant ID filter interface.
+/// </remarks>
 public interface ITenantIdFilter
 {
     /// <summary>
-    /// 租户Id
+    /// 获取或设置租户Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the tenant ID.
+    /// </remarks>
+    /// <value>租户Id / Tenant ID</value>
     long? TenantId { get; set; }
 }

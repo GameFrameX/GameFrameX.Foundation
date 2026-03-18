@@ -37,177 +37,281 @@ using GameFrameX.Foundation.Orm.Entity.Filter;
 namespace GameFrameX.Foundation.Orm.Entity;
 
 /// <summary>
-/// 框架实体基类
+/// 框架实体基类。
 /// </summary>
+/// <remarks>
+/// Framework entity base class.
+/// </remarks>
 public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedEntity, ISafeEnabledFilter, ISafeCreatedFilter, ISafeUpdateFilter
 {
     /// <summary>
-    /// 创建人Id
+    /// 获取或设置创建人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator ID.
+    /// </remarks>
+    /// <value>创建人Id / Creator ID</value>
     [Description("创建人Id")]
     public virtual long? CreatedId { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// 获取或设置创建时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creation time.
+    /// </remarks>
+    /// <value>创建时间 / Creation time</value>
     [Description("创建时间")]
     public virtual long CreatedTime { get; set; }
 
     /// <summary>
-    /// 创建人姓名
+    /// 获取或设置创建人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator name.
+    /// </remarks>
+    /// <value>创建人姓名 / Creator name</value>
     [Description("创建人姓名")]
     public virtual string? CreatedName { get; set; }
 
     /// <summary>
-    /// 更新次数
+    /// 获取或设置更新次数。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the update count.
+    /// </remarks>
+    /// <value>更新次数 / Update count</value>
     [Description("更新次数")]
     public virtual int? UpdateCount { get; set; }
 
     /// <summary>
-    /// 更新时间
+    /// 获取或设置更新时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the update time.
+    /// </remarks>
+    /// <value>更新时间 / Update time</value>
     [Description("更新时间")]
     public virtual long? UpdateTime { get; set; }
 
     /// <summary>
-    /// 更新人Id
+    /// 获取或设置更新人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the updater ID.
+    /// </remarks>
+    /// <value>更新人Id / Updater ID</value>
     [Description("更新人Id")]
     public virtual long? UpdatedId { get; set; }
 
     /// <summary>
-    /// 更新人姓名
+    /// 获取或设置更新人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the updater name.
+    /// </remarks>
+    /// <value>更新人姓名 / Updater name</value>
     [Description("更新人姓名")]
     public virtual string? UpdatedName { get; set; }
 
     /// <summary>
-    /// 软删除
+    /// 获取或设置软删除标记。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the soft delete flag.
+    /// </remarks>
+    /// <value><c>true</c> 表示已删除；<c>false</c> 表示未删除；<c>null</c> 表示未设置（未删除） / <c>true</c> for deleted; <c>false</c> for not deleted; <c>null</c> for unset (not deleted)</value>
     [Description("软删除标记,true:删除,false:未删除,null:未设置(未删除)")]
     public virtual bool? IsDeleted { get; set; } = false;
 
     /// <summary>
-    /// 删除时间
+    /// 获取或设置删除时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deletion time.
+    /// </remarks>
+    /// <value>删除时间 / Deletion time</value>
     [Description("删除时间")]
     public virtual long? DeleteTime { get; set; }
 
     /// <summary>
-    /// 删除人Id
+    /// 获取或设置删除人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deleter ID.
+    /// </remarks>
+    /// <value>删除人Id / Deleter ID</value>
     [Description("删除人Id")]
     public virtual long? DeletedId { get; set; }
 
     /// <summary>
-    /// 删除人姓名
+    /// 获取或设置删除人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deleter name.
+    /// </remarks>
+    /// <value>删除人姓名 / Deleter name</value>
     [Description("删除人姓名")]
     public virtual string? DeletedName { get; set; }
 
     /// <summary>
-    /// 版本号（用于乐观锁）
+    /// 获取或设置版本号（用于乐观锁）。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the version number (used for optimistic locking).
+    /// </remarks>
+    /// <value>版本号（用于乐观锁） / Version number (for optimistic locking)</value>
     [Description("版本号（用于乐观锁）")]
     public virtual long? Version { get; set; } = 0;
 
     /// <summary>
-    /// 是否启用该实体或功能的标识
+    /// 获取或设置是否启用该实体或功能的标识。
     /// </summary>
-    /// <value>
-    /// true表示启用，false表示禁用，null表示未设置
-    /// </value>
+    /// <remarks>
+    /// Gets or sets the flag indicating whether the entity or feature is enabled.
+    /// </remarks>
+    /// <value><c>true</c> 表示启用；<c>false</c> 表示禁用；<c>null</c> 表示未设置（启用） / <c>true</c> for enabled; <c>false</c> for disabled; <c>null</c> for unset (enabled)</value>
     [Description("是否启用,true:启用，false:禁用，null:未设置(启用)")]
     public virtual bool? IsEnabled { get; set; }
 }
 
 /// <summary>
-/// 泛型框架实体基类
+/// 泛型框架实体基类。
 /// </summary>
-/// <typeparam name="TKey">主键类型</typeparam>
+/// <remarks>
+/// Generic framework entity base class.
+/// </remarks>
+/// <typeparam name="TKey">主键类型 / Primary key type</typeparam>
 public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter, IVersionedEntity, ISafeEnabledFilter, ISafeCreatedFilter, ISafeUpdateFilter
     where TKey : notnull
 {
     /// <summary>
-    /// 创建人Id
+    /// 获取或设置创建人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator ID.
+    /// </remarks>
+    /// <value>创建人Id / Creator ID</value>
     [Description("创建人Id")]
     public virtual long? CreatedId { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// 获取或设置创建时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creation time.
+    /// </remarks>
+    /// <value>创建时间 / Creation time</value>
     [Description("创建时间")]
     public virtual long CreatedTime { get; set; }
 
     /// <summary>
-    /// 创建人姓名
+    /// 获取或设置创建人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator name.
+    /// </remarks>
+    /// <value>创建人姓名 / Creator name</value>
     [Description("创建人姓名")]
     public virtual string? CreatedName { get; set; }
 
     /// <summary>
-    /// 更新次数
+    /// 获取或设置更新次数。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the update count.
+    /// </remarks>
+    /// <value>更新次数 / Update count</value>
     [Description("更新次数")]
     public virtual int? UpdateCount { get; set; }
 
     /// <summary>
-    /// 更新时间
+    /// 获取或设置更新时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the update time.
+    /// </remarks>
+    /// <value>更新时间 / Update time</value>
     [Description("更新时间")]
     public virtual long? UpdateTime { get; set; }
 
     /// <summary>
-    /// 更新人Id
+    /// 获取或设置更新人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the updater ID.
+    /// </remarks>
+    /// <value>更新人Id / Updater ID</value>
     [Description("更新人Id")]
     public virtual long? UpdatedId { get; set; }
 
     /// <summary>
-    /// 更新人姓名
+    /// 获取或设置更新人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the updater name.
+    /// </remarks>
+    /// <value>更新人姓名 / Updater name</value>
     [Description("更新人姓名")]
     public virtual string? UpdatedName { get; set; }
 
     /// <summary>
-    /// 软删除
+    /// 获取或设置软删除标记。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the soft delete flag.
+    /// </remarks>
+    /// <value><c>true</c> 表示已删除；<c>false</c> 表示未删除；<c>null</c> 表示未设置（未删除） / <c>true</c> for deleted; <c>false</c> for not deleted; <c>null</c> for unset (not deleted)</value>
     [Description("软删除标记,true:删除,false:未删除,null:未设置(未删除)")]
     public virtual bool? IsDeleted { get; set; } = false;
 
     /// <summary>
-    /// 删除时间
+    /// 获取或设置删除时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deletion time.
+    /// </remarks>
+    /// <value>删除时间 / Deletion time</value>
     [Description("删除时间")]
     public virtual long? DeleteTime { get; set; }
 
     /// <summary>
-    /// 删除人Id
+    /// 获取或设置删除人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deleter ID.
+    /// </remarks>
+    /// <value>删除人Id / Deleter ID</value>
     [Description("删除人Id")]
     public virtual long? DeletedId { get; set; }
 
     /// <summary>
-    /// 删除人姓名
+    /// 获取或设置删除人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the deleter name.
+    /// </remarks>
+    /// <value>删除人姓名 / Deleter name</value>
     [Description("删除人姓名")]
     public virtual string? DeletedName { get; set; }
 
     /// <summary>
-    /// 版本号（用于乐观锁）
+    /// 获取或设置版本号（用于乐观锁）。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the version number (used for optimistic locking).
+    /// </remarks>
+    /// <value>版本号（用于乐观锁） / Version number (for optimistic locking)</value>
     [Description("版本号（用于乐观锁）")]
     public virtual long? Version { get; set; } = 0;
 
     /// <summary>
-    /// 是否启用该实体或功能的标识
+    /// 获取或设置是否启用该实体或功能的标识。
     /// </summary>
-    /// <value>
-    /// true表示启用，false表示禁用，null表示未设置
-    /// </value>
+    /// <remarks>
+    /// Gets or sets the flag indicating whether the entity or feature is enabled.
+    /// </remarks>
+    /// <value><c>true</c> 表示启用；<c>false</c> 表示禁用；<c>null</c> 表示未设置（启用） / <c>true</c> for enabled; <c>false</c> for disabled; <c>null</c> for unset (enabled)</value>
     [Description("是否启用,true:启用，false:禁用，null:未设置(启用)")]
     public virtual bool? IsEnabled { get; set; }
 }

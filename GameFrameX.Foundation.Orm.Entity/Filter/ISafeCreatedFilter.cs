@@ -34,22 +34,37 @@
 namespace GameFrameX.Foundation.Orm.Entity.Filter;
 
 /// <summary>
-/// 创建标记
+/// 创建标记接口过滤器。
 /// </summary>
+/// <remarks>
+/// Creation filter interface.
+/// </remarks>
 public interface ISafeCreatedFilter
 {
     /// <summary>
-    /// 创建人Id
+    /// 获取或设置创建人Id。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator ID.
+    /// </remarks>
+    /// <value>创建人Id / Creator ID</value>
     long? CreatedId { get; set; }
 
     /// <summary>
-    /// 创建时间
+    /// 获取或设置创建时间。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creation time.
+    /// </remarks>
+    /// <value>创建时间 / Creation time</value>
     long CreatedTime { get; set; }
 
     /// <summary>
-    /// 创建人姓名
+    /// 获取或设置创建人姓名。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the creator name.
+    /// </remarks>
+    /// <value>创建人姓名 / Creator name</value>
     string? CreatedName { get; set; }
 }
