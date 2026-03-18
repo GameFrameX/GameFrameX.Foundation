@@ -34,43 +34,53 @@
 namespace GameFrameX.Foundation.Utility;
 
 /// <summary>
-/// Environment helper utility class.
+/// 环境帮助器工具类。
 /// </summary>
 /// <remarks>
-/// 环境帮助器
+/// Environment helper utility class that provides methods to detect the current runtime environment.
 /// </remarks>
 public static class EnvironmentHelper
 {
+    /// <summary>
+    /// 定义标准环境名称常量。
+    /// </summary>
+    /// <remarks>
+    /// Defines standard environment name constants.
+    /// </remarks>
     static class Environments
     {
         /// <summary>
-        /// Specifies the Development environment.
+        /// 指定开发环境。
         /// </summary>
-        /// <remarks>The development environment can enable features that shouldn't be exposed in production. Because of the performance cost, scope validation and dependency validation only happens in development.</remarks>
+        /// <remarks>
+        /// Specifies the Development environment. The development environment can enable features that shouldn't be exposed in production. Because of the performance cost, scope validation and dependency validation only happens in development.
+        /// </remarks>
         public static readonly string Development = "Development";
 
         /// <summary>
-        /// Specifies the Staging environment.
+        /// 指定预发布环境。
         /// </summary>
-        /// <remarks>The staging environment can be used to validate app changes before changing the environment to production.</remarks>
+        /// <remarks>
+        /// Specifies the Staging environment. The staging environment can be used to validate app changes before changing the environment to production.
+        /// </remarks>
         public static readonly string Staging = "Staging";
 
         /// <summary>
-        /// Specifies the Production environment.
+        /// 指定生产环境。
         /// </summary>
-        /// <remarks>The production environment should be configured to maximize security, performance, and application robustness.</remarks>
+        /// <remarks>
+        /// Specifies the Production environment. The production environment should be configured to maximize security, performance, and application robustness.
+        /// </remarks>
         public static readonly string Production = "Production";
     }
 
     /// <summary>
-    /// Determines whether the current environment is a development environment.
-    /// Checks if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable is set to Development.
+    /// 判断当前环境是否为开发环境。
     /// </summary>
     /// <remarks>
-    /// 判断是否为开发环境
-    /// 通过检查环境变量 ASPNETCORE_ENVIRONMENT 或 DOTNET_ENVIRONMENT 的值是否为 Development
+    /// Determines whether the current environment is a development environment by checking if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable is set to Development.
     /// </remarks>
-    /// <returns>True if the current environment is development, otherwise false. / 如果是开发环境返回true，否则返回false</returns>
+    /// <returns>如果是开发环境则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the current environment is development; otherwise <c>false</c></returns>
     public static bool IsDevelopment()
     {
         var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
@@ -80,14 +90,12 @@ public static class EnvironmentHelper
     }
 
     /// <summary>
-    /// Determines whether the current environment is a production environment.
-    /// Checks if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable is set to Production.
+    /// 判断当前环境是否为生产环境。
     /// </summary>
     /// <remarks>
-    /// 判断是否为生产环境
-    /// 通过检查环境变量 ASPNETCORE_ENVIRONMENT 或 DOTNET_ENVIRONMENT 的值是否为 Production
+    /// Determines whether the current environment is a production environment by checking if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable is set to Production.
     /// </remarks>
-    /// <returns>True if the current environment is production, otherwise false. / 如果是生产环境返回true，否则返回false</returns>
+    /// <returns>如果是生产环境则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the current environment is production; otherwise <c>false</c></returns>
     public static bool IsProduction()
     {
         var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
@@ -97,14 +105,12 @@ public static class EnvironmentHelper
     }
 
     /// <summary>
-    /// Determines whether the current environment is a staging/testing environment.
-    /// Checks if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable is set to Staging.
+    /// 判断当前环境是否为预发布环境。
     /// </summary>
     /// <remarks>
-    /// 判断是否为测试/预发布环境
-    /// 通过检查环境变量 ASPNETCORE_ENVIRONMENT 或 DOTNET_ENVIRONMENT 的值是否为 Staging
+    /// Determines whether the current environment is a staging/testing environment by checking if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable is set to Staging.
     /// </remarks>
-    /// <returns>True if the current environment is staging, otherwise false. / 如果是测试/预发布环境返回true，否则返回false</returns>
+    /// <returns>如果是预发布环境则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the current environment is staging; otherwise <c>false</c></returns>
     public static bool IsStaging()
     {
         var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
@@ -114,15 +120,13 @@ public static class EnvironmentHelper
     }
 
     /// <summary>
-    /// Determines whether the current environment matches the specified custom environment name.
-    /// Checks if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable matches the specified environment name.
+    /// 判断当前环境是否与指定的自定义环境名称匹配。
     /// </summary>
     /// <remarks>
-    /// 判断是否为任意自定义环境
-    /// 通过检查环境变量 ASPNETCORE_ENVIRONMENT 或 DOTNET_ENVIRONMENT 的值是否与指定环境名称匹配
+    /// Determines whether the current environment matches the specified custom environment name by checking if the ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT environment variable matches the specified environment name.
     /// </remarks>
-    /// <param name="environmentName">The environment name to check. / 要检查的环境名称</param>
-    /// <returns>True if the current environment matches the specified environment name, otherwise false. / 如果当前环境与指定环境名称匹配返回true，否则返回false</returns>
+    /// <param name="environmentName">要检查的环境名称 / The environment name to check</param>
+    /// <returns>如果当前环境与指定环境名称匹配则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the current environment matches the specified environment name; otherwise <c>false</c></returns>
     public static bool IsEnvironment(string environmentName)
     {
         var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
@@ -132,42 +136,36 @@ public static class EnvironmentHelper
     }
 
     /// <summary>
-    /// Determines whether the current application is running in a Docker container.
-    /// Checks if the DOTNET_RUNNING_IN_CONTAINER environment variable exists.
+    /// 判断当前应用是否运行在 Docker 容器中。
     /// </summary>
     /// <remarks>
-    /// 判断当前应用是否运行在Docker容器中
-    /// 通过检查环境变量 DOTNET_RUNNING_IN_CONTAINER 是否存在来判断
+    /// Determines whether the current application is running in a Docker container by checking if the DOTNET_RUNNING_IN_CONTAINER environment variable exists.
     /// </remarks>
-    /// <returns>True if running in a Docker container, otherwise false. / 如果在Docker容器中运行返回true，否则返回false</returns>
+    /// <returns>如果在 Docker 容器中运行则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if running in a Docker container; otherwise <c>false</c></returns>
     public static bool IsDocker()
     {
         return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
     }
 
     /// <summary>
-    /// Determines whether the current application is running in a Kubernetes cluster.
-    /// Checks if the KUBERNETES_SERVICE_HOST environment variable exists.
+    /// 判断当前应用是否运行在 Kubernetes 集群中。
     /// </summary>
     /// <remarks>
-    /// 判断当前应用是否运行在Kubernetes集群中
-    /// 通过检查环境变量 KUBERNETES_SERVICE_HOST 是否存在来判断
+    /// Determines whether the current application is running in a Kubernetes cluster by checking if the KUBERNETES_SERVICE_HOST environment variable exists.
     /// </remarks>
-    /// <returns>True if running in a Kubernetes cluster, otherwise false. / 如果在Kubernetes集群中运行返回true，否则返回false</returns>
+    /// <returns>如果在 Kubernetes 集群中运行则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if running in a Kubernetes cluster; otherwise <c>false</c></returns>
     public static bool IsKubernetes()
     {
         return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("KUBERNETES_SERVICE_HOST"));
     }
 
     /// <summary>
-    /// Gets the current environment name from environment variables.
-    /// Returns the value of ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT, or "Production" if neither is set.
+    /// 获取当前环境名称。
     /// </summary>
     /// <remarks>
-    /// 获取当前环境名称
-    /// 从环境变量 ASPNETCORE_ENVIRONMENT 或 DOTNET_ENVIRONMENT 中获取，如果都未设置则返回 "Production"
+    /// Gets the current environment name from environment variables. Returns the value of ASPNETCORE_ENVIRONMENT or DOTNET_ENVIRONMENT, or <c>null</c> if neither is set.
     /// </remarks>
-    /// <returns>The current environment name. / 当前环境名称</returns>
+    /// <returns>当前环境名称，如果未设置则返回 <c>null</c> / The current environment name, or <c>null</c> if not set</returns>
     public static string GetEnvironmentName()
     {
         var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")

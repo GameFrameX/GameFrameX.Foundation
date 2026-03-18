@@ -36,12 +36,10 @@ using System.Runtime.InteropServices;
 namespace GameFrameX.Foundation.Utility;
 
 /// <summary>
-/// 平台运行时帮助类
-/// Runtime platform helper that detects the current operating system.
+/// 平台运行时帮助类，用于检测当前操作系统。
 /// </summary>
 /// <remarks>
-/// Provides simple boolean properties to query Linux, macOS (OSX), Windows, and FreeBSD.
-/// Values are evaluated via <see cref="System.Runtime.InteropServices.RuntimeInformation"/> with <see cref="System.Runtime.InteropServices.OSPlatform"/>.
+/// Runtime platform helper that detects the current operating system. Provides simple boolean properties to query Linux, macOS (OSX), Windows, and FreeBSD. Values are evaluated via <see cref="System.Runtime.InteropServices.RuntimeInformation"/> with <see cref="System.Runtime.InteropServices.OSPlatform"/>.
 /// </remarks>
 /// <example>
 /// <code>
@@ -60,11 +58,12 @@ namespace GameFrameX.Foundation.Utility;
 public static class RuntimePlatformHelper
 {
     /// <summary>
-    /// 是否是Linux
-    /// Indicates whether the current OS is Linux.
+    /// 获取当前操作系统是否为 Linux。
     /// </summary>
-    /// <value>Returns <c>true</c> when running on Linux; otherwise <c>false</c>.</value>
-    /// <remarks>Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.Linux"/>. This property is read-only.</remarks>
+    /// <remarks>
+    /// Indicates whether the current OS is Linux. Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.Linux"/>.
+    /// </remarks>
+    /// <value>如果运行在 Linux 上则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if running on Linux; otherwise <c>false</c></value>
     /// <example>
     /// <code>
     /// bool onLinux = RuntimePlatformHelper.IsLinux;
@@ -77,11 +76,12 @@ public static class RuntimePlatformHelper
     }
 
     /// <summary>
-    /// 是否是Mac
-    /// Indicates whether the current OS is macOS (OSX).
+    /// 获取当前操作系统是否为 macOS (OSX)。
     /// </summary>
-    /// <value>Returns <c>true</c> when running on macOS; otherwise <c>false</c>.</value>
-    /// <remarks>Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.OSX"/>. This property is read-only.</remarks>
+    /// <remarks>
+    /// Indicates whether the current OS is macOS (OSX). Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.OSX"/>.
+    /// </remarks>
+    /// <value>如果运行在 macOS 上则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if running on macOS; otherwise <c>false</c></value>
     /// <example>
     /// <code>
     /// if (RuntimePlatformHelper.IsOsx)
@@ -97,11 +97,12 @@ public static class RuntimePlatformHelper
     }
 
     /// <summary>
-    /// 是否是Windows
-    /// Indicates whether the current OS is Windows.
+    /// 获取当前操作系统是否为 Windows。
     /// </summary>
-    /// <value>Returns <c>true</c> when running on Windows; otherwise <c>false</c>.</value>
-    /// <remarks>Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.Windows"/>. This property is read-only.</remarks>
+    /// <remarks>
+    /// Indicates whether the current OS is Windows. Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.Windows"/>.
+    /// </remarks>
+    /// <value>如果运行在 Windows 上则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if running on Windows; otherwise <c>false</c></value>
     /// <example>
     /// <code>
     /// if (RuntimePlatformHelper.IsWindows)
@@ -117,11 +118,12 @@ public static class RuntimePlatformHelper
     }
 
     /// <summary>
-    /// 是否是FreeBSD
-    /// Indicates whether the current OS is FreeBSD.
+    /// 获取当前操作系统是否为 FreeBSD。
     /// </summary>
-    /// <value>Returns <c>true</c> when running on FreeBSD; otherwise <c>false</c>.</value>
-    /// <remarks>Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.FreeBSD"/>. This property is read-only.</remarks>
+    /// <remarks>
+    /// Indicates whether the current OS is FreeBSD. Computed from <see cref="System.Runtime.InteropServices.RuntimeInformation"/> using <see cref="System.Runtime.InteropServices.OSPlatform.FreeBSD"/>.
+    /// </remarks>
+    /// <value>如果运行在 FreeBSD 上则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if running on FreeBSD; otherwise <c>false</c></value>
     /// <example>
     /// <code>
     /// bool onBsd = RuntimePlatformHelper.IsFreeBsd;
