@@ -34,23 +34,47 @@
 namespace GameFrameX.Foundation.Options.Attributes;
 
 /// <summary>
-/// 表示一个布尔标志选项的特性，存在即为true，不存在即为false
+/// 表示一个布尔标志选项的特性，存在即为 <c>true</c>，不存在即为 <c>false</c>。
 /// </summary>
+/// <remarks>
+/// Attribute representing a boolean flag option. Presence means <c>true</c>, absence means <c>false</c>.
+/// This attribute inherits from <see cref="OptionAttribute"/> and automatically sets the default value to <c>false</c>.
+/// </remarks>
+/// <example>
+/// <code>
+/// public class MyOptions
+/// {
+///     [FlagOption("verbose")]
+///     public bool Verbose { get; set; }
+///
+///     [FlagOption("debug")]
+///     public bool Debug { get; set; }
+/// }
+/// </code>
+/// </example>
 [AttributeUsage(AttributeTargets.Property)]
 public class FlagOptionAttribute : OptionAttribute
 {
     /// <summary>
-    /// 初始化 <see cref="FlagOptionAttribute"/> 类的新实例
+    /// 初始化 <see cref="FlagOptionAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="FlagOptionAttribute"/> class.
+    /// The default value is automatically set to <c>false</c>.
+    /// </remarks>
     public FlagOptionAttribute()
     {
         DefaultValue = false;
     }
 
     /// <summary>
-    /// 使用指定的长名称初始化 <see cref="FlagOptionAttribute"/> 类的新实例
+    /// 使用指定的长名称初始化 <see cref="FlagOptionAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="longName">选项的长名称</param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="FlagOptionAttribute"/> class with the specified long name.
+    /// The default value is automatically set to <c>false</c>.
+    /// </remarks>
+    /// <param name="longName">选项的长名称 / Long name of the option</param>
     public FlagOptionAttribute(string longName) : base(longName)
     {
         DefaultValue = false;

@@ -34,8 +34,24 @@
 namespace GameFrameX.Foundation.Options.Attributes;
 
 /// <summary>
-/// Grafana Loki 标签,用于将属性标记为 Grafana Loki 标签
+/// Grafana Loki 标签特性，用于将属性标记为 Grafana Loki 标签。
 /// </summary>
+/// <remarks>
+/// Grafana Loki label attribute for marking properties as Grafana Loki labels.
+/// Properties marked with this attribute will be treated as labels when logging to Grafana Loki.
+/// </remarks>
+/// <example>
+/// <code>
+/// public class LogOptions
+/// {
+///     [GrafanaLokiLabelTag]
+///     public string ServiceName { get; set; }
+///
+///     [GrafanaLokiLabelTag]
+///     public string Environment { get; set; }
+/// }
+/// </code>
+/// </example>
 [AttributeUsage(AttributeTargets.Property)]
 public sealed class GrafanaLokiLabelTagAttribute : Attribute
 {

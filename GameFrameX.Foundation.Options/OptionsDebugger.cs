@@ -37,8 +37,12 @@ using System.Text;
 namespace GameFrameX.Foundation.Options
 {
     /// <summary>
-    /// 选项调试器，用于打印和调试命令行参数
+    /// 选项调试器，用于打印和调试命令行参数。
     /// </summary>
+    /// <remarks>
+    /// Options debugger for printing and debugging command-line arguments and parsed options.
+    /// Provides formatted console output with support for wide characters (CJK, emoji, etc.).
+    /// </remarks>
     public static class OptionsDebugger
     {
         private const string OptionHeader = "选项 (Option)";
@@ -55,10 +59,13 @@ namespace GameFrameX.Foundation.Options
         private const int DefaultConsoleWidth = 120;
 
         /// <summary>
-        /// 打印解析完成后的选项对象
+        /// 打印解析完成后的选项对象。
         /// </summary>
-        /// <typeparam name="T">选项类型</typeparam>
-        /// <param name="options">解析后的选项对象</param>
+        /// <remarks>
+        /// Prints the parsed options object to the console in a formatted table.
+        /// </remarks>
+        /// <typeparam name="T">选项类型 / Options type</typeparam>
+        /// <param name="options">解析后的选项对象 / Parsed options object</param>
         public static void PrintParsedOptions<T>(T options) where T : class
         {
             Console.WriteLine("╔══════════════════════════════════════════════════════════════════════╗");
@@ -495,8 +502,13 @@ namespace GameFrameX.Foundation.Options
         }
 
         /// <summary>
-        /// 格式化属性值用于显示
+        /// 格式化属性值用于显示。
         /// </summary>
+        /// <remarks>
+        /// Formats the property value for display in the console.
+        /// </remarks>
+        /// <param name="value">属性值 / Property value</param>
+        /// <returns>格式化后的字符串 / Formatted string</returns>
         private static string FormatPropertyValue(object value)
         {
             if (value == null)
@@ -554,8 +566,13 @@ namespace GameFrameX.Foundation.Options
         }
 
         /// <summary>
-        /// 获取友好的类型名称
+        /// 获取友好的类型名称。
         /// </summary>
+        /// <remarks>
+        /// Gets a user-friendly type name for display purposes.
+        /// </remarks>
+        /// <param name="type">类型 / Type</param>
+        /// <returns>友好的类型名称 / Friendly type name</returns>
         private static string GetFriendlyTypeName(Type type)
         {
             if (type == typeof(string))

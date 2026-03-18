@@ -1,4 +1,4 @@
-﻿// ==========================================================================================
+// ==========================================================================================
 //  GameFrameX 组织及其衍生项目的版权、商标、专利及其他相关权利
 //  GameFrameX organization and its derivative projects' copyrights, trademarks, patents, and related rights
 //  均受中华人民共和国及相关国际法律法规保护。
@@ -34,22 +34,34 @@
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
-/// Bool类型参数的格式选项
+/// 布尔类型参数的格式选项。
 /// </summary>
+/// <remarks>
+/// Format options for boolean type arguments.
+/// </remarks>
 public enum BoolArgumentFormat
 {
     /// <summary>
-    /// 标志格式：存在即为true，不存在即为false（如：--verbose）
+    /// 标志格式：存在即为 <c>true</c>，不存在即为 <c>false</c>（如：--verbose）。
     /// </summary>
+    /// <remarks>
+    /// Flag format: presence means <c>true</c>, absence means <c>false</c> (e.g., --verbose).
+    /// </remarks>
     Flag,
 
     /// <summary>
-    /// 键值对格式：明确指定true/false值（如：--verbose=true）
+    /// 键值对格式：明确指定 <c>true</c>/<c>false</c> 值（如：--verbose=true）。
     /// </summary>
+    /// <remarks>
+    /// Key-value format: explicitly specifies <c>true</c>/<c>false</c> value (e.g., --verbose=true).
+    /// </remarks>
     KeyValue,
 
     /// <summary>
-    /// 分离格式：键和值分开（如：--verbose true）
+    /// 分离格式：键和值分开（如：--verbose true）。
     /// </summary>
+    /// <remarks>
+    /// Separated format: key and value are separated (e.g., --verbose true).
+    /// </remarks>
     Separated
 }

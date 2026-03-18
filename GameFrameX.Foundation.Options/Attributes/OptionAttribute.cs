@@ -34,48 +34,90 @@
 namespace GameFrameX.Foundation.Options.Attributes;
 
 /// <summary>
-/// 表示一个命令行选项的特性
+/// 表示一个命令行选项的特性。
 /// </summary>
+/// <remarks>
+/// Attribute representing a command-line option.
+/// Apply this attribute to properties to mark them as command-line options.
+/// </remarks>
+/// <example>
+/// <code>
+/// public class MyOptions
+/// {
+///     [Option("server", Required = true, Description = "Server address")]
+///     public string Server { get; set; }
+///
+///     [Option("port", DefaultValue = 8080)]
+///     public int Port { get; set; }
+/// }
+/// </code>
+/// </example>
 [AttributeUsage(AttributeTargets.Property)]
 [System.Diagnostics.DebuggerDisplay("LongName = {LongName}, Required = {Required}, DefaultValue = {DefaultValue}")]
 public class OptionAttribute : Attribute
 {
     /// <summary>
-    /// 获取或设置选项的长名称
+    /// 获取或设置选项的长名称。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the long name of the option.
+    /// </remarks>
+    /// <value>选项的长名称（如 "verbose"） / Long name of the option (e.g., "verbose")</value>
     public string LongName { get; set; }
 
     /// <summary>
-    /// 获取或设置选项的默认值
+    /// 获取或设置选项的默认值。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the default value of the option.
+    /// </remarks>
+    /// <value>选项的默认值 / Default value of the option</value>
     public object DefaultValue { get; set; }
 
     /// <summary>
-    /// 获取或设置选项的描述
+    /// 获取或设置选项的描述。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the description of the option.
+    /// </remarks>
+    /// <value>选项的描述信息 / Description of the option</value>
     public string Description { get; set; }
 
     /// <summary>
-    /// 获取或设置选项是否必需
+    /// 获取或设置选项是否必需。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets whether the option is required.
+    /// </remarks>
+    /// <value>如果为 <c>true</c> 则选项必需；否则为可选 / <c>true</c> if the option is required; otherwise optional</value>
     public bool Required { get; set; }
 
     /// <summary>
-    /// 获取或设置环境变量名称
+    /// 获取或设置环境变量名称。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the environment variable name for this option.
+    /// </remarks>
+    /// <value>关联的环境变量名称 / Associated environment variable name</value>
     public string EnvironmentVariable { get; set; }
 
     /// <summary>
-    /// 初始化 <see cref="OptionAttribute"/> 类的新实例
+    /// 初始化 <see cref="OptionAttribute"/> 类的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="OptionAttribute"/> class.
+    /// </remarks>
     public OptionAttribute()
     {
     }
 
     /// <summary>
-    /// 使用指定的长名称初始化 <see cref="OptionAttribute"/> 类的新实例
+    /// 使用指定的长名称初始化 <see cref="OptionAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="longName">选项的长名称</param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="OptionAttribute"/> class with the specified long name.
+    /// </remarks>
+    /// <param name="longName">选项的长名称 / Long name of the option</param>
     public OptionAttribute(string longName)
     {
         LongName = longName;

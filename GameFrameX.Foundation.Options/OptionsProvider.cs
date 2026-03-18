@@ -34,8 +34,12 @@
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
-/// 选项提供者，用于获取和缓存配置选项
+/// 选项提供者，用于获取和缓存配置选项。
 /// </summary>
+/// <remarks>
+/// Options provider for retrieving and caching configuration options.
+/// This class provides thread-safe caching of configuration options and supports automatic debug output detection.
+/// </remarks>
 public static class OptionsProvider
 {
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, object> OptionsCache = new();
@@ -43,9 +47,12 @@ public static class OptionsProvider
     private static volatile string[] _args;
 
     /// <summary>
-    /// 初始化选项提供者
+    /// 初始化选项提供者。
     /// </summary>
-    /// <param name="args">命令行参数</param>
+    /// <remarks>
+    /// Initializes the options provider with the specified command-line arguments.
+    /// </remarks>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
     public static void Initialize(string[] args)
     {
         lock (_lock)
@@ -56,10 +63,13 @@ public static class OptionsProvider
     }
 
     /// <summary>
-    /// 检查是否应该启用调试输出
+    /// 检查是否应该启用调试输出。
     /// </summary>
-    /// <param name="enableDebugOutput">用户指定的调试输出设置</param>
-    /// <returns>最终的调试输出设置</returns>
+    /// <remarks>
+    /// Checks whether debug output should be enabled based on the provided setting, environment variables, and runtime environment.
+    /// </remarks>
+    /// <param name="enableDebugOutput">用户指定的调试输出设置 / User-specified debug output setting</param>
+    /// <returns>最终的调试输出设置 / Final debug output setting</returns>
     private static bool ShouldEnableDebugOutput(bool? enableDebugOutput = null)
     {
         // 如果用户明确指定了设置，使用用户设置
@@ -89,10 +99,10 @@ public static class OptionsProvider
         }
 
         // 检查是否在开发环境中（通过常见的开发环境变量）
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") 
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
                          ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
                          ?? Environment.GetEnvironmentVariable("ENVIRONMENT");
-        
+
         if (!string.IsNullOrEmpty(environment))
         {
             var normalizedEnv = environment.Trim().ToLowerInvariant();
@@ -113,12 +123,15 @@ public static class OptionsProvider
     }
 
     /// <summary>
-    /// 获取选项
+    /// 获取选项。
     /// </summary>
-    /// <typeparam name="T">选项类型</typeparam>
-    /// <param name="skipValidation">是否跳过验证</param>
-    /// <param name="enableDebugOutput">是否启用调试输出（null表示使用自动检测）</param>
-    /// <returns>选项对象</returns>
+    /// <remarks>
+    /// Gets the options object of the specified type. Uses cached instance if available.
+    /// </remarks>
+    /// <typeparam name="T">选项类型 / Options type</typeparam>
+    /// <param name="skipValidation">是否跳过验证 / Whether to skip validation</param>
+    /// <param name="enableDebugOutput">是否启用调试输出（<c>null</c> 表示使用自动检测） / Whether to enable debug output (<c>null</c> means auto-detect)</param>
+    /// <returns>选项对象 / Options object</returns>
     public static T GetOptions<T>(bool skipValidation = false, bool? enableDebugOutput = null) where T : class, new()
     {
         var type = typeof(T);
@@ -173,17 +186,23 @@ public static class OptionsProvider
     }
 
     /// <summary>
-    /// 清除缓存
+    /// 清除缓存。
     /// </summary>
+    /// <remarks>
+    /// Clears all cached options.
+    /// </remarks>
     public static void ClearCache()
     {
         OptionsCache.Clear();
     }
 
     /// <summary>
-    /// 从缓存中移除指定类型的选项
+    /// 从缓存中移除指定类型的选项。
     /// </summary>
-    /// <typeparam name="T">选项类型</typeparam>
+    /// <remarks>
+    /// Removes the options of the specified type from the cache.
+    /// </remarks>
+    /// <typeparam name="T">选项类型 / Options type</typeparam>
     public static void RemoveFromCache<T>() where T : class
     {
         var type = typeof(T);
@@ -191,43 +210,52 @@ public static class OptionsProvider
     }
 
     /// <summary>
-    /// 解析命令行参数并显示调试信息（强制启用调试输出）
+    /// 解析命令行参数并显示调试信息（强制启用调试输出）。
     /// </summary>
-    /// <typeparam name="T">选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过验证</param>
-    /// <returns>解析后的选项对象</returns>
+    /// <remarks>
+    /// Parses command-line arguments and displays debug information (forces debug output enabled).
+    /// </remarks>
+    /// <typeparam name="T">选项类型 / Options type</typeparam>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="skipValidation">是否跳过验证 / Whether to skip validation</param>
+    /// <returns>解析后的选项对象 / Parsed options object</returns>
     public static T ParseWithDebug<T>(string[] args, bool skipValidation = false) where T : class, new()
     {
         // 初始化参数
         Initialize(args);
-        
+
         // 获取选项并强制启用调试输出
         return GetOptions<T>(skipValidation, enableDebugOutput: true);
     }
 
     /// <summary>
-    /// 解析命令行参数（静默模式，禁用调试输出）
+    /// 解析命令行参数（静默模式，禁用调试输出）。
     /// </summary>
-    /// <typeparam name="T">选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过验证</param>
-    /// <returns>解析后的选项对象</returns>
+    /// <remarks>
+    /// Parses command-line arguments in silent mode (debug output disabled).
+    /// </remarks>
+    /// <typeparam name="T">选项类型 / Options type</typeparam>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="skipValidation">是否跳过验证 / Whether to skip validation</param>
+    /// <returns>解析后的选项对象 / Parsed options object</returns>
     public static T ParseSilent<T>(string[] args, bool skipValidation = false) where T : class, new()
     {
         // 初始化参数
         Initialize(args);
-        
+
         // 获取选项并禁用调试输出
         return GetOptions<T>(skipValidation, enableDebugOutput: false);
     }
 
     /// <summary>
-    /// 打印已解析的选项对象信息
+    /// 打印已解析的选项对象信息。
     /// </summary>
-    /// <typeparam name="T">选项类型</typeparam>
-    /// <param name="options">选项对象</param>
-    /// <exception cref="ArgumentNullException">当 options 为 null 时抛出</exception>
+    /// <remarks>
+    /// Prints the parsed options object information.
+    /// </remarks>
+    /// <typeparam name="T">选项类型 / Options type</typeparam>
+    /// <param name="options">选项对象 / Options object</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="options"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="options"/> is <c>null</c></exception>
     public static void PrintOptionsInfo<T>(T options) where T : class
     {
         ArgumentNullException.ThrowIfNull(options);
@@ -235,18 +263,24 @@ public static class OptionsProvider
     }
 
     /// <summary>
-    /// 设置全局调试模式（通过环境变量）
+    /// 设置全局调试模式（通过环境变量）。
     /// </summary>
-    /// <param name="enabled">是否启用调试模式</param>
+    /// <remarks>
+    /// Sets the global debug mode via environment variable.
+    /// </remarks>
+    /// <param name="enabled">是否启用调试模式 / Whether to enable debug mode</param>
     public static void SetGlobalDebugMode(bool enabled)
     {
         Environment.SetEnvironmentVariable("GAMEFRAMEX_OPTIONS_DEBUG", enabled.ToString());
     }
 
     /// <summary>
-    /// 获取当前调试模式状态
+    /// 获取当前调试模式状态。
     /// </summary>
-    /// <returns>当前是否启用调试模式</returns>
+    /// <remarks>
+    /// Gets the current debug mode status.
+    /// </remarks>
+    /// <returns>当前是否启用调试模式 / Whether debug mode is currently enabled</returns>
     public static bool IsDebugModeEnabled()
     {
         return ShouldEnableDebugOutput();

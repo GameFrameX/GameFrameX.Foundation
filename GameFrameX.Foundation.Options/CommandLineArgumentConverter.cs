@@ -34,26 +34,40 @@
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
-/// 命令行参数转换器
+/// 命令行参数转换器。
 /// </summary>
+/// <remarks>
+/// Command-line argument converter for transforming and standardizing command-line arguments.
+/// </remarks>
 public sealed class CommandLineArgumentConverter
 {
     /// <summary>
-    /// 布尔参数格式
+    /// 获取或设置布尔参数格式。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the boolean argument format.
+    /// </remarks>
+    /// <value>布尔参数格式 / Boolean argument format</value>
     public BoolArgumentFormat BoolFormat { get; set; } = BoolArgumentFormat.Flag;
 
     /// <summary>
-    /// 是否确保键有前缀
+    /// 获取或设置是否确保键有前缀。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets whether to ensure all keys have prefixes.
+    /// </remarks>
+    /// <value>指示是否确保键有前缀，默认为 <c>true</c> / Indicates whether to ensure keys have prefixes, default is <c>true</c></value>
     public bool EnsurePrefixedKeys { get; set; } = true;
 
     /// <summary>
-    /// 将参数列表转换为命令行字符串
+    /// 将参数列表转换为命令行字符串。
     /// </summary>
-    /// <param name="args">参数列表</param>
-    /// <returns>格式化的命令行字符串</returns>
-    /// <exception cref="ArgumentNullException">如果参数列表为 null</exception>
+    /// <remarks>
+    /// Converts a list of arguments to a command-line string.
+    /// </remarks>
+    /// <param name="args">参数列表 / List of arguments</param>
+    /// <returns>格式化的命令行字符串 / Formatted command-line string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="args"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="args"/> is <c>null</c></exception>
     public string ToCommandLineString(List<string> args)
     {
         if (args == null)
@@ -113,10 +127,13 @@ public sealed class CommandLineArgumentConverter
     }
 
     /// <summary>
-    /// 将命令行参数转换为标准格式
+    /// 将命令行参数转换为标准格式。
     /// </summary>
-    /// <param name="args">命令行参数</param>
-    /// <returns>标准格式的参数列表</returns>
+    /// <remarks>
+    /// Converts command-line arguments to standard format.
+    /// </remarks>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <returns>标准格式的参数列表 / Standardized argument list</returns>
     public List<string> ConvertToStandardFormat(string[] args)
     {
         try
@@ -132,7 +149,7 @@ public sealed class CommandLineArgumentConverter
             for (int i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
-                
+
                 // 如果参数为null，跳过
                 if (arg == null)
                 {
@@ -192,7 +209,7 @@ public sealed class CommandLineArgumentConverter
                 if (i < args.Length - 1)
                 {
                     var nextArg = args[i + 1];
-                    
+
                     // 如果下一个参数是null，则当前参数被视为布尔标志（没有值）
                     if (nextArg == null)
                     {
@@ -200,7 +217,7 @@ public sealed class CommandLineArgumentConverter
                         // 不添加值，当前参数将被视为布尔标志
                         continue;
                     }
-                    
+
                     // 如果下一个参数不是选项（不以-开头），则作为当前参数的值
                     if (!nextArg.StartsWith("-"))
                     {

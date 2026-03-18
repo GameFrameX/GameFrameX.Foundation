@@ -34,20 +34,43 @@
 namespace GameFrameX.Foundation.Options.Attributes;
 
 /// <summary>
-/// 表示从环境变量中获取值的特性
+/// 表示从环境变量中获取值的特性。
 /// </summary>
+/// <remarks>
+/// Attribute indicating that a property's value should be retrieved from an environment variable.
+/// Apply this attribute to properties to bind them to specific environment variables.
+/// </remarks>
+/// <example>
+/// <code>
+/// public class MyOptions
+/// {
+///     [EnvironmentVariable("DATABASE_URL")]
+///     public string DatabaseUrl { get; set; }
+///
+///     [EnvironmentVariable("API_KEY")]
+///     public string ApiKey { get; set; }
+/// }
+/// </code>
+/// </example>
 [AttributeUsage(AttributeTargets.Property)]
 public class EnvironmentVariableAttribute : Attribute
 {
     /// <summary>
-    /// 获取环境变量名称
+    /// 获取环境变量名称。
     /// </summary>
+    /// <remarks>
+    /// Gets the environment variable name.
+    /// </remarks>
+    /// <value>环境变量名称 / Environment variable name</value>
     public string Name { get; }
 
     /// <summary>
-    /// 使用指定的环境变量名称初始化 <see cref="EnvironmentVariableAttribute"/> 类的新实例
+    /// 使用指定的环境变量名称初始化 <see cref="EnvironmentVariableAttribute"/> 类的新实例。
     /// </summary>
-    /// <param name="name">环境变量名称</param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="EnvironmentVariableAttribute"/> class with the specified environment variable name.
+    /// </remarks>
+    /// <param name="name">环境变量名称 / Environment variable name</param>
     public EnvironmentVariableAttribute(string name)
     {
         Name = name;

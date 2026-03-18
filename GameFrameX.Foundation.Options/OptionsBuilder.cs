@@ -38,19 +38,26 @@ using GameFrameX.Foundation.Options.Attributes;
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
-/// 选项构建器，用于从命令行参数和环境变量构建配置选项
+/// 选项构建器，用于从命令行参数和环境变量构建配置选项。
 /// </summary>
+/// <remarks>
+/// Options builder for creating configuration options from command-line arguments and environment variables.
+/// This class provides static convenience methods for creating options objects.
+/// </remarks>
 public class OptionsBuilder
 {
     #region 静态便捷方法
 
     /// <summary>
-    /// 静态方法：从命令行参数构建配置选项（使用默认设置）
+    /// 静态方法：从命令行参数构建配置选项（使用默认设置）。
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
+    /// <remarks>
+    /// Static method: Creates configuration options from command-line arguments using default settings.
+    /// </remarks>
+    /// <typeparam name="TOptions">配置选项类型 / Configuration options type</typeparam>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="skipValidation">是否跳过必需选项验证 / Whether to skip required option validation</param>
+    /// <returns>构建的配置选项对象 / Built configuration options object</returns>
     public static TOptions Create<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
     {
         var builder = new OptionsBuilder<TOptions>(args ?? Array.Empty<string>());
@@ -58,15 +65,18 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// 静态方法：从命令行参数构建配置选项（完整参数控制）
+    /// 静态方法：从命令行参数构建配置选项（完整参数控制）。
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="boolFormat">布尔参数格式</param>
-    /// <param name="ensurePrefixedKeys">是否确保参数键都有前缀</param>
-    /// <param name="useEnvironmentVariables">是否使用环境变量</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
+    /// <remarks>
+    /// Static method: Creates configuration options from command-line arguments with full parameter control.
+    /// </remarks>
+    /// <typeparam name="TOptions">配置选项类型 / Configuration options type</typeparam>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="boolFormat">布尔参数格式 / Boolean argument format</param>
+    /// <param name="ensurePrefixedKeys">是否确保参数键都有前缀 / Whether to ensure all argument keys have prefixes</param>
+    /// <param name="useEnvironmentVariables">是否使用环境变量 / Whether to use environment variables</param>
+    /// <param name="skipValidation">是否跳过必需选项验证 / Whether to skip required option validation</param>
+    /// <returns>构建的配置选项对象 / Built configuration options object</returns>
     public static TOptions Create<TOptions>(
         string[] args,
         BoolArgumentFormat boolFormat,
@@ -79,12 +89,15 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// 静态方法：从命令行参数构建配置选项（仅使用命令行参数，不使用环境变量）
+    /// 静态方法：从命令行参数构建配置选项（仅使用命令行参数，不使用环境变量）。
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
+    /// <remarks>
+    /// Static method: Creates configuration options from command-line arguments only, without using environment variables.
+    /// </remarks>
+    /// <typeparam name="TOptions">配置选项类型 / Configuration options type</typeparam>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="skipValidation">是否跳过必需选项验证 / Whether to skip required option validation</param>
+    /// <returns>构建的配置选项对象 / Built configuration options object</returns>
     public static TOptions CreateFromArgsOnly<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
     {
         var builder = new OptionsBuilder<TOptions>(args ?? Array.Empty<string>(), useEnvironmentVariables: false);
@@ -92,11 +105,14 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// 静态方法：从环境变量构建配置选项（不使用命令行参数）
+    /// 静态方法：从环境变量构建配置选项（不使用命令行参数）。
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
+    /// <remarks>
+    /// Static method: Creates configuration options from environment variables only, without using command-line arguments.
+    /// </remarks>
+    /// <typeparam name="TOptions">配置选项类型 / Configuration options type</typeparam>
+    /// <param name="skipValidation">是否跳过必需选项验证 / Whether to skip required option validation</param>
+    /// <returns>构建的配置选项对象 / Built configuration options object</returns>
     public static TOptions CreateFromEnvironmentOnly<TOptions>(bool skipValidation = false) where TOptions : class, new()
     {
         var builder = new OptionsBuilder<TOptions>(Array.Empty<string>(), useEnvironmentVariables: true);
@@ -104,10 +120,13 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// 静态方法：创建默认配置选项（仅使用默认值，不使用命令行参数和环境变量）
+    /// 静态方法：创建默认配置选项（仅使用默认值，不使用命令行参数和环境变量）。
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <returns>构建的配置选项对象</returns>
+    /// <remarks>
+    /// Static method: Creates default configuration options using only default values, without command-line arguments or environment variables.
+    /// </remarks>
+    /// <typeparam name="TOptions">配置选项类型 / Configuration options type</typeparam>
+    /// <returns>构建的配置选项对象 / Built configuration options object</returns>
     public static TOptions CreateDefault<TOptions>() where TOptions : class, new()
     {
         var builder = new OptionsBuilder<TOptions>(Array.Empty<string>(), useEnvironmentVariables: false);
@@ -115,13 +134,16 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// 静态方法：尝试从命令行参数构建配置选项，如果失败则返回默认配置
+    /// 静态方法：尝试从命令行参数构建配置选项，如果失败则返回默认配置。
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="result">构建结果</param>
-    /// <param name="error">错误信息（如果构建失败）</param>
-    /// <returns>是否构建成功</returns>
+    /// <remarks>
+    /// Static method: Attempts to create configuration options from command-line arguments, returns default configuration if failed.
+    /// </remarks>
+    /// <typeparam name="TOptions">配置选项类型 / Configuration options type</typeparam>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="result">构建结果 / Build result</param>
+    /// <param name="error">错误信息（如果构建失败） / Error message (if build failed)</param>
+    /// <returns>是否构建成功 / Whether the build was successful</returns>
     public static bool TryCreate<TOptions>(string[] args, out TOptions result, out string error) where TOptions : class, new()
     {
         try
@@ -139,12 +161,15 @@ public class OptionsBuilder
     }
 
     /// <summary>
-    /// 静态方法：从命令行参数构建配置选项并启用调试输出
+    /// 静态方法：从命令行参数构建配置选项并启用调试输出。
     /// </summary>
-    /// <typeparam name="TOptions">配置选项类型</typeparam>
-    /// <param name="args">命令行参数</param>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的配置选项对象</returns>
+    /// <remarks>
+    /// Static method: Creates configuration options from command-line arguments with debug output enabled.
+    /// </remarks>
+    /// <typeparam name="TOptions">配置选项类型 / Configuration options type</typeparam>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="skipValidation">是否跳过必需选项验证 / Whether to skip required option validation</param>
+    /// <returns>构建的配置选项对象 / Built configuration options object</returns>
     public static TOptions CreateWithDebug<TOptions>(string[] args, bool skipValidation = false) where TOptions : class, new()
     {
         // 创建配置选项
@@ -160,25 +185,30 @@ public class OptionsBuilder
 }
 
 /// <summary>
-/// 选项构建器，用于从命令行参数和环境变量构建配置选项
+/// 选项构建器，用于从命令行参数和环境变量构建配置选项。
 /// </summary>
-/// <typeparam name="T">配置选项类型</typeparam>
 /// <remarks>
-/// 该类提供了从命令行参数和环境变量构建配置选项的功能
+/// Generic options builder for creating configuration options from command-line arguments and environment variables.
+/// This class provides functionality to build configuration options with caching support for property information.
 /// </remarks>
+/// <typeparam name="T">配置选项类型 / Configuration options type</typeparam>
 public sealed class OptionsBuilder<T> where T : class, new()
 {
     /// <summary>
-    /// 反射结果缓存，用于缓存类型的属性信息
-    /// Reflection result cache for caching type property information
+    /// 反射结果缓存，用于缓存类型的属性信息。
     /// </summary>
+    /// <remarks>
+    /// Reflection result cache for caching type property information.
+    /// </remarks>
     private static readonly ConcurrentDictionary<Type, PropertyInfo[]> PropertyCache = new();
     private static readonly ConcurrentDictionary<Type, Dictionary<string, string>> OptionMappingsCache = new();
 
     /// <summary>
-    /// 获取指定类型的所有属性（带缓存）
-    /// Gets all properties of the specified type (with caching)
+    /// 获取指定类型的所有属性（带缓存）。
     /// </summary>
+    /// <remarks>
+    /// Gets all properties of the specified type with caching support.
+    /// </remarks>
     /// <param name="type">要获取属性的类型 / The type to get properties for</param>
     /// <returns>属性信息数组 / Array of property information</returns>
     private static PropertyInfo[] GetCachedProperties(Type type)
@@ -193,12 +223,15 @@ public sealed class OptionsBuilder<T> where T : class, new()
     private readonly CommandLineArgumentConverter _converter;
 
     /// <summary>
-    /// 初始化选项构建器
+    /// 初始化选项构建器。
     /// </summary>
-    /// <param name="args">命令行参数</param>
-    /// <param name="boolFormat">布尔参数格式</param>
-    /// <param name="ensurePrefixedKeys">是否确保参数键都有前缀</param>
-    /// <param name="useEnvironmentVariables">是否使用环境变量</param>
+    /// <remarks>
+    /// Initializes the options builder with the specified parameters.
+    /// </remarks>
+    /// <param name="args">命令行参数 / Command-line arguments</param>
+    /// <param name="boolFormat">布尔参数格式 / Boolean argument format</param>
+    /// <param name="ensurePrefixedKeys">是否确保参数键都有前缀 / Whether to ensure all argument keys have prefixes</param>
+    /// <param name="useEnvironmentVariables">是否使用环境变量 / Whether to use environment variables</param>
     public OptionsBuilder(string[] args, BoolArgumentFormat boolFormat = BoolArgumentFormat.Flag, bool ensurePrefixedKeys = true, bool useEnvironmentVariables = true)
     {
         _args = args ?? Array.Empty<string>();
@@ -213,10 +246,13 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 构建选项对象
+    /// 构建选项对象。
     /// </summary>
-    /// <param name="skipValidation">是否跳过必需选项验证</param>
-    /// <returns>构建的选项对象</returns>
+    /// <remarks>
+    /// Builds the options object from command-line arguments and environment variables.
+    /// </remarks>
+    /// <param name="skipValidation">是否跳过必需选项验证 / Whether to skip required option validation</param>
+    /// <returns>构建的选项对象 / Built options object</returns>
     public T Build(bool skipValidation = false)
     {
         try
@@ -281,9 +317,12 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 应用默认值
+    /// 应用默认值。
     /// </summary>
-    /// <param name="target">目标对象</param>
+    /// <remarks>
+    /// Applies default values from OptionAttribute to the target object.
+    /// </remarks>
+    /// <param name="target">目标对象 / Target object</param>
     private void ApplyDefaultValues(T target)
     {
         var properties = GetCachedProperties(typeof(T))
@@ -337,9 +376,12 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 验证必需的选项
+    /// 验证必需的选项。
     /// </summary>
-    /// <param name="target">目标对象</param>
+    /// <remarks>
+    /// Validates that all required options have been set.
+    /// </remarks>
+    /// <param name="target">目标对象 / Target object</param>
     private void ValidateRequiredOptions(T target)
     {
         var properties = GetCachedProperties(typeof(T));
@@ -383,9 +425,12 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 获取环境变量
+    /// 获取环境变量。
     /// </summary>
-    /// <returns>环境变量字典</returns>
+    /// <remarks>
+    /// Retrieves environment variables and maps them to option properties.
+    /// </remarks>
+    /// <returns>环境变量字典 / Environment variable dictionary</returns>
     private Dictionary<string, object> GetEnvironmentVariables()
     {
         var result = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
@@ -496,10 +541,13 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 将标准格式参数转换为选项字典
+    /// 将标准格式参数转换为选项字典。
     /// </summary>
-    /// <param name="standardArgs">标准格式参数列表</param>
-    /// <returns>选项字典</returns>
+    /// <remarks>
+    /// Converts standard format arguments to an options dictionary.
+    /// </remarks>
+    /// <param name="standardArgs">标准格式参数列表 / Standard format argument list</param>
+    /// <returns>选项字典 / Options dictionary</returns>
     private Dictionary<string, object> ConvertToOptionsDictionary(List<string> standardArgs)
     {
         var result = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
@@ -559,10 +607,13 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 检查指定的键是否对应布尔属性
+    /// 检查指定的键是否对应布尔属性。
     /// </summary>
-    /// <param name="key">参数键</param>
-    /// <returns>如果对应布尔属性则返回true，否则返回false</returns>
+    /// <remarks>
+    /// Checks if the specified key corresponds to a boolean property.
+    /// </remarks>
+    /// <param name="key">参数键 / Argument key</param>
+    /// <returns>如果对应布尔属性则返回 <c>true</c>；否则返回 <c>false</c> / Returns <c>true</c> if corresponds to a boolean property; otherwise <c>false</c></returns>
     private bool IsBooleanProperty(string key)
     {
         var properties = GetCachedProperties(typeof(T));
@@ -585,9 +636,11 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 获取选项映射（带缓存）
-    /// Gets option mappings (with caching)
+    /// 获取选项映射（带缓存）。
     /// </summary>
+    /// <remarks>
+    /// Gets option mappings with caching support.
+    /// </remarks>
     /// <returns>选项映射字典 / Option mapping dictionary</returns>
     private Dictionary<string, string> GetOptionMappings()
     {
@@ -622,10 +675,13 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 标准化参数键
+    /// 标准化参数键。
     /// </summary>
-    /// <param name="key">原始参数键</param>
-    /// <returns>标准化后的键</returns>
+    /// <remarks>
+    /// Normalizes the argument key by removing prefixes.
+    /// </remarks>
+    /// <param name="key">原始参数键 / Original argument key</param>
+    /// <returns>标准化后的键 / Normalized key</returns>
     private string NormalizeKey(string key)
     {
         // 处理空键
@@ -648,10 +704,13 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 将选项应用到配置对象
+    /// 将选项应用到配置对象。
     /// </summary>
-    /// <param name="target">目标配置对象</param>
-    /// <param name="options">选项字典</param>
+    /// <remarks>
+    /// Applies options from the dictionary to the configuration object.
+    /// </remarks>
+    /// <param name="target">目标配置对象 / Target configuration object</param>
+    /// <param name="options">选项字典 / Options dictionary</param>
     private void ApplyOptions(T target, Dictionary<string, object> options)
     {
         var properties = GetCachedProperties(typeof(T))
@@ -852,10 +911,13 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 将参数键标准化为属性名
+    /// 将参数键标准化为属性名。
     /// </summary>
-    /// <param name="key">参数键</param>
-    /// <returns>标准化后的属性名</returns>
+    /// <remarks>
+    /// Normalizes the argument key to a property name by removing prefixes and converting hyphens/underscores to PascalCase.
+    /// </remarks>
+    /// <param name="key">参数键 / Argument key</param>
+    /// <returns>标准化后的属性名 / Normalized property name</returns>
     private string NormalizePropertyName(string key)
     {
         // 检查输入参数
