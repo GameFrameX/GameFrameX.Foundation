@@ -36,36 +36,38 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 计算指定Unix时间戳到当前时间经过了多少秒（基于UTC）
-    /// </summary>
-    /// <param name="timestamp">Unix时间戳（秒）。应为UTC时间戳。</param>
-    /// <returns>经过的秒数。如果timestamp在未来，返回负数。</returns>
-    /// <remarks>
-    /// 此方法直接使用Unix时间戳计算经过的秒数
-    /// 使用 <see cref="UnixTimeSeconds"/> 获取当前UTC时间戳进行计算
-    /// 计算效率高于DateTime转换方式
-    /// 适用于Unix时间戳的剩余时间计算
-    /// </remarks>
-    public static long GetElapsedSecondsWithUtc(long timestamp)
-    {
-        var currentTimestamp = UnixTimeSeconds();
-        return currentTimestamp - timestamp;
-    }
+/// 计算指定Unix时间戳到当前时间经过了多少秒（基于UTC）。
+/// </summary>
+/// <remarks>
+/// Calculates how many seconds have passed from the specified Unix timestamp to the current time (based on UTC).
+/// This method directly uses Unix timestamps to calculate elapsed seconds.
+/// Uses <see cref="UnixTimeSeconds"/> to get the current UTC timestamp for calculation.
+/// More efficient than DateTime conversion methods.
+/// Suitable for remaining time calculations for Unix timestamps.
+/// </remarks>
+/// <param name="timestamp">Unix时间戳（秒）。应为UTC时间戳 / Unix timestamp (seconds). Should be a UTC timestamp</param>
+/// <returns>经过的秒数。如果timestamp在未来，返回负数 / The number of seconds elapsed. Returns a negative number if timestamp is in the future</returns>
+public static long GetElapsedSecondsWithUtc(long timestamp)
+{
+    var currentTimestamp = UnixTimeSeconds();
+    return currentTimestamp - timestamp;
+}
 
-    /// <summary>
-    /// 计算指定Unix时间戳到当前时间经过了多少毫秒（基于UTC）
-    /// </summary>
-    /// <param name="timestampMs">Unix时间戳（毫秒）。应为UTC时间戳。</param>
-    /// <returns>经过的毫秒数。如果timestampMs在未来，返回负数。</returns>
-    /// <remarks>
-    /// 此方法直接使用Unix毫秒时间戳计算经过的毫秒数
-    /// 使用 <see cref="UnixTimeMilliseconds"/> 获取当前UTC时间戳进行计算
-    /// 计算效率高于DateTime转换方式
-    /// 适用于需要毫秒级精度的剩余时间计算
-    /// </remarks>
-    public static long GetElapsedMillisecondsWithUtc(long timestampMs)
-    {
-        var currentTimestamp = UnixTimeMilliseconds();
-        return currentTimestamp - timestampMs;
-    }
+/// <summary>
+/// 计算指定Unix时间戳到当前时间经过了多少毫秒（基于UTC）。
+/// </summary>
+/// <remarks>
+/// Calculates how many milliseconds have passed from the specified Unix timestamp to the current time (based on UTC).
+/// This method directly uses Unix millisecond timestamps to calculate elapsed milliseconds.
+/// Uses <see cref="UnixTimeMilliseconds"/> to get the current UTC timestamp for calculation.
+/// More efficient than DateTime conversion methods.
+/// Suitable for remaining time calculations requiring millisecond-level precision.
+/// </remarks>
+/// <param name="timestampMs">Unix时间戳（毫秒）。应为UTC时间戳 / Unix timestamp (milliseconds). Should be a UTC timestamp</param>
+/// <returns>经过的毫秒数。如果timestampMs在未来，返回负数 / The number of milliseconds elapsed. Returns a negative number if timestampMs is in the future</returns>
+public static long GetElapsedMillisecondsWithUtc(long timestampMs)
+{
+    var currentTimestamp = UnixTimeMilliseconds();
+    return currentTimestamp - timestampMs;
+}
 }

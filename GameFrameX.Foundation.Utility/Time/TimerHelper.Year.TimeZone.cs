@@ -36,13 +36,14 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取今年开始时间
+    /// 获取今年开始时间。
     /// </summary>
-    /// <returns>今年1月1号00:00:00的时间</returns>
     /// <remarks>
-    /// 此方法返回今年第一天的零点时间
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// Gets the start time of the current year.
+    /// This method returns the midnight time of the first day of the current year.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>今年1月1号00:00:00的时间 / The time at 00:00:00 on January 1st of the current year</returns>
     public static DateTime GetYearStartTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
@@ -50,12 +51,13 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今年开始时间戳（基于设置时区）
+    /// 获取今年开始时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>今年1月1号00:00:00的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the start timestamp of the current year (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <returns>今年1月1号00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on January 1st of the current year + time zone offset</returns>
     public static long GetYearStartTimestampWithTimeZone()
     {
         var date = GetYearStartTimeWithTimeZone();
@@ -63,13 +65,14 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今年结束时间
+    /// 获取今年结束时间。
     /// </summary>
-    /// <returns>今年12月31号23:59:59的时间</returns>
     /// <remarks>
-    /// 此方法返回今年最后一天的最后一秒
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// Gets the end time of the current year.
+    /// This method returns the last second of the last day of the current year.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>今年12月31号23:59:59的时间 / The time at 23:59:59 on December 31st of the current year</returns>
     public static DateTime GetYearEndTime()
     {
         var now = GetNowWithTimeZone();
@@ -77,13 +80,14 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今年结束时间戳
+    /// 获取今年结束时间戳。
     /// </summary>
-    /// <returns>今年12月31号23:59:59的时间戳(秒)</returns>
     /// <remarks>
-    /// 此方法返回今年最后一天最后一秒的Unix时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// Gets the end timestamp of the current year.
+    /// This method returns the Unix timestamp of the last second of the last day of the current year.
+    /// Converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <returns>今年12月31号23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 on December 31st of the current year</returns>
     public static long GetYearEndTimestampWithTimeZone()
     {
         var date = GetYearEndTime();
@@ -91,13 +95,14 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在年的结束时间戳（基于设置时区）
+    /// 获取指定日期所在年的结束时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年12月31号23:59:59的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the end timestamp of the year for the specified date (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年12月31号23:59:59的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 23:59:59 on December 31st of the year + time zone offset</returns>
     public static long GetEndTimestampOfYearWithTimeZone(DateTime date)
     {
         var endTime = GetEndTimeOfYear(date);
@@ -105,26 +110,28 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取明年开始时间
+    /// 获取明年开始时间。
     /// </summary>
-    /// <returns>明年1月1号00:00:00的时间</returns>
     /// <remarks>
-    /// 此方法返回明年第一天的零点时间
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// Gets the start time of the next year.
+    /// This method returns the midnight time of the first day of the next year.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>明年1月1号00:00:00的时间 / The time at 00:00:00 on January 1st of the next year</returns>
     public static DateTime GetNextYearStartTimeWithTimeZone()
     {
         return GetYearStartTimeWithTimeZone().AddYears(1);
     }
 
     /// <summary>
-    /// 获取明年开始时间戳
+    /// 获取明年开始时间戳。
     /// </summary>
-    /// <returns>明年1月1号00:00:00的时间戳(秒)</returns>
     /// <remarks>
-    /// 此方法返回明年第一天零点时间的Unix时间戳
-    /// 会将时间转换为UTC时间后再计算时间戳
+    /// Gets the start timestamp of the next year.
+    /// This method returns the Unix timestamp of the midnight time on the first day of the next year.
+    /// Converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <returns>明年1月1号00:00:00的时间戳(秒) / The timestamp (seconds) at 00:00:00 on January 1st of the next year</returns>
     public static long GetNextYearStartTimestamp()
     {
         var date = GetNextYearStartTimeWithTimeZone();
@@ -132,13 +139,14 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在年的开始时间戳（基于设置时区）
+    /// 获取指定日期所在年的开始时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年1月1号00:00:00的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the start timestamp of the year for the specified date (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年1月1号00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on January 1st of the year + time zone offset</returns>
     public static long GetStartTimestampOfYearWithTimeZone(DateTime date)
     {
         var startTime = GetStartTimeOfYear(date);
@@ -146,12 +154,13 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取明年开始时间戳（基于设置时区）
+    /// 获取明年开始时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>明年1月1号00:00:00的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the start timestamp of the next year (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <returns>明年1月1号00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on January 1st of the next year + time zone offset</returns>
     public static long GetNextYearStartTimestampWithTimeZone()
     {
         var startTime = GetNextYearStartTimeWithTimeZone();

@@ -36,34 +36,36 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的秒级时间戳
-    /// </summary>
-    /// <returns>返回自1970年1月1日 00:00:00以来经过的秒数(当前时区),加上时区偏移量</returns>
-    /// <remarks>
-    /// 此方法:
-    /// 1. 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间
-    /// 2. 转换为Unix时间戳(秒)
-    /// 3. 加上TimeOffsetSeconds偏移量
-    /// 主要用于需要当前时区 (<see cref="CurrentTimeZone"/>) 时间戳的场景
-    /// </remarks>
-    public static long UnixTimeSecondsWithOffsetWithTimeZone()
-    {
-        return new DateTimeOffset(GetNowWithTimeZone()).ToUnixTimeSeconds() + TimeOffsetSeconds;
-    }
+/// 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的秒级时间戳。
+/// </summary>
+/// <remarks>
+/// Gets the current time zone (<see cref="CurrentTimeZone"/>) time as a second-level timestamp.
+/// This method:
+/// 1. Gets the current time zone (<see cref="CurrentTimeZone"/>) time
+/// 2. Converts to Unix timestamp (seconds)
+/// 3. Adds the TimeOffsetSeconds offset
+/// Mainly used for scenarios requiring current time zone (<see cref="CurrentTimeZone"/>) timestamps.
+/// </remarks>
+/// <returns>返回自1970年1月1日 00:00:00以来经过的秒数(当前时区),加上时区偏移量 / Returns the number of seconds elapsed since 1970-01-01 00:00:00 (current time zone), plus time zone offset</returns>
+public static long UnixTimeSecondsWithOffsetWithTimeZone()
+{
+    return new DateTimeOffset(GetNowWithTimeZone()).ToUnixTimeSeconds() + TimeOffsetSeconds;
+}
 
-    /// <summary>
-    /// 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的毫秒级时间戳
-    /// </summary>
-    /// <returns>返回自1970年1月1日 00:00:00以来经过的毫秒数(当前时区),加上时区偏移量</returns>
-    /// <remarks>
-    /// 此方法:
-    /// 1. 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间
-    /// 2. 转换为Unix时间戳(毫秒)
-    /// 3. 加上TimeOffsetMilliseconds偏移量
-    /// 相比秒级时间戳提供更高的精度,适用于需要精确时间计算的场景
-    /// </remarks>
-    public static long UnixTimeMillisecondsWithOffsetWithTimeZone()
-    {
-        return new DateTimeOffset(GetNowWithTimeZone()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
-    }
+/// <summary>
+/// 获取当前时区 (<see cref="CurrentTimeZone"/>) 时间的毫秒级时间戳。
+/// </summary>
+/// <remarks>
+/// Gets the current time zone (<see cref="CurrentTimeZone"/>) time as a millisecond-level timestamp.
+/// This method:
+/// 1. Gets the current time zone (<see cref="CurrentTimeZone"/>) time
+/// 2. Converts to Unix timestamp (milliseconds)
+/// 3. Adds the TimeOffsetMilliseconds offset
+/// Provides higher precision than second-level timestamps, suitable for scenarios requiring precise time calculations.
+/// </remarks>
+/// <returns>返回自1970年1月1日 00:00:00以来经过的毫秒数(当前时区),加上时区偏移量 / Returns the number of milliseconds elapsed since 1970-01-01 00:00:00 (current time zone), plus time zone offset</returns>
+public static long UnixTimeMillisecondsWithOffsetWithTimeZone()
+{
+    return new DateTimeOffset(GetNowWithTimeZone()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
+}
 }

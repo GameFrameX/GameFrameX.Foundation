@@ -36,13 +36,14 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取今年开始时间 (UTC)
+    /// 获取今年开始时间 (UTC)。
     /// </summary>
-    /// <returns>今年1月1号00:00:00的时间 (UTC)</returns>
     /// <remarks>
-    /// 此方法返回今年第一天的零点时间
-    /// 使用 UTC 时区计算
+    /// Gets the start time of the current year (UTC).
+    /// This method returns the midnight time of the first day of the current year.
+    /// Uses UTC time zone for calculation.
     /// </remarks>
+    /// <returns>今年1月1号00:00:00的时间 (UTC) / The time at 00:00:00 on January 1st of the current year (UTC)</returns>
     public static DateTime GetYearStartTimeWithUtc()
     {
         var now = GetNowWithUtc();
@@ -50,13 +51,14 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今年开始时间戳 (UTC)
+    /// 获取今年开始时间戳 (UTC)。
     /// </summary>
-    /// <returns>今年1月1号00:00:00的时间戳(秒) (UTC)</returns>
     /// <remarks>
-    /// 此方法返回今年第一天零点时间的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// Gets the start timestamp of the current year (UTC).
+    /// This method returns the Unix timestamp of the midnight time on the first day of the current year.
+    /// Based on UTC time calculation.
     /// </remarks>
+    /// <returns>今年1月1号00:00:00的时间戳(秒) (UTC) / The timestamp (seconds) at 00:00:00 on January 1st of the current year (UTC)</returns>
     public static long GetYearStartTimestampWithUtc()
     {
         var date = GetYearStartTimeWithUtc();
@@ -64,13 +66,14 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今年结束时间 (UTC)
+    /// 获取今年结束时间 (UTC)。
     /// </summary>
-    /// <returns>今年12月31号23:59:59的时间 (UTC)</returns>
     /// <remarks>
-    /// 此方法返回今年最后一天的最后一秒
-    /// 使用 UTC 时区计算
+    /// Gets the end time of the current year (UTC).
+    /// This method returns the last second of the last day of the current year.
+    /// Uses UTC time zone for calculation.
     /// </remarks>
+    /// <returns>今年12月31号23:59:59的时间 (UTC) / The time at 23:59:59 on December 31st of the current year (UTC)</returns>
     public static DateTime GetYearEndTimeWithUtc()
     {
         var now = GetNowWithUtc();
@@ -78,13 +81,14 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取今年结束时间戳 (UTC)
+    /// 获取今年结束时间戳 (UTC)。
     /// </summary>
-    /// <returns>今年12月31号23:59:59的时间戳(秒) (UTC)</returns>
     /// <remarks>
-    /// 此方法返回今年最后一天最后一秒的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// Gets the end timestamp of the current year (UTC).
+    /// This method returns the Unix timestamp of the last second of the last day of the current year.
+    /// Based on UTC time calculation.
     /// </remarks>
+    /// <returns>今年12月31号23:59:59的时间戳(秒) (UTC) / The timestamp (seconds) at 23:59:59 on December 31st of the current year (UTC)</returns>
     public static long GetYearEndTimestampWithUtc()
     {
         var date = GetYearEndTimeWithUtc();
@@ -92,26 +96,28 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取明年开始时间 (UTC)
+    /// 获取明年开始时间 (UTC)。
     /// </summary>
-    /// <returns>明年1月1号00:00:00的时间 (UTC)</returns>
     /// <remarks>
-    /// 此方法返回明年第一天的零点时间
-    /// 使用 UTC 时区计算
+    /// Gets the start time of the next year (UTC).
+    /// This method returns the midnight time of the first day of the next year.
+    /// Uses UTC time zone for calculation.
     /// </remarks>
+    /// <returns>明年1月1号00:00:00的时间 (UTC) / The time at 00:00:00 on January 1st of the next year (UTC)</returns>
     public static DateTime GetNextYearStartTimeWithUtc()
     {
         return GetYearStartTimeWithUtc().AddYears(1);
     }
 
     /// <summary>
-    /// 获取明年开始时间戳 (UTC)
+    /// 获取明年开始时间戳 (UTC)。
     /// </summary>
-    /// <returns>明年1月1号00:00:00的时间戳(秒) (UTC)</returns>
     /// <remarks>
-    /// 此方法返回明年第一天零点时间的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// Gets the start timestamp of the next year (UTC).
+    /// This method returns the Unix timestamp of the midnight time on the first day of the next year.
+    /// Based on UTC time calculation.
     /// </remarks>
+    /// <returns>明年1月1号00:00:00的时间戳(秒) (UTC) / The timestamp (seconds) at 00:00:00 on January 1st of the next year (UTC)</returns>
     public static long GetNextYearStartTimestampWithUtc()
     {
         var date = GetNextYearStartTimeWithUtc();
@@ -119,14 +125,15 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在年的结束时间戳（UTC）
+    /// 获取指定日期所在年的结束时间戳（UTC）。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年12月31号23:59:59的时间戳(秒)（UTC）</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在年最后一天最后一秒的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// Gets the end timestamp of the year for the specified date (UTC).
+    /// This method returns the Unix timestamp of the last second of the last day of the year for the specified date.
+    /// Based on UTC time calculation.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年12月31号23:59:59的时间戳(秒)（UTC） / The timestamp (seconds) at 23:59:59 on December 31st of the year (UTC)</returns>
     public static long GetEndTimestampOfYearWithUtc(DateTime date)
     {
         var endTime = GetEndTimeOfYear(date);
@@ -134,14 +141,15 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在年的开始时间戳（UTC）
+    /// 获取指定日期所在年的开始时间戳（UTC）。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年1月1号00:00:00的时间戳(秒)（UTC）</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在年第一天零点时间的Unix时间戳
-    /// 基于 UTC 时间计算
+    /// Gets the start timestamp of the year for the specified date (UTC).
+    /// This method returns the Unix timestamp of the midnight time on the first day of the year for the specified date.
+    /// Based on UTC time calculation.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年1月1号00:00:00的时间戳(秒)（UTC） / The timestamp (seconds) at 00:00:00 on January 1st of the year (UTC)</returns>
     public static long GetStartTimestampOfYearWithUtc(DateTime date)
     {
         var startTime = GetStartTimeOfYear(date);

@@ -36,34 +36,36 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取当前UTC时间的秒级时间戳
-    /// </summary>
-    /// <returns>返回自1970年1月1日 00:00:00 UTC以来经过的秒数,加上时区偏移量</returns>
-    /// <remarks>
-    /// 此方法:
-    /// 1. 获取当前UTC时间
-    /// 2. 转换为Unix时间戳(秒)
-    /// 3. 加上TimeOffsetSeconds偏移量
-    /// 主要用于需要UTC时间戳的场景,如跨时区业务
-    /// </remarks>
-    public static long UnixTimeSecondsWithOffset()
-    {
-        return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeSeconds() + TimeOffsetSeconds;
-    }
+/// 获取当前UTC时间的秒级时间戳。
+/// </summary>
+/// <remarks>
+/// Gets the current UTC time as a second-level timestamp.
+/// This method:
+/// 1. Gets the current UTC time
+/// 2. Converts to Unix timestamp (seconds)
+/// 3. Adds the TimeOffsetSeconds offset
+/// Mainly used for scenarios requiring UTC timestamps, such as cross-timezone business.
+/// </remarks>
+/// <returns>返回自1970年1月1日 00:00:00 UTC以来经过的秒数,加上时区偏移量 / Returns the number of seconds elapsed since 1970-01-01 00:00:00 UTC, plus time zone offset</returns>
+public static long UnixTimeSecondsWithOffset()
+{
+    return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeSeconds() + TimeOffsetSeconds;
+}
 
-    /// <summary>
-    /// 获取当前UTC时间的毫秒级时间戳
-    /// </summary>
-    /// <returns>返回自1970年1月1日 00:00:00 UTC以来经过的毫秒数,加上时区偏移量</returns>
-    /// <remarks>
-    /// 此方法:
-    /// 1. 获取当前UTC时间
-    /// 2. 转换为Unix时间戳(毫秒)
-    /// 3. 加上TimeOffsetMilliseconds偏移量
-    /// 相比秒级时间戳提供更高的精度,适用于需要精确时间计算的场景
-    /// </remarks>
-    public static long UnixTimeMillisecondsWithOffset()
-    {
-        return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
-    }
+/// <summary>
+/// 获取当前UTC时间的毫秒级时间戳。
+/// </summary>
+/// <remarks>
+/// Gets the current UTC time as a millisecond-level timestamp.
+/// This method:
+/// 1. Gets the current UTC time
+/// 2. Converts to Unix timestamp (milliseconds)
+/// 3. Adds the TimeOffsetMilliseconds offset
+/// Provides higher precision than second-level timestamps, suitable for scenarios requiring precise time calculations.
+/// </remarks>
+/// <returns>返回自1970年1月1日 00:00:00 UTC以来经过的毫秒数,加上时区偏移量 / Returns the number of milliseconds elapsed since 1970-01-01 00:00:00 UTC, plus time zone offset</returns>
+public static long UnixTimeMillisecondsWithOffset()
+{
+    return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;
+}
 }

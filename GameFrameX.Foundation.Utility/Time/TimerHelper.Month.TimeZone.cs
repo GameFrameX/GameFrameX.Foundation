@@ -38,11 +38,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取本月开始时间（基于设置时区）。
     /// </summary>
-    /// <returns>本月1号00:00:00的时间。</returns>
     /// <remarks>
-    /// 此方法返回本月第一天的零点时间。
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算。
+    /// Gets the start time of the current month (based on set time zone).
+    /// This method returns the midnight time of the first day of the current month.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>本月1号00:00:00的时间 / The time at 00:00:00 on the 1st of the current month</returns>
     public static DateTime GetMonthStartTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
@@ -52,11 +53,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取本月开始时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>本月1号00:00:00的时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回本月第一天零点时间的Unix时间戳。
-    /// 会将时间转换为UTC时间后再计算时间戳。
+    /// Gets the start timestamp of the current month (based on set time zone).
+    /// This method returns the Unix timestamp of the midnight time on the first day of the current month.
+    /// Converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <returns>本月1号00:00:00的时间戳(秒) / The timestamp (seconds) at 00:00:00 on the 1st of the current month</returns>
     public static long GetMonthStartTimestampWithTimeZone()
     {
         var date = GetMonthStartTimeWithTimeZone();
@@ -66,11 +68,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取本月结束时间（基于设置时区）。
     /// </summary>
-    /// <returns>本月最后一天23:59:59的时间。</returns>
     /// <remarks>
-    /// 此方法返回本月最后一天的最后一秒。
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算。
+    /// Gets the end time of the current month (based on set time zone).
+    /// This method returns the last second of the last day of the current month.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>本月最后一天23:59:59的时间 / The time at 23:59:59 on the last day of the current month</returns>
     public static DateTime GetMonthEndTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
@@ -80,11 +83,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取本月结束时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>本月最后一天23:59:59的时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回本月最后一天最后一秒的Unix时间戳。
-    /// 会将时间转换为UTC时间后再计算时间戳。
+    /// Gets the end timestamp of the current month (based on set time zone).
+    /// This method returns the Unix timestamp of the last second of the last day of the current month.
+    /// Converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <returns>本月最后一天23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 on the last day of the current month</returns>
     public static long GetMonthEndTimestampWithTimeZone()
     {
         var date = GetMonthEndTimeWithTimeZone();
@@ -94,11 +98,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取下个月开始时间（基于设置时区）。
     /// </summary>
-    /// <returns>下个月1号00:00:00的时间。</returns>
     /// <remarks>
-    /// 此方法返回下个月第一天的零点时间。
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算。
+    /// Gets the start time of the next month (based on set time zone).
+    /// This method returns the midnight time of the first day of the next month.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>下个月1号00:00:00的时间 / The time at 00:00:00 on the 1st of the next month</returns>
     public static DateTime GetNextMonthStartTimeWithTimeZone()
     {
         return GetMonthStartTimeWithTimeZone().AddMonths(1);
@@ -107,10 +112,11 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取下个月开始时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>下个月1号00:00:00的时间戳(秒) + 时区偏移。</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。
+    /// Gets the start timestamp of the next month (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <returns>下个月1号00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on the 1st of the next month + time zone offset</returns>
     public static long GetNextMonthStartTimestampWithTimeZone()
     {
         return DateTimeToSecondsWithTimeZone(GetNextMonthStartTimeWithTimeZone());
@@ -119,11 +125,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取下个月结束时间（基于设置时区）。
     /// </summary>
-    /// <returns>下个月最后一天23:59:59的时间。</returns>
     /// <remarks>
-    /// 此方法返回下个月最后一天的最后一秒。
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算。
+    /// Gets the end time of the next month (based on set time zone).
+    /// This method returns the last second of the last day of the next month.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>下个月最后一天23:59:59的时间 / The time at 23:59:59 on the last day of the next month</returns>
     public static DateTime GetNextMonthEndTimeWithTimeZone()
     {
         return GetNextMonthStartTimeWithTimeZone().AddMonths(1).AddSeconds(-1);
@@ -132,11 +139,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取下个月结束时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>下个月最后一天23:59:59的时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回下个月最后一天最后一秒的Unix时间戳。
-    /// 会将时间转换为UTC时间后再计算时间戳。
+    /// Gets the end timestamp of the next month (based on set time zone).
+    /// This method returns the Unix timestamp of the last second of the last day of the next month.
+    /// Converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <returns>下个月最后一天23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 on the last day of the next month</returns>
     public static long GetNextMonthEndTimestampWithTimeZone()
     {
         var date = GetNextMonthEndTimeWithTimeZone();

@@ -36,43 +36,53 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 时区偏移秒数。用于调整时间计算的偏移量。
-    /// 正值表示向未来偏移,负值表示向过去偏移。
-    /// </summary>
-    public static long TimeOffsetSeconds { get; private set; } = 0;
+/// 时区偏移秒数。用于调整时间计算的偏移量。
+/// </summary>
+/// <remarks>
+/// Time zone offset in seconds. Used to adjust the offset for time calculations.
+/// Positive values indicate offset towards the future, negative values indicate offset towards the past.
+/// </remarks>
+/// <value>时区偏移秒数 / Time zone offset in seconds</value>
+public static long TimeOffsetSeconds { get; private set; } = 0;
 
-    /// <summary>
-    /// 时区偏移毫秒数。用于调整时间计算的偏移量。
-    /// 正值表示向未来偏移,负值表示向过去偏移。
-    /// </summary>
-    public static long TimeOffsetMilliseconds { get; private set; } = 0;
+/// <summary>
+/// 时区偏移毫秒数。用于调整时间计算的偏移量。
+/// </summary>
+/// <remarks>
+/// Time zone offset in milliseconds. Used to adjust the offset for time calculations.
+/// Positive values indicate offset towards the future, negative values indicate offset towards the past.
+/// </remarks>
+/// <value>时区偏移毫秒数 / Time zone offset in milliseconds</value>
+public static long TimeOffsetMilliseconds { get; private set; } = 0;
 
-    /// <summary>
-    /// 设置时区偏移值
-    /// </summary>
-    /// <param name="offsetSeconds">秒级偏移量</param>
-    /// <param name="offsetMilliseconds">毫秒级偏移量</param>
-    /// <remarks>
-    /// 此方法用于调整时间计算的基准。
-    /// 例如要模拟未来时间,可以传入正数;要模拟过去时间,可以传入负数。
-    /// 通常用于调试和测试场景。
-    /// </remarks>
-    public static void SetTimeOffset(long offsetSeconds, long offsetMilliseconds)
-    {
-        TimeOffsetSeconds = offsetSeconds;
-        TimeOffsetMilliseconds = offsetMilliseconds;
-    }
+/// <summary>
+/// 设置时区偏移值。
+/// </summary>
+/// <remarks>
+/// Sets the time zone offset values.
+/// This method is used to adjust the baseline for time calculations.
+/// For example, to simulate future time, pass a positive number; to simulate past time, pass a negative number.
+/// Typically used for debugging and testing scenarios.
+/// </remarks>
+/// <param name="offsetSeconds">秒级偏移量 / Second-level offset</param>
+/// <param name="offsetMilliseconds">毫秒级偏移量 / Millisecond-level offset</param>
+public static void SetTimeOffset(long offsetSeconds, long offsetMilliseconds)
+{
+    TimeOffsetSeconds = offsetSeconds;
+    TimeOffsetMilliseconds = offsetMilliseconds;
+}
 
-    /// <summary>
-    /// 重置时区偏移值为默认值(0)
-    /// </summary>
-    /// <remarks>
-    /// 此方法会将秒级和毫秒级的偏移量都重置为0,
-    /// 使时间计算恢复到未经调整的状态。
-    /// </remarks>
-    public static void ResetTimeOffset()
-    {
-        TimeOffsetSeconds = 0;
-        TimeOffsetMilliseconds = 0;
-    }
+/// <summary>
+/// 重置时区偏移值为默认值(0)。
+/// </summary>
+/// <remarks>
+/// Resets the time zone offset values to default (0).
+/// This method resets both second-level and millisecond-level offsets to 0,
+/// restoring time calculations to the unadjusted state.
+/// </remarks>
+public static void ResetTimeOffset()
+{
+    TimeOffsetSeconds = 0;
+    TimeOffsetMilliseconds = 0;
+}
 }

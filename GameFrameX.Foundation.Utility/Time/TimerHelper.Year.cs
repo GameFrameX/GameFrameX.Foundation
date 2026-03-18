@@ -36,42 +36,45 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 获取指定日期所在年的开始时间
+    /// 获取指定日期所在年的开始时间。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年1月1号00:00:00的时间</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在年第一天的零点时间
-    /// 保持原有时区不变
+    /// Gets the start time of the year for the specified date.
+    /// This method returns the midnight time of the first day of the year for the specified date.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年1月1号00:00:00的时间 / The time at 00:00:00 on January 1st of the year</returns>
     public static DateTime GetStartTimeOfYear(DateTime date)
     {
         return new DateTime(date.Year, 1, 1);
     }
 
     /// <summary>
-    /// 获取指定日期所在年的结束时间
+    /// 获取指定日期所在年的结束时间。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年12月31号23:59:59的时间</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在年最后一天的最后一秒
-    /// 保持原有时区不变
+    /// Gets the end time of the year for the specified date.
+    /// This method returns the last second of the last day of the year for the specified date.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年12月31号23:59:59的时间 / The time at 23:59:59 on December 31st of the year</returns>
     public static DateTime GetEndTimeOfYear(DateTime date)
     {
         return GetStartTimeOfYear(date).AddYears(1).AddSeconds(-1);
     }
 
     /// <summary>
-    /// 获取指定日期所在年的开始时间戳
+    /// 获取指定日期所在年的开始时间戳。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年1月1号00:00:00的时间戳(秒)</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在年第一天零点时间的Unix时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// Gets the start timestamp of the year for the specified date.
+    /// This method returns the Unix timestamp of the midnight time on the first day of the year for the specified date.
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年1月1号00:00:00的时间戳(秒) / The timestamp (seconds) at 00:00:00 on January 1st of the year</returns>
     public static long GetStartTimestampOfYear(DateTime date)
     {
         var time = GetStartTimeOfYear(date);
@@ -79,14 +82,15 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在年的结束时间戳
+    /// 获取指定日期所在年的结束时间戳。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在年12月31号23:59:59的时间戳(秒)</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在年最后一天最后一秒的Unix时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// Gets the end timestamp of the year for the specified date.
+    /// This method returns the Unix timestamp of the last second of the last day of the year for the specified date.
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在年12月31号23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 on December 31st of the year</returns>
     public static long GetEndTimestampOfYear(DateTime date)
     {
         var time = GetEndTimeOfYear(date);

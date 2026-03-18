@@ -41,13 +41,14 @@ public static partial class TimerHelper
     /// <summary>
     /// 判断两个 <see cref="DateTime"/> 是否表示同一日历日期。
     /// </summary>
-    /// <param name="timeA">要比较的第一个时间。</param>
-    /// <param name="timeB">要比较的第二个时间。</param>
-    /// <returns>如果两个时间在同一天内，则返回 <c>true</c>；否则返回 <c>false</c>。</returns>
     /// <remarks>
-    /// 此方法仅比较年、月、日三个部分，忽略时、分、秒、毫秒等时间成分。
-    /// 该比较不会进行时区转换，直接使用传入 <see cref="DateTime"/> 的日期值。
+    /// Determines whether two <see cref="DateTime"/> values represent the same calendar date.
+    /// This method only compares the year, month, and day parts, ignoring time components such as hours, minutes, seconds, and milliseconds.
+    /// This comparison does not perform time zone conversion and directly uses the date values of the passed <see cref="DateTime"/>.
     /// </remarks>
+    /// <param name="timeA">要比较的第一个时间 / The first time to compare</param>
+    /// <param name="timeB">要比较的第二个时间 / The second time to compare</param>
+    /// <returns>如果两个时间在同一天内，则返回 <c>true</c>；否则返回 <c>false</c> / Returns <c>true</c> if both times are on the same day; otherwise returns <c>false</c></returns>
     /// <example>
     /// <code>
     /// DateTime morning = new DateTime(2024, 1, 10, 8, 30, 0);
@@ -73,13 +74,14 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取两个时间之间的天数差。
     /// </summary>
-    /// <param name="startTime">开始时间。</param>
-    /// <param name="endTime">结束时间。</param>
-    /// <returns>天数差，使用 <see cref="double"/> 表示，可能为负数。</returns>
     /// <remarks>
-    /// 返回值来源于 <see cref="TimeSpan.TotalDays"/>，包含小数部分。
-    /// 如果 <paramref name="endTime"/> 早于 <paramref name="startTime"/>，结果为负数。
+    /// Gets the number of days difference between two times.
+    /// The return value comes from <see cref="TimeSpan.TotalDays"/> and includes the decimal part.
+    /// If <paramref name="endTime"/> is earlier than <paramref name="startTime"/>, the result is negative.
     /// </remarks>
+    /// <param name="startTime">开始时间 / The start time</param>
+    /// <param name="endTime">结束时间 / The end time</param>
+    /// <returns>天数差，使用 <see cref="double"/> 表示，可能为负数 / The number of days difference, represented as <see cref="double"/>, may be negative</returns>
     /// <example>
     /// <code>
     /// DateTime start = new DateTime(2024, 1, 10, 8, 0, 0);
@@ -97,16 +99,17 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取两个日期之间跨越的天数。
     /// </summary>
-    /// <param name="startTime">起始时间。</param>
-    /// <param name="endTime">结束时间。</param>
-    /// <param name="hour">用于判定跨日的小时阈值，有效范围为 0-23。</param>
-    /// <returns>跨越的天数。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="hour"/> 不在 0-23 范围内时抛出。</exception>
     /// <remarks>
-    /// 此方法先计算两个日期（忽略具体时间部分）之间的天数差，再依据小时阈值调整结果。
-    /// 如果 <paramref name="startTime"/> 的小时数小于阈值，则结果加一；
-    /// 如果 <paramref name="endTime"/> 的小时数小于阈值，则结果减一。
+    /// Gets the number of days crossed between two dates.
+    /// This method first calculates the day difference between two dates (ignoring the specific time part), then adjusts the result based on the hour threshold.
+    /// If the hour of <paramref name="startTime"/> is less than the threshold, the result is incremented by one.
+    /// If the hour of <paramref name="endTime"/> is less than the threshold, the result is decremented by one.
     /// </remarks>
+    /// <param name="startTime">起始时间 / The start time</param>
+    /// <param name="endTime">结束时间 / The end time</param>
+    /// <param name="hour">用于判定跨日的小时阈值，有效范围为 0-23 / The hour threshold for determining day crossing, valid range is 0-23</param>
+    /// <returns>跨越的天数 / The number of days crossed</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="hour"/> 不在 0-23 范围内时抛出 / Thrown when <paramref name="hour"/> is not in the 0-23 range</exception>
     /// <example>
     /// <code>
     /// DateTime start = new DateTime(2024, 1, 10, 3, 0, 0);
@@ -139,13 +142,14 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期的开始时间。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>指定日期零点时间。</returns>
     /// <remarks>
-    /// 此方法返回指定日期的零点时间(00:00:00)。
-    /// 例如:输入2024-01-10 14:30:00,返回2024-01-10 00:00:00。
-    /// 保持原有时区不变。
+    /// Gets the start time of the specified date.
+    /// This method returns the midnight time (00:00:00) of the specified date.
+    /// For example: input 2024-01-10 14:30:00, returns 2024-01-10 00:00:00.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>指定日期零点时间 / The midnight time of the specified date</returns>
     public static DateTime GetStartTimeOfDay(DateTime date)
     {
         return date.Date;
@@ -154,13 +158,14 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期的开始时间戳。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>指定日期零点时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回指定日期零点时间的Unix时间戳。
-    /// 例如:输入2024-01-10 14:30:00,返回2024-01-10 00:00:00的时间戳。
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳。
+    /// Gets the start timestamp of the specified date.
+    /// This method returns the Unix timestamp of the midnight time of the specified date.
+    /// For example: input 2024-01-10 14:30:00, returns the timestamp of 2024-01-10 00:00:00.
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>指定日期零点时间戳(秒) / The midnight timestamp (seconds) of the specified date</returns>
     public static long GetStartTimestampOfDay(DateTime date)
     {
         var targetDate = GetStartTimeOfDay(date);
@@ -171,11 +176,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期的开始时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>指定日期零点时间戳(秒) + 时区偏移。</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。
+    /// Gets the start timestamp of the specified date (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>指定日期零点时间戳(秒) + 时区偏移 / The midnight timestamp (seconds) of the specified date + time zone offset</returns>
     public static long GetStartTimestampOfDayWithTimeZone(DateTime date)
     {
         return DateTimeToSecondsWithTimeZone(GetStartTimeOfDay(date));
@@ -184,13 +190,14 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期的结束时间。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>指定日期23:59:59的时间。</returns>
     /// <remarks>
-    /// 此方法返回指定日期的最后一秒(23:59:59)。
-    /// 例如:输入2024-01-10 14:30:00,返回2024-01-10 23:59:59。
-    /// 保持原有时区不变。
+    /// Gets the end time of the specified date.
+    /// This method returns the last second (23:59:59) of the specified date.
+    /// For example: input 2024-01-10 14:30:00, returns 2024-01-10 23:59:59.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>指定日期23:59:59的时间 / The time at 23:59:59 of the specified date</returns>
     public static DateTime GetEndTimeOfDay(DateTime date)
     {
         return date.Date.AddDays(1).AddSeconds(-1);
@@ -199,13 +206,14 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期的结束时间戳。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>指定日期23:59:59的时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回指定日期最后一秒的Unix时间戳。
-    /// 例如:输入2024-01-10 14:30:00,返回2024-01-10 23:59:59的时间戳。
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳。
+    /// Gets the end timestamp of the specified date.
+    /// This method returns the Unix timestamp of the last second of the specified date.
+    /// For example: input 2024-01-10 14:30:00, returns the timestamp of 2024-01-10 23:59:59.
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>指定日期23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 of the specified date</returns>
     public static long GetEndTimestampOfDay(DateTime date)
     {
         var targetDate = GetEndTimeOfDay(date);
@@ -215,11 +223,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期的结束时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>指定日期23:59:59的时间戳(秒) + 时区偏移。</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。
+    /// Gets the end timestamp of the specified date (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>指定日期23:59:59的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 23:59:59 of the specified date + time zone offset</returns>
     public static long GetEndTimestampOfDayWithTimeZone(DateTime date)
     {
         return DateTimeToSecondsWithTimeZone(GetEndTimeOfDay(date));

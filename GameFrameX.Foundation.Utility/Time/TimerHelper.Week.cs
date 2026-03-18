@@ -36,53 +36,55 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-    /// 判断指定时间戳是否与当前UTC时间是同一周
+    /// 判断指定时间戳是否与当前UTC时间是同一周。
     /// </summary>
-    /// <param name="ticks">时间刻度(Ticks)</param>
-    /// <param name="isUtc">是否使用UTC时间进行比较，默认值为true</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
     /// <remarks>
-    /// 此方法使用UTC时间进行比较
-    /// 输入的ticks会被转换为DateTime后与当前UTC时间比较
+    /// Determines whether the specified timestamp is in the same week as the current UTC time.
+    /// This method uses UTC time for comparison.
+    /// The input ticks will be converted to DateTime and compared with the current UTC time.
     /// </remarks>
+    /// <param name="ticks">时间刻度(Ticks) / Time ticks</param>
+    /// <param name="isUtc">是否使用UTC时间进行比较，默认值为true / Whether to use UTC time for comparison, defaults to true</param>
+    /// <returns>如果是同一周返回true,否则返回false / Returns true if it same week, otherwise returns false</returns>
     public static bool IsSameWeek(long ticks, bool isUtc = true)
     {
         return IsSameWeek(new DateTime(ticks), isUtc);
     }
 
     /// <summary>
-    /// 判断指定日期是否与当前UTC时间是同一周
+    /// 判断指定日期是否与当前UTC时间是同一周。
     /// </summary>
-    /// <param name="start">要比较的日期</param>
-    /// <param name="isUtc">是否使用UTC时间进行比较，默认值为true</param>
-    /// <returns>如果是同一周返回true,否则返回false</returns>
     /// <remarks>
-    /// 此方法使用UTC时间进行比较
-    /// 使用 <see cref="GetNowWithUtc"/> 获取当前UTC时间
-    /// 比较逻辑基于 <see cref="IsSameWeek"/> 方法
+    /// Determines whether the specified date is in the same week as the current UTC time.
+    /// This method uses UTC time for comparison.
+    /// Uses <see cref="GetNowWithUtc"/> to get the current UTC time.
+    /// The comparison logic is based on the <see cref="IsSameWeek(DateTime, DateTime)"/> method.
     /// </remarks>
+    /// <param name="start">要比较的日期 / The date to compare</param>
+    /// <param name="isUtc">是否使用UTC时间进行比较,默认值为true / Whether to use UTC time for comparison, defaults to true</param>
+    /// <returns>如果是同一周返回true,否则返回false / Returns true if the same week, otherwise returns false</returns>
     public static bool IsSameWeek(DateTime start, bool isUtc = true)
     {
         return IsSameWeek(start, isUtc ? GetNowWithUtc() : GetNowWithTimeZone());
     }
 
     /// <summary>
-    /// 判断两个日期是否在同一周
+    /// 判断两个日期是否在同一周。
     /// </summary>
-    /// <param name="startTime">开始时间</param>
-    /// <param name="endTime">结束时间</param>
-    /// <returns>如果是同一周返回true，否则返回false</returns>
     /// <remarks>
-    /// 此方法通过计算两个日期分别距离周一的天数差来判断是否在同一周
-    /// 假设周一为每周的第一天
-    /// 
-    /// 算法逻辑：
-    /// 1. 计算startTime是周几(1-7)
-    /// 2. 计算startTime所在周的周一日期
-    /// 3. 计算endTime是周几(1-7)
-    /// 4. 计算endTime所在周的周一日期
-    /// 5. 比较两个周一日期是否相同
+    /// Determines whether two dates are in the same week.
+    /// This method determines whether two dates are in the same week by calculating the day difference from Monday for each date.
+    /// Assumes Monday is the first day of the week.
+    /// Algorithm logic:
+    /// 1. Calculate the day of week for startTime (1-7)
+    /// 2. Calculate the Monday date of the week containing startTime
+    /// 3. Calculate the day of week for endTime (1-7)
+    /// 4. Calculate the Monday date of the week containing endTime
+    /// 5. Compare whether the two Monday dates are the same
     /// </remarks>
+    /// <param name="startTime">开始时间 / The start time</param>
+    /// <param name="endTime">结束时间 / The end time</param>
+    /// <returns>如果是同一周返回true，否则返回false / Returns true if in the same week, otherwise returns false</returns>
     public static bool IsSameWeek(DateTime startTime, DateTime endTime)
     {
         var startDayOfWeek = (int)startTime.DayOfWeek;
@@ -97,41 +99,39 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在周的指定星期几的日期时间
+    /// 获取指定日期所在周的指定星期几的日期时间。
     /// </summary>
-    /// <param name="dateTime">指定日期</param>
-    /// <param name="day">目标星期几 (DayOfWeek.Sunday 到 DayOfWeek.Saturday)</param>
-    /// <returns>计算结果日期时间</returns>
     /// <remarks>
-    /// 此方法计算输入日期所在周的对应星期几的日期
-    /// 
-    /// 计算逻辑：
-    /// 1. 获取输入日期的星期数(DayOfWeek)
-    /// 2. 计算目标星期与当前星期的差值
-    /// 3. 在输入日期上加上差值得到结果
-    /// 
-    /// 例如：
-    /// 如果输入是周三，求周一，则差值为 -2，返回日期减2天
-    /// 如果输入是周三，求周五，则差值为 +2，返回日期加2天
-    /// 
-    /// 注意：
-    /// - 这里的周是以周日为起始点(DayOfWeek定义的标准)
-    /// - 不会改变时间部分，只改变日期部分
+    /// Gets the date time of the specified day of the week for the week containing the specified date.
+    /// Calculation logic:
+    /// 1. Get the day of week for the input date (DayOfWeek)
+    /// 2. Calculate the difference between the target day and the current day
+    /// 3. Add the difference to the input date to get the result
+    /// For example:
+    /// If input is Wednesday and requesting Monday, the difference is -2, returns date minus 2 days
+    /// If input is Wednesday and requesting Friday, the difference is +2, returns date plus 2 days
+    /// Note:
+    /// - The week starts on Sunday (standard DayOfWeek definition)
+    /// - Does not change the time part, only changes the date part
     /// </remarks>
+    /// <param name="dateTime">指定日期 / The specified date</param>
+    /// <param name="day">目标星期几 (DayOfWeek.Sunday 到 DayOfWeek.Saturday) / The target day of week (DayOfWeek.Sunday to DayOfWeek.Saturday)</param>
+    /// <returns>计算结果日期时间 / The calculated date time</returns>
     public static DateTime GetDayOfWeekTime(DateTime dateTime, DayOfWeek day)
     {
         return dateTime.AddDays(day - dateTime.DayOfWeek);
     }
 
     /// <summary>
-    /// 获取指定日期所在周的开始时间
+    /// 获取指定日期所在周的开始时间。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周一00:00:00的时间</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在周的周一零点时间
-    /// 保持原有时区不变
+    /// Gets the start time of the week containing the specified date.
+    /// This method returns the Monday midnight time of the week containing the specified date.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在周周一00:00:00的时间 / The time at 00:00:00 on Monday of the week</returns>
     public static DateTime GetStartTimeOfWeek(DateTime date)
     {
         var dayOfWeek = (int)date.DayOfWeek;
@@ -140,14 +140,15 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在周的结束时间
+    /// 获取指定日期所在周的结束时间。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周日23:59:59的时间</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在周的周日最后一秒
-    /// 保持原有时区不变
+    /// Gets the end time of the week containing the specified date.
+    /// This method returns the last second of Sunday of the week containing the specified date.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在周周日23:59:59的时间 / The time at 23:59:59 on Sunday of the week</returns>
     public static DateTime GetEndTimeOfWeek(DateTime date)
     {
         var dayOfWeek = (int)date.DayOfWeek;

@@ -38,12 +38,13 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期所在月的开始时间。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>所在月1号00:00:00的时间。</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在月第一天的零点时间。
-    /// 保持原有时区不变。
+    /// Gets the start time of the month for the specified date.
+    /// This method returns the midnight time of the first day of the month for the specified date.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在月1号00:00:00的时间 / The time at 00:00:00 on the 1st of the month</returns>
     public static DateTime GetStartTimeOfMonth(DateTime date)
     {
         return new DateTime(date.Year, date.Month, 1);
@@ -52,12 +53,13 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期所在月的结束时间。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>所在月最后一天23:59:59的时间。</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在月最后一天的最后一秒。
-    /// 保持原有时区不变。
+    /// Gets the end time of the month for the specified date.
+    /// This method returns the last second of the last day of the month for the specified date.
+    /// Preserves the original time zone.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在月最后一天23:59:59的时间 / The time at 23:59:59 on the last day of the month</returns>
     public static DateTime GetEndTimeOfMonth(DateTime date)
     {
         return GetStartTimeOfMonth(date).AddMonths(1).AddSeconds(-1);
@@ -66,12 +68,13 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期所在月的开始时间戳。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>所在月1号00:00:00的时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在月第一天零点时间的Unix时间戳。
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳。
+    /// Gets the start timestamp of the month for the specified date.
+    /// This method returns the Unix timestamp of the midnight time on the first day of the month for the specified date.
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在月1号00:00:00的时间戳(秒) / The timestamp (seconds) at 00:00:00 on the 1st of the month</returns>
     public static long GetStartTimestampOfMonth(DateTime date)
     {
         var time = GetStartTimeOfMonth(date);
@@ -81,12 +84,13 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期所在月的开始时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>所在月1号00:00:00的时间戳(秒) + 时区偏移。</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在月第一天零点时间的Unix时间戳。
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。
+    /// Gets the start timestamp of the month for the specified date (based on set time zone).
+    /// This method returns the Unix timestamp of the midnight time on the first day of the month for the specified date.
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在月1号00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on the 1st of the month + time zone offset</returns>
     public static long GetStartTimestampOfMonthWithTimeZone(DateTime date)
     {
         return DateTimeToSecondsWithTimeZone(GetStartTimeOfMonth(date));
@@ -95,12 +99,13 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期所在月的结束时间戳。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>所在月最后一天23:59:59的时间戳(秒)。</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在月最后一天最后一秒的Unix时间戳。
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳。
+    /// Gets the end timestamp of the month for the specified date.
+    /// This method returns the Unix timestamp of the last second of the last day of the month for the specified date.
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在月最后一天23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 on the last day of the month</returns>
     public static long GetEndTimestampOfMonth(DateTime date)
     {
         var time = GetEndTimeOfMonth(date);
@@ -110,11 +115,12 @@ public static partial class TimerHelper
     /// <summary>
     /// 获取指定日期所在月的结束时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期。</param>
-    /// <returns>所在月最后一天23:59:59的时间戳(秒) + 时区偏移。</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数。
+    /// Gets the end timestamp of the month for the specified date (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在月最后一天23:59:59的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 23:59:59 on the last day of the month + time zone offset</returns>
     public static long GetEndTimestampOfMonthWithTimeZone(DateTime date)
     {
         return DateTimeToSecondsWithTimeZone(GetEndTimeOfMonth(date));

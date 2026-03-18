@@ -52,15 +52,16 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期的本地化星期表示
+    /// 获取指定日期的本地化星期表示。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>返回本地化的星期字符串，如中文环境返回"星期一"、"星期日"</returns>
     /// <remarks>
-    /// 根据传入日期的DayOfWeek属性返回对应的本地化名称
-    /// 支持从星期一到星期日的所有映射
-    /// 使用本地化服务获取星期名称
+    /// Gets the localized day of week representation of the specified date.
+    /// Returns the corresponding localized name based on the DayOfWeek property of the passed date.
+    /// Supports all mappings from Monday to Sunday.
+    /// Uses localization service to get day of week names.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>返回本地化的星期字符串，如中文环境返回"星期一"、"星期日" / Returns localized day of week string, such as "星期一" (Monday), "星期日" (Sunday) in Chinese environment</returns>
     public static string GetChinaDayOfWeekWithTimeZone(DateTime date)
     {
         var dayOfWeekKey = date.DayOfWeek switch
@@ -78,14 +79,15 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取本周开始时间
+    /// 获取本周开始时间。
     /// </summary>
-    /// <returns>本周周一00:00:00的时间</returns>
     /// <remarks>
-    /// 此方法返回本周第一天(周一)的零点时间
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
-    /// 如果今天是周日(DayOfWeek=0),会将其视为本周第7天处理
+    /// Gets the start time of the current week.
+    /// This method returns the midnight time of the first day (Monday) of the current week.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
+    /// If today is Sunday (DayOfWeek=0), it will be treated as the 7th day of the current week.
     /// </remarks>
+    /// <returns>本周周一00:00:00的时间 / The time at 00:00:00 on Monday of the current week</returns>
     public static DateTime GetWeekStartTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
@@ -95,25 +97,27 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取本周开始时间戳（基于设置时区）
+    /// 获取本周开始时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>本周周一00:00:00的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the start timestamp of the current week (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <returns>本周周一00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on Monday of the current week + time zone offset</returns>
     public static long GetWeekStartTimestampWithTimeZone()
     {
         return DateTimeToSecondsWithTimeZone(GetWeekStartTimeWithTimeZone());
     }
 
     /// <summary>
-    /// 获取本周结束时间
+    /// 获取本周结束时间。
     /// </summary>
-    /// <returns>本周周日23:59:59的时间</returns>
     /// <remarks>
-    /// 此方法返回本周最后一天(周日)的最后一秒
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// Gets the end time of the current week.
+    /// This method returns the last second of the last day (Sunday) of the current week.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>本周周日23:59:59的时间 / The time at 23:59:59 on Sunday of the current week</returns>
     public static DateTime GetWeekEndTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
@@ -123,26 +127,28 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取本周结束时间戳（基于设置时区）
+    /// 获取本周结束时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>本周周日23:59:59的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the end timestamp of the current week (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <returns>本周周日23:59:59的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 23:59:59 on Sunday of the current week + time zone offset</returns>
     public static long GetWeekEndTimestampWithTimeZone()
     {
         return DateTimeToSecondsWithTimeZone(GetWeekEndTimeWithTimeZone());
     }
 
     /// <summary>
-    /// 获取指定日期所在周的开始时间戳
+    /// 获取指定日期所在周的开始时间戳。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周一00:00:00的时间戳(秒)</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在周的周一零点时间的Unix时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// Gets the start timestamp of the week containing the specified date.
+    /// This method returns the Unix timestamp of the Monday midnight time of the week containing the specified date.
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在周周一00:00:00的时间戳(秒) / The timestamp (seconds) at 00:00:00 on Monday of the week</returns>
     public static long GetStartTimestampOfWeek(DateTime date)
     {
         var time = GetStartTimeOfWeek(date);
@@ -150,28 +156,30 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在周的开始时间戳（基于设置时区）
+    /// 获取指定日期所在周的开始时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周一00:00:00的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the start timestamp of the week containing the specified date (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在周周一00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on Monday of the week + time zone offset</returns>
     public static long GetStartTimestampOfWeekWithTimeZone(DateTime date)
     {
         return DateTimeToSecondsWithTimeZone(GetStartTimeOfWeek(date));
     }
 
     /// <summary>
-    /// 获取指定日期所在周的结束时间戳
+    /// 获取指定日期所在周的结束时间戳。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周日23:59:59的时间戳(秒)</returns>
     /// <remarks>
-    /// 此方法返回指定日期所在周的周日最后一秒的Unix时间戳
-    /// 例如:输入2024-01-10(周三),返回2024-01-14 23:59:59(周日)的时间戳
-    /// 会使用当前时区 (<see cref="CurrentTimeZone"/>) 计算偏移量并将时间转换为UTC时间后再计算时间戳
+    /// Gets the end timestamp of the week containing the specified date.
+    /// This method returns the Unix timestamp of the last second of Sunday of the week containing the specified date.
+    /// For example: input 2024-01-10 (Wednesday), returns the timestamp of 2024-01-14 23:59:59 (Sunday).
+    /// Uses the current time zone (<see cref="CurrentTimeZone"/>) to calculate the offset and converts the time to UTC before calculating the timestamp.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在周周日23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 on Sunday of the week</returns>
     public static long GetEndTimestampOfWeek(DateTime date)
     {
         var time = GetEndTimeOfWeek(date);
@@ -179,26 +187,28 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取指定日期所在周的结束时间戳（基于设置时区）
+    /// 获取指定日期所在周的结束时间戳（基于设置时区）。
     /// </summary>
-    /// <param name="date">指定日期</param>
-    /// <returns>所在周周日23:59:59的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the end timestamp of the week containing the specified date (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <param name="date">指定日期 / The specified date</param>
+    /// <returns>所在周周日23:59:59的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 23:59:59 on Sunday of the week + time zone offset</returns>
     public static long GetEndTimestampOfWeekWithTimeZone(DateTime date)
     {
         return DateTimeToSecondsWithTimeZone(GetEndTimeOfWeek(date));
     }
 
     /// <summary>
-    /// 获取下周开始时间
+    /// 获取下周开始时间。
     /// </summary>
-    /// <returns>下周周一00:00:00的时间</returns>
     /// <remarks>
-    /// 此方法返回下周第一天(周一)的零点时间
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// Gets the start time of next week.
+    /// This method returns the midnight time of the first day (Monday) of next week.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>下周周一00:00:00的时间 / The time at 00:00:00 on Monday of next week</returns>
     public static DateTime GetNextWeekStartTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
@@ -208,37 +218,40 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取下周开始时间戳（基于设置时区）
+    /// 获取下周开始时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>下周周一00:00:00的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the start timestamp of next week (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <returns>下周周一00:00:00的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 00:00:00 on Monday of next week + time zone offset</returns>
     public static long GetNextWeekStartTimestampWithTimeZone()
     {
         return DateTimeToSecondsWithTimeZone(GetNextWeekStartTimeWithTimeZone());
     }
 
     /// <summary>
-    /// 获取下周结束时间
+    /// 获取下周结束时间。
     /// </summary>
-    /// <returns>下周周日23:59:59的时间</returns>
     /// <remarks>
-    /// 此方法返回下周最后一天(周日)的最后一秒
-    /// 使用 <see cref="CurrentTimeZone"/> 时区计算
+    /// Gets the end time of next week.
+    /// This method returns the last second of the last day (Sunday) of next week.
+    /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
+    /// <returns>下周周日23:59:59的时间 / The time at 23:59:59 on Sunday of next week</returns>
     public static DateTime GetNextWeekEndTimeWithTimeZone()
     {
         return GetNextWeekStartTimeWithTimeZone().AddDays(7).AddSeconds(-1);
     }
 
     /// <summary>
-    /// 获取下周结束时间戳（基于设置时区）
+    /// 获取下周结束时间戳（基于设置时区）。
     /// </summary>
-    /// <returns>下周周日23:59:59的时间戳(秒) + 时区偏移</returns>
     /// <remarks>
-    /// 返回值 = 标准Unix时间戳 + 时区偏移秒数
+    /// Gets the end timestamp of next week (based on set time zone).
+    /// Return value = Standard Unix timestamp + time zone offset seconds.
     /// </remarks>
+    /// <returns>下周周日23:59:59的时间戳(秒) + 时区偏移 / The timestamp (seconds) at 23:59:59 on Sunday of next week + time zone offset</returns>
     public static long GetNextWeekEndTimestampWithTimeZone()
     {
         var time = GetNextWeekEndTimeWithTimeZone();
@@ -246,15 +259,16 @@ public static partial class TimerHelper
     }
 
     /// <summary>
-    /// 获取本周指定星期几的时间（基于TimeZone）
+    /// 获取本周指定星期几的时间（基于TimeZone）。
     /// </summary>
-    /// <param name="day">星期几 (DayOfWeek.Sunday 到 DayOfWeek.Saturday)</param>
-    /// <returns>本周指定星期几的日期时间</returns>
     /// <remarks>
-    /// 此方法基于当前时区 (<see cref="CurrentTimeZone"/>) 时间计算
-    /// 返回的时间部分与当前时区时间保持一致，仅日期变更为本周对应的星期几
-    /// 注意：这里的"本周"是基于当前时区时间定义的
+    /// Gets the time of the specified day of the current week (based on TimeZone).
+    /// This method calculates based on the current time zone (<see cref="CurrentTimeZone"/>) time.
+    /// The time part returned is consistent with the current time zone time, only the date is changed to the corresponding day of the current week.
+    /// Note: "Current week" is defined based on the current time zone time.
     /// </remarks>
+    /// <param name="day">星期几 (DayOfWeek.Sunday 到 DayOfWeek.Saturday) / Day of week (DayOfWeek.Sunday to DayOfWeek.Saturday)</param>
+    /// <returns>本周指定星期几的日期时间 / The date time of the specified day of the current week</returns>
     public static DateTime GetDayOfWeekTimeWithTimeZone(DayOfWeek day)
     {
         return GetDayOfWeekTime(GetNowWithTimeZone(), day);
