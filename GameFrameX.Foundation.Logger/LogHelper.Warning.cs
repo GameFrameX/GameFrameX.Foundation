@@ -40,9 +40,9 @@ public static partial class LogHelper
     /// <summary>
     /// 记录警告消息。
     /// </summary>
-    /// <param name="message">要记录的警告消息。</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
     /// <remarks>
-    /// 使用默认日志记录器记录警告级别的日志信息。
+    /// Uses the default logger to record warning level log information.
     /// </remarks>
     public static void Warning(string message)
     {
@@ -52,9 +52,9 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录警告消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="message">要记录的警告消息。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     public static void Warning(ILogger logger, string message)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -64,10 +64,10 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有格式参数的警告消息。
     /// </summary>
-    /// <param name="message">要记录的警告消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
     /// <remarks>
-    /// 用于记录警告级别的日志信息。
+    /// Used to record warning level log information.
     /// </remarks>
     public static void Warning(string message, params object[] args)
     {
@@ -77,11 +77,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有单个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有单个属性的警告消息。
+    /// Uses structured logging to record warning level messages with a single property.
     /// </remarks>
     public static void Warning<T>(string messageTemplate, T propertyValue)
     {
@@ -91,13 +91,13 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有两个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有两个属性的警告消息。
+    /// Uses structured logging to record warning level messages with two properties.
     /// </remarks>
     public static void Warning<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -107,15 +107,15 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有三个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有三个属性的警告消息。
+    /// Uses structured logging to record warning level messages with three properties.
     /// </remarks>
     public static void Warning<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -125,10 +125,10 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常的警告消息模板。
     /// </summary>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
     /// <remarks>
-    /// 记录警告级别的异常信息和消息模板。
+    /// Records warning level exception information and message template.
     /// </remarks>
     public static void Warning(Exception exception, string messageTemplate)
     {
@@ -138,12 +138,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和单个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有单个属性的消息模板。
+    /// Records warning level exception information and message template with a single property.
     /// </remarks>
     public static void Warning<T>(Exception exception, string messageTemplate, T propertyValue)
     {
@@ -153,14 +153,14 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和两个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有两个属性的消息模板。
+    /// Records warning level exception information and message template with two properties.
     /// </remarks>
     public static void Warning<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -170,16 +170,16 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和三个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有三个属性的消息模板。
+    /// Records warning level exception information and message template with three properties.
     /// </remarks>
     public static void Warning<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -189,11 +189,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和格式参数的警告消息模板。
     /// </summary>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValues">属性值数组。</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValues">属性值数组 / The property value array</param>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有多个属性的消息模板。
+    /// Records warning level exception information and message template with multiple properties.
     /// </remarks>
     public static void Warning(Exception exception, string messageTemplate, params object[] propertyValues)
     {
@@ -203,10 +203,10 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有格式参数的警告消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="message">要记录的警告消息。</param>
-    /// <param name="args">消息的格式参数。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     public static void Warning(ILogger logger, string message, params object[] args)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -216,13 +216,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有单个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有单个属性的警告消息。
+    /// Uses structured logging to record warning level messages with a single property.
     /// </remarks>
     public static void Warning<T>(ILogger logger, string messageTemplate, T propertyValue)
     {
@@ -233,15 +233,15 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有两个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有两个属性的警告消息。
+    /// Uses structured logging to record warning level messages with two properties.
     /// </remarks>
     public static void Warning<T0, T1>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -252,17 +252,17 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有三个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有三个属性的警告消息。
+    /// Uses structured logging to record warning level messages with three properties.
     /// </remarks>
     public static void Warning<T0, T1, T2>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -273,12 +273,12 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常的警告消息模板。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录警告级别的异常信息和消息模板。
+    /// Records warning level exception information and message template.
     /// </remarks>
     public static void Warning(ILogger logger, Exception exception, string messageTemplate)
     {
@@ -289,14 +289,14 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和单个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有单个属性的消息模板。
+    /// Records warning level exception information and message template with a single property.
     /// </remarks>
     public static void Warning<T>(ILogger logger, Exception exception, string messageTemplate, T propertyValue)
     {
@@ -307,16 +307,16 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和两个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有两个属性的消息模板。
+    /// Records warning level exception information and message template with two properties.
     /// </remarks>
     public static void Warning<T0, T1>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -327,18 +327,18 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和三个属性值的警告消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有三个属性的消息模板。
+    /// Records warning level exception information and message template with three properties.
     /// </remarks>
     public static void Warning<T0, T1, T2>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -349,13 +349,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和格式参数的警告消息模板。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValues">属性值数组。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValues">属性值数组 / The property value array</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录警告级别的异常信息和带有多个属性的消息模板。
+    /// Records warning level exception information and message template with multiple properties.
     /// </remarks>
     public static void Warning(ILogger logger, Exception exception, string messageTemplate, params object[] propertyValues)
     {
@@ -366,11 +366,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有格式参数的警告消息。
     /// </summary>
-    /// <param name="message">要记录的警告消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
     /// <remarks>
-    /// 同时将警告信息输出到日志文件和控制台。
-    /// 控制台输出使用黄色字体以突出显示警告信息。
+    /// Outputs warning information to both log file and console.
+    /// Console output uses yellow font to highlight warning information.
     /// </remarks>
     public static void WarningConsole(string message, params object[] args)
     {
@@ -383,9 +383,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有标签的警告消息。
     /// </summary>
-    /// <param name="tag">日志标签</param>
-    /// <param name="message">要记录的警告消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <remarks>
+    /// Records warning level log message with a tag prefix in the format [tag].
+    /// </remarks>
     public static void Warning(string tag, string message, params object[] args)
     {
         GetLogger().Warning($"[{tag}] {message}", args);
@@ -394,11 +397,14 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有标签的警告消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="tag">日志标签。</param>
-    /// <param name="message">要记录的警告消息。</param>
-    /// <param name="args">消息的格式参数。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
+    /// <remarks>
+    /// Records warning level log message with a tag prefix using the specified logger.
+    /// </remarks>
     public static void Warning(ILogger logger, string tag, string message, params object[] args)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -408,9 +414,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有标签的警告消息并输出到控制台。
     /// </summary>
-    /// <param name="tag">日志标签</param>
-    /// <param name="message">要记录的警告消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="message">要记录的警告消息 / The warning message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <remarks>
+    /// Outputs warning information with tag to both log file and console using yellow font.
+    /// </remarks>
     public static void WarningConsole(string tag, string message, params object[] args)
     {
         Warning(tag, message, args);

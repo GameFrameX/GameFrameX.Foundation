@@ -38,6 +38,13 @@ using Serilog.Core;
 
 namespace GameFrameX.Foundation.Logger.Internal;
 
+/// <summary>
+/// 内部临时日志记录器，用于在日志系统初始化前临时存储日志事件。
+/// </summary>
+/// <remarks>
+/// This class provides a temporary logger that buffers log events before the main logging system is initialized.
+/// It allows log messages to be captured early in the application lifecycle and then flushed to the main logger once available.
+/// </remarks>
 internal sealed class InternalTempLogger : IDisposable
 {
     private readonly ILogger _logger;
@@ -45,16 +52,30 @@ internal sealed class InternalTempLogger : IDisposable
     private bool _isFlushed;
     private bool _isDisposed;
 
+    /// <summary>
+    /// 获取日志记录器实例。 / Gets the logger instance.
+    /// </summary>
+    /// <value>The ILogger instance.</value>
     public ILogger Logger
     {
         get { return _logger; }
     }
 
+    /// <summary>
+    /// 获取日志内存缓冲区。 / Gets the log memory buffer.
+    /// </summary>
+    /// <value>The LoggerMemorySink instance.</value>
     public LoggerMemorySink Buffer
     {
         get { return _buffer; }
     }
 
+    /// <summary>
+    /// 初始化内部临时日志记录器的新实例。
+    /// </summary>
+    /// <remarks>
+    /// Creates a new internal temporary logger with a memory sink that captures all log events at verbose level.
+    /// </remarks>
     public InternalTempLogger()
     {
         _buffer = new LoggerMemorySink(OnLogEvent);
@@ -64,11 +85,23 @@ internal sealed class InternalTempLogger : IDisposable
                   .CreateLogger();
     }
 
+    /// <summary>
+    /// 处理日志事件的回调方法。 / Callback method for handling log events.
+    /// </summary>
+    /// <param name="evt">日志事件 / The log event</param>
     private void OnLogEvent(LogEvent evt)
     {
         Console.WriteLine(evt.RenderMessage());
     }
 
+    /// <summary>
+    /// 将缓冲的日志事件刷新到目标日志记录器。
+    /// </summary>
+    /// <param name="targetLogger">目标日志记录器实例 / The target logger instance</param>
+    /// <remarks>
+    /// Writes all buffered log events to the target logger. This method can only be called once;
+    /// subsequent calls will be ignored. Also ignores calls if the logger has been disposed.
+    /// </remarks>
     public void FlushTo(ILogger targetLogger)
     {
         if (_isFlushed || _isDisposed)
@@ -84,6 +117,13 @@ internal sealed class InternalTempLogger : IDisposable
         _isFlushed = true;
     }
 
+    /// <summary>
+    /// 释放临时日志记录器使用的资源。
+    /// </summary>
+    /// <remarks>
+    /// Disposes the internal logger if it implements IDisposable. This method can only be called once;
+    /// subsequent calls will be ignored.
+    /// </remarks>
     public void Dispose()
     {
         if (_isDisposed)

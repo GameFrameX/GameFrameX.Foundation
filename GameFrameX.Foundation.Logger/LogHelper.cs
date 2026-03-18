@@ -39,11 +39,11 @@ using GameFrameX.Foundation.Logger.Internal;
 namespace GameFrameX.Foundation.Logger;
 
 /// <summary>
-/// 日志帮助类
+/// 日志帮助类。
 /// </summary>
 /// <remarks>
-/// 提供了一系列静态方法用于记录不同级别的日志信息，包括调试信息、普通信息、警告和错误等。
-/// 支持将日志输出到文件系统和控制台。
+/// Provides a series of static methods for recording logs at different levels, including debug, information, warning, and error.
+/// Supports outputting logs to the file system and console.
 /// </remarks>
 public static partial class LogHelper
 {
@@ -51,7 +51,7 @@ public static partial class LogHelper
     /// 将日志持久化。
     /// </summary>
     /// <remarks>
-    /// 关闭日志记录器并将所有待处理的日志条目刷新到持久化存储中。
+    /// Closes the logger and flushes all pending log entries to persistent storage.
     /// </remarks>
     public static void FlushAndSave()
     {
@@ -62,7 +62,7 @@ public static partial class LogHelper
     /// 异步将日志持久化。
     /// </summary>
     /// <remarks>
-    /// 关闭日志记录器并将所有待处理的日志条目刷新到持久化存储中。
+    /// Asynchronously closes the logger and flushes all pending log entries to persistent storage.
     /// </remarks>
     public static async void CloseAndFlushAsync()
     {
@@ -70,25 +70,34 @@ public static partial class LogHelper
     }
 
     /// <summary>
-    /// 内部日志记录器实例
+    /// 内部日志记录器实例。
     /// </summary>
+    /// <remarks>
+    /// Internal logger instance.
+    /// </remarks>
     private static ILogger _logger;
 
     /// <summary>
-    /// 临时日志记录器实例，用于在正式日志系统初始化前提供日志输出
+    /// 临时日志记录器实例，用于在正式日志系统初始化前提供日志输出。
     /// </summary>
+    /// <remarks>
+    /// Temporary logger instance used to provide log output before the formal logging system is initialized.
+    /// </remarks>
     private static InternalTempLogger _tempLogger;
 
     /// <summary>
-    /// 用于保护 _logger 字段的锁对象
+    /// 用于保护 _logger 字段的锁对象。
     /// </summary>
+    /// <remarks>
+    /// Lock object used to protect the _logger field.
+    /// </remarks>
     private static readonly object _loggerLock = new();
 
     /// <summary>
-    /// 设置日志记录器
+    /// 设置日志记录器。
     /// </summary>
-    /// <param name="logger">要设置的日志记录器实例</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <param name="logger">要设置的日志记录器实例 / The logger instance to set</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     public static void SetLogger(ILogger logger)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -103,9 +112,9 @@ public static partial class LogHelper
     }
 
     /// <summary>
-    /// 获取当前使用的日志记录器
+    /// 获取当前使用的日志记录器。
     /// </summary>
-    /// <returns>返回当前设置的日志记录器，如果未设置则返回临时日志记录器</returns>
+    /// <returns>返回当前设置的日志记录器，如果未设置则返回临时日志记录器 / Returns the current logger, or a temporary logger if not set</returns>
     private static ILogger GetLogger()
     {
         lock (_loggerLock)
@@ -125,13 +134,13 @@ public static partial class LogHelper
     }
 
     /// <summary>
-    /// 记录带有格式参数的信息消息。,只打印到控制台
+    /// 记录带有格式参数的信息消息，只打印到控制台。
     /// </summary>
-    /// <param name="message">要记录的信息消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="message">要记录的信息消息 / The information message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
     /// <remarks>
-    /// 仅将信息输出到控制台，不写入日志文件。
-    /// 输出的消息会包含时间戳。
+    /// Only outputs information to the console, not to the log file.
+    /// The output message includes a timestamp.
     /// </remarks>
     public static void Console(string message, params object[] args)
     {

@@ -41,9 +41,9 @@ public static partial class LogHelper
     /// <summary>
     /// 记录严重错误消息。
     /// </summary>
-    /// <param name="message">要记录的严重错误消息。</param>
+    /// <param name="message">要记录的严重错误消息 / The fatal error message to record</param>
     /// <remarks>
-    /// 记录致命错误级别的日志信息，并包含堆栈跟踪信息。
+    /// Records fatal error level log information and includes stack trace information.
     /// </remarks>
     public static void Fatal(string message)
     {
@@ -55,11 +55,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有单个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有单个属性的致命错误消息。
+    /// Uses structured logging to record fatal error level messages with a single property.
     /// </remarks>
     public static void Fatal<T>(string messageTemplate, T propertyValue)
     {
@@ -69,13 +69,13 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有两个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有两个属性的致命错误消息。
+    /// Uses structured logging to record fatal error level messages with two properties.
     /// </remarks>
     public static void Fatal<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -85,15 +85,15 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有三个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有三个属性的致命错误消息。
+    /// Uses structured logging to record fatal error level messages with three properties.
     /// </remarks>
     public static void Fatal<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -104,12 +104,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和单个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有单个属性的消息模板。
+    /// Records fatal error level exception information and message template with a single property.
     /// </remarks>
     public static void Fatal<T>(Exception exception, string messageTemplate, T propertyValue)
     {
@@ -119,14 +119,14 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和两个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有两个属性的消息模板。
+    /// Records fatal error level exception information and message template with two properties.
     /// </remarks>
     public static void Fatal<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -136,16 +136,16 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和三个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有三个属性的消息模板。
+    /// Records fatal error level exception information and message template with three properties.
     /// </remarks>
     public static void Fatal<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -155,11 +155,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和格式参数的致命错误消息模板。
     /// </summary>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValues">属性值数组。</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValues">属性值数组 / The property value array</param>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有多个属性的消息模板。
+    /// Records fatal error level exception information and message template with multiple properties.
     /// </remarks>
     public static void Fatal(Exception exception, string messageTemplate, params object[] propertyValues)
     {
@@ -169,9 +169,9 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录严重错误消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="message">要记录的严重错误消息。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="message">要记录的严重错误消息 / The fatal error message to record</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     public static void Fatal(ILogger logger, string message)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -182,13 +182,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有单个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有单个属性的致命错误消息。
+    /// Uses structured logging to record fatal error level messages with a single property.
     /// </remarks>
     public static void Fatal<T>(ILogger logger, string messageTemplate, T propertyValue)
     {
@@ -199,15 +199,15 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有两个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有两个属性的致命错误消息。
+    /// Uses structured logging to record fatal error level messages with two properties.
     /// </remarks>
     public static void Fatal<T0, T1>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -218,17 +218,17 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有三个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有三个属性的致命错误消息。
+    /// Uses structured logging to record fatal error level messages with three properties.
     /// </remarks>
     public static void Fatal<T0, T1, T2>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -239,12 +239,12 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常的致命错误消息模板。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和消息模板。
+    /// Records fatal error level exception information and message template.
     /// </remarks>
     public static void Fatal(ILogger logger, Exception exception, string messageTemplate)
     {
@@ -255,14 +255,14 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和单个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有单个属性的消息模板。
+    /// Records fatal error level exception information and message template with a single property.
     /// </remarks>
     public static void Fatal<T>(ILogger logger, Exception exception, string messageTemplate, T propertyValue)
     {
@@ -273,16 +273,16 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和两个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有两个属性的消息模板。
+    /// Records fatal error level exception information and message template with two properties.
     /// </remarks>
     public static void Fatal<T0, T1>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -293,18 +293,18 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和三个属性值的致命错误消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有三个属性的消息模板。
+    /// Records fatal error level exception information and message template with three properties.
     /// </remarks>
     public static void Fatal<T0, T1, T2>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -315,13 +315,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和格式参数的致命错误消息模板。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValues">属性值数组。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValues">属性值数组 / The property value array</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录致命错误级别的异常信息和带有多个属性的消息模板。
+    /// Records fatal error level exception information and message template with multiple properties.
     /// </remarks>
     public static void Fatal(ILogger logger, Exception exception, string messageTemplate, params object[] propertyValues)
     {
@@ -332,9 +332,9 @@ public static partial class LogHelper
     /// <summary>
     /// 记录严重的异常错误。
     /// </summary>
-    /// <param name="exception">要记录的异常对象。</param>
+    /// <param name="exception">要记录的异常对象 / The exception object to record</param>
     /// <remarks>
-    /// 记录异常作为致命错误级别的日志，并包含堆栈跟踪信息。
+    /// Records the exception as a fatal error level log and includes stack trace information.
     /// </remarks>
     public static void Fatal(Exception exception)
     {
@@ -346,9 +346,9 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录严重的异常错误。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="exception">要记录的异常对象。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">要记录的异常对象 / The exception object to record</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     public static void Fatal(ILogger logger, Exception exception)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -359,10 +359,10 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有标签的严重错误消息。
     /// </summary>
-    /// <param name="tag">日志标签，用于标识日志来源或分类。</param>
-    /// <param name="message">要记录的严重错误消息。</param>
+    /// <param name="tag">日志标签，用于标识日志来源或分类 / The log tag used to identify the log source or category</param>
+    /// <param name="message">要记录的严重错误消息 / The fatal error message to record</param>
     /// <remarks>
-    /// 记录的消息将包含标签前缀和堆栈跟踪信息。
+    /// The recorded message will include a tag prefix and stack trace information.
     /// </remarks>
     public static void Fatal(string tag, string message)
     {
@@ -374,10 +374,10 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有标签的严重错误消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="tag">日志标签，用于标识日志来源或分类。</param>
-    /// <param name="message">要记录的严重错误消息。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="tag">日志标签，用于标识日志来源或分类 / The log tag used to identify the log source or category</param>
+    /// <param name="message">要记录的严重错误消息 / The fatal error message to record</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     public static void Fatal(ILogger logger, string tag, string message)
     {
         ArgumentNullException.ThrowIfNull(logger);
@@ -388,10 +388,10 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有标签的严重异常错误。
     /// </summary>
-    /// <param name="tag">日志标签，用于标识日志来源或分类。</param>
-    /// <param name="exception">要记录的异常对象。</param>
+    /// <param name="tag">日志标签，用于标识日志来源或分类 / The log tag used to identify the log source or category</param>
+    /// <param name="exception">要记录的异常对象 / The exception object to record</param>
     /// <remarks>
-    /// 记录的异常信息将包含标签前缀和堆栈跟踪信息。
+    /// The recorded exception information will include a tag prefix and stack trace information.
     /// </remarks>
     public static void Fatal(string tag, Exception exception)
     {
@@ -403,10 +403,10 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有标签的严重异常错误。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="tag">日志标签，用于标识日志来源或分类。</param>
-    /// <param name="exception">要记录的异常对象。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出。</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="tag">日志标签，用于标识日志来源或分类 / The log tag used to identify the log source or category</param>
+    /// <param name="exception">要记录的异常对象 / The exception object to record</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     public static void Fatal(ILogger logger, string tag, Exception exception)
     {
         ArgumentNullException.ThrowIfNull(logger);

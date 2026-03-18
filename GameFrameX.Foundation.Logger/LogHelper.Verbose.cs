@@ -40,10 +40,10 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录详细级别的日志消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="msg">要记录的详细消息。</param>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
     /// <remarks>
-    /// 在记录日志之前会检查logger参数是否为null。
+    /// Checks if the logger parameter is null before logging.
     /// </remarks>
     public static void Verbose(ILogger logger, string msg)
     {
@@ -54,9 +54,9 @@ public static partial class LogHelper
     /// <summary>
     /// 记录详细级别的日志消息。
     /// </summary>
-    /// <param name="msg">要记录的详细消息。</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
     /// <remarks>
-    /// 用于记录最详细级别的日志信息，通常用于深入调试和跟踪。
+    /// Used to record the most detailed level of log information, typically for in-depth debugging and tracing.
     /// </remarks>
     public static void Verbose(string msg)
     {
@@ -66,10 +66,10 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有格式参数的详细级别日志消息。
     /// </summary>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
     /// <remarks>
-    /// 支持使用格式化字符串记录详细级别的日志信息。
+    /// Supports using formatted strings to record verbose level log information.
     /// </remarks>
     public static void Verbose(string msg, params object[] args)
     {
@@ -79,11 +79,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有单个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有单个属性的详细级别消息。
+    /// Uses structured logging to record verbose level messages with a single property.
     /// </remarks>
     public static void Verbose<T>(string messageTemplate, T propertyValue)
     {
@@ -93,13 +93,13 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有两个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有两个属性的详细级别消息。
+    /// Uses structured logging to record verbose level messages with two properties.
     /// </remarks>
     public static void Verbose<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -109,15 +109,15 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有三个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
     /// <remarks>
-    /// 使用结构化日志记录带有三个属性的详细级别消息。
+    /// Uses structured logging to record verbose level messages with three properties.
     /// </remarks>
     public static void Verbose<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -127,10 +127,10 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常的详细级别消息模板。
     /// </summary>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
     /// <remarks>
-    /// 记录详细级别的异常信息和消息模板。
+    /// Records verbose level exception information and message template.
     /// </remarks>
     public static void Verbose(Exception exception, string messageTemplate)
     {
@@ -140,12 +140,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和单个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有单个属性的消息模板。
+    /// Records verbose level exception information and message template with a single property.
     /// </remarks>
     public static void Verbose<T>(Exception exception, string messageTemplate, T propertyValue)
     {
@@ -155,14 +155,14 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和两个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有两个属性的消息模板。
+    /// Records verbose level exception information and message template with two properties.
     /// </remarks>
     public static void Verbose<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -172,16 +172,16 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和三个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有三个属性的消息模板。
+    /// Records verbose level exception information and message template with three properties.
     /// </remarks>
     public static void Verbose<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -191,11 +191,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有异常和格式参数的详细级别消息模板。
     /// </summary>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValues">属性值数组。</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValues">属性值数组 / The property value array</param>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有多个属性的消息模板。
+    /// Records verbose level exception information and message template with multiple properties.
     /// </remarks>
     public static void Verbose(Exception exception, string messageTemplate, params object[] propertyValues)
     {
@@ -205,11 +205,11 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有格式参数的详细级别日志消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
     /// <remarks>
-    /// 在记录日志之前会检查logger参数是否为null。
+    /// Checks if the logger parameter is null before logging.
     /// </remarks>
     public static void Verbose(ILogger logger, string msg, params object[] args)
     {
@@ -220,13 +220,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有单个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有单个属性的详细级别消息。
+    /// Uses structured logging to record verbose level messages with a single property.
     /// </remarks>
     public static void Verbose<T>(ILogger logger, string messageTemplate, T propertyValue)
     {
@@ -237,15 +237,15 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有两个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有两个属性的详细级别消息。
+    /// Uses structured logging to record verbose level messages with two properties.
     /// </remarks>
     public static void Verbose<T0, T1>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -256,17 +256,17 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有三个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 使用结构化日志记录带有三个属性的详细级别消息。
+    /// Uses structured logging to record verbose level messages with three properties.
     /// </remarks>
     public static void Verbose<T0, T1, T2>(ILogger logger, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -277,12 +277,12 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常的详细级别消息模板。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录详细级别的异常信息和消息模板。
+    /// Records verbose level exception information and message template.
     /// </remarks>
     public static void Verbose(ILogger logger, Exception exception, string messageTemplate)
     {
@@ -293,14 +293,14 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和单个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T">属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue">属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T">属性值的类型 / The type of the property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue">属性值 / The property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有单个属性的消息模板。
+    /// Records verbose level exception information and message template with a single property.
     /// </remarks>
     public static void Verbose<T>(ILogger logger, Exception exception, string messageTemplate, T propertyValue)
     {
@@ -311,16 +311,16 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和两个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有两个属性的消息模板。
+    /// Records verbose level exception information and message template with two properties.
     /// </remarks>
     public static void Verbose<T0, T1>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
     {
@@ -331,18 +331,18 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和三个属性值的详细级别消息模板。
     /// </summary>
-    /// <typeparam name="T0">第一个属性值的类型。</typeparam>
-    /// <typeparam name="T1">第二个属性值的类型。</typeparam>
-    /// <typeparam name="T2">第三个属性值的类型。</typeparam>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValue0">第一个属性值。</param>
-    /// <param name="propertyValue1">第二个属性值。</param>
-    /// <param name="propertyValue2">第三个属性值。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有三个属性的消息模板。
+    /// Records verbose level exception information and message template with three properties.
     /// </remarks>
     public static void Verbose<T0, T1, T2>(ILogger logger, Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
@@ -353,13 +353,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有异常和格式参数的详细级别消息模板。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例</param>
-    /// <param name="exception">异常信息。</param>
-    /// <param name="messageTemplate">消息模板。</param>
-    /// <param name="propertyValues">属性值数组。</param>
-    /// <exception cref="ArgumentNullException">当logger参数为null时抛出此异常</exception>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValues">属性值数组 / The property value array</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 记录详细级别的异常信息和带有多个属性的消息模板。
+    /// Records verbose level exception information and message template with multiple properties.
     /// </remarks>
     public static void Verbose(ILogger logger, Exception exception, string messageTemplate, params object[] propertyValues)
     {
@@ -370,10 +370,10 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有格式参数的详细级别日志消息，并同时输出到控制台。
     /// </summary>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
     /// <remarks>
-    /// 同时将详细信息输出到日志文件和控制台，便于实时查看和调试。
+    /// Outputs verbose information to both log file and console for real-time viewing and debugging.
     /// </remarks>
     public static void VerboseConsole(string msg, params object[] args)
     {
@@ -384,11 +384,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有格式参数的详细级别日志消息，并同时输出到控制台。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 同时将详细信息输出到日志文件和控制台，便于实时查看和调试。
+    /// Outputs verbose information to both log file and console for real-time viewing and debugging.
     /// </remarks>
     public static void VerboseConsole(ILogger logger, string msg, params object[] args)
     {
@@ -400,8 +401,11 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有标签的详细级别日志消息。
     /// </summary>
-    /// <param name="tag">日志标签</param>
-    /// <param name="msg">要记录的详细消息。</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <remarks>
+    /// Records verbose level log message with a tag prefix in the format [tag].
+    /// </remarks>
     public static void Verbose(string tag, string msg)
     {
         Verbose($"[{tag}] {msg}");
@@ -410,11 +414,12 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有标签的详细级别日志消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="tag">日志标签。</param>
-    /// <param name="msg">要记录的详细消息。</param>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 在记录日志之前会检查logger参数是否为null。
+    /// Checks if the logger parameter is null before logging.
     /// </remarks>
     public static void Verbose(ILogger logger, string tag, string msg)
     {
@@ -425,9 +430,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有标签和格式参数的详细级别日志消息。
     /// </summary>
-    /// <param name="tag">日志标签</param>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <remarks>
+    /// Records verbose level log message with a tag prefix and format arguments.
+    /// </remarks>
     public static void Verbose(string tag, string msg, params object[] args)
     {
         Verbose($"[{tag}] {msg}", args);
@@ -436,12 +444,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有标签和格式参数的详细级别日志消息。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="tag">日志标签。</param>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 在记录日志之前会检查logger参数是否为null。
+    /// Checks if the logger parameter is null before logging.
     /// </remarks>
     public static void Verbose(ILogger logger, string tag, string msg, params object[] args)
     {
@@ -452,9 +461,12 @@ public static partial class LogHelper
     /// <summary>
     /// 记录带有标签和格式参数的详细级别日志消息，并同时输出到控制台。
     /// </summary>
-    /// <param name="tag">日志标签</param>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <remarks>
+    /// Outputs verbose information with tag to both log file and console for real-time viewing and debugging.
+    /// </remarks>
     public static void VerboseConsole(string tag, string msg, params object[] args)
     {
         Verbose(tag, msg, args);
@@ -464,12 +476,13 @@ public static partial class LogHelper
     /// <summary>
     /// 使用指定的日志记录器记录带有标签和格式参数的详细级别日志消息，并同时输出到控制台。
     /// </summary>
-    /// <param name="logger">用于记录日志的ILogger实例。</param>
-    /// <param name="tag">日志标签。</param>
-    /// <param name="msg">要记录的详细消息。</param>
-    /// <param name="args">消息的格式参数。</param>
+    /// <param name="logger">用于记录日志的ILogger实例 / The ILogger instance for logging</param>
+    /// <param name="tag">日志标签 / The log tag</param>
+    /// <param name="msg">要记录的详细消息 / The verbose message to record</param>
+    /// <param name="args">消息的格式参数 / Format arguments for the message</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logger"/> 为 null 时抛出 / Thrown when <paramref name="logger"/> is null</exception>
     /// <remarks>
-    /// 在记录日志之前会检查logger参数是否为null，并将消息同时输出到日志文件和控制台。
+    /// Checks if the logger parameter is null before logging, and outputs the message to both log file and console.
     /// </remarks>
     public static void VerboseConsole(ILogger logger, string tag, string msg, params object[] args)
     {

@@ -43,6 +43,9 @@ namespace GameFrameX.Foundation.Logger;
 /// <summary>
 /// 日志处理器类，提供日志系统的初始化和配置功能
 /// </summary>
+/// <remarks>
+/// Provides initialization and configuration functionality for the logging system.
+/// </remarks>
 public static class LogHandler
 {
     private static bool _isInitSerilogDiagnosis;
@@ -50,6 +53,9 @@ public static class LogHandler
     /// <summary>
     /// 启用 Serilog 的自动诊断
     /// </summary>
+    /// <remarks>
+    /// Enables Serilog's automatic diagnosis for debugging purposes.
+    /// </remarks>
     private static void SerilogDiagnosis()
     {
         if (_isInitSerilogDiagnosis)
@@ -64,12 +70,12 @@ public static class LogHandler
     /// <summary>
     /// 创建并返回一个基础的 Serilog 日志配置。
     /// </summary>
+    /// <returns>用于后续扩展的基础 LoggerConfiguration / The base LoggerConfiguration for subsequent extension</returns>
     /// <remarks>
-    /// - 启用上下文丰富（Enrich.FromLogContext），便于在日志中附带请求或业务上下文信息。
-    /// - 下调框架日志噪声：将 Microsoft 组件日志级别设为 Information，将 ASP.NET Core 设为 Warning，减少不必要的输出。
-    /// 该基础配置可在后续继续追加写入目标、丰富属性、最小日志级别等。
+    /// <para>- Enables context enrichment (Enrich.FromLogContext) to easily attach request or business context information to logs.</para>
+    /// <para>- Reduces framework log noise: sets Microsoft component log level to Information, ASP.NET Core to Warning, reducing unnecessary output.</para>
+    /// <para>This base configuration can be extended with additional write targets, enrichment properties, minimum log levels, etc.</para>
     /// </remarks>
-    /// <returns>用于后续扩展的基础 LoggerConfiguration。</returns>
     public static LoggerConfiguration CreateLoggerConfiguration()
     {
         return new LoggerConfiguration()
@@ -82,39 +88,40 @@ public static class LogHandler
     }
 
     /// <summary>
-    /// 控制台输出模板，用于格式化控制台日志输出。
+    /// 控制台输出模板，用于格式化控制台日志输出。 / Console output template for formatting console log output.
     /// </summary>
     private const string ConsoleOutputTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
-    /// 控制台输出模板，用于格式化控制台日志输出，包含标签名称。
+    /// 控制台输出模板，用于格式化控制台日志输出，包含标签名称。 / Console output template for formatting console log output with tag name.
     /// </summary>
     private const string ConsoleOutputTagNameTemplate = "[{Timestamp:HH:mm:ss} {Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
-    /// 文件输出模板，用于格式化文件日志输出。
+    /// 文件输出模板，用于格式化文件日志输出。 / File output template for formatting file log output.
     /// </summary>
     private const string FileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
-    /// 文件输出模板，用于格式化文件日志输出，包含标签名称。
+    /// 文件输出模板，用于格式化文件日志输出，包含标签名称。 / File output template for formatting file log output with tag name.
     /// </summary>
     private const string FileOutputTagNameTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}][{LogType}-{TagName}]{Message:lj}{NewLine}{Exception}";
 
     /// <summary>
     /// 启动并配置日志系统。
     /// </summary>
-    /// <param name="logOptions">日志配置选项，包含日志级别、存储路径等配置信息。</param>
-    /// <param name="isDefault">是否设置为默认配置。</param>
-    /// <param name="configurationAction">自定义日志配置回调。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="logOptions"/> 参数为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当 <paramref name="logOptions.LogTagName"/> 为空或仅包含空白字符时抛出。</exception>
-    /// <exception cref="DirectoryNotFoundException">日志文件目录不存在且无法创建时抛出。</exception>
-    /// <exception cref="UnauthorizedAccessException">没有权限创建日志目录或写入日志文件时抛出。</exception>
-    /// <exception cref="Exception">初始化日志系统过程中发生的其他异常。</exception>
+    /// <param name="logOptions">日志配置选项，包含日志级别、存储路径等配置信息 / Log configuration options containing log level, storage path, and other configuration information</param>
+    /// <param name="isDefault">是否设置为默认配置 / Whether to set as default configuration</param>
+    /// <param name="configurationAction">自定义日志配置回调 / Custom log configuration callback</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="logOptions"/> 参数为 null 时抛出 / Thrown when <paramref name="logOptions"/> parameter is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="logOptions.LogTagName"/> 为空或仅包含空白字符时抛出 / Thrown when <paramref name="logOptions.LogTagName"/> is empty or contains only whitespace</exception>
+    /// <exception cref="DirectoryNotFoundException">日志文件目录不存在且无法创建时抛出 / Thrown when log file directory does not exist and cannot be created</exception>
+    /// <exception cref="UnauthorizedAccessException">没有权限创建日志目录或写入日志文件时抛出 / Thrown when there is no permission to create log directory or write log files</exception>
+    /// <exception cref="Exception">初始化日志系统过程中发生的其他异常 / Other exceptions that occur during log system initialization</exception>
+    /// <returns>配置好的 ILogger 实例 / The configured ILogger instance</returns>
     /// <remarks>
-    /// <para>该方法会根据传入的 <paramref name="logOptions"/> 配置初始化日志系统，支持文件、控制台、MongoDB 及 Grafana Loki 等多种输出方式。</para>
-    /// <para>异常类型涵盖参数校验、目录创建、权限不足及日志系统初始化过程中的所有可能异常。</para>
+    /// <para>This method initializes the logging system based on the provided <paramref name="logOptions"/> configuration, supporting multiple output methods such as file, console, MongoDB, and Grafana Loki.</para>
+    /// <para>The exception types cover parameter validation, directory creation, insufficient permissions, and all possible exceptions during log system initialization.</para>
     /// </remarks>
     /// <example>
     /// <code>

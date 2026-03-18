@@ -37,23 +37,23 @@ namespace GameFrameX.Foundation.Logger;
 /// 日志帮助类的控制台显示部分
 /// </summary>
 /// <remarks>
-/// 提供了一系列静态方法用于在控制台中显示格式化的标题、配置信息和分隔线。
-/// 这是LogHelper类的部分类实现，专门处理控制台输出相关功能。
+/// Provides a series of static methods for displaying formatted titles, configuration information, and separators in the console.
+/// This is a partial class implementation of LogHelper, specifically handling console output related functionality.
 /// </remarks>
 public partial class LogHelper
 {
     /// <summary>
-    /// 控制台日志显示对象实例，用于处理所有控制台格式化输出
+    /// 控制台日志显示对象实例，用于处理所有控制台格式化输出 / Console log display object instance for handling all console formatted output
     /// </summary>
     private static readonly LogConsole LogConsoleObject = new();
 
     /// <summary>
     /// 设置控制台输出框架的宽度
     /// </summary>
-    /// <param name="length">框架宽度，必须大于0的整数值</param>
-    /// <exception cref="ArgumentOutOfRangeException">当length小于等于0时抛出</exception>
+    /// <param name="length">框架宽度，必须大于0的整数值 / The frame width, must be an integer greater than 0</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="length"/> 小于等于0时抛出 / Thrown when <paramref name="length"/> is less than or equal to 0</exception>
     /// <remarks>
-    /// 此设置会影响所有后续的控制台输出格式，包括标题框、配置信息框和分隔线的宽度。
+    /// This setting affects the width of all subsequent console output formats, including title boxes, configuration information boxes, and separator lines.
     /// </remarks>
     public static void SetFrameLength(int length)
     {
@@ -64,13 +64,13 @@ public partial class LogHelper
     /// <summary>
     /// 显示带边框的大标题，支持主标题和最多两个子标题
     /// </summary>
-    /// <param name="title">主标题文本，不能为null</param>
-    /// <param name="title2">第一个子标题文本，可选参数</param>
-    /// <param name="title3">第二个子标题文本，可选参数</param>
-    /// <exception cref="ArgumentNullException">当任何参数为null时抛出</exception>
+    /// <param name="title">主标题文本，不能为null / The main title text, cannot be null</param>
+    /// <param name="title2">第一个子标题文本，可选参数 / The first subtitle text, optional parameter</param>
+    /// <param name="title3">第二个子标题文本，可选参数 / The second subtitle text, optional parameter</param>
+    /// <exception cref="ArgumentNullException">当任何参数为null时抛出 / Thrown when any parameter is null</exception>
     /// <remarks>
-    /// 使用双线框字符（╔╗╚╝║）创建美观的标题显示效果。
-    /// 子标题只有在非空时才会显示，标题文本会自动居中对齐。
+    /// Uses double-line box characters (╔╗╚╝║) to create a beautiful title display effect.
+    /// Subtitles are only displayed when non-empty, and title text is automatically center-aligned.
     /// </remarks>
     public static void ShowMaxTitle(string title, string title2 = "", string title3 = "")
     {
@@ -83,12 +83,12 @@ public partial class LogHelper
     /// <summary>
     /// 显示带标题的配置信息框
     /// </summary>
-    /// <param name="title">配置项标题，不能为null</param>
-    /// <param name="content">配置内容对象，将调用ToString()方法显示，不能为null</param>
-    /// <exception cref="ArgumentNullException">当任何参数为null时抛出</exception>
+    /// <param name="title">配置项标题，不能为null / The configuration item title, cannot be null</param>
+    /// <param name="content">配置内容对象，将调用ToString()方法显示，不能为null / The configuration content object, will call ToString() method to display, cannot be null</param>
+    /// <exception cref="ArgumentNullException">当任何参数为null时抛出 / Thrown when any parameter is null</exception>
     /// <remarks>
-    /// 创建一个带有标题栏的信息框，标题会嵌入到顶部边框中，内容显示在框内。
-    /// 适用于显示系统配置、参数设置等结构化信息。
+    /// Creates an information box with a title bar, where the title is embedded in the top border and the content is displayed inside the box.
+    /// Suitable for displaying system configuration, parameter settings, and other structured information.
     /// </remarks>
     public static void ShowOption(string title, object content)
     {
@@ -100,12 +100,12 @@ public partial class LogHelper
     /// <summary>
     /// 显示分隔线，可选择是否包含标题文本
     /// </summary>
-    /// <param name="title">分隔线中的标题文本，为空字符串时显示纯分隔线</param>
-    /// <exception cref="ArgumentNullException">当title为null时抛出</exception>
+    /// <param name="title">分隔线中的标题文本，为空字符串时显示纯分隔线 / The title text in the separator line, displays a pure separator line when empty</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="title"/> 为null时抛出 / Thrown when <paramref name="title"/> is null</exception>
     /// <remarks>
-    /// 当title为空时，显示纯分隔线；当title有内容时，标题会嵌入到分隔线中间。
-    /// 如果标题过长超出框架宽度，会使用简化的三等号包围格式。
-    /// 常用于分隔不同的信息区块或标记程序执行的不同阶段。
+    /// When title is empty, displays a pure separator line; when title has content, the title is embedded in the middle of the separator line.
+    /// If the title is too long and exceeds the frame width, a simplified triple-equals enclosing format is used.
+    /// Commonly used to separate different information blocks or mark different stages of program execution.
     /// </remarks>
     public static void ShowLineTitle(string title = "")
     {
