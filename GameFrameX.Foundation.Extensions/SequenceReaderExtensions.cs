@@ -40,15 +40,21 @@ namespace GameFrameX.Foundation.Extensions;
 /// <summary>
 /// 提供对 <see cref="SequenceReader{T}" /> 类的扩展方法，用于从只读内存中读取数据。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for the <see cref="SequenceReader{T}" /> class for reading data from read-only memory.
+/// </remarks>
 public static class SequenceReaderExtensions
 {
     /// <summary>
     /// 从只读内存中获取一个字节数据。
     /// </summary>
-    /// <param name="reader">只读内存读取器。</param>
-    /// <param name="value">结果值。</param>
-    /// <returns>读取成功返回 True，否则返回 False。</returns>
-    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    /// <remarks>
+    /// Reads a byte value from the read-only memory.
+    /// </remarks>
+    /// <param name="reader">只读内存读取器 / The sequence reader.</param>
+    /// <param name="value">结果值 / The result value.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if read successfully; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出 / Thrown when the reader is invalid.</exception>
     public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out byte value)
     {
         value = 0;
@@ -64,10 +70,13 @@ public static class SequenceReaderExtensions
     /// <summary>
     /// 从只读内存中获取一个无符号短整型数据。
     /// </summary>
-    /// <param name="reader">只读内存读取器。</param>
-    /// <param name="value">结果值。</param>
-    /// <returns>读取成功返回 True，否则返回 False。</returns>
-    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned short (UInt16) value from the read-only memory in big-endian format.
+    /// </remarks>
+    /// <param name="reader">只读内存读取器 / The sequence reader.</param>
+    /// <param name="value">结果值 / The result value.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if read successfully; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出 / Thrown when the reader is invalid.</exception>
     public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out ushort value)
     {
         value = 0;
@@ -90,10 +99,13 @@ public static class SequenceReaderExtensions
     /// <summary>
     /// 从只读内存中获取一个有符号短整型数据。
     /// </summary>
-    /// <param name="reader">只读内存读取器。</param>
-    /// <param name="value">结果值。</param>
-    /// <returns>读取成功返回 True，否则返回 False。</returns>
-    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    /// <remarks>
+    /// Reads a signed short (Int16) value from the read-only memory in big-endian format.
+    /// </remarks>
+    /// <param name="reader">只读内存读取器 / The sequence reader.</param>
+    /// <param name="value">结果值 / The result value.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if read successfully; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出 / Thrown when the reader is invalid.</exception>
     public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out short value)
     {
         value = 0;
@@ -116,10 +128,13 @@ public static class SequenceReaderExtensions
     /// <summary>
     /// 从只读内存中获取一个无符号整型数据。
     /// </summary>
-    /// <param name="reader">只读内存读取器。</param>
-    /// <param name="value">结果值。</param>
-    /// <returns>读取成功返回 True，否则返回 False。</returns>
-    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned integer (UInt32) value from the read-only memory in big-endian format.
+    /// </remarks>
+    /// <param name="reader">只读内存读取器 / The sequence reader.</param>
+    /// <param name="value">结果值 / The result value.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if read successfully; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出 / Thrown when the reader is invalid.</exception>
     public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out uint value)
     {
         value = 0;
@@ -142,10 +157,13 @@ public static class SequenceReaderExtensions
     /// <summary>
     /// 从只读内存中获取一个有符号整型数据。
     /// </summary>
-    /// <param name="reader">只读内存读取器。</param>
-    /// <param name="value">结果值。</param>
-    /// <returns>读取成功返回 True，否则返回 False。</returns>
-    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    /// <remarks>
+    /// Reads a signed integer (Int32) value from the read-only memory in big-endian format.
+    /// </remarks>
+    /// <param name="reader">只读内存读取器 / The sequence reader.</param>
+    /// <param name="value">结果值 / The result value.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if read successfully; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出 / Thrown when the reader is invalid.</exception>
     public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out int value)
     {
         value = 0;
@@ -168,10 +186,13 @@ public static class SequenceReaderExtensions
     /// <summary>
     /// 从只读内存中获取一个无符号长整型数据。
     /// </summary>
-    /// <param name="reader">只读内存读取器。</param>
-    /// <param name="value">结果值。</param>
-    /// <returns>读取成功返回 True，否则返回 False。</returns>
-    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned long (UInt64) value from the read-only memory in big-endian format.
+    /// </remarks>
+    /// <param name="reader">只读内存读取器 / The sequence reader.</param>
+    /// <param name="value">结果值 / The result value.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if read successfully; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出 / Thrown when the reader is invalid.</exception>
     public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out ulong value)
     {
         value = 0;
@@ -194,10 +215,13 @@ public static class SequenceReaderExtensions
     /// <summary>
     /// 从只读内存中获取一个有符号长整型数据。
     /// </summary>
-    /// <param name="reader">只读内存读取器。</param>
-    /// <param name="value">结果值。</param>
-    /// <returns>读取成功返回 True，否则返回 False。</returns>
-    /// <exception cref="ArgumentException">当读取器无效时抛出。</exception>
+    /// <remarks>
+    /// Reads a signed long (Int64) value from the read-only memory in big-endian format.
+    /// </remarks>
+    /// <param name="reader">只读内存读取器 / The sequence reader.</param>
+    /// <param name="value">结果值 / The result value.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if read successfully; otherwise <c>false</c>.</returns>
+    /// <exception cref="ArgumentException">当读取器无效时抛出 / Thrown when the reader is invalid.</exception>
     public static bool TryReadBigEndianValue(this ref SequenceReader<byte> reader, out long value)
     {
         value = 0;
