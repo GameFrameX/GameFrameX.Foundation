@@ -34,22 +34,26 @@
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// 目录扩展方法
+/// 目录扩展方法。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for directory operations.
+/// </remarks>
 public static class DirectoryExtensions
 {
     /// <summary>
     /// 根据路径创建目录，支持递归创建。
     /// </summary>
-    /// <param name="path">目录路径。</param>
-    /// <param name="isFile">是否为文件路径，如果为true，则创建文件所在的目录。默认为false。</param>
-    /// <exception cref="ArgumentNullException">当path为null时抛出。</exception>
     /// <remarks>
-    /// 此方法使用 <see cref="Directory.CreateDirectory"/> 实现，该方法会自动递归创建所有必要的父目录。
-    /// 当isFile为true时，会自动获取文件所在目录路径。
-    /// 支持相对路径和绝对路径。
-    /// 如果目录已存在，则不会进行任何操作。
+    /// Creates a directory based on the path, supporting recursive creation.
+    /// This method uses <see cref="Directory.CreateDirectory(string)"/> which automatically creates all necessary parent directories recursively.
+    /// When isFile is true, it automatically gets the directory path where the file is located.
+    /// Supports both relative and absolute paths.
+    /// If the directory already exists, no operation is performed.
     /// </remarks>
+    /// <param name="path">目录路径 / The directory path.</param>
+    /// <param name="isFile">是否为文件路径，如果为 <c>true</c>，则创建文件所在的目录，默认为 <c>false</c> / Whether it is a file path, if <c>true</c>, creates the directory where the file is located, defaults to <c>false</c>.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="path"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="path"/> is <c>null</c>.</exception>
     public static void CreateAsDirectory(this string path, bool isFile = false)
     {
         ArgumentNullException.ThrowIfNull(path, nameof(path));
