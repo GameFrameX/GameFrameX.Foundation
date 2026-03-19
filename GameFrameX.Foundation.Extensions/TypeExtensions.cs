@@ -38,25 +38,25 @@ using GameFrameX.Foundation.Extensions.Localization;
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// 类型扩展类，提供了一系列用于类型检查和判断的扩展方法
+/// 类型扩展类，提供了一系列用于类型检查和判断的扩展方法。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for type checking and validation.
+/// </remarks>
 public static partial class TypeExtensions
 {
     /// <summary>
-    /// 判断类型是否实现了指定的接口
+    /// 判断类型是否实现了指定的接口。
     /// </summary>
-    /// <param name="targetType">要检查的类型，不能为null</param>
-    /// <param name="interfaceType">目标接口类型，不能为null</param>
-    /// <returns>
-    /// 如果类型实现了指定的接口，则返回true；
-    /// 否则返回false
-    /// </returns>
     /// <remarks>
-    /// 此方法会检查类型是否直接或间接地实现了指定的接口。
-    /// 它会递归检查类型的继承链和接口实现。
+    /// Checks whether the type implements the specified interface.
+    /// This method checks both direct and indirect interface implementations by recursively examining the type's inheritance chain.
     /// </remarks>
-    /// <exception cref="ArgumentNullException">当<paramref name="targetType"/>或<paramref name="interfaceType"/>为null时抛出</exception>
-    /// <exception cref="ArgumentException">当<paramref name="interfaceType"/>不是接口类型时抛出</exception>
+    /// <param name="targetType">要检查的类型，不能为null / The type to check, cannot be null.</param>
+    /// <param name="interfaceType">目标接口类型，不能为null / The interface type to check for, cannot be null.</param>
+    /// <returns>如果类型实现了指定的接口，则返回true；否则返回false / true if the type implements the specified interface; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="targetType"/> 或 <paramref name="interfaceType"/> 为 null 时抛出 / Thrown when <paramref name="targetType"/> or <paramref name="interfaceType"/> is null.</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="interfaceType"/> 不是接口类型时抛出 / Thrown when <paramref name="interfaceType"/> is not an interface type.</exception>
     public static bool HasInterface(Type targetType, Type interfaceType)
     {
         ArgumentNullException.ThrowIfNull(targetType, nameof(targetType));
@@ -71,21 +71,19 @@ public static partial class TypeExtensions
     }
 
     /// <summary>
-    /// 判断类型是否实现某个泛型接口或继承自某个泛型类
+    /// 判断类型是否实现某个泛型接口或继承自某个泛型类。
     /// </summary>
-    /// <param name="type">要检查的类型，不能为null</param>
-    /// <param name="generic">目标泛型类型，不能为null</param>
-    /// <returns>
-    /// 如果类型实现了指定的泛型接口或继承自指定的泛型类，则返回true；
-    /// 否则返回false
-    /// </returns>
     /// <remarks>
-    /// 此方法会递归检查类型的继承链和接口实现：
-    /// 1. 首先检查类型实现的所有接口
-    /// 2. 然后沿着继承链向上检查基类
-    /// 3. 对于泛型类型，会提取其泛型类型定义进行比较
+    /// Checks whether the type implements a specific generic interface or inherits from a specific generic class.
+    /// This method recursively checks:
+    /// 1. All interfaces implemented by the type
+    /// 2. The inheritance chain of base classes
+    /// 3. For generic types, extracts the generic type definition for comparison
     /// </remarks>
-    /// <exception cref="ArgumentNullException">当<paramref name="type"/>或<paramref name="generic"/>为null时抛出</exception>
+    /// <param name="type">要检查的类型，不能为null / The type to check, cannot be null.</param>
+    /// <param name="generic">目标泛型类型，不能为null / The generic type to check for, cannot be null.</param>
+    /// <returns>如果类型实现了指定的泛型接口或继承自指定的泛型类，则返回true；否则返回false / true if the type implements the specified generic interface or inherits from the specified generic class; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 或 <paramref name="generic"/> 为 null 时抛出 / Thrown when <paramref name="type"/> or <paramref name="generic"/> is null.</exception>
     public static bool HasImplementedRawGeneric(this Type type, Type generic)
     {
         // 参数检查
@@ -124,31 +122,27 @@ public static partial class TypeExtensions
     /// 判断类型是否实现了指定的接口。
     /// 此方法用于检查一个具体类型是否实现了目标接口。
     /// </summary>
-    /// <param name="self">要判断的类型。必须是非空的具体类型。</param>
-    /// <param name="target">要判断的接口类型。必须是非空的接口类型。</param>
-    /// <param name="directOnly">是否只检查直接实现的接口，不检查继承的接口。
-    /// 当设置为true时，只检查直接实现的接口；
-    /// 当设置为false时，同时检查继承链上的所有接口。</param>
-    /// <param name="checkIndirectInterfaces">是否检查接口之间的继承关系。
-    /// 当设置为true时，会检查接口之间的继承关系；
-    /// 当设置为false时，只检查类型直接实现的接口列表。</param>
-    /// <returns>
-    /// 如果self实现了target接口（根据directOnly和checkIndirectInterfaces参数决定检查范围），则返回true；
-    /// 否则返回false
-    /// </returns>
     /// <remarks>
-    /// 使用场景示例：
-    /// 1. 在反射中判断某个类型是否可以用于特定接口的实现
-    /// 2. 在依赖注入场景中验证服务实现的有效性
-    /// 3. 在插件系统中检查插件类型是否符合要求
-    /// 
-    /// 参数组合效果：
-    /// - directOnly=true, checkIndirectInterfaces=false：只检查类型直接实现的接口
-    /// - directOnly=false, checkIndirectInterfaces=false：检查类型实现的所有接口，但不检查接口之间的继承关系
-    /// - directOnly=false, checkIndirectInterfaces=true：检查类型实现的所有接口，并检查接口之间的继承关系
+    /// Checks whether a type implements the specified interface.
+    /// This method is used to check if a concrete type implements a target interface.
+    ///
+    /// Usage scenarios:
+    /// 1. In reflection to determine if a type can be used for a specific interface implementation
+    /// 2. In dependency injection scenarios to validate service implementation
+    /// 3. In plugin systems to check if a plugin type meets requirements
+    ///
+    /// Parameter combinations:
+    /// - directOnly=true, checkIndirectInterfaces=false: Only check directly implemented interfaces
+    /// - directOnly=false, checkIndirectInterfaces=false: Check all implemented interfaces without checking interface inheritance
+    /// - directOnly=false, checkIndirectInterfaces=true: Check all implemented interfaces and interface inheritance
     /// </remarks>
-    /// <exception cref="ArgumentNullException">当<paramref name="self"/>或<paramref name="target"/>为null时抛出</exception>
-    /// <exception cref="ArgumentException">当<paramref name="target"/>不是接口类型时抛出</exception>
+    /// <param name="self">要判断的类型。必须是非空的具体类型 / The type to check. Must be a non-null concrete type.</param>
+    /// <param name="target">要判断的接口类型。必须是非空的接口类型 / The interface type to check for. Must be a non-null interface type.</param>
+    /// <param name="directOnly">是否只检查直接实现的接口，不检查继承的接口 / Whether to only check directly implemented interfaces without checking inherited interfaces.</param>
+    /// <param name="checkIndirectInterfaces">是否检查接口之间的继承关系 / Whether to check inheritance relationships between interfaces.</param>
+    /// <returns>如果self实现了target接口，则返回true；否则返回false / true if self implements the target interface; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="target"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="target"/> is null.</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="target"/> 不是接口类型时抛出 / Thrown when <paramref name="target"/> is not an interface type.</exception>
     public static bool IsImplWithInterface(this Type self, Type target, bool directOnly = false, bool checkIndirectInterfaces = true)
     {
         // 参数有效性检查

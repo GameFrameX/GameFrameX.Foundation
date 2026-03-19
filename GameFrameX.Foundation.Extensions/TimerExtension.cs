@@ -36,26 +36,30 @@ using Timer = System.Timers.Timer;
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// Timer 扩展方法类
+/// Timer 扩展方法类。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for the <see cref="System.Timers.Timer"/> class.
+/// </remarks>
 public static class TimerExtension
 {
     /// <summary>
-    /// 重置计时器，停止当前计时并重新开始
+    /// 重置计时器，停止当前计时并重新开始。
     /// </summary>
-    /// <param name="timer">要重置的计时器实例</param>
-    /// <exception cref="ArgumentNullException">当 timer 为 null 时抛出此异常</exception>
-    /// <exception cref="ObjectDisposedException">当 timer 已被释放时抛出此异常</exception>
     /// <remarks>
-    /// 此方法会先停止计时器，然后重新启动它，相当于重置计时器的计时周期。
-    /// 计时器的配置（如间隔时间、自动重置设置等）将保持不变。
+    /// Resets the timer, stopping the current timing and restarting it.
+    /// This method first stops the timer and then restarts it, effectively resetting the timing cycle.
+    /// The timer's configuration (such as interval, auto-reset settings, etc.) remains unchanged.
     /// </remarks>
+    /// <param name="timer">要重置的计时器实例 / The timer instance to reset.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="timer"/> 为 null 时抛出此异常 / Thrown when <paramref name="timer"/> is null.</exception>
+    /// <exception cref="ObjectDisposedException">当 <paramref name="timer"/> 已被释放时抛出此异常 / Thrown when <paramref name="timer"/> has been disposed.</exception>
     /// <example>
     /// <code>
-    /// var timer = new Timer(1000); // 1秒间隔
+    /// var timer = new Timer(1000); // 1秒间隔 / 1 second interval
     /// timer.Start();
-    /// // ... 一段时间后
-    /// timer.Reset(); // 重置计时器，重新开始计时
+    /// // ... 一段时间后 / ... after some time
+    /// timer.Reset(); // 重置计时器，重新开始计时 / Reset the timer and restart timing
     /// </code>
     /// </example>
     public static void Reset(this Timer timer)
