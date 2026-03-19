@@ -1,3 +1,42 @@
+## [2.2.6] - 2026-03-19
+
+### Bug Fixes
+
+- 完善 Encryption 模块的双语文档注释
+
+### Documentation
+
+- 为 TimerHelper 添加双语文档注释
+- 为 EnvironmentHelper 和 RuntimePlatformHelper 添加双语文档注释
+- 为实体类和过滤器接口添加双语文档注释
+- 为所有特性类添加双语文档注释
+- 为 Options 项目添加双语文档注释
+- 为 Logger 项目添加双语文档注释
+- 为 Json 项目添加双语文档注释
+- 为 Http.Normalization 项目添加双语文档注释
+- 为 Http.Extension 项目添加双语文档注释
+- 为 Hash 项目添加双语文档注释
+- 为扩展方法添加英文文档注释
+- 完善字符串扩展方法的 XML 文档注释
+- 为 ArgumentAlreadyException 添加英文注释
+- 为双向字典添加英文文档注释
+- 为字节序扩展方法添加英文注释
+- 为集合扩展方法添加英文文档注释
+- 为并发限制队列添加英文注释
+- 完善基础类型大小常量的注释文档
+- 完善 DirectoryExtensions 的 XML 注释文档
+- 为 DisposableConcurrentDictionary 添加英文注释
+- 为 DisposableDictionary 添加英文注释
+- 为表达式扩展方法添加英文文档注释
+- 为扩展方法添加英文注释以支持国际化
+- 为 IEnumerableExtensions 添加双语文档注释
+- 为 NullableDictionary 添加双语文档注释
+- 为 SequenceReaderExtensions 添加双语文档注释
+- 为 SpanExtensions.BigEndian 添加双语文档注释
+- 为 NullableDictionary 完善双语文档注释
+- 完善 SpanExtensions.BigEndian 读取方法的双语文档注释
+- 完善 SequenceReaderExtensions 的双语文档注释
+
 ## [2.2.5] - 2026-03-17
 
 ### Bug Fixes
