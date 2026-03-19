@@ -36,31 +36,43 @@ using System.Collections.Concurrent;
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// 用于明确指定 NullableDictionary 的 fallback 值的包装类型
+/// 用于明确指定 NullableDictionary 的 fallback 值的包装类型。
 /// </summary>
-/// <typeparam name="TValue">值的类型</typeparam>
+/// <remarks>
+/// A wrapper type used to explicitly specify the fallback value for NullableDictionary.
+/// </remarks>
+/// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
 public readonly struct FallbackValue<TValue>
 {
     /// <summary>
-    /// 获取包装的值
+    /// 获取包装的值。
     /// </summary>
-    /// <value>包装的泛型类型 T 的值</value>
+    /// <remarks>
+    /// Gets the wrapped value.
+    /// </remarks>
+    /// <value>包装的泛型类型 T 的值 / The wrapped value of type T.</value>
     public TValue Value { get; }
 
     /// <summary>
-    /// 初始化一个包含指定值的 FallbackValue
+    /// 初始化一个包含指定值的 FallbackValue。
     /// </summary>
-    /// <param name="value"></param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="FallbackValue{TValue}"/> struct with the specified value.
+    /// </remarks>
+    /// <param name="value">要包装的值 / The value to wrap.</param>
     public FallbackValue(TValue value)
     {
         Value = value;
     }
 
     /// <summary>
-    /// 将 TValue 转换为 FallbackValue
+    /// 将 TValue 隐式转换为 FallbackValue。
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
+    /// <remarks>
+    /// Implicitly converts a value of type TValue to a <see cref="FallbackValue{TValue}"/>.
+    /// </remarks>
+    /// <param name="value">要转换的值 / The value to convert.</param>
+    /// <returns>一个包含指定值的 FallbackValue 实例 / A <see cref="FallbackValue{TValue}"/> instance containing the specified value.</returns>
     public static implicit operator FallbackValue<TValue>(TValue value)
     {
         return new FallbackValue<TValue>(value);
@@ -68,10 +80,13 @@ public readonly struct FallbackValue<TValue>
 }
 
 /// <summary>
-/// 可空字典，支持 null 键和自定义默认值
+/// 可空字典，支持 null 键和自定义默认值。
 /// </summary>
-/// <typeparam name="TKey">键的类型</typeparam>
-/// <typeparam name="TValue">值的类型</typeparam>
+/// <remarks>
+/// A dictionary that supports null keys and custom default values.
+/// </remarks>
+/// <typeparam name="TKey">键的类型 / The type of the keys in the dictionary.</typeparam>
+/// <typeparam name="TValue">值的类型 / The type of the values in the dictionary.</typeparam>
 public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TValue>
 {
     /// <summary>
