@@ -39,34 +39,61 @@ using GameFrameX.Foundation.Encryption.Localization;
 namespace GameFrameX.Foundation.Encryption;
 
 /// <summary>
-/// AES 加密解密
+/// AES 加密解密工具类，提供基于 AES-CBC 算法的加密和解密功能。
 /// </summary>
 /// <remarks>
+/// AES encryption and decryption utility class, providing encryption and decryption based on AES-CBC algorithm.
 /// 加密输出格式：[Salt(16 字节) | IV(16 字节) | 密文]
+/// Encryption output format: [Salt(16 bytes) | IV(16 bytes) | Ciphertext]
 /// Salt 和 IV 每次随机生成，与密文拼接存储，解密时自动从密文头部读取。
+/// Salt and IV are randomly generated each time, concatenated with the ciphertext for storage, and automatically read from the ciphertext header during decryption.
 /// 此格式与旧版本（固定 IV/Salt）不兼容。
+/// This format is incompatible with older versions (fixed IV/Salt).
 /// </remarks>
 public static class AesHelper
 {
-    /// <summary>PBKDF2 迭代次数（符合 OWASP 2023 建议 600,000 次）</summary>
+    /// <summary>
+    /// PBKDF2 迭代次数（符合 OWASP 2023 建议 600,000 次）。
+    /// </summary>
+    /// <remarks>
+    /// PBKDF2 iteration count (compliant with OWASP 2023 recommendation of 600,000).
+    /// </remarks>
     private const int Pbkdf2Iterations = 600_000;
 
-    /// <summary>Salt 长度（字节）</summary>
+    /// <summary>
+    /// Salt 长度（字节）。
+    /// </summary>
+    /// <remarks>
+    /// Salt length in bytes.
+    /// </remarks>
     private const int SaltSize = 16;
 
-    /// <summary>IV 长度（字节）</summary>
+    /// <summary>
+    /// IV 长度（字节）。
+    /// </summary>
+    /// <remarks>
+    /// IV length in bytes.
+    /// </remarks>
     private const int IvSize = 16;
 
-    /// <summary>输出头部长度 = Salt + IV</summary>
+    /// <summary>
+    /// 输出头部长度 = Salt + IV。
+    /// </summary>
+    /// <remarks>
+    /// Output header length = Salt + IV.
+    /// </remarks>
     private const int HeaderSize = SaltSize + IvSize;
 
     /// <summary>
-    /// 使用 AES 算法加密字符串（输出 Base64 编码）
+    /// 使用 AES 算法加密字符串（输出 Base64 编码）。
     /// </summary>
-    /// <param name="encryptString">待加密的明文字符串</param>
-    /// <param name="encryptKey">加密密钥</param>
-    /// <returns>加密后的 Base64 编码字符串，格式为 [Salt(16) | IV(16) | 密文] 的 Base64 表示</returns>
-    /// <exception cref="ArgumentException">当明文或密钥为空时抛出</exception>
+    /// <remarks>
+    /// Encrypts a string using AES algorithm (output as Base64 encoding).
+    /// </remarks>
+    /// <param name="encryptString">待加密的明文字符串 / Plain text string to encrypt</param>
+    /// <param name="encryptKey">加密密钥 / Encryption key</param>
+    /// <returns>加密后的 Base64 编码字符串，格式为 [Salt(16) | IV(16) | 密文] 的 Base64 表示 / Base64 encoded encrypted string, format is Base64 representation of [Salt(16) | IV(16) | Ciphertext]</returns>
+    /// <exception cref="ArgumentException">当明文或密钥为空时抛出 / Thrown when plain text or key is empty</exception>
     public static string Encrypt(string encryptString, string encryptKey)
     {
         if (string.IsNullOrEmpty(encryptString))
@@ -86,12 +113,16 @@ public static class AesHelper
     /// 使用 AES-CBC 算法加密字节数组。
     /// 每次加密随机生成 Salt 和 IV，输出格式：[Salt(16 字节) | IV(16 字节) | 密文]。
     /// </summary>
-    /// <param name="encryptByte">待加密的明文字节数组</param>
-    /// <param name="encryptKey">加密密钥，用于通过 PBKDF2(600,000 次) 派生密钥</param>
-    /// <returns>加密后的字节数组，头部包含 Salt 和 IV</returns>
-    /// <exception cref="ArgumentNullException">当明文字节数组为 null 时抛出</exception>
-    /// <exception cref="ArgumentException">当明文字节数组为空或密钥为空时抛出</exception>
-    /// <exception cref="CryptographicException">当加密过程失败时抛出</exception>
+    /// <remarks>
+    /// Encrypts a byte array using AES-CBC algorithm.
+    /// Salt and IV are randomly generated for each encryption, output format: [Salt(16 bytes) | IV(16 bytes) | Ciphertext].
+    /// </remarks>
+    /// <param name="encryptByte">待加密的明文字节数组 / Plain text byte array to encrypt</param>
+    /// <param name="encryptKey">加密密钥，用于通过 PBKDF2(600,000 次) 派生密钥 / Encryption key used to derive key via PBKDF2(600,000 iterations)</param>
+    /// <returns>加密后的字节数组，头部包含 Salt 和 IV / Encrypted byte array with Salt and IV in the header</returns>
+    /// <exception cref="ArgumentNullException">当明文字节数组为 null 时抛出 / Thrown when plain text byte array is null</exception>
+    /// <exception cref="ArgumentException">当明文字节数组为空或密钥为空时抛出 / Thrown when plain text byte array is empty or key is empty</exception>
+    /// <exception cref="CryptographicException">当加密过程失败时抛出 / Thrown when encryption process fails</exception>
     public static byte[] Encrypt(byte[] encryptByte, string encryptKey)
     {
         if (encryptByte == null)
@@ -136,13 +167,16 @@ public static class AesHelper
     }
 
     /// <summary>
-    /// 使用 AES 算法解密字符串
+    /// 使用 AES 算法解密字符串。
     /// </summary>
-    /// <param name="decryptString">待解密的 Base64 编码字符串（格式：[Salt(16) | IV(16) | 密文] 的 Base64 表示）</param>
-    /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同</param>
-    /// <returns>解密后的明文字符串</returns>
-    /// <exception cref="ArgumentException">当密文或密钥为空时抛出</exception>
-    /// <exception cref="CryptographicException">当解密失败（如密钥错误或数据被篡改）时抛出</exception>
+    /// <remarks>
+    /// Decrypts a string using AES algorithm.
+    /// </remarks>
+    /// <param name="decryptString">待解密的 Base64 编码字符串（格式：[Salt(16) | IV(16) | 密文] 的 Base64 表示）/ Base64 encoded string to decrypt (format: Base64 representation of [Salt(16) | IV(16) | Ciphertext])</param>
+    /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同 / Decryption key, must be the same as the key used for encryption</param>
+    /// <returns>解密后的明文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentException">当密文或密钥为空时抛出 / Thrown when ciphertext or key is empty</exception>
+    /// <exception cref="CryptographicException">当解密失败（如密钥错误或数据被篡改）时抛出 / Thrown when decryption fails (e.g., wrong key or data tampered)</exception>
     public static string Decrypt(string decryptString, string decryptKey)
     {
         if (string.IsNullOrEmpty(decryptString))
@@ -162,12 +196,16 @@ public static class AesHelper
     /// 使用 AES-CBC 算法解密字节数组。
     /// 期望输入格式：[Salt(16 字节) | IV(16 字节) | 密文]，与 <see cref="Encrypt(byte[],string)"/> 输出格式对应。
     /// </summary>
-    /// <param name="decryptByte">待解密的密文字节数组，头部须包含 Salt 和 IV</param>
-    /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同</param>
-    /// <returns>解密后的明文字节数组</returns>
-    /// <exception cref="ArgumentNullException">当密文字节数组为 null 时抛出</exception>
-    /// <exception cref="ArgumentException">当密文长度不足或密钥为空时抛出</exception>
-    /// <exception cref="CryptographicException">当解密失败（如密钥错误或数据被篡改）时抛出</exception>
+    /// <remarks>
+    /// Decrypts a byte array using AES-CBC algorithm.
+    /// Expected input format: [Salt(16 bytes) | IV(16 bytes) | Ciphertext], corresponding to <see cref="Encrypt(byte[],string)"/> output format.
+    /// </remarks>
+    /// <param name="decryptByte">待解密的密文字节数组，头部须包含 Salt 和 IV / Ciphertext byte array to decrypt, must contain Salt and IV in the header</param>
+    /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同 / Decryption key, must be the same as the key used for encryption</param>
+    /// <returns>解密后的明文字节数组 / Decrypted plain text byte array</returns>
+    /// <exception cref="ArgumentNullException">当密文字节数组为 null 时抛出 / Thrown when ciphertext byte array is null</exception>
+    /// <exception cref="ArgumentException">当密文长度不足或密钥为空时抛出 / Thrown when ciphertext length is insufficient or key is empty</exception>
+    /// <exception cref="CryptographicException">当解密失败（如密钥错误或数据被篡改）时抛出 / Thrown when decryption fails (e.g., wrong key or data tampered)</exception>
     public static byte[] Decrypt(byte[] decryptByte, string decryptKey)
     {
         if (decryptByte == null)

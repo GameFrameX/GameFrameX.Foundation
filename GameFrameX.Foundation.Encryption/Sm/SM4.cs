@@ -1,23 +1,37 @@
 namespace GameFrameX.Foundation.Encryption.Sm;
 
 /// <summary>
-/// SM4 对称加密算法实现类
+/// SM4 对称加密算法实现类。
+/// 提供SM4分组密码算法的加密和解密功能。
 /// </summary>
+/// <remarks>
+/// SM4 symmetric encryption algorithm implementation class.
+/// Provides encryption and decryption functionality for the SM4 block cipher algorithm.
+/// </remarks>
 internal sealed class Sm4
 {
     /// <summary>
-    /// 加密模式常量
+    /// 加密模式常量。
     /// </summary>
+    /// <remarks>
+    /// Encryption mode constant.
+    /// </remarks>
     public const int Sm4Encrypt = 1;
 
     /// <summary>
-    /// 解密模式常量
+    /// 解密模式常量。
     /// </summary>
+    /// <remarks>
+    /// Decryption mode constant.
+    /// </remarks>
     public const int Sm4Decrypt = 0;
 
     /// <summary>
-    /// 是否为JavaScript兼容模式
+    /// 是否为JavaScript兼容模式。
     /// </summary>
+    /// <remarks>
+    /// Whether to use JavaScript compatibility mode.
+    /// </remarks>
     public bool ForJavascript = false;
 
     /// <summary>

@@ -41,26 +41,38 @@ namespace GameFrameX.Foundation.Encryption;
 /// 异或运算具有可逆性，使用相同的密钥进行两次异或运算可以还原原始数据。
 /// </summary>
 /// <remarks>
+/// XOR encryption and decryption utility class, providing encryption and decryption related to XOR operations.
+/// XOR operation is reversible; performing XOR operation twice with the same key can restore the original data.
 /// ⚠️ 安全声明（I-10）：XOR 循环加密属于轻量级数据混淆手段，
 /// 不提供任何密码学安全性保障。已知明文攻击或频率分析可轻易破解。
 /// 请勿将此类用于需要保密性的场景，仅适用于防止意外读取的简单混淆。
+/// ⚠️ Security Notice (I-10): XOR cyclic encryption is a lightweight data obfuscation method
+/// that provides no cryptographic security guarantees. Known-plaintext attacks or frequency analysis can easily break it.
+/// Do not use this class for scenarios requiring confidentiality; it is only suitable for simple obfuscation to prevent accidental reading.
 /// </remarks>
 public static class XorHelper
 {
     /// <summary>
-    /// 快速加密的默认长度,用于只加密数据的前220字节以提高性能
+    /// 快速加密的默认长度，用于只加密数据的前220字节以提高性能。
     /// </summary>
+    /// <remarks>
+    /// Default length for quick encryption, used to encrypt only the first 220 bytes of data to improve performance.
+    /// </remarks>
     internal const int QuickEncryptLength = 220;
 
     /// <summary>
     /// 将 bytes 使用 code 做异或运算的快速版本。
     /// 只对数据的前QuickEncryptLength字节进行异或运算,适用于需要快速加密的场景。
     /// </summary>
-    /// <param name="bytes">原始二进制流。</param>
-    /// <param name="code">异或二进制流(密钥)。</param>
-    /// <returns>异或后的二进制流。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
+    /// <remarks>
+    /// Quick version of XOR operation on bytes using code.
+    /// Only performs XOR operation on the first QuickEncryptLength bytes of data, suitable for scenarios requiring fast encryption.
+    /// </remarks>
+    /// <param name="bytes">原始二进制流 / Original binary stream</param>
+    /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
+    /// <returns>异或后的二进制流 / XORed binary stream</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     public static byte[] GetQuickXorBytes(byte[] bytes, byte[] code)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -81,10 +93,14 @@ public static class XorHelper
     /// 将 bytes 使用 code 做异或运算的快速版本。此方法将复用并改写传入的 bytes 作为返回值，而不额外分配内存空间。
     /// 只对数据的前QuickEncryptLength字节进行异或运算,适用于需要快速加密且允许修改原数据的场景。
     /// </summary>
-    /// <param name="bytes">原始及异或后的二进制流。</param>
-    /// <param name="code">异或二进制流(密钥)。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
+    /// <remarks>
+    /// Quick version of XOR operation on bytes using code. This method reuses and overwrites the input bytes as the return value without allocating additional memory.
+    /// Only performs XOR operation on the first QuickEncryptLength bytes of data, suitable for scenarios requiring fast encryption and allowing modification of original data.
+    /// </remarks>
+    /// <param name="bytes">原始及异或后的二进制流 / Original and XORed binary stream</param>
+    /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     public static void GetQuickSelfXorBytes(byte[] bytes, byte[] code)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -105,11 +121,15 @@ public static class XorHelper
     /// 将 bytes 使用 code 做异或运算。
     /// 对整个数据进行异或运算加密。
     /// </summary>
-    /// <param name="bytes">原始二进制流。</param>
-    /// <param name="code">异或二进制流(密钥)。</param>
-    /// <returns>异或后的二进制流。如果输入为null则返回null。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
+    /// <remarks>
+    /// Performs XOR operation on bytes using code.
+    /// Encrypts the entire data with XOR operation.
+    /// </remarks>
+    /// <param name="bytes">原始二进制流 / Original binary stream</param>
+    /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
+    /// <returns>异或后的二进制流。如果输入为null则返回null。 / XORed binary stream. Returns null if input is null.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     public static byte[] GetXorBytes(byte[] bytes, byte[] code)
     {
         if (bytes == null)
@@ -131,10 +151,14 @@ public static class XorHelper
     /// 将 bytes 使用 code 做异或运算。此方法将复用并改写传入的 bytes 作为返回值，而不额外分配内存空间。
     /// 对整个数据进行异或运算加密,直接在原数组上进行修改。
     /// </summary>
-    /// <param name="bytes">原始及异或后的二进制流。</param>
-    /// <param name="code">异或二进制流(密钥)。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
+    /// <remarks>
+    /// Performs XOR operation on bytes using code. This method reuses and overwrites the input bytes as the return value without allocating additional memory.
+    /// Encrypts the entire data with XOR operation, directly modifying the original array.
+    /// </remarks>
+    /// <param name="bytes">原始及异或后的二进制流 / Original and XORed binary stream</param>
+    /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     public static void GetSelfXorBytes(byte[] bytes, byte[] code)
     {
         if (bytes == null)
@@ -156,14 +180,18 @@ public static class XorHelper
     /// 将 bytes 使用 code 做异或运算。
     /// 可以指定起始位置和长度进行部分加密。
     /// </summary>
-    /// <param name="bytes">原始二进制流。</param>
-    /// <param name="startIndex">异或计算的开始位置。</param>
-    /// <param name="length">异或计算长度。</param>
-    /// <param name="code">异或二进制流(密钥)。</param>
-    /// <returns>异或后的二进制流。如果输入为null则返回null。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Performs XOR operation on bytes using code.
+    /// Allows specifying start position and length for partial encryption.
+    /// </remarks>
+    /// <param name="bytes">原始二进制流 / Original binary stream</param>
+    /// <param name="startIndex">异或计算的开始位置 / Start position for XOR calculation</param>
+    /// <param name="length">异或计算长度 / Length for XOR calculation</param>
+    /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
+    /// <returns>异或后的二进制流。如果输入为null则返回null。 / XORed binary stream. Returns null if input is null.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> or <paramref name="length"/> is out of valid range</exception>
     public static byte[] GetXorBytes(byte[] bytes, int startIndex, int length, byte[] code)
     {
         if (bytes == null)
@@ -197,13 +225,17 @@ public static class XorHelper
     /// 将 bytes 使用 code 做异或运算。此方法将复用并改写传入的 bytes 作为返回值，而不额外分配内存空间。
     /// 可以指定起始位置和长度进行部分加密,直接在原数组上进行修改。
     /// </summary>
-    /// <param name="bytes">原始及异或后的二进制流。</param>
-    /// <param name="startIndex">异或计算的开始位置。</param>
-    /// <param name="length">异或计算长度。</param>
-    /// <param name="code">异或二进制流(密钥)。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Performs XOR operation on bytes using code. This method reuses and overwrites the input bytes as the return value without allocating additional memory.
+    /// Allows specifying start position and length for partial encryption, directly modifying the original array.
+    /// </remarks>
+    /// <param name="bytes">原始及异或后的二进制流 / Original and XORed binary stream</param>
+    /// <param name="startIndex">异或计算的开始位置 / Start position for XOR calculation</param>
+    /// <param name="length">异或计算长度 / Length for XOR calculation</param>
+    /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> or <paramref name="length"/> is out of valid range</exception>
     public static void GetSelfXorBytes(byte[] bytes, int startIndex, int length, byte[] code)
     {
         if (bytes == null)

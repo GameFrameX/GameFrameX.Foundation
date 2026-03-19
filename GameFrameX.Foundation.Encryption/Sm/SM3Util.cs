@@ -40,16 +40,22 @@ namespace GameFrameX.Foundation.Encryption.Sm;
 /// SM3工具类，提供SM3密码杂凑算法的实现。
 /// 该类用于计算数据的SM3摘要值，可用于数据完整性校验和数字签名。
 /// </summary>
+/// <remarks>
+/// SM3 utility class, providing implementation of the SM3 cryptographic hash algorithm.
+/// This class is used to calculate the SM3 digest value of data, which can be used for data integrity verification and digital signatures.
+/// </remarks>
 internal static class SM3Util
 {
     /// <summary>
     /// 使用SM3算法计算输入数据的摘要值。
     /// </summary>
-    /// <param name="data">要计算摘要的输入字符串。</param>
-    /// <returns>返回十六进制格式的SM3摘要值字符串。</returns>
     /// <remarks>
+    /// Calculates the digest value of input data using the SM3 algorithm.
     /// I-01 修复：原方法名 Encrypt 语义错误（SM3 是哈希算法，不是加密算法），重命名为 Hash。
+    /// I-01 fix: Original method name Encrypt was semantically incorrect (SM3 is a hash algorithm, not an encryption algorithm), renamed to Hash.
     /// </remarks>
+    /// <param name="data">要计算摘要的输入字符串 / Input string to calculate digest for</param>
+    /// <returns>返回十六进制格式的SM3摘要值字符串 / Returns hexadecimal format SM3 digest string</returns>
     public static string Hash(string data)
     {
         // W-03 修复：使用 UTF8 代替 Encoding.Default，确保跨平台哈希结果一致

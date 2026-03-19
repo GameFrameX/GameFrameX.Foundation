@@ -39,18 +39,24 @@ using GameFrameX.Foundation.Encryption.Localization;
 namespace GameFrameX.Foundation.Encryption;
 
 /// <summary>
-/// SM2加密算法工具类
+/// SM2加密算法工具类，提供SM2非对称加密算法的加密、解密和密钥对生成功能。
 /// </summary>
+/// <remarks>
+/// SM2 encryption algorithm utility class, providing encryption, decryption, and key pair generation using SM2 asymmetric encryption algorithm.
+/// </remarks>
 public static class Sm2Helper
 {
     /// <summary>
-    /// 使用公钥加密字符串数据
+    /// 使用公钥加密字符串数据。
     /// </summary>
-    /// <param name="publicKeyString">十六进制格式的公钥字符串，不能为null或空字符串</param>
-    /// <param name="dataString">待加密的原文字符串，支持空字符串</param>
-    /// <returns>加密后的密文字符串，如果输入为空字符串则返回空字符串</returns>
-    /// <exception cref="ArgumentNullException">当publicKeyString为null时抛出</exception>
-    /// <exception cref="ArgumentException">当publicKeyString为空字符串或格式无效时抛出</exception>
+    /// <remarks>
+    /// Encrypts string data using the public key.
+    /// </remarks>
+    /// <param name="publicKeyString">十六进制格式的公钥字符串，不能为null或空字符串 / Hexadecimal format public key string, cannot be null or empty</param>
+    /// <param name="dataString">待加密的原文字符串，支持空字符串 / Plain text string to encrypt, supports empty string</param>
+    /// <returns>加密后的密文字符串，如果输入为空字符串则返回空字符串 / Encrypted cipher text string, returns empty string if input is empty</returns>
+    /// <exception cref="ArgumentNullException">当publicKeyString为null时抛出 / Thrown when publicKeyString is null</exception>
+    /// <exception cref="ArgumentException">当publicKeyString为空字符串或格式无效时抛出 / Thrown when publicKeyString is empty or has invalid format</exception>
     public static string Encrypt(string publicKeyString, string dataString)
     {
         ArgumentNullException.ThrowIfNull(publicKeyString, nameof(publicKeyString));
@@ -60,13 +66,16 @@ public static class Sm2Helper
     }
 
     /// <summary>
-    /// 使用私钥解密字符串数据
+    /// 使用私钥解密字符串数据。
     /// </summary>
-    /// <param name="privateKeyString">十六进制格式的私钥字符串，不能为null或空字符串</param>
-    /// <param name="encryptedDataString">待解密的密文字符串，支持空字符串</param>
-    /// <returns>解密后的原文字符串，如果输入为空字符串则返回空字符串</returns>
-    /// <exception cref="ArgumentNullException">当privateKeyString为null时抛出</exception>
-    /// <exception cref="ArgumentException">当privateKeyString为空字符串或格式无效时抛出</exception>
+    /// <remarks>
+    /// Decrypts string data using the private key.
+    /// </remarks>
+    /// <param name="privateKeyString">十六进制格式的私钥字符串，不能为null或空字符串 / Hexadecimal format private key string, cannot be null or empty</param>
+    /// <param name="encryptedDataString">待解密的密文字符串，支持空字符串 / Cipher text string to decrypt, supports empty string</param>
+    /// <returns>解密后的原文字符串，如果输入为空字符串则返回空字符串 / Decrypted plain text string, returns empty string if input is empty</returns>
+    /// <exception cref="ArgumentNullException">当privateKeyString为null时抛出 / Thrown when privateKeyString is null</exception>
+    /// <exception cref="ArgumentException">当privateKeyString为空字符串或格式无效时抛出 / Thrown when privateKeyString is empty or has invalid format</exception>
     public static string Decrypt(string privateKeyString, string encryptedDataString)
     {
         ArgumentNullException.ThrowIfNull(privateKeyString, nameof(privateKeyString));
@@ -76,24 +85,31 @@ public static class Sm2Helper
     }
 
     /// <summary>
-    /// 生成SM2密钥对
-    /// 生成一对新的公私钥对,并将其以十六进制字符串格式输出
+    /// 生成SM2密钥对。
+    /// 生成一对新的公私钥对，并将其以十六进制字符串格式输出。
     /// </summary>
-    /// <param name="publicKey">输出参数,生成的公钥十六进制字符串</param>
-    /// <param name="privateKey">输出参数,生成的私钥十六进制字符串</param>
+    /// <remarks>
+    /// Generates an SM2 key pair.
+    /// Generates a new public-private key pair and outputs it in hexadecimal string format.
+    /// </remarks>
+    /// <param name="publicKey">输出参数，生成的公钥十六进制字符串 / Output parameter, generated public key hexadecimal string</param>
+    /// <param name="privateKey">输出参数，生成的私钥十六进制字符串 / Output parameter, generated private key hexadecimal string</param>
     public static void GenerateKeyPair(out string publicKey, out string privateKey)
     {
         Sm2Util.GenerateKeyPair(out publicKey, out privateKey);
     }
 
     /// <summary>
-    /// 使用公钥加密字节数组数据
+    /// 使用公钥加密字节数组数据。
     /// </summary>
-    /// <param name="publicKey">公钥字节数组，不能为null或空数组</param>
-    /// <param name="data">待加密的原文字节数组，支持null或空数组</param>
-    /// <returns>加密后的密文字符串,包含C1、C2、C3三部分，如果data为空则返回空字符串</returns>
-    /// <exception cref="ArgumentNullException">当publicKey为null时抛出</exception>
-    /// <exception cref="ArgumentException">当publicKey为空数组时抛出</exception>
+    /// <remarks>
+    /// Encrypts byte array data using the public key.
+    /// </remarks>
+    /// <param name="publicKey">公钥字节数组，不能为null或空数组 / Public key byte array, cannot be null or empty</param>
+    /// <param name="data">待加密的原文字节数组，支持null或空数组 / Plain text byte array to encrypt, supports null or empty array</param>
+    /// <returns>加密后的密文字符串，包含C1、C2、C3三部分，如果data为空则返回空字符串 / Encrypted cipher text string containing C1, C2, C3 parts, returns empty string if data is empty</returns>
+    /// <exception cref="ArgumentNullException">当publicKey为null时抛出 / Thrown when publicKey is null</exception>
+    /// <exception cref="ArgumentException">当publicKey为空数组时抛出 / Thrown when publicKey is empty array</exception>
     public static string Encrypt(byte[] publicKey, byte[] data)
     {
         ArgumentNullException.ThrowIfNull(publicKey, nameof(publicKey));
@@ -106,13 +122,16 @@ public static class Sm2Helper
     }
 
     /// <summary>
-    /// 使用私钥解密字节数组数据
+    /// 使用私钥解密字节数组数据。
     /// </summary>
-    /// <param name="privateKey">私钥字节数组，不能为null或空数组</param>
-    /// <param name="encryptedData">待解密的密文字节数组，支持null或空数组</param>
-    /// <returns>解密后的原文字节数组，如果encryptedData为空则返回空数组</returns>
-    /// <exception cref="ArgumentNullException">当privateKey为null时抛出</exception>
-    /// <exception cref="ArgumentException">当privateKey为空数组时抛出</exception>
+    /// <remarks>
+    /// Decrypts byte array data using the private key.
+    /// </remarks>
+    /// <param name="privateKey">私钥字节数组，不能为null或空数组 / Private key byte array, cannot be null or empty</param>
+    /// <param name="encryptedData">待解密的密文字节数组，支持null或空数组 / Cipher text byte array to decrypt, supports null or empty array</param>
+    /// <returns>解密后的原文字节数组，如果encryptedData为空则返回空数组 / Decrypted plain text byte array, returns empty array if encryptedData is empty</returns>
+    /// <exception cref="ArgumentNullException">当privateKey为null时抛出 / Thrown when privateKey is null</exception>
+    /// <exception cref="ArgumentException">当privateKey为空数组时抛出 / Thrown when privateKey is empty array</exception>
     public static byte[] Decrypt(byte[] privateKey, byte[] encryptedData)
     {
         ArgumentNullException.ThrowIfNull(privateKey, nameof(privateKey));

@@ -1,16 +1,22 @@
 ﻿namespace GameFrameX.Foundation.Encryption.Sm;
 
 /// <summary>
-/// 提供无符号右移位运算的支持类
+/// 提供无符号右移位运算的支持类。
 /// </summary>
+/// <remarks>
+/// Support class providing unsigned right shift operations.
+/// </remarks>
 internal sealed class SupportClass
 {
     /// <summary>
-    /// 对指定数字执行无符号右移位运算
+    /// 对指定数字执行无符号右移位运算。
     /// </summary>
-    /// <param name="number">要操作的数字</param>
-    /// <param name="bits">要移位的位数</param>
-    /// <returns>移位运算的结果</returns>
+    /// <remarks>
+    /// Performs unsigned right shift operation on the specified number.
+    /// </remarks>
+    /// <param name="number">要操作的数字 / Number to operate on</param>
+    /// <param name="bits">要移位的位数 / Number of bits to shift</param>
+    /// <returns>移位运算的结果 / Result of the shift operation</returns>
     public static int UrShift(int number, int bits)
     {
         if (number >= 0)
@@ -24,22 +30,28 @@ internal sealed class SupportClass
     }
 
     /// <summary>
-    /// 对指定数字执行无符号右移位运算
+    /// 对指定数字执行无符号右移位运算。
     /// </summary>
-    /// <param name="number">要操作的数字</param>
-    /// <param name="bits">要移位的位数</param>
-    /// <returns>移位运算的结果</returns>
+    /// <remarks>
+    /// Performs unsigned right shift operation on the specified number.
+    /// </remarks>
+    /// <param name="number">要操作的数字 / Number to operate on</param>
+    /// <param name="bits">要移位的位数 / Number of bits to shift</param>
+    /// <returns>移位运算的结果 / Result of the shift operation</returns>
     public static int URShift(int number, long bits)
     {
         return UrShift(number, (int)bits);
     }
 
     /// <summary>
-    /// 对指定数字执行无符号右移位运算
+    /// 对指定数字执行无符号右移位运算。
     /// </summary>
-    /// <param name="number">要操作的数字</param>
-    /// <param name="bits">要移位的位数</param>
-    /// <returns>移位运算的结果</returns>
+    /// <remarks>
+    /// Performs unsigned right shift operation on the specified number.
+    /// </remarks>
+    /// <param name="number">要操作的数字 / Number to operate on</param>
+    /// <param name="bits">要移位的位数 / Number of bits to shift</param>
+    /// <returns>移位运算的结果 / Result of the shift operation</returns>
     public static long URShift(long number, int bits)
     {
         if (number >= 0)
@@ -53,11 +65,14 @@ internal sealed class SupportClass
     }
 
     /// <summary>
-    /// 对指定数字执行无符号右移位运算
+    /// 对指定数字执行无符号右移位运算。
     /// </summary>
-    /// <param name="number">要操作的数字</param>
-    /// <param name="bits">要移位的位数</param>
-    /// <returns>移位运算的结果</returns>
+    /// <remarks>
+    /// Performs unsigned right shift operation on the specified number.
+    /// </remarks>
+    /// <param name="number">要操作的数字 / Number to operate on</param>
+    /// <param name="bits">要移位的位数 / Number of bits to shift</param>
+    /// <returns>移位运算的结果 / Result of the shift operation</returns>
     public static long URShift(long number, long bits)
     {
         return URShift(number, (int)bits);

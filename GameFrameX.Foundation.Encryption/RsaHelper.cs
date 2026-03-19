@@ -40,12 +40,17 @@ namespace GameFrameX.Foundation.Encryption;
 
 /// <summary>
 /// 提供 RSA 加密解密功能。
-/// 本类封装了RSA非对称加密算法的常用操作,包括加密、解密、签名和验签等功能。
+/// 本类封装了RSA非对称加密算法的常用操作，包括加密、解密、签名和验签等功能。
 /// 支持XML格式的密钥对导入导出。
 /// </summary>
 /// <remarks>
+/// Provides RSA encryption and decryption functionality.
+/// This class encapsulates common operations of RSA asymmetric encryption algorithm, including encryption, decryption, signing, and verification.
+/// Supports XML format key pair import and export.
 /// 实例方法持有非托管 RSA 资源，使用完毕后请调用 <see cref="Dispose"/> 释放，
 /// 或通过 <c>using</c> 语句管理生命周期。
+/// Instance methods hold unmanaged RSA resources, please call <see cref="Dispose"/> after use,
+/// or manage the lifecycle through a <c>using</c> statement.
 /// </remarks>
 public sealed class RsaHelper : IDisposable
 {
@@ -54,11 +59,16 @@ public sealed class RsaHelper : IDisposable
     /// 本方法支持 PKCS#8 与 PKCS#1 两种私钥格式，自动识别并导入。
     /// 签名过程采用 SHA256 哈希算法与 PKCS#1 填充模式，确保数据完整性与不可否认性。
     /// </summary>
-    /// <param name="privateKey">Base64 格式的私钥字符串，支持 PKCS#8 与 PKCS#1 两种编码。</param>
-    /// <param name="content">待签名的明文字符串，将使用 UTF-8 编码转换为字节数组。</param>
-    /// <returns>Base64 格式的签名结果，可直接用于网络传输或持久化存储。</returns>
-    /// <exception cref="ArgumentException">当 <paramref name="privateKey"/> 或 <paramref name="content"/> 为 null 或空字符串时抛出。</exception>
-    /// <exception cref="CryptographicException">当私钥格式非法或签名过程失败时抛出。</exception>
+    /// <remarks>
+    /// Signs data using the private key (SHA256 hash algorithm).
+    /// This method supports both PKCS#8 and PKCS#1 private key formats, automatically recognizing and importing them.
+    /// The signing process uses SHA256 hash algorithm and PKCS#1 padding mode to ensure data integrity and non-repudiation.
+    /// </remarks>
+    /// <param name="privateKey">Base64 格式的私钥字符串，支持 PKCS#8 与 PKCS#1 两种编码 / Base64 format private key string, supports both PKCS#8 and PKCS#1 encodings</param>
+    /// <param name="content">待签名的明文字符串，将使用 UTF-8 编码转换为字节数组 / Plain text string to sign, will be converted to byte array using UTF-8 encoding</param>
+    /// <returns>Base64 格式的签名结果，可直接用于网络传输或持久化存储 / Base64 format signature result, can be directly used for network transmission or persistent storage</returns>
+    /// <exception cref="ArgumentException">当 <paramref name="privateKey"/> 或 <paramref name="content"/> 为 null 或空字符串时抛出 / Thrown when <paramref name="privateKey"/> or <paramref name="content"/> is null or empty</exception>
+    /// <exception cref="CryptographicException">当私钥格式非法或签名过程失败时抛出 / Thrown when private key format is invalid or signing process fails</exception>
     public static string Sign(string privateKey, string content)
     {
         ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
@@ -83,12 +93,16 @@ public sealed class RsaHelper : IDisposable
     /// 使用公钥验证数据签名（SHA256 哈希算法）。
     /// 本方法支持 SubjectPublicKeyInfo（PKCS#8）与 RSAPublicKey（PKCS#1）两种公钥格式，自动识别并导入。
     /// </summary>
-    /// <param name="publicKey">Base64 格式的公钥字符串。</param>
-    /// <param name="content">待验签的明文字符串。</param>
-    /// <param name="sign">Base64 格式的签名结果。</param>
-    /// <returns>验签结果，true 表示签名有效，false 表示签名无效。</returns>
-    /// <exception cref="ArgumentException">当任意参数为 null 或空字符串时抛出。</exception>
-    /// <exception cref="CryptographicException">当公钥格式非法或验签过程失败时抛出。</exception>
+    /// <remarks>
+    /// Verifies data signature using the public key (SHA256 hash algorithm).
+    /// This method supports both SubjectPublicKeyInfo (PKCS#8) and RSAPublicKey (PKCS#1) public key formats, automatically recognizing and importing them.
+    /// </remarks>
+    /// <param name="publicKey">Base64 格式的公钥字符串 / Base64 format public key string</param>
+    /// <param name="content">待验签的明文字符串 / Plain text string to verify</param>
+    /// <param name="sign">Base64 格式的签名结果 / Base64 format signature result</param>
+    /// <returns>验签结果，true 表示签名有效，false 表示签名无效 / Verification result, true means signature is valid, false means signature is invalid</returns>
+    /// <exception cref="ArgumentException">当任意参数为 null 或空字符串时抛出 / Thrown when any parameter is null or empty</exception>
+    /// <exception cref="CryptographicException">当公钥格式非法或验签过程失败时抛出 / Thrown when public key format is invalid or verification process fails</exception>
     public static bool Verify(string publicKey, string content, string sign)
     {
         ArgumentException.ThrowIfNullOrEmpty(publicKey, nameof(publicKey));
@@ -114,17 +128,23 @@ public sealed class RsaHelper : IDisposable
     /// 使用公钥加密数据（支持 Base64 格式公钥，OAEP-SHA256 填充）。
     /// </summary>
     /// <remarks>
+    /// Encrypts data using the public key (supports Base64 format public key, OAEP-SHA256 padding).
     /// 支持以下两种公钥格式：
     /// 1. SubjectPublicKeyInfo（PKCS#8）格式
     /// 2. RSAPublicKey（PKCS#1）格式
+    /// Supports the following two public key formats:
+    /// 1. SubjectPublicKeyInfo (PKCS#8) format
+    /// 2. RSAPublicKey (PKCS#1) format
     /// 当数据长度超过密钥限制时自动分块加密。
+    /// Automatically performs block encryption when data length exceeds the key limit.
     /// 填充方式为 OAEP-SHA256（C-05 修复，替代不安全的 PKCS1v1.5）。
+    /// Padding mode is OAEP-SHA256 (C-05 fix, replacing insecure PKCS1v1.5).
     /// </remarks>
-    /// <param name="publicKey">Base64 格式的公钥字符串</param>
-    /// <param name="content">待加密的明文字符串</param>
-    /// <returns>Base64 格式的加密结果</returns>
-    /// <exception cref="ArgumentException">当参数为 null 或空字符串时抛出</exception>
-    /// <exception cref="CryptographicException">当公钥格式非法或加密失败时抛出</exception>
+    /// <param name="publicKey">Base64 格式的公钥字符串 / Base64 format public key string</param>
+    /// <param name="content">待加密的明文字符串 / Plain text string to encrypt</param>
+    /// <returns>Base64 格式的加密结果 / Base64 format encryption result</returns>
+    /// <exception cref="ArgumentException">当参数为 null 或空字符串时抛出 / Thrown when parameter is null or empty</exception>
+    /// <exception cref="CryptographicException">当公钥格式非法或加密失败时抛出 / Thrown when public key format is invalid or encryption fails</exception>
     public static string EncryptBase64(string publicKey, string content)
     {
         ArgumentException.ThrowIfNullOrEmpty(publicKey, nameof(publicKey));
@@ -164,11 +184,14 @@ public sealed class RsaHelper : IDisposable
     /// <summary>
     /// 使用私钥解密数据（支持 Base64 格式私钥，OAEP-SHA256 填充）。
     /// </summary>
-    /// <param name="privateKey">Base64 格式的私钥字符串，支持 PKCS#1 与 PKCS#8 两种编码</param>
-    /// <param name="content">Base64 格式的加密内容，需与 <see cref="EncryptBase64"/> 方法生成的格式保持一致</param>
-    /// <returns>解密后的明文字符串</returns>
-    /// <exception cref="ArgumentException">当参数为 null 或空字符串时抛出</exception>
-    /// <exception cref="CryptographicException">当私钥格式非法或解密失败时抛出</exception>
+    /// <remarks>
+    /// Decrypts data using the private key (supports Base64 format private key, OAEP-SHA256 padding).
+    /// </remarks>
+    /// <param name="privateKey">Base64 格式的私钥字符串，支持 PKCS#1 与 PKCS#8 两种编码 / Base64 format private key string, supports both PKCS#1 and PKCS#8 encodings</param>
+    /// <param name="content">Base64 格式的加密内容，需与 <see cref="EncryptBase64"/> 方法生成的格式保持一致 / Base64 format encrypted content, must be consistent with the format generated by <see cref="EncryptBase64"/> method</param>
+    /// <returns>解密后的明文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentException">当参数为 null 或空字符串时抛出 / Thrown when parameter is null or empty</exception>
+    /// <exception cref="CryptographicException">当私钥格式非法或解密失败时抛出 / Thrown when private key format is invalid or decryption fails</exception>
     public static string DecryptBase64(string privateKey, string content)
     {
         ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
@@ -206,15 +229,23 @@ public sealed class RsaHelper : IDisposable
 
     // ── 实例成员 ─────────────────────────────────────────────────────────────
 
-    /// <summary>RSA算法提供程序实例</summary>
+    /// <summary>
+    /// RSA算法提供程序实例。
+    /// </summary>
+    /// <remarks>
+    /// RSA algorithm provider instance.
+    /// </remarks>
     private readonly RSA _rsa;
     private bool _disposed;
 
     /// <summary>
     /// 使用指定的 RSA 对象初始化实例。
     /// </summary>
-    /// <param name="rsa">RSA 对象，不能为 null。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="rsa"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Initializes an instance with the specified RSA object.
+    /// </remarks>
+    /// <param name="rsa">RSA 对象，不能为 null / RSA object, cannot be null</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="rsa"/> 为 null 时抛出 / Thrown when <paramref name="rsa"/> is null</exception>
     public RsaHelper(RSA rsa)
     {
         ArgumentNullException.ThrowIfNull(rsa, nameof(rsa));
@@ -224,9 +255,12 @@ public sealed class RsaHelper : IDisposable
     /// <summary>
     /// 使用指定的 XML 格式密钥初始化实例。
     /// </summary>
-    /// <param name="key">XML 格式的 RSA 密钥，可以是公钥或私钥。</param>
-    /// <exception cref="ArgumentException">当 <paramref name="key"/> 为 null 或空字符串时抛出。</exception>
-    /// <exception cref="CryptographicException">当密钥格式无效时抛出。</exception>
+    /// <remarks>
+    /// Initializes an instance with the specified XML format key.
+    /// </remarks>
+    /// <param name="key">XML 格式的 RSA 密钥，可以是公钥或私钥 / XML format RSA key, can be public key or private key</param>
+    /// <exception cref="ArgumentException">当 <paramref name="key"/> 为 null 或空字符串时抛出 / Thrown when <paramref name="key"/> is null or empty</exception>
+    /// <exception cref="CryptographicException">当密钥格式无效时抛出 / Thrown when key format is invalid</exception>
     public RsaHelper(string key)
     {
         ArgumentException.ThrowIfNullOrEmpty(key, nameof(key));
@@ -245,7 +279,12 @@ public sealed class RsaHelper : IDisposable
         _rsa = rsa;
     }
 
-    /// <summary>释放 RSA 非托管资源。</summary>
+    /// <summary>
+    /// 释放 RSA 非托管资源。
+    /// </summary>
+    /// <remarks>
+    /// Releases RSA unmanaged resources.
+    /// </remarks>
     public void Dispose()
     {
         if (!_disposed)
@@ -258,7 +297,10 @@ public sealed class RsaHelper : IDisposable
     /// <summary>
     /// 生成 RSA 密钥对。
     /// </summary>
-    /// <returns>包含私钥（"privateKey"）和公钥（"publicKey"）的字典，均为 XML 格式。</returns>
+    /// <remarks>
+    /// Generates an RSA key pair.
+    /// </remarks>
+    /// <returns>包含私钥（"privateKey"）和公钥（"publicKey"）的字典，均为 XML 格式 / Dictionary containing private key ("privateKey") and public key ("publicKey"), both in XML format</returns>
     public static Dictionary<string, string> Make()
     {
         // C-10 修复：使用 using 确保 RSA 实例被释放

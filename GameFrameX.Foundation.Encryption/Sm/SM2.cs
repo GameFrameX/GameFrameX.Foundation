@@ -43,6 +43,10 @@ namespace GameFrameX.Foundation.Encryption.Sm;
 /// SM2非对称加密算法的实现类。
 /// 提供SM2算法所需的参数和基本操作。
 /// </summary>
+/// <remarks>
+/// SM2 asymmetric encryption algorithm implementation class.
+/// Provides parameters and basic operations required for the SM2 algorithm.
+/// </remarks>
 internal sealed class Sm2
 {
     // W-04 修复：使用 Lazy<T> 实现线程安全的延迟初始化单例
@@ -51,12 +55,19 @@ internal sealed class Sm2
     /// <summary>
     /// 获取SM2算法的单例实例（线程安全）。
     /// </summary>
+    /// <remarks>
+    /// Gets the singleton instance of the SM2 algorithm (thread-safe).
+    /// </remarks>
     public static Sm2 Instance => _lazy.Value;
 
     /// <summary>
     /// SM2算法的标准参数数组。
     /// 包含椭圆曲线的参数：p（模数）、a（方程参数）、b（方程参数）、n（阶）、gx（基点x坐标）、gy（基点y坐标）。
     /// </summary>
+    /// <remarks>
+    /// SM2 algorithm standard parameter array.
+    /// Contains elliptic curve parameters: p (modulus), a (equation parameter), b (equation parameter), n (order), gx (base point x coordinate), gy (base point y coordinate).
+    /// </remarks>
     public static readonly string[] Sm2Param =
     {
         "FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF", // p,0
@@ -70,62 +81,99 @@ internal sealed class Sm2
     /// <summary>
     /// 当前使用的椭圆曲线参数数组。
     /// </summary>
+    /// <remarks>
+    /// Current elliptic curve parameter array in use.
+    /// </remarks>
     public string[] ecc_param = Sm2Param;
 
     /// <summary>
     /// 椭圆曲线的模数p。
     /// </summary>
+    /// <remarks>
+    /// Elliptic curve modulus p.
+    /// </remarks>
     public readonly BigInteger ecc_p;
 
     /// <summary>
     /// 椭圆曲线方程的参数a。
     /// </summary>
+    /// <remarks>
+    /// Elliptic curve equation parameter a.
+    /// </remarks>
     public readonly BigInteger ecc_a;
 
     /// <summary>
     /// 椭圆曲线方程的参数b。
     /// </summary>
+    /// <remarks>
+    /// Elliptic curve equation parameter b.
+    /// </remarks>
     public readonly BigInteger ecc_b;
 
     /// <summary>
     /// 椭圆曲线的阶n。
     /// </summary>
+    /// <remarks>
+    /// Elliptic curve order n.
+    /// </remarks>
     public readonly BigInteger ecc_n;
 
     /// <summary>
     /// 基点G的x坐标。
     /// </summary>
+    /// <remarks>
+    /// Base point G x coordinate.
+    /// </remarks>
     public readonly BigInteger ecc_gx;
 
     /// <summary>
     /// 基点G的y坐标。
     /// </summary>
+    /// <remarks>
+    /// Base point G y coordinate.
+    /// </remarks>
     public readonly BigInteger ecc_gy;
 
     /// <summary>
     /// 椭圆曲线对象。
     /// </summary>
+    /// <remarks>
+    /// Elliptic curve object.
+    /// </remarks>
     public readonly ECCurve ecc_curve;
 
     /// <summary>
     /// 椭圆曲线上的基点G。
     /// </summary>
+    /// <remarks>
+    /// Base point G on the elliptic curve.
+    /// </remarks>
     public readonly ECPoint ecc_point_g;
 
     /// <summary>
     /// 椭圆曲线域参数。
     /// </summary>
+    /// <remarks>
+    /// Elliptic curve domain parameters.
+    /// </remarks>
     public readonly ECDomainParameters ecc_bc_spec;
 
     /// <summary>
     /// 密钥对生成器。
     /// </summary>
+    /// <remarks>
+    /// Key pair generator.
+    /// </remarks>
     public readonly ECKeyPairGenerator ecc_key_pair_generator;
 
     /// <summary>
     /// 初始化SM2算法实例。
     /// 设置椭圆曲线参数并初始化密钥对生成器。
     /// </summary>
+    /// <remarks>
+    /// Initializes the SM2 algorithm instance.
+    /// Sets up elliptic curve parameters and initializes the key pair generator.
+    /// </remarks>
     private Sm2()
     {
         ecc_param = Sm2Param;
@@ -151,9 +199,12 @@ internal sealed class Sm2
     /// <summary>
     /// 计算用户标识Z值。
     /// </summary>
-    /// <param name="userId">用户标识字节数组。</param>
-    /// <param name="userKey">用户公钥点。</param>
-    /// <returns>返回计算得到的Z值字节数组。</returns>
+    /// <remarks>
+    /// Calculates the user identifier Z value.
+    /// </remarks>
+    /// <param name="userId">用户标识字节数组 / User identifier byte array</param>
+    /// <param name="userKey">用户公钥点 / User public key point</param>
+    /// <returns>返回计算得到的Z值字节数组 / Returns the calculated Z value byte array</returns>
     public byte[] Sm2GetZ(byte[] userId, ECPoint userKey)
     {
         var sm3 = new Sm3Digest();

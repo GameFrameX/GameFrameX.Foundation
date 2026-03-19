@@ -36,8 +36,11 @@ using Org.BouncyCastle.Crypto;
 namespace GameFrameX.Foundation.Encryption.Sm;
 
 /// <summary>
-/// 通用摘要算法的基类,实现了IDigest接口
+/// 通用摘要算法的基类，实现了IDigest接口。
 /// </summary>
+/// <remarks>
+/// Base class for general digest algorithms, implementing the IDigest interface.
+/// </remarks>
 internal abstract class GeneralDigest : IDigest
 {
     private const int ByteLength = 64;
@@ -48,17 +51,23 @@ internal abstract class GeneralDigest : IDigest
     private long _byteCount;
 
     /// <summary>
-    /// 初始化GeneralDigest的新实例
+    /// 初始化GeneralDigest的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of GeneralDigest.
+    /// </remarks>
     internal GeneralDigest()
     {
         _xBuf = new byte[4];
     }
 
     /// <summary>
-    /// 使用现有的GeneralDigest实例初始化新实例
+    /// 使用现有的GeneralDigest实例初始化新实例。
     /// </summary>
-    /// <param name="t">用于复制的GeneralDigest实例</param>
+    /// <remarks>
+    /// Initializes a new instance using an existing GeneralDigest instance.
+    /// </remarks>
+    /// <param name="t">用于复制的GeneralDigest实例 / GeneralDigest instance to copy</param>
     internal GeneralDigest(GeneralDigest t)
     {
         _xBuf = new byte[t._xBuf.Length];
@@ -69,9 +78,12 @@ internal abstract class GeneralDigest : IDigest
     }
 
     /// <summary>
-    /// 更新摘要计算,处理单个字节
+    /// 更新摘要计算，处理单个字节。
     /// </summary>
-    /// <param name="input">要处理的输入字节</param>
+    /// <remarks>
+    /// Updates the digest calculation, processing a single byte.
+    /// </remarks>
+    /// <param name="input">要处理的输入字节 / Input byte to process</param>
     public void Update(byte input)
     {
         _xBuf[_xBufOff++] = input;
@@ -86,11 +98,14 @@ internal abstract class GeneralDigest : IDigest
     }
 
     /// <summary>
-    /// 更新摘要计算,处理字节数组
+    /// 更新摘要计算，处理字节数组。
     /// </summary>
-    /// <param name="input">输入字节数组</param>
-    /// <param name="inOff">输入数组的起始偏移量</param>
-    /// <param name="length">要处理的字节长度</param>
+    /// <remarks>
+    /// Updates the digest calculation, processing a byte array.
+    /// </remarks>
+    /// <param name="input">输入字节数组 / Input byte array</param>
+    /// <param name="inOff">输入数组的起始偏移量 / Starting offset in the input array</param>
+    /// <param name="length">要处理的字节长度 / Length of bytes to process</param>
     public void BlockUpdate(byte[] input, int inOff, int length)
     {
         //
@@ -128,8 +143,11 @@ internal abstract class GeneralDigest : IDigest
     }
 
     /// <summary>
-    /// 完成摘要计算
+    /// 完成摘要计算。
     /// </summary>
+    /// <remarks>
+    /// Completes the digest calculation.
+    /// </remarks>
     public void Finish()
     {
         long bitLength = (_byteCount << 3);
@@ -149,8 +167,11 @@ internal abstract class GeneralDigest : IDigest
     }
 
     /// <summary>
-    /// 重置摘要计算的状态
+    /// 重置摘要计算的状态。
     /// </summary>
+    /// <remarks>
+    /// Resets the state of the digest calculation.
+    /// </remarks>
     public virtual void Reset()
     {
         _byteCount = 0;
@@ -159,61 +180,88 @@ internal abstract class GeneralDigest : IDigest
     }
 
     /// <summary>
-    /// 获取摘要算法的字节长度
+    /// 获取摘要算法的字节长度。
     /// </summary>
-    /// <returns>返回摘要算法的字节长度</returns>
+    /// <remarks>
+    /// Gets the byte length of the digest algorithm.
+    /// </remarks>
+    /// <returns>返回摘要算法的字节长度 / Returns the byte length of the digest algorithm</returns>
     public int GetByteLength()
     {
         return ByteLength;
     }
 
     /// <summary>
-    /// 处理输入字节数组中的一个字
+    /// 处理输入字节数组中的一个字。
     /// </summary>
-    /// <param name="input">输入字节数组</param>
-    /// <param name="inOff">输入数组的起始偏移量</param>
+    /// <remarks>
+    /// Processes a word from the input byte array.
+    /// </remarks>
+    /// <param name="input">输入字节数组 / Input byte array</param>
+    /// <param name="inOff">输入数组的起始偏移量 / Starting offset in the input array</param>
     internal abstract void ProcessWord(byte[] input, int inOff);
 
     /// <summary>
-    /// 处理消息长度
+    /// 处理消息长度。
     /// </summary>
-    /// <param name="bitLength">消息的位长度</param>
+    /// <remarks>
+    /// Processes the message length.
+    /// </remarks>
+    /// <param name="bitLength">消息的位长度 / Bit length of the message</param>
     internal abstract void ProcessLength(long bitLength);
 
     /// <summary>
-    /// 处理数据块
+    /// 处理数据块。
     /// </summary>
+    /// <remarks>
+    /// Processes a data block.
+    /// </remarks>
     internal abstract void ProcessBlock();
 
     /// <summary>
-    /// 获取算法名称
+    /// 获取算法名称。
     /// </summary>
+    /// <remarks>
+    /// Gets the algorithm name.
+    /// </remarks>
     public abstract string AlgorithmName { get; }
 
     /// <summary>
-    /// 获取摘要大小
+    /// 获取摘要大小（以字节为单位）。
     /// </summary>
-    /// <returns>返回摘要大小(以字节为单位)</returns>
+    /// <remarks>
+    /// Gets the digest size in bytes.
+    /// </remarks>
+    /// <returns>返回摘要大小（以字节为单位） / Returns the digest size in bytes</returns>
     public abstract int GetDigestSize();
 
     /// <summary>
-    /// 使用ReadOnlySpan更新摘要计算
+    /// 使用ReadOnlySpan更新摘要计算。
     /// </summary>
-    /// <param name="input">输入数据的只读跨度</param>
+    /// <remarks>
+    /// Updates the digest calculation using ReadOnlySpan.
+    /// </remarks>
+    /// <param name="input">输入数据的只读跨度 / Read-only span of input data</param>
     public abstract void BlockUpdate(ReadOnlySpan<byte> input);
 
     /// <summary>
-    /// 完成摘要计算并将结果写入输出数组
+    /// 完成摘要计算并将结果写入输出数组。
     /// </summary>
-    /// <param name="output">输出字节数组</param>
-    /// <param name="outOff">输出数组的起始偏移量</param>
-    /// <returns>写入的字节数</returns>
+    /// <remarks>
+    /// Completes the digest calculation and writes the result to the output array.
+    /// </remarks>
+    /// <param name="output">输出字节数组 / Output byte array</param>
+    /// <param name="outOff">输出数组的起始偏移量 / Starting offset in the output array</param>
+    /// <returns>写入的字节数 / Number of bytes written</returns>
     public abstract int DoFinal(byte[] output, int outOff);
 
     /// <summary>
-    /// 完成摘要计算并将结果写入输出跨度
+    /// 完成摘要计算并将结果写入输出跨度。
     /// </summary>
-    /// <param name="output">输出数据的跨度</param>
-    /// <returns>写入的字节数</returns>
+    /// <remarks>
+    /// Completes the digest calculation and writes the result to the output span.
+    /// </remarks>
+    /// <param name="output">输出数据的跨度 / Output data span</param>
+    /// <returns>写入的字节数 / Number of bytes written</returns>
     public abstract int DoFinal(Span<byte> output);
 }

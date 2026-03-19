@@ -39,39 +39,57 @@ using GameFrameX.Foundation.Encryption.Localization;
 namespace GameFrameX.Foundation.Encryption.Sm;
 
 /// <summary>
-/// SM4工具类,提供SM4对称加密算法的加密和解密功能
+/// SM4工具类，提供SM4对称加密算法的加密和解密功能。
 /// </summary>
+/// <remarks>
+/// SM4 utility class, providing encryption and decryption using SM4 symmetric encryption algorithm.
+/// </remarks>
 internal sealed class Sm4Util
 {
     /// <summary>
     /// 密钥，长度必须为 16 字节（非 hex 模式）或 32 个 hex 字符（hex 模式）。
     /// C-06 修复：移除硬编码默认密钥，调用方必须显式赋值，避免使用公开已知的密钥进行加密。
-    /// W-14 修复：改为属性。
     /// </summary>
+    /// <remarks>
+    /// Key, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode).
+    /// C-06 fix: Removed hardcoded default key, caller must explicitly assign value to avoid using publicly known keys for encryption.
+    /// </remarks>
     public string secretKey { get; set; } = null;
 
     /// <summary>
-    /// 初始化向量（W-14 修复：改为属性）
+    /// 初始化向量。
     /// </summary>
+    /// <remarks>
+    /// Initialization vector.
+    /// </remarks>
     public string iv { get; set; } = "0000000000000000";
 
     /// <summary>
-    /// 是否以十六进制字符串形式处理密钥（W-14 修复：改为属性）
+    /// 是否以十六进制字符串形式处理密钥。
     /// </summary>
+    /// <remarks>
+    /// Whether to process key as hexadecimal string.
+    /// </remarks>
     public bool hexString { get; set; } = false;
 
     /// <summary>
-    /// 是否为JavaScript兼容模式（W-14 修复：改为属性）
+    /// 是否为JavaScript兼容模式。
     /// </summary>
+    /// <remarks>
+    /// Whether to use JavaScript compatibility mode.
+    /// </remarks>
     public bool forJavascript { get; set; } = false;
 
     /// <summary>
-    /// 使用ECB模式加密字符串
+    /// 使用ECB模式加密字符串。
     /// </summary>
-    /// <param name="plainText">待加密的明文字符串</param>
-    /// <returns>加密后的密文字符串</returns>
-    /// <exception cref="ArgumentNullException">当plainText为null时抛出</exception>
-    /// <exception cref="ArgumentException">当密钥长度不正确时抛出</exception>
+    /// <remarks>
+    /// Encrypts a string using ECB mode.
+    /// </remarks>
+    /// <param name="plainText">待加密的明文字符串 / Plain text string to encrypt</param>
+    /// <returns>加密后的密文字符串 / Encrypted cipher text string</returns>
+    /// <exception cref="ArgumentNullException">当plainText为null时抛出 / Thrown when plainText is null</exception>
+    /// <exception cref="ArgumentException">当密钥长度不正确时抛出 / Thrown when key length is incorrect</exception>
     public string Encrypt_ECB(string plainText)
     {
         ArgumentNullException.ThrowIfNull(plainText);
@@ -120,11 +138,14 @@ internal sealed class Sm4Util
     }
 
     /// <summary>
-    /// 使用ECB模式加密字节数组
+    /// 使用ECB模式加密字节数组。
     /// </summary>
-    /// <param name="plainBytes">待加密的明文字节数组</param>
-    /// <param name="keyBytes">密钥字节数组</param>
-    /// <returns>加密后的密文字节数组</returns>
+    /// <remarks>
+    /// Encrypts a byte array using ECB mode.
+    /// </remarks>
+    /// <param name="plainBytes">待加密的明文字节数组 / Plain text byte array to encrypt</param>
+    /// <param name="keyBytes">密钥字节数组 / Key byte array</param>
+    /// <returns>加密后的密文字节数组 / Encrypted cipher text byte array</returns>
     public byte[] Encrypt_ECB(byte[] plainBytes, byte[] keyBytes)
     {
         var ctx = new Sm4Context
@@ -144,12 +165,15 @@ internal sealed class Sm4Util
     }
 
     /// <summary>
-    /// 使用ECB模式解密字符串
+    /// 使用ECB模式解密字符串。
     /// </summary>
-    /// <param name="cipherText">待解密的密文字符串</param>
-    /// <returns>解密后的明文字符串</returns>
-    /// <exception cref="ArgumentNullException">当cipherText为null时抛出</exception>
-    /// <exception cref="ArgumentException">当密钥长度不正确时抛出</exception>
+    /// <remarks>
+    /// Decrypts a string using ECB mode.
+    /// </remarks>
+    /// <param name="cipherText">待解密的密文字符串 / Cipher text string to decrypt</param>
+    /// <returns>解密后的明文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentNullException">当cipherText为null时抛出 / Thrown when cipherText is null</exception>
+    /// <exception cref="ArgumentException">当密钥长度不正确时抛出 / Thrown when key length is incorrect</exception>
     public string Decrypt_ECB(string cipherText)
     {
         ArgumentNullException.ThrowIfNull(cipherText);
@@ -198,12 +222,15 @@ internal sealed class Sm4Util
     }
 
     /// <summary>
-    /// 使用CBC模式加密字符串
+    /// 使用CBC模式加密字符串。
     /// </summary>
-    /// <param name="plainText">待加密的明文字符串</param>
-    /// <returns>加密后的密文字符串</returns>
-    /// <exception cref="ArgumentNullException">当plainText为null时抛出</exception>
-    /// <exception cref="ArgumentException">当密钥或IV长度不正确时抛出</exception>
+    /// <remarks>
+    /// Encrypts a string using CBC mode.
+    /// </remarks>
+    /// <param name="plainText">待加密的明文字符串 / Plain text string to encrypt</param>
+    /// <returns>加密后的密文字符串 / Encrypted cipher text string</returns>
+    /// <exception cref="ArgumentNullException">当plainText为null时抛出 / Thrown when plainText is null</exception>
+    /// <exception cref="ArgumentException">当密钥或IV长度不正确时抛出 / Thrown when key or IV length is incorrect</exception>
     public string Encrypt_CBC(string plainText)
     {
         ArgumentNullException.ThrowIfNull(plainText);
@@ -262,12 +289,15 @@ internal sealed class Sm4Util
     }
 
     /// <summary>
-    /// 使用CBC模式解密字符串
+    /// 使用CBC模式解密字符串。
     /// </summary>
-    /// <param name="cipherText">待解密的密文字符串</param>
-    /// <returns>解密后的明文字符串</returns>
-    /// <exception cref="ArgumentNullException">当cipherText为null时抛出</exception>
-    /// <exception cref="ArgumentException">当密钥或IV长度不正确时抛出</exception>
+    /// <remarks>
+    /// Decrypts a string using CBC mode.
+    /// </remarks>
+    /// <param name="cipherText">待解密的密文字符串 / Cipher text string to decrypt</param>
+    /// <returns>解密后的明文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentNullException">当cipherText为null时抛出 / Thrown when cipherText is null</exception>
+    /// <exception cref="ArgumentException">当密钥或IV长度不正确时抛出 / Thrown when key or IV length is incorrect</exception>
     public string Decrypt_CBC(string cipherText)
     {
         ArgumentNullException.ThrowIfNull(cipherText);

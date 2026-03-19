@@ -43,9 +43,15 @@ namespace GameFrameX.Foundation.Encryption;
 /// DSA 算法专门用于数字签名，不能用于加密解密。
 /// </summary>
 /// <remarks>
+/// DSA digital signature algorithm utility class.
+/// Provides creation, signing, and verification functionality for DSA digital signatures.
+/// The DSA algorithm is specifically designed for digital signatures and cannot be used for encryption and decryption.
 /// C-07 修复：使用 <see cref="DSA.Create()"/> 代替已弃用的 <see cref="DSACryptoServiceProvider"/>，
 /// 后者仅支持 1024-bit（FIPS 186-2 已弃用），且在非 Windows 平台不可用。
+/// C-07 fix: Use <see cref="DSA.Create()"/> instead of deprecated <see cref="DSACryptoServiceProvider"/>,
+/// which only supports 1024-bit (FIPS 186-2 deprecated) and is unavailable on non-Windows platforms.
 /// C-11 修复：实现 <see cref="IDisposable"/> 以正确释放非托管资源。
+/// C-11 fix: Implement <see cref="IDisposable"/> to properly release unmanaged resources.
 /// </remarks>
 public sealed class DsaHelper : IDisposable
 {
@@ -55,8 +61,11 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用现有的 <see cref="DSA"/> 实例初始化。
     /// </summary>
-    /// <param name="dsa"><see cref="DSA"/> 实例，不能为 null。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="dsa"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Initializes with an existing <see cref="DSA"/> instance.
+    /// </remarks>
+    /// <param name="dsa"><see cref="DSA"/> 实例，不能为 null / <see cref="DSA"/> instance, cannot be null</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dsa"/> 为 null 时抛出 / Thrown when <paramref name="dsa"/> is null</exception>
     public DsaHelper(DSA dsa)
     {
         _dsa = dsa ?? throw new ArgumentNullException(nameof(dsa));
@@ -65,9 +74,12 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用 XML 格式的密钥字符串初始化。
     /// </summary>
-    /// <param name="key">XML 格式的密钥字符串，可以是公钥或私钥。</param>
-    /// <exception cref="ArgumentException">当 <paramref name="key"/> 为 null 或空时抛出。</exception>
-    /// <exception cref="CryptographicException">当密钥格式无效时抛出。</exception>
+    /// <remarks>
+    /// Initializes with an XML format key string.
+    /// </remarks>
+    /// <param name="key">XML 格式的密钥字符串，可以是公钥或私钥 / XML format key string, can be public key or private key</param>
+    /// <exception cref="ArgumentException">当 <paramref name="key"/> 为 null 或空时抛出 / Thrown when <paramref name="key"/> is null or empty</exception>
+    /// <exception cref="CryptographicException">当密钥格式无效时抛出 / Thrown when key format is invalid</exception>
     public DsaHelper(string key)
     {
         ArgumentException.ThrowIfNullOrEmpty(key, nameof(key));
@@ -87,7 +99,12 @@ public sealed class DsaHelper : IDisposable
         _dsa = dsa;
     }
 
-    /// <summary>释放 DSA 非托管资源。</summary>
+    /// <summary>
+    /// 释放 DSA 非托管资源。
+    /// </summary>
+    /// <remarks>
+    /// Releases DSA unmanaged resources.
+    /// </remarks>
     public void Dispose()
     {
         if (!_disposed)
@@ -100,7 +117,10 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 生成新的 DSA 密钥对，并以 XML 字符串形式返回。
     /// </summary>
-    /// <returns>包含私钥（"privatekey"）和公钥（"publickey"）的字典。</returns>
+    /// <remarks>
+    /// Generates a new DSA key pair and returns it as XML strings.
+    /// </remarks>
+    /// <returns>包含私钥（"privatekey"）和公钥（"publickey"）的字典 / Dictionary containing private key ("privatekey") and public key ("publickey")</returns>
     public static Dictionary<string, string> Make()
     {
         // C-07/C-11 修复：DSA.Create() + using
@@ -117,10 +137,13 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用私钥对数据进行签名（SHA256）。
     /// </summary>
-    /// <param name="dataToSign">要签名的数据字节数组，不能为 null。</param>
-    /// <param name="privateKey">XML 格式的私钥字符串。</param>
-    /// <returns>签名后的字节数组；如果私钥格式无效则返回 null。</returns>
-    /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出。</exception>
+    /// <remarks>
+    /// Signs data using the private key (SHA256).
+    /// </remarks>
+    /// <param name="dataToSign">要签名的数据字节数组，不能为 null / Byte array of data to sign, cannot be null</param>
+    /// <param name="privateKey">XML 格式的私钥字符串 / XML format private key string</param>
+    /// <returns>签名后的字节数组；如果私钥格式无效则返回 null / Signed byte array; returns null if private key format is invalid</returns>
+    /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出 / Thrown when any parameter is null</exception>
     public static byte[] SignData(byte[] dataToSign, string privateKey)
     {
         // W-11 修复：参数校验移出 try 块，不被 catch 吞掉
@@ -147,11 +170,14 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用私钥对字符串数据进行签名，并返回 Base64 编码的签名字符串。
     /// </summary>
-    /// <param name="dataToSign">要签名的字符串数据，不能为 null 或空。</param>
-    /// <param name="privateKey">XML 格式的私钥字符串。</param>
-    /// <returns>Base64 编码的签名字符串。</returns>
-    /// <exception cref="ArgumentNullException">当参数为 null 时抛出。</exception>
-    /// <exception cref="CryptographicException">当私钥格式无效或签名失败时抛出。</exception>
+    /// <remarks>
+    /// Signs string data using the private key and returns a Base64 encoded signature string.
+    /// </remarks>
+    /// <param name="dataToSign">要签名的字符串数据，不能为 null 或空 / String data to sign, cannot be null or empty</param>
+    /// <param name="privateKey">XML 格式的私钥字符串 / XML format private key string</param>
+    /// <returns>Base64 编码的签名字符串 / Base64 encoded signature string</returns>
+    /// <exception cref="ArgumentNullException">当参数为 null 时抛出 / Thrown when parameter is null</exception>
+    /// <exception cref="CryptographicException">当私钥格式无效或签名失败时抛出 / Thrown when private key format is invalid or signing fails</exception>
     public static string SignData(string dataToSign, string privateKey)
     {
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
@@ -163,10 +189,13 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用实例化的 DSA 对数据进行签名（SHA256）。
     /// </summary>
-    /// <param name="dataToSign">要签名的数据字节数组，不能为 null。</param>
-    /// <returns>签名后的字节数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="dataToSign"/> 为 null 时抛出。</exception>
-    /// <exception cref="CryptographicException">当签名失败时抛出。</exception>
+    /// <remarks>
+    /// Signs data using the instantiated DSA (SHA256).
+    /// </remarks>
+    /// <param name="dataToSign">要签名的数据字节数组，不能为 null / Byte array of data to sign, cannot be null</param>
+    /// <returns>签名后的字节数组 / Signed byte array</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dataToSign"/> 为 null 时抛出 / Thrown when <paramref name="dataToSign"/> is null</exception>
+    /// <exception cref="CryptographicException">当签名失败时抛出 / Thrown when signing fails</exception>
     public byte[] SignData(byte[] dataToSign)
     {
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
@@ -176,9 +205,12 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用实例化的 DSA 对字符串数据进行签名，并返回 Base64 编码的签名字符串。
     /// </summary>
-    /// <param name="dataToSign">要签名的字符串数据，不能为 null 或空。</param>
-    /// <returns>Base64 编码的签名字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="dataToSign"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Signs string data using the instantiated DSA and returns a Base64 encoded signature string.
+    /// </remarks>
+    /// <param name="dataToSign">要签名的字符串数据，不能为 null 或空 / String data to sign, cannot be null or empty</param>
+    /// <returns>Base64 编码的签名字符串 / Base64 encoded signature string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dataToSign"/> 为 null 时抛出 / Thrown when <paramref name="dataToSign"/> is null</exception>
     public string SignData(string dataToSign)
     {
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
@@ -189,11 +221,14 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用公钥验证数据的签名（SHA256）。
     /// </summary>
-    /// <param name="dataToVerify">要验证的数据字节数组，不能为 null。</param>
-    /// <param name="signedData">签名后的字节数组，不能为 null。</param>
-    /// <param name="publicKey">XML 格式的公钥字符串。</param>
-    /// <returns>如果签名有效，返回 true；如果公钥格式无效或签名无效，返回 false。</returns>
-    /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出。</exception>
+    /// <remarks>
+    /// Verifies data signature using the public key (SHA256).
+    /// </remarks>
+    /// <param name="dataToVerify">要验证的数据字节数组，不能为 null / Byte array of data to verify, cannot be null</param>
+    /// <param name="signedData">签名后的字节数组，不能为 null / Signed byte array, cannot be null</param>
+    /// <param name="publicKey">XML 格式的公钥字符串 / XML format public key string</param>
+    /// <returns>如果签名有效，返回 true；如果公钥格式无效或签名无效，返回 false / Returns true if signature is valid; returns false if public key format is invalid or signature is invalid</returns>
+    /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出 / Thrown when any parameter is null</exception>
     public static bool VerifyData(byte[] dataToVerify, byte[] signedData, string publicKey)
     {
         // W-11 修复：参数校验移出 try 块
@@ -221,10 +256,13 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用公钥验证字符串数据的签名（SHA256）。
     /// </summary>
-    /// <param name="dataToVerify">要验证的字符串数据，不能为 null 或空。</param>
-    /// <param name="signedData">Base64 编码的签名字符串，不能为 null 或空。</param>
-    /// <param name="publicKey">XML 格式的公钥字符串。</param>
-    /// <returns>如果签名有效，返回 true；否则返回 false。</returns>
+    /// <remarks>
+    /// Verifies string data signature using the public key (SHA256).
+    /// </remarks>
+    /// <param name="dataToVerify">要验证的字符串数据，不能为 null 或空 / String data to verify, cannot be null or empty</param>
+    /// <param name="signedData">Base64 编码的签名字符串，不能为 null 或空 / Base64 encoded signature string, cannot be null or empty</param>
+    /// <param name="publicKey">XML 格式的公钥字符串 / XML format public key string</param>
+    /// <returns>如果签名有效，返回 true；否则返回 false / Returns true if signature is valid; otherwise returns false</returns>
     public static bool VerifyData(string dataToVerify, string signedData, string publicKey)
     {
         ArgumentNullException.ThrowIfNull(dataToVerify, nameof(dataToVerify));
@@ -235,10 +273,13 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用实例化的 DSA 验证数据的签名（SHA256）。
     /// </summary>
-    /// <param name="dataToVerify">要验证的数据字节数组，不能为 null。</param>
-    /// <param name="signedData">签名后的字节数组，不能为 null。</param>
-    /// <returns>如果签名有效，返回 true；否则返回 false。</returns>
-    /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出。</exception>
+    /// <remarks>
+    /// Verifies data signature using the instantiated DSA (SHA256).
+    /// </remarks>
+    /// <param name="dataToVerify">要验证的数据字节数组，不能为 null / Byte array of data to verify, cannot be null</param>
+    /// <param name="signedData">签名后的字节数组，不能为 null / Signed byte array, cannot be null</param>
+    /// <returns>如果签名有效，返回 true；否则返回 false / Returns true if signature is valid; otherwise returns false</returns>
+    /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出 / Thrown when any parameter is null</exception>
     public bool VerifyData(byte[] dataToVerify, byte[] signedData)
     {
         ArgumentNullException.ThrowIfNull(dataToVerify, nameof(dataToVerify));
@@ -249,9 +290,12 @@ public sealed class DsaHelper : IDisposable
     /// <summary>
     /// 使用实例化的 DSA 验证字符串数据的签名（SHA256）。
     /// </summary>
-    /// <param name="dataToVerify">要验证的字符串数据，不能为 null 或空。</param>
-    /// <param name="signedData">Base64 编码的签名字符串，不能为 null 或空。</param>
-    /// <returns>如果签名有效，返回 true；否则返回 false。</returns>
+    /// <remarks>
+    /// Verifies string data signature using the instantiated DSA (SHA256).
+    /// </remarks>
+    /// <param name="dataToVerify">要验证的字符串数据，不能为 null 或空 / String data to verify, cannot be null or empty</param>
+    /// <param name="signedData">Base64 编码的签名字符串，不能为 null 或空 / Base64 encoded signature string, cannot be null or empty</param>
+    /// <returns>如果签名有效，返回 true；否则返回 false / Returns true if signature is valid; otherwise returns false</returns>
     public bool VerifyData(string dataToVerify, string signedData)
     {
         ArgumentNullException.ThrowIfNull(dataToVerify, nameof(dataToVerify));

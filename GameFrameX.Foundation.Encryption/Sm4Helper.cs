@@ -38,21 +38,27 @@ using GameFrameX.Foundation.Encryption.Localization;
 namespace GameFrameX.Foundation.Encryption;
 
 /// <summary>
-/// SM4加密算法工具类,提供SM4对称加密算法的加密和解密功能
+/// SM4加密算法工具类，提供SM4对称加密算法的加密和解密功能。
 /// </summary>
+/// <remarks>
+/// SM4 encryption algorithm utility class, providing encryption and decryption using SM4 symmetric encryption algorithm.
+/// </remarks>
 public static class Sm4Helper
 {
     /// <summary>
-    /// 使用CBC模式加密字符串数据
+    /// 使用CBC模式加密字符串数据。
     /// </summary>
-    /// <param name="keyString">密钥字符串,长度必须为16字节</param>
-    /// <param name="dataString">待加密的原文字符串</param>
-    /// <param name="iv">初始化向量,可选,默认为全0</param>
-    /// <param name="forJavascript">是否为JavaScript兼容模式</param>
-    /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
-    /// <returns>加密后的密文字符串</returns>
-    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
-    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
+    /// <remarks>
+    /// Encrypts string data using CBC mode.
+    /// </remarks>
+    /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
+    /// <param name="dataString">待加密的原文字符串 / Plain text string to encrypt</param>
+    /// <param name="iv">初始化向量，可选，默认为全0 / Initialization vector, optional, defaults to all zeros</param>
+    /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
+    /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
+    /// <returns>加密后的密文字符串 / Encrypted cipher text string</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
     public static string EncryptCbc(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);
@@ -90,16 +96,19 @@ public static class Sm4Helper
     }
 
     /// <summary>
-    /// 使用CBC模式解密字符串数据
+    /// 使用CBC模式解密字符串数据。
     /// </summary>
-    /// <param name="keyString">密钥字符串,长度必须为16字节</param>
-    /// <param name="dataString">待解密的密文字符串</param>
-    /// <param name="iv">初始化向量,可选,默认为全0</param>
-    /// <param name="forJavascript">是否为JavaScript兼容模式</param>
-    /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
-    /// <returns>解密后的原文字符串</returns>
-    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
-    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
+    /// <remarks>
+    /// Decrypts string data using CBC mode.
+    /// </remarks>
+    /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
+    /// <param name="dataString">待解密的密文字符串 / Cipher text string to decrypt</param>
+    /// <param name="iv">初始化向量，可选，默认为全0 / Initialization vector, optional, defaults to all zeros</param>
+    /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
+    /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
+    /// <returns>解密后的原文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
     public static string DecryptCbc(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);
@@ -136,16 +145,19 @@ public static class Sm4Helper
     }
 
     /// <summary>
-    /// 使用ECB模式加密字符串数据
+    /// 使用ECB模式加密字符串数据。
     /// </summary>
-    /// <param name="keyString">密钥字符串,长度必须为16字节</param>
-    /// <param name="dataString">待加密的原文字符串</param>
-    /// <param name="iv">初始化向量,在ECB模式下不使用,可为null</param>
-    /// <param name="forJavascript">是否为JavaScript兼容模式</param>
-    /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
-    /// <returns>加密后的密文字符串</returns>
-    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
-    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
+    /// <remarks>
+    /// Encrypts string data using ECB mode.
+    /// </remarks>
+    /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
+    /// <param name="dataString">待加密的原文字符串 / Plain text string to encrypt</param>
+    /// <param name="iv">初始化向量，在ECB模式下不使用，可为null / Initialization vector, not used in ECB mode, can be null</param>
+    /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
+    /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
+    /// <returns>加密后的密文字符串 / Encrypted cipher text string</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
     public static string EncryptEcb(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);
@@ -177,16 +189,19 @@ public static class Sm4Helper
     }
 
     /// <summary>
-    /// 使用ECB模式解密字符串数据
+    /// 使用ECB模式解密字符串数据。
     /// </summary>
-    /// <param name="keyString">密钥字符串,长度必须为16字节</param>
-    /// <param name="dataString">待解密的密文字符串</param>
-    /// <param name="iv">初始化向量,在ECB模式下不使用,可为null</param>
-    /// <param name="forJavascript">是否为JavaScript兼容模式</param>
-    /// <param name="hexString">是否以十六进制字符串形式处理密钥</param>
-    /// <returns>解密后的原文字符串</returns>
-    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出</exception>
-    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出</exception>
+    /// <remarks>
+    /// Decrypts string data using ECB mode.
+    /// </remarks>
+    /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
+    /// <param name="dataString">待解密的密文字符串 / Cipher text string to decrypt</param>
+    /// <param name="iv">初始化向量，在ECB模式下不使用，可为null / Initialization vector, not used in ECB mode, can be null</param>
+    /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
+    /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
+    /// <returns>解密后的原文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
     public static string DecryptEcb(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);

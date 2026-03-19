@@ -1,22 +1,31 @@
 namespace GameFrameX.Foundation.Encryption.Sm;
 
 /// <summary>
-/// SM3密码杂凑算法的实现类
+/// SM3密码杂凑算法的实现类。
 /// </summary>
+/// <remarks>
+/// SM3 cryptographic hash algorithm implementation class.
+/// </remarks>
 internal sealed class Sm3Digest : GeneralDigest
 {
     /// <summary>
-    /// 获取算法名称
+    /// 获取算法名称。
     /// </summary>
+    /// <remarks>
+    /// Gets the algorithm name.
+    /// </remarks>
     public override string AlgorithmName
     {
         get { return "SM3"; }
     }
 
     /// <summary>
-    /// 获取摘要大小
+    /// 获取摘要大小（以字节为单位）。
     /// </summary>
-    /// <returns>返回摘要大小(以字节为单位)</returns>
+    /// <remarks>
+    /// Gets the digest size in bytes.
+    /// </remarks>
+    /// <returns>返回摘要大小（以字节为单位） / Returns the digest size in bytes</returns>
     public override int GetDigestSize()
     {
         return DigestLength;
@@ -38,17 +47,23 @@ internal sealed class Sm3Digest : GeneralDigest
     private const int T_16_63 = 0x7a879d8a;
 
     /// <summary>
-    /// 初始化SM3Digest的新实例
+    /// 初始化SM3Digest的新实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of SM3Digest.
+    /// </remarks>
     public Sm3Digest()
     {
         Reset();
     }
 
     /// <summary>
-    /// 使用现有的SM3Digest实例初始化新实例
+    /// 使用现有的SM3Digest实例初始化新实例。
     /// </summary>
-    /// <param name="t">用于复制的SM3Digest实例</param>
+    /// <remarks>
+    /// Initializes a new instance using an existing SM3Digest instance.
+    /// </remarks>
+    /// <param name="t">用于复制的SM3Digest实例 / SM3Digest instance to copy</param>
     public Sm3Digest(Sm3Digest t) : base(t)
     {
         Array.Copy(t.X, 0, X, 0, t.X.Length);
@@ -58,8 +73,11 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 重置摘要计算的状态
+    /// 重置摘要计算的状态。
     /// </summary>
+    /// <remarks>
+    /// Resets the state of the digest calculation.
+    /// </remarks>
     public override void Reset()
     {
         base.Reset();
@@ -71,8 +89,11 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 处理数据块
+    /// 处理数据块。
     /// </summary>
+    /// <remarks>
+    /// Processes a data block.
+    /// </remarks>
     internal override void ProcessBlock()
     {
         int i;
@@ -145,10 +166,13 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 处理输入字节数组中的一个字
+    /// 处理输入字节数组中的一个字。
     /// </summary>
-    /// <param name="in_Renamed">输入字节数组</param>
-    /// <param name="inOff">输入数组的起始偏移量</param>
+    /// <remarks>
+    /// Processes a word from the input byte array.
+    /// </remarks>
+    /// <param name="in_Renamed">输入字节数组 / Input byte array</param>
+    /// <param name="inOff">输入数组的起始偏移量 / Starting offset in the input array</param>
     internal override void ProcessWord(byte[] in_Renamed, int inOff)
     {
         int n = in_Renamed[inOff] << 24;
@@ -164,9 +188,12 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 处理消息长度
+    /// 处理消息长度。
     /// </summary>
-    /// <param name="bitLength">消息的位长度</param>
+    /// <remarks>
+    /// Processes the message length.
+    /// </remarks>
+    /// <param name="bitLength">消息的位长度 / Bit length of the message</param>
     internal override void ProcessLength(long bitLength)
     {
         if (xOff > 14)
@@ -179,11 +206,14 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 将整数转换为大端字节序
+    /// 将整数转换为大端字节序。
     /// </summary>
-    /// <param name="n">要转换的整数</param>
-    /// <param name="bs">输出字节数组</param>
-    /// <param name="off">输出数组的起始偏移量</param>
+    /// <remarks>
+    /// Converts an integer to big-endian byte order.
+    /// </remarks>
+    /// <param name="n">要转换的整数 / Integer to convert</param>
+    /// <param name="bs">输出字节数组 / Output byte array</param>
+    /// <param name="off">输出数组的起始偏移量 / Starting offset in the output array</param>
     public static void IntToBigEndian(int n, byte[] bs, int off)
     {
         bs[off] = (byte)(SupportClass.UrShift(n, 24));
@@ -193,11 +223,14 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 完成摘要计算并将结果写入输出数组
+    /// 完成摘要计算并将结果写入输出数组。
     /// </summary>
-    /// <param name="out_Renamed">输出字节数组</param>
-    /// <param name="outOff">输出数组的起始偏移量</param>
-    /// <returns>写入的字节数</returns>
+    /// <remarks>
+    /// Completes the digest calculation and writes the result to the output array.
+    /// </remarks>
+    /// <param name="out_Renamed">输出字节数组 / Output byte array</param>
+    /// <param name="outOff">输出数组的起始偏移量 / Starting offset in the output array</param>
+    /// <returns>写入的字节数 / Number of bytes written</returns>
     public override int DoFinal(byte[] out_Renamed, int outOff)
     {
         Finish();
@@ -213,63 +246,84 @@ internal sealed class Sm3Digest : GeneralDigest
     }
 
     /// <summary>
-    /// 循环左移运算
+    /// 循环左移运算。
     /// </summary>
-    /// <param name="x">要移位的值</param>
-    /// <param name="n">移位的位数</param>
-    /// <returns>移位后的结果</returns>
+    /// <remarks>
+    /// Circular left shift operation.
+    /// </remarks>
+    /// <param name="x">要移位的值 / Value to shift</param>
+    /// <param name="n">移位的位数 / Number of bits to shift</param>
+    /// <returns>移位后的结果 / Result after shifting</returns>
     private static int ROTATE(int x, int n)
     {
         return (x << n) | (SupportClass.UrShift(x, (32 - n)));
     }
 
     /// <summary>
-    /// P0置换函数
+    /// P0置换函数。
     /// </summary>
-    /// <param name="X">输入值</param>
-    /// <returns>置换后的结果</returns>
+    /// <remarks>
+    /// P0 permutation function.
+    /// </remarks>
+    /// <param name="X">输入值 / Input value</param>
+    /// <returns>置换后的结果 / Result after permutation</returns>
     private static int P0(int X)
     {
         return ((X) ^ ROTATE((X), 9) ^ ROTATE((X), 17));
     }
 
     /// <summary>
-    /// P1置换函数
+    /// P1置换函数。
     /// </summary>
-    /// <param name="X">输入值</param>
-    /// <returns>置换后的结果</returns>
+    /// <remarks>
+    /// P1 permutation function.
+    /// </remarks>
+    /// <param name="X">输入值 / Input value</param>
+    /// <returns>置换后的结果 / Result after permutation</returns>
     private static int P1(int X)
     {
         return ((X) ^ ROTATE((X), 15) ^ ROTATE((X), 23));
     }
 
     /// <summary>
-    /// FF函数(0-15轮)
+    /// FF函数（0-15轮）。
     /// </summary>
+    /// <remarks>
+    /// FF function (rounds 0-15).
+    /// </remarks>
     private static int FF_00_15(int X, int Y, int Z)
     {
         return (X ^ Y ^ Z);
     }
 
     /// <summary>
-    /// FF函数(16-63轮)
+    /// FF函数（16-63轮）。
     /// </summary>
+    /// <remarks>
+    /// FF function (rounds 16-63).
+    /// </remarks>
     private static int FF_16_63(int X, int Y, int Z)
     {
         return ((X & Y) | (X & Z) | (Y & Z));
     }
 
     /// <summary>
-    /// GG函数(0-15轮)
+    /// GG函数（0-15轮）。
     /// </summary>
+    /// <remarks>
+    /// GG function (rounds 0-15).
+    /// </remarks>
     private static int GG_00_15(int X, int Y, int Z)
     {
         return (X ^ Y ^ Z);
     }
 
     /// <summary>
-    /// GG函数(16-63轮)
+    /// GG函数（16-63轮）。
     /// </summary>
+    /// <remarks>
+    /// GG function (rounds 16-63).
+    /// </remarks>
     private static int GG_16_63(int X, int Y, int Z)
     {
         return ((X & Y) | (~X & Z));
@@ -279,7 +333,11 @@ internal sealed class Sm3Digest : GeneralDigest
     /// 使用 ReadOnlySpan 更新摘要计算。
     /// C-08 修复：原实现为空方法体，导致哈希结果全为零。现委托至 byte[] 重载。
     /// </summary>
-    /// <param name="input">输入数据的只读跨度</param>
+    /// <remarks>
+    /// Updates the digest calculation using ReadOnlySpan.
+    /// C-08 fix: Original implementation had an empty method body, causing hash results to be all zeros. Now delegates to byte[] overload.
+    /// </remarks>
+    /// <param name="input">输入数据的只读跨度 / Read-only span of input data</param>
     public override void BlockUpdate(ReadOnlySpan<byte> input)
     {
         if (input.IsEmpty)
@@ -296,8 +354,12 @@ internal sealed class Sm3Digest : GeneralDigest
     /// 完成摘要计算并将结果写入输出跨度。
     /// C-08 修复：原实现仅返回长度而不写入任何数据。现委托至 byte[] 重载并复制结果。
     /// </summary>
-    /// <param name="output">输出数据的跨度，长度须不小于 <see cref="DigestLength"/>（32 字节）</param>
-    /// <returns>写入的字节数</returns>
+    /// <remarks>
+    /// Completes the digest calculation and writes the result to the output span.
+    /// C-08 fix: Original implementation only returned length without writing any data. Now delegates to byte[] overload and copies the result.
+    /// </remarks>
+    /// <param name="output">输出数据的跨度，长度须不小于 <see cref="DigestLength"/>（32 字节） / Output data span, length must be at least <see cref="DigestLength"/> (32 bytes)</param>
+    /// <returns>写入的字节数 / Number of bytes written</returns>
     public override int DoFinal(Span<byte> output)
     {
         var result = new byte[DigestLength];
