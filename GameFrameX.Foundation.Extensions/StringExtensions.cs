@@ -37,20 +37,24 @@ using System.Text.RegularExpressions;
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// 提供字符串类型的扩展方法
+/// 提供字符串类型的扩展方法。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for string types.
+/// </remarks>
 public static partial class StringExtensions
 {
     /// <summary>
-    /// 将Base64字符串转换为URL安全格式。
+    /// 将 Base64 字符串转换为 URL 安全格式。
     /// </summary>
-    /// <param name="value">要处理的Base64字符串。</param>
-    /// <returns>URL安全的Base64字符串。</returns>
-    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
     /// <remarks>
-    /// 此方法将Base64字符串中的+和/字符分别替换为-和_字符，并移除填充字符=，使其适用于URL传输。
-    /// 符合RFC 4648标准的Base64URL编码规范。
+    /// Converts a Base64 string to URL-safe format.
+    /// This method replaces the + and / characters in the Base64 string with - and _ characters respectively, and removes the padding character =, making it suitable for URL transmission.
+    /// Complies with RFC 4648 Base64URL encoding specification.
     /// </remarks>
+    /// <param name="value">要处理的 Base64 字符串，不能为 <c>null</c> / The Base64 string to process, cannot be <c>null</c>.</param>
+    /// <returns>URL 安全的 Base64 字符串 / A URL-safe Base64 string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="value"/> is <c>null</c>.</exception>
     public static string ToUrlSafeBase64(this string value)
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
@@ -58,17 +62,18 @@ public static partial class StringExtensions
     }
 
     /// <summary>
-    /// 将Base64字符串转换为URL安全格式。
+    /// 将 Base64 字符串转换为 URL 安全格式。
     /// </summary>
-    /// <param name="value">要处理的Base64字符串。</param>
-    /// <param name="removePadding">是否移除填充字符=。</param>
-    /// <returns>URL安全的Base64字符串。</returns>
-    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
     /// <remarks>
-    /// 此方法将Base64字符串中的+和/字符分别替换为-和_字符。
-    /// 当removePadding为true时，移除填充字符=；当为false时，保留填充字符=。
-    /// 符合RFC 4648标准的Base64URL编码规范。
+    /// Converts a Base64 string to URL-safe format.
+    /// This method replaces the + and / characters in the Base64 string with - and _ characters respectively.
+    /// When removePadding is true, removes the padding character =; when false, keeps the padding character =.
+    /// Complies with RFC 4648 Base64URL encoding specification.
     /// </remarks>
+    /// <param name="value">要处理的 Base64 字符串，不能为 <c>null</c> / The Base64 string to process, cannot be <c>null</c>.</param>
+    /// <param name="removePadding">是否移除填充字符 = / Whether to remove the padding character =.</param>
+    /// <returns>URL 安全的 Base64 字符串 / A URL-safe Base64 string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="value"/> is <c>null</c>.</exception>
     public static string ToUrlSafeBase64(this string value, bool removePadding)
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
@@ -77,15 +82,16 @@ public static partial class StringExtensions
     }
 
     /// <summary>
-    /// 将URL安全的Base64字符串转换回标准Base64格式。
+    /// 将 URL 安全的 Base64 字符串转换回标准 Base64 格式。
     /// </summary>
-    /// <param name="value">要处理的URL安全Base64字符串。</param>
-    /// <returns>标准格式的Base64字符串。</returns>
-    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
     /// <remarks>
-    /// 此方法是ToUrlSafeBase64的反向操作，将-和_字符分别替换回+和/字符，并根据需要添加填充字符=。
-    /// 用于将URL安全的Base64字符串还原为标准Base64格式。
+    /// Converts a URL-safe Base64 string back to standard Base64 format.
+    /// This method is the reverse operation of ToUrlSafeBase64, replacing - and _ characters back to + and / characters respectively, and adding padding character = if needed.
+    /// Used to restore URL-safe Base64 strings to standard Base64 format.
     /// </remarks>
+    /// <param name="value">要处理的 URL 安全 Base64 字符串，不能为 <c>null</c> / The URL-safe Base64 string to process, cannot be <c>null</c>.</param>
+    /// <returns>标准格式的 Base64 字符串 / A standard format Base64 string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="value"/> is <c>null</c>.</exception>
     public static string FromUrlSafeBase64(this string value)
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
@@ -102,17 +108,18 @@ public static partial class StringExtensions
     }
 
     /// <summary>
-    /// 将URL安全的Base64字符串转换回标准Base64格式。
+    /// 将 URL 安全的 Base64 字符串转换回标准 Base64 格式。
     /// </summary>
-    /// <param name="value">要处理的URL安全Base64字符串。</param>
-    /// <param name="addPadding">是否自动添加填充字符=。</param>
-    /// <returns>标准格式的Base64字符串。</returns>
-    /// <exception cref="ArgumentNullException">当value为null时抛出。</exception>
     /// <remarks>
-    /// 此方法是ToUrlSafeBase64的反向操作，将-和_字符分别替换回+和/字符。
-    /// 当addPadding为true时，自动添加必要的填充字符=；当为false时，不添加填充字符。
-    /// 用于将URL安全的Base64字符串还原为标准Base64格式。
+    /// Converts a URL-safe Base64 string back to standard Base64 format.
+    /// This method is the reverse operation of ToUrlSafeBase64, replacing - and _ characters back to + and / characters respectively.
+    /// When addPadding is true, automatically adds the necessary padding character =; when false, does not add padding.
+    /// Used to restore URL-safe Base64 strings to standard Base64 format.
     /// </remarks>
+    /// <param name="value">要处理的 URL 安全 Base64 字符串，不能为 <c>null</c> / The URL-safe Base64 string to process, cannot be <c>null</c>.</param>
+    /// <param name="addPadding">是否自动添加填充字符 = / Whether to automatically add the padding character =.</param>
+    /// <returns>标准格式的 Base64 字符串 / A standard format Base64 string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="value"/> is <c>null</c>.</exception>
     public static string FromUrlSafeBase64(this string value, bool addPadding)
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
@@ -136,23 +143,25 @@ public static partial class StringExtensions
     /// 匹配中文字符的正则表达式。
     /// </summary>
     /// <remarks>
-    /// 匹配范围包括基本汉字(0x4e00-0x9fa5),不包括生僻字、异体字等扩展汉字
+    /// Regex for matching Chinese characters.
+    /// Matching range includes basic Chinese characters (0x4e00-0x9fa5), excluding rare characters, variant characters, and other extended Chinese characters.
     /// </remarks>
     private static readonly Regex CnReg = new(@"[\u4e00-\u9fa5]");
 
     /// <summary>
-    /// 计算字符串的显示宽度，汉字等宽字符算作2个单位宽度，其他字符算作1个单位宽度。
+    /// 计算字符串的显示宽度，汉字等宽字符算作 2 个单位宽度，其他字符算作 1 个单位宽度。
     /// </summary>
-    /// <param name="text">要计算宽度的字符串。</param>
-    /// <returns>字符串的显示宽度。汉字等宽字符计为2，其他字符计为1。</returns>
     /// <remarks>
-    /// 此方法主要用于控制台或等宽字体环境下的文本对齐。
-    /// 支持的中文字符范围包括：
-    /// - 基本汉字区(\u4e00-\u9fff)
-    /// - 扩展A区汉字(\u3400-\u4dbf)
-    /// - 扩展B区汉字(\u20000-\u2a6df)，但在C#中由于char是16位，高位部分需要代理对表示，此处简化处理
-    /// 其他字符（英文、数字、标点等）均按1个单位宽度计算。
+    /// Calculates the display width of a string, where wide characters like Chinese are counted as 2 unit widths, and other characters as 1 unit width.
+    /// This method is mainly used for text alignment in console or monospace font environments.
+    /// Supported Chinese character ranges include:
+    /// - Basic CJK Unified Ideographs (\u4e00-\u9fff)
+    /// - CJK Unified Ideographs Extension A (\u3400-\u4dbf)
+    /// - CJK Unified Ideographs Extension B (\u20000-\u2a6df), but in C# since char is 16-bit, high surrogate pairs are simplified
+    /// Other characters (English, numbers, punctuation, etc.) are counted as 1 unit width.
     /// </remarks>
+    /// <param name="text">要计算宽度的字符串 / The string to calculate width for.</param>
+    /// <returns>字符串的显示宽度。汉字等宽字符计为 2，其他字符计为 1 / The display width of the string. Chinese characters count as 2, other characters as 1.</returns>
     public static int GetDisplayWidth(this string text)
     {
         int total = 0;
@@ -168,15 +177,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 将字符串转换为下划线命名法。
     /// </summary>
-    /// <param name="str">要转换的字符串。</param>
-    /// <param name="isToUpper">是否将下划线转换为大写。默认值为false。</param>
-    /// <returns>下划线命名法的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当str为null时抛出。</exception>
     /// <remarks>
-    /// 此方法将字符串中的每个大写字母前添加下划线，并根据isToUpper参数转换为大写或小写。
-    /// 例如："HelloWorld"转换为"hello_world"，"IsValid"转换为"is_valid"。
-    /// 当字符串中已包含下划线时，直接返回原字符串。
+    /// Converts a string to snake_case (underscore naming convention).
+    /// This method adds an underscore before each uppercase letter in the string and converts to uppercase or lowercase based on the isToUpper parameter.
+    /// For example: "HelloWorld" converts to "hello_world", "IsValid" converts to "is_valid".
+    /// When the string already contains underscores, returns the original string directly.
     /// </remarks>
+    /// <param name="str">要转换的字符串，不能为 <c>null</c> / The string to convert, cannot be <c>null</c>.</param>
+    /// <param name="isToUpper">是否将下划线转换为大写，默认值为 <c>false</c> / Whether to convert to uppercase, defaults to <c>false</c>.</param>
+    /// <returns>下划线命名法的字符串 / A snake_case string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="str"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="str"/> is <c>null</c>.</exception>
     public static string ConvertToUnderLine(this string str, bool isToUpper = false)
     {
         ArgumentNullException.ThrowIfNull(str, nameof(str));
@@ -196,14 +206,15 @@ public static partial class StringExtensions
     /// <summary>
     /// 重复指定字符指定次数。
     /// </summary>
-    /// <param name="c">要重复的字符。</param>
-    /// <param name="count">重复次数。</param>
-    /// <returns>由指定字符重复指定次数组成的新字符串。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当count为负数时抛出。</exception>
     /// <remarks>
-    /// 使用StringBuilder来提高字符串拼接性能
-    /// 当count为0时,返回空字符串
+    /// Repeats a specified character a specified number of times.
+    /// Uses the string constructor for better performance.
+    /// When count is 0, returns an empty string.
     /// </remarks>
+    /// <param name="c">要重复的字符 / The character to repeat.</param>
+    /// <param name="count">重复次数，必须为非负数 / The number of times to repeat, must be non-negative.</param>
+    /// <returns>由指定字符重复指定次数组成的新字符串 / A new string composed of the specified character repeated the specified number of times.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="count"/> 为负数时抛出 / Thrown when <paramref name="count"/> is negative.</exception>
     public static string RepeatChar(this char c, int count)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(count, nameof(count));
@@ -213,15 +224,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 获取在指定宽度内左对齐的文本。
     /// </summary>
-    /// <param name="text">要左对齐的文本。</param>
-    /// <param name="width">总宽度。</param>
-    /// <returns>右侧填充空格的左对齐文本。</returns>
-    /// <exception cref="ArgumentNullException">当text为null时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当width为负数时抛出。</exception>
     /// <remarks>
-    /// 如果指定的宽度小于文本长度，将使用文本长度作为宽度。
-    /// 文本左对齐，右侧填充空格至指定宽度。
+    /// Gets left-aligned text within the specified width.
+    /// If the specified width is less than the text length, the text length will be used as the width.
+    /// Text is left-aligned with spaces padded on the right to the specified width.
     /// </remarks>
+    /// <param name="text">要左对齐的文本，不能为 <c>null</c> / The text to left-align, cannot be <c>null</c>.</param>
+    /// <param name="width">总宽度，必须为非负数 / The total width, must be non-negative.</param>
+    /// <returns>右侧填充空格的左对齐文本 / Left-aligned text with spaces padded on the right.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="text"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="width"/> 为负数时抛出 / Thrown when <paramref name="width"/> is negative.</exception>
     public static string LeftAlignedText(this string text, int width)
     {
         ArgumentNullException.ThrowIfNull(text, nameof(text));
@@ -240,15 +252,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 获取在指定宽度内右对齐的文本。
     /// </summary>
-    /// <param name="text">要右对齐的文本。</param>
-    /// <param name="width">总宽度。</param>
-    /// <returns>左侧填充空格的右对齐文本。</returns>
-    /// <exception cref="ArgumentNullException">当text为null时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当width为负数时抛出。</exception>
     /// <remarks>
-    /// 如果指定的宽度小于文本长度，将使用文本长度作为宽度。
-    /// 文本右对齐，左侧填充空格至指定宽度。
+    /// Gets right-aligned text within the specified width.
+    /// If the specified width is less than the text length, the text length will be used as the width.
+    /// Text is right-aligned with spaces padded on the left to the specified width.
     /// </remarks>
+    /// <param name="text">要右对齐的文本，不能为 <c>null</c> / The text to right-align, cannot be <c>null</c>.</param>
+    /// <param name="width">总宽度，必须为非负数 / The total width, must be non-negative.</param>
+    /// <returns>左侧填充空格的右对齐文本 / Right-aligned text with spaces padded on the left.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="text"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="width"/> 为负数时抛出 / Thrown when <paramref name="width"/> is negative.</exception>
     public static string RightAlignedText(this string text, int width)
     {
         ArgumentNullException.ThrowIfNull(text, nameof(text));
@@ -267,15 +280,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 获取在指定宽度内居中对齐的文本。
     /// </summary>
-    /// <param name="text">要居中对齐的文本。</param>
-    /// <param name="width">总宽度。</param>
-    /// <returns>两侧填充空格的居中对齐文本。</returns>
-    /// <exception cref="ArgumentNullException">当text为null时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当width为负数时抛出。</exception>
     /// <remarks>
-    /// 如果指定的宽度小于文本长度，将使用文本长度作为宽度。
-    /// 当文本长度为奇数且总宽度为偶数时，右侧的空格数会比左侧少一个。
+    /// Gets center-aligned text within the specified width.
+    /// If the specified width is less than the text length, the text length will be used as the width.
+    /// When the text length is odd and the total width is even, the number of spaces on the right will be one less than on the left.
     /// </remarks>
+    /// <param name="text">要居中对齐的文本，不能为 <c>null</c> / The text to center-align, cannot be <c>null</c>.</param>
+    /// <param name="width">总宽度，必须为非负数 / The total width, must be non-negative.</param>
+    /// <returns>两侧填充空格的居中对齐文本 / Center-aligned text with spaces padded on both sides.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="text"/> is <c>null</c>.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="width"/> 为负数时抛出 / Thrown when <paramref name="width"/> is negative.</exception>
     public static string CenterAlignedText(this string text, int width)
     {
         ArgumentNullException.ThrowIfNull(text, nameof(text));
@@ -295,13 +309,14 @@ public static partial class StringExtensions
     /// <summary>
     /// 从字符串末尾移除指定字符（如果存在）。
     /// </summary>
-    /// <param name="self">要处理的字符串。</param>
-    /// <param name="toRemove">要移除的字符。</param>
-    /// <returns>移除指定字符后的字符串。如果字符串为null或空，或不以指定字符结尾，则返回原字符串。</returns>
     /// <remarks>
-    /// 此方法仅移除字符串末尾的单个指定字符
-    /// 如果需要移除多个字符,请使用string类型的RemoveSuffix方法
+    /// Removes the specified character from the end of the string if it exists.
+    /// This method only removes a single specified character from the end of the string.
+    /// If you need to remove multiple characters, use the RemoveSuffix method with string parameter.
     /// </remarks>
+    /// <param name="self">要处理的字符串 / The string to process.</param>
+    /// <param name="toRemove">要移除的字符 / The character to remove.</param>
+    /// <returns>移除指定字符后的字符串。如果字符串为 null 或空，或不以指定字符结尾，则返回原字符串 / The string with the specified character removed. Returns the original string if it is null or empty, or does not end with the specified character.</returns>
     public static string RemoveSuffix(this string self, char toRemove)
     {
         return self.IsNullOrEmpty() ? self : self.EndsWith(toRemove) ? self.Substring(0, self.Length - 1) : self;
@@ -310,14 +325,15 @@ public static partial class StringExtensions
     /// <summary>
     /// 从字符串末尾移除指定的子字符串（如果存在）。
     /// </summary>
-    /// <param name="self">要处理的字符串。</param>
-    /// <param name="toRemove">要移除的子字符串。</param>
-    /// <returns>移除指定子字符串后的字符串。如果字符串为null或空，或不以指定子字符串结尾，则返回原字符串。</returns>
     /// <remarks>
-    /// 此方法可以移除字符串末尾的任意长度子字符串
-    /// 如果要移除的子字符串为null或空，将返回原字符串
-    /// 区分大小写比较
+    /// Removes the specified substring from the end of the string if it exists.
+    /// This method can remove a substring of any length from the end of the string.
+    /// If the substring to remove is null or empty, the original string is returned.
+    /// Comparison is case-sensitive.
     /// </remarks>
+    /// <param name="self">要处理的字符串 / The string to process.</param>
+    /// <param name="toRemove">要移除的子字符串 / The substring to remove.</param>
+    /// <returns>移除指定子字符串后的字符串。如果字符串为 null 或空，或不以指定子字符串结尾，则返回原字符串 / The string with the specified substring removed. Returns the original string if it is null or empty, or does not end with the specified substring.</returns>
     public static string RemoveSuffix(this string self, string toRemove)
     {
         if (self.IsNullOrEmpty() || toRemove.IsNullOrEmpty())
@@ -331,12 +347,13 @@ public static partial class StringExtensions
     /// <summary>
     /// 移除字符串中的所有空白字符。
     /// </summary>
-    /// <param name="self">要处理的字符串。</param>
-    /// <returns>移除所有空白字符后的字符串。如果输入为null或空，则返回原字符串。</returns>
     /// <remarks>
-    /// 空白字符包括：空格、制表符、换行符等
-    /// 使用LINQ实现，对于大字符串可能存在性能开销
+    /// Removes all whitespace characters from the string.
+    /// Whitespace characters include: spaces, tabs, newlines, etc.
+    /// Uses StringBuilder for better performance with large strings.
     /// </remarks>
+    /// <param name="self">要处理的字符串 / The string to process.</param>
+    /// <returns>移除所有空白字符后的字符串。如果输入为 null 或空，则返回原字符串 / The string with all whitespace characters removed. Returns the original string if input is null or empty.</returns>
     public static string RemoveWhiteSpace(this string self)
     {
         if (self.IsNullOrEmpty()) return self;
@@ -351,12 +368,13 @@ public static partial class StringExtensions
     /// <summary>
     /// 检查字符串是否为 null 或空字符串。
     /// </summary>
-    /// <param name="str">要检查的字符串。</param>
-    /// <returns>如果字符串为 null 或空字符串，则返回 true；否则返回 false。</returns>
     /// <remarks>
-    /// 是string.IsNullOrEmpty的扩展方法版本
-    /// 空字符串指长度为0的字符串
+    /// Checks whether the string is null or empty.
+    /// This is an extension method version of string.IsNullOrEmpty.
+    /// An empty string refers to a string with length 0.
     /// </remarks>
+    /// <param name="str">要检查的字符串 / The string to check.</param>
+    /// <returns>如果字符串为 null 或空字符串，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the string is null or empty; otherwise, <c>false</c>.</returns>
     public static bool IsNullOrEmpty(this string str)
     {
         return string.IsNullOrEmpty(str);
@@ -365,12 +383,13 @@ public static partial class StringExtensions
     /// <summary>
     /// 检查字符串是否为 null、空字符串或仅包含空白字符。
     /// </summary>
-    /// <param name="str">要检查的字符串。</param>
-    /// <returns>如果字符串为 null、空字符串或仅包含空白字符，则返回 true；否则返回 false。</returns>
     /// <remarks>
-    /// 组合了IsNullOrEmpty和IsNullOrWhiteSpace的检查
-    /// 比单独调用两个方法性能更好
+    /// Checks whether the string is null, empty, or contains only whitespace characters.
+    /// Combines IsNullOrEmpty and IsNullOrWhiteSpace checks.
+    /// Better performance than calling both methods separately.
     /// </remarks>
+    /// <param name="str">要检查的字符串 / The string to check.</param>
+    /// <returns>如果字符串为 null、空字符串或仅包含空白字符，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the string is null, empty, or contains only whitespace; otherwise, <c>false</c>.</returns>
     public static bool IsNullOrEmptyOrWhiteSpace(this string str)
     {
         return str.IsNullOrEmpty() || str.IsNullOrWhiteSpace();
@@ -379,12 +398,13 @@ public static partial class StringExtensions
     /// <summary>
     /// 检查字符串是否不为 null、空字符串且不仅包含空白字符。
     /// </summary>
-    /// <param name="str">要检查的字符串。</param>
-    /// <returns>如果字符串不为 null、不为空字符串且不仅包含空白字符，则返回 true；否则返回 false。</returns>
     /// <remarks>
-    /// 是IsNullOrEmptyOrWhiteSpace的逻辑取反版本
-    /// 用于需要确认字符串包含实际内容的场景
+    /// Checks whether the string is not null, not empty, and does not contain only whitespace characters.
+    /// This is the logical negation of IsNullOrEmptyOrWhiteSpace.
+    /// Used in scenarios where you need to confirm that a string contains actual content.
     /// </remarks>
+    /// <param name="str">要检查的字符串 / The string to check.</param>
+    /// <returns>如果字符串不为 null、不为空字符串且不仅包含空白字符，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the string is not null, not empty, and does not contain only whitespace; otherwise, <c>false</c>.</returns>
     public static bool IsNotNullOrEmptyOrWhiteSpace(this string str)
     {
         return !str.IsNullOrEmptyOrWhiteSpace();
@@ -393,12 +413,13 @@ public static partial class StringExtensions
     /// <summary>
     /// 检查字符串是否不为 null 且不为空字符串。
     /// </summary>
-    /// <param name="str">要检查的字符串。</param>
-    /// <returns>如果字符串不为 null 且不为空字符串，则返回 true；否则返回 false。</returns>
     /// <remarks>
-    /// 是IsNullOrEmpty的逻辑取反版本
-    /// 常用于参数验证
+    /// Checks whether the string is not null and not empty.
+    /// This is the logical negation of IsNullOrEmpty.
+    /// Commonly used for parameter validation.
     /// </remarks>
+    /// <param name="str">要检查的字符串 / The string to check.</param>
+    /// <returns>如果字符串不为 null 且不为空字符串，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the string is not null and not empty; otherwise, <c>false</c>.</returns>
     public static bool IsNotNullOrEmpty(this string str)
     {
         return !str.IsNullOrEmpty();
@@ -407,12 +428,13 @@ public static partial class StringExtensions
     /// <summary>
     /// 检查字符串是否为 null 或仅包含空白字符。
     /// </summary>
-    /// <param name="str">要检查的字符串。</param>
-    /// <returns>如果字符串为 null 或仅包含空白字符，则返回 true；否则返回 false。</returns>
     /// <remarks>
-    /// 是string.IsNullOrWhiteSpace的扩展方法版本
-    /// 空白字符包括空格、制表符、换行符等
+    /// Checks whether the string is null or contains only whitespace characters.
+    /// This is an extension method version of string.IsNullOrWhiteSpace.
+    /// Whitespace characters include spaces, tabs, newlines, etc.
     /// </remarks>
+    /// <param name="str">要检查的字符串 / The string to check.</param>
+    /// <returns>如果字符串为 null 或仅包含空白字符，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the string is null or contains only whitespace; otherwise, <c>false</c>.</returns>
     public static bool IsNullOrWhiteSpace(this string str)
     {
         return string.IsNullOrWhiteSpace(str);
@@ -421,13 +443,14 @@ public static partial class StringExtensions
     /// <summary>
     /// 检查字符串是否不为 null 且不仅包含空白字符。
     /// </summary>
-    /// <param name="str">要检查的字符串。</param>
-    /// <returns>如果字符串不为 null 且不仅包含空白字符，则返回 true；否则返回 false。</returns>
     /// <remarks>
-    /// 是IsNullOrWhiteSpace的逻辑取反版本
-    /// 用于需要确认字符串包含非空白字符的场景
-    /// 空白字符包括空格、制表符、换行符等
+    /// Checks whether the string is not null and does not contain only whitespace characters.
+    /// This is the logical negation of IsNullOrWhiteSpace.
+    /// Used in scenarios where you need to confirm that a string contains non-whitespace characters.
+    /// Whitespace characters include spaces, tabs, newlines, etc.
     /// </remarks>
+    /// <param name="str">要检查的字符串 / The string to check.</param>
+    /// <returns>如果字符串不为 null 且不仅包含空白字符，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if the string is not null and does not contain only whitespace; otherwise, <c>false</c>.</returns>
     public static bool IsNotNullOrWhiteSpace(this string str)
     {
         return !str.IsNullOrWhiteSpace();
@@ -436,15 +459,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 将字符串按指定分隔符拆分为整数数组。
     /// </summary>
-    /// <param name="str">要拆分的字符串。</param>
-    /// <param name="sep">分隔符，默认为 '+'。</param>
-    /// <returns>拆分并转换后的整数数组。如果字符串为null或空，则返回空数组。</returns>
     /// <remarks>
-    /// 使用int.TryParse进行安全的数字转换
-    /// 如果某个部分转换失败，对应位置将保持默认值0
-    /// 适用于处理如"1+2+3"这样的数字序列字符串
-    /// 返回的是新数组，不会修改原字符串
+    /// Splits a string by the specified separator and converts to an integer array.
+    /// Uses int.TryParse for safe number conversion.
+    /// If a part fails to convert, the corresponding position will keep the default value 0.
+    /// Suitable for processing numeric sequence strings like "1+2+3".
+    /// Returns a new array without modifying the original string.
     /// </remarks>
+    /// <param name="str">要拆分的字符串 / The string to split.</param>
+    /// <param name="sep">分隔符，默认为 '+' / The separator character, defaults to '+'.</param>
+    /// <returns>拆分并转换后的整数数组。如果字符串为 null 或空，则返回空数组 / The split and converted integer array. Returns an empty array if the string is null or empty.</returns>
     public static int[] SplitToIntArray(this string str, char sep = '+')
     {
         if (string.IsNullOrEmpty(str))
@@ -468,16 +492,17 @@ public static partial class StringExtensions
     /// <summary>
     /// 将字符串按两级分隔符拆分为二维整数数组。
     /// </summary>
-    /// <param name="str">要拆分的字符串。</param>
-    /// <param name="sep1">第一级分隔符，默认为 ';'。</param>
-    /// <param name="sep2">第二级分隔符，默认为 '+'。</param>
-    /// <returns>拆分并转换后的二维整数数组。如果字符串为null或空，则返回空数组。</returns>
     /// <remarks>
-    /// 适用于处理如"1+2;3+4;5+6"这样的二维数字序列字符串
-    /// 使用SplitToIntArray进行第二级拆分，保持一致的数字转换逻辑
-    /// 如果某行转换失败，对应位置将返回空数组
-    /// 返回的是新数组，不会修改原字符串
+    /// Splits a string by two levels of separators into a two-dimensional integer array.
+    /// Suitable for processing two-dimensional numeric sequence strings like "1+2;3+4;5+6".
+    /// Uses SplitToIntArray for the second level split, maintaining consistent number conversion logic.
+    /// If a row fails to convert, the corresponding position will return an empty array.
+    /// Returns a new array without modifying the original string.
     /// </remarks>
+    /// <param name="str">要拆分的字符串 / The string to split.</param>
+    /// <param name="sep1">第一级分隔符，默认为 ';' / The first level separator, defaults to ';'.</param>
+    /// <param name="sep2">第二级分隔符，默认为 '+' / The second level separator, defaults to '+'.</param>
+    /// <returns>拆分并转换后的二维整数数组。如果字符串为 null 或空，则返回空数组 / The split and converted two-dimensional integer array. Returns an empty array if the string is null or empty.</returns>
     public static int[][] SplitTo2IntArray(this string str, char sep1 = ';', char sep2 = '+')
     {
         if (string.IsNullOrEmpty(str))
@@ -510,14 +535,15 @@ public static partial class StringExtensions
     /// <summary>
     /// 将驼峰命名法字符串转换为蛇形命名法（下划线分隔的小写形式）。
     /// </summary>
-    /// <param name="input">要转换的字符串。</param>
-    /// <returns>转换后的蛇形命名法字符串。如果输入为null或空，则返回原字符串。</returns>
     /// <remarks>
-    /// 保留字符串中的前导下划线。
-    /// 在小写字母或数字后跟大写字母的位置插入下划线。
-    /// 最后转换为全小写形式。
-    /// 适用于数据库字段命名约定转换。
+    /// Converts a camelCase string to snake_case (underscore-separated lowercase format).
+    /// Preserves leading underscores in the string.
+    /// Inserts underscores between lowercase letters or digits followed by uppercase letters.
+    /// Finally converts to all lowercase.
+    /// Suitable for database field naming convention conversion.
     /// </remarks>
+    /// <param name="input">要转换的字符串 / The string to convert.</param>
+    /// <returns>转换后的蛇形命名法字符串。如果输入为 null 或空，则返回原字符串 / The converted snake_case string. Returns the original string if input is null or empty.</returns>
     public static string ConvertToSnakeCase(this string input)
     {
         if (string.IsNullOrEmpty(input))
@@ -532,15 +558,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 从字符串中移除所有中文字符。
     /// </summary>
-    /// <param name="self">要处理的字符串。</param>
-    /// <returns>移除所有中文字符后的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当self为null时抛出。</exception>
     /// <remarks>
-    /// 使用预编译的正则表达式以获得更好的性能。
-    /// 仅移除基本中文字符（0x4e00-0x9fa5）。
-    /// 不移除中文标点符号。
-    /// 如果字符串不包含中文字符，将返回原字符串。
+    /// Removes all Chinese characters from the string.
+    /// Uses pre-compiled regular expressions for better performance.
+    /// Only removes basic Chinese characters (0x4e00-0x9fa5).
+    /// Does not remove Chinese punctuation.
+    /// If the string does not contain Chinese characters, the original string is returned.
     /// </remarks>
+    /// <param name="self">要处理的字符串 / The string to process.</param>
+    /// <returns>移除所有中文字符后的字符串 / The string with all Chinese characters removed.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 为 null 时抛出 / Thrown when <paramref name="self"/> is null.</exception>
     public static string TrimZhCn(this string self)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -550,15 +577,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 快速比较两个字符串是否相等，从末尾开始比较。
     /// </summary>
-    /// <param name="self">当前字符串。</param>
-    /// <param name="target">要比较的目标字符串。</param>
-    /// <returns>如果两个字符串相等则返回true，否则返回false。</returns>
-    /// <exception cref="ArgumentNullException">当self或target为null时抛出。</exception>
     /// <remarks>
-    /// 从字符串末尾开始比较，可能在某些场景下更快
-    /// 先比较长度可以快速判断不相等的情况
-    /// 区分大小写比较
+    /// Quickly compares two strings for equality, starting from the end.
+    /// Comparing from the end may be faster in some scenarios.
+    /// Comparing length first can quickly identify unequal cases.
+    /// Case-sensitive comparison.
     /// </remarks>
+    /// <param name="self">当前字符串 / The current string.</param>
+    /// <param name="target">要比较的目标字符串 / The target string to compare.</param>
+    /// <returns>如果两个字符串相等则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the strings are equal; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="target"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="target"/> is null.</exception>
     public static bool EqualsFast(this string self, string target)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -584,15 +612,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 快速检查字符串是否以指定字符串结尾，从末尾开始比较。
     /// </summary>
-    /// <param name="self">当前字符串。</param>
-    /// <param name="target">要检查的结尾字符串。</param>
-    /// <returns>如果字符串以指定字符串结尾则返回true，否则返回false。</returns>
-    /// <exception cref="ArgumentNullException">当self或target为null时抛出。</exception>
     /// <remarks>
-    /// 从末尾开始比较可以更快发现不匹配
-    /// 区分大小写比较
-    /// 适用于大量字符串后缀检查的场景
+    /// Quickly checks if a string ends with the specified string, comparing from the end.
+    /// Comparing from the end can detect mismatches faster.
+    /// Case-sensitive comparison.
+    /// Suitable for scenarios with a large number of string suffix checks.
     /// </remarks>
+    /// <param name="self">当前字符串 / The current string.</param>
+    /// <param name="target">要检查的结尾字符串 / The suffix string to check.</param>
+    /// <returns>如果字符串以指定字符串结尾则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the string ends with the specified string; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="target"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="target"/> is null.</exception>
     public static bool EndsWithFast(this string self, string target)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -613,15 +642,16 @@ public static partial class StringExtensions
     /// <summary>
     /// 快速检查字符串是否以指定字符串开头，从开头开始比较。
     /// </summary>
-    /// <param name="self">当前字符串。</param>
-    /// <param name="target">要检查的开头字符串。</param>
-    /// <returns>如果字符串以指定字符串开头则返回true，否则返回false。</returns>
-    /// <exception cref="ArgumentNullException">当self或target为null时抛出。</exception>
     /// <remarks>
-    /// 从开头逐字符比较直到发现不匹配
-    /// 区分大小写比较
-    /// 适用于大量字符串前缀检查的场景
+    /// Quickly checks if a string starts with the specified string, comparing from the beginning.
+    /// Compares character by character from the beginning until a mismatch is found.
+    /// Case-sensitive comparison.
+    /// Suitable for scenarios with a large number of string prefix checks.
     /// </remarks>
+    /// <param name="self">当前字符串 / The current string.</param>
+    /// <param name="target">要检查的开头字符串 / The prefix string to check.</param>
+    /// <returns>如果字符串以指定字符串开头则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the string starts with the specified string; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="target"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="target"/> is null.</exception>
     public static bool StartsWithFast(this string self, string target)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
