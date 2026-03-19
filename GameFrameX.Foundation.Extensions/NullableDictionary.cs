@@ -90,24 +90,34 @@ public readonly struct FallbackValue<TValue>
 public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TValue>
 {
     /// <summary>
-    /// 当键不存在时返回的默认值的私有字段
+    /// 当键不存在时返回的默认值。
     /// </summary>
+    /// <remarks>
+    /// The default value returned when a key does not exist.
+    /// </remarks>
     private TValue _fallbackValue;
 
     /// <summary>
-    /// 初始化一个空的 NullableDictionary 实例
+    /// 初始化一个空的 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
+    /// <remarks>
+    /// Initializes an empty <see cref="NullableDictionary{TKey, TValue}"/> instance.
+    /// </remarks>
     public NullableDictionary()
     {
         // FallbackValue 将使用字段的默认值
     }
 
     /// <summary>
-    /// 使用指定的初始容量初始化 NullableDictionary 实例
-    /// 注意：当 TValue 为 int 类型时，请使用 WithCapacity 静态方法来避免与 fallbackValue 构造函数的歧义
+    /// 使用指定的初始容量初始化 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
+    /// 注意：当 TValue 为 int 类型时，请使用 <see cref="WithCapacity"/> 静态方法来避免与 fallbackValue 构造函数的歧义。
     /// </summary>
-    /// <param name="capacity">字典的初始容量</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 capacity 小于 0 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="NullableDictionary{TKey, TValue}"/> with the specified initial capacity.
+    /// Note: When TValue is int, use the <see cref="WithCapacity"/> static method to avoid ambiguity with the fallbackValue constructor.
+    /// </remarks>
+    /// <param name="capacity">字典的初始容量 / The initial capacity of the dictionary.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="capacity"/> 小于 0 时抛出 / Thrown when <paramref name="capacity"/> is less than 0.</exception>
     public NullableDictionary(int capacity) : base(capacity)
     {
         if (capacity < 0)
@@ -117,11 +127,14 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 创建一个带有指定初始容量的 NullableDictionary 实例
+    /// 创建一个带有指定初始容量的 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
-    /// <param name="capacity">字典的初始容量</param>
-    /// <returns>新的 NullableDictionary 实例</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 capacity 小于 0 时抛出</exception>
+    /// <remarks>
+    /// Creates a new <see cref="NullableDictionary{TKey, TValue}"/> instance with the specified initial capacity.
+    /// </remarks>
+    /// <param name="capacity">字典的初始容量 / The initial capacity of the dictionary.</param>
+    /// <returns>新的 <see cref="NullableDictionary{TKey, TValue}"/> 实例 / A new <see cref="NullableDictionary{TKey, TValue}"/> instance.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="capacity"/> 小于 0 时抛出 / Thrown when <paramref name="capacity"/> is less than 0.</exception>
     public static NullableDictionary<TKey, TValue> WithCapacity(int capacity)
     {
         if (capacity < 0)
@@ -133,28 +146,37 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 使用指定的默认值初始化 NullableDictionary 实例
+    /// 使用指定的默认值初始化 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
-    /// <param name="fallbackValue">当键不存在时返回的默认值</param>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="NullableDictionary{TKey, TValue}"/> with the specified fallback value.
+    /// </remarks>
+    /// <param name="fallbackValue">当键不存在时返回的默认值 / The default value returned when a key does not exist.</param>
     public NullableDictionary(TValue fallbackValue) : base()
     {
         _fallbackValue = fallbackValue;
     }
 
     /// <summary>
-    /// 使用指定的默认值初始化 NullableDictionary 实例（明确指定为 fallback 值）
+    /// 使用指定的默认值初始化 <see cref="NullableDictionary{TKey, TValue}"/> 实例（明确指定为 fallback 值）。
     /// </summary>
-    /// <param name="fallbackValue">当键不存在时返回的默认值</param>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="NullableDictionary{TKey, TValue}"/> with the specified fallback value (explicitly specified as fallback).
+    /// </remarks>
+    /// <param name="fallbackValue">当键不存在时返回的默认值 / The default value returned when a key does not exist.</param>
     public NullableDictionary(FallbackValue<TValue> fallbackValue) : base()
     {
         _fallbackValue = fallbackValue.Value;
     }
 
     /// <summary>
-    /// 创建一个带有指定默认值的 NullableDictionary 实例
+    /// 创建一个带有指定默认值的 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
-    /// <param name="fallbackValue">当键不存在时返回的默认值</param>
-    /// <returns>新的 NullableDictionary 实例</returns>
+    /// <remarks>
+    /// Creates a new <see cref="NullableDictionary{TKey, TValue}"/> instance with the specified fallback value.
+    /// </remarks>
+    /// <param name="fallbackValue">当键不存在时返回的默认值 / The default value returned when a key does not exist.</param>
+    /// <returns>新的 <see cref="NullableDictionary{TKey, TValue}"/> 实例 / A new <see cref="NullableDictionary{TKey, TValue}"/> instance.</returns>
     public static NullableDictionary<TKey, TValue> WithFallbackValue(TValue fallbackValue)
     {
         var dictionary = new NullableDictionary<TKey, TValue>();
@@ -163,20 +185,26 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 使用指定的比较器初始化 NullableDictionary 实例
+    /// 使用指定的比较器初始化 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
-    /// <param name="comparer">用于键的比较器</param>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="NullableDictionary{TKey, TValue}"/> with the specified comparer.
+    /// </remarks>
+    /// <param name="comparer">用于键的比较器 / The comparer to use for keys.</param>
     public NullableDictionary(IEqualityComparer<NullObject<TKey>> comparer) : base(comparer)
     {
         // comparer 可以为 null，Dictionary 会使用默认比较器
     }
 
     /// <summary>
-    /// 使用指定的初始容量和比较器初始化 NullableDictionary 实例
+    /// 使用指定的初始容量和比较器初始化 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
-    /// <param name="capacity">字典的初始容量</param>
-    /// <param name="comparer">用于键的比较器</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 capacity 小于 0 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="NullableDictionary{TKey, TValue}"/> with the specified initial capacity and comparer.
+    /// </remarks>
+    /// <param name="capacity">字典的初始容量 / The initial capacity of the dictionary.</param>
+    /// <param name="comparer">用于键的比较器 / The comparer to use for keys.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="capacity"/> 小于 0 时抛出 / Thrown when <paramref name="capacity"/> is less than 0.</exception>
     public NullableDictionary(int capacity, IEqualityComparer<NullObject<TKey>> comparer) : base(capacity, comparer)
     {
         if (capacity < 0)
@@ -186,29 +214,39 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 使用指定的字典初始化 NullableDictionary 实例
+    /// 使用指定的字典初始化 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
-    /// <param name="dictionary">用于初始化字典的键值对集合</param>
-    /// <exception cref="ArgumentNullException">当 dictionary 为 null 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="NullableDictionary{TKey, TValue}"/> with the specified dictionary.
+    /// </remarks>
+    /// <param name="dictionary">用于初始化字典的键值对集合 / The key-value pairs to initialize the dictionary.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dictionary"/> 为 null 时抛出 / Thrown when <paramref name="dictionary"/> is null.</exception>
     public NullableDictionary(IDictionary<NullObject<TKey>, TValue> dictionary) : base(dictionary)
     {
         ArgumentNullException.ThrowIfNull(dictionary, nameof(dictionary));
     }
 
     /// <summary>
-    /// 使用指定的字典和比较器初始化 NullableDictionary 实例
+    /// 使用指定的字典和比较器初始化 <see cref="NullableDictionary{TKey, TValue}"/> 实例。
     /// </summary>
-    /// <param name="dictionary">用于初始化字典的键值对集合</param>
-    /// <param name="comparer">用于键的比较器</param>
-    /// <exception cref="ArgumentNullException">当 dictionary 为 null 时抛出</exception>
+    /// <remarks>
+    /// Initializes a new instance of <see cref="NullableDictionary{TKey, TValue}"/> with the specified dictionary and comparer.
+    /// </remarks>
+    /// <param name="dictionary">用于初始化字典的键值对集合 / The key-value pairs to initialize the dictionary.</param>
+    /// <param name="comparer">用于键的比较器 / The comparer to use for keys.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dictionary"/> 为 null 时抛出 / Thrown when <paramref name="dictionary"/> is null.</exception>
     public NullableDictionary(IDictionary<NullObject<TKey>, TValue> dictionary, IEqualityComparer<NullObject<TKey>> comparer) : base(dictionary, comparer)
     {
         ArgumentNullException.ThrowIfNull(dictionary, nameof(dictionary));
     }
 
     /// <summary>
-    /// 当键不存在时返回的默认值
+    /// 获取或设置当键不存在时返回的默认值。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the default value returned when a key does not exist.
+    /// </remarks>
+    /// <value>当键不存在时返回的默认值 / The default value returned when a key does not exist.</value>
     internal TValue FallbackValue
     {
         get { return _fallbackValue; }
@@ -216,9 +254,13 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 获取或设置指定键的值
+    /// 获取或设置指定键的值。
     /// </summary>
-    /// <param name="key">键</param>
+    /// <remarks>
+    /// Gets or sets the value associated with the specified key.
+    /// </remarks>
+    /// <param name="key">要获取或设置的键 / The key to get or set.</param>
+    /// <value>与指定键关联的值；如果键不存在则返回 <see cref="FallbackValue"/> / The value associated with the specified key; returns <see cref="FallbackValue"/> if the key does not exist.</value>
     public new TValue this[NullObject<TKey> key]
     {
         get { return TryGetValue(key, out var value) ? value : FallbackValue; }
@@ -226,11 +268,14 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 根据条件获取或设置第一个匹配的值
+    /// 根据条件获取或设置第一个匹配的值。
     /// </summary>
-    /// <param name="condition">条件谓词，不能为 null</param>
-    /// <returns>匹配条件的第一个值，如果没有匹配项则返回 FallbackValue</returns>
-    /// <exception cref="ArgumentNullException">当 condition 为 null 时抛出</exception>
+    /// <remarks>
+    /// Gets or sets the first value that matches the specified condition.
+    /// </remarks>
+    /// <param name="condition">条件谓词，用于测试每个键值对 / The predicate to test each key-value pair.</param>
+    /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
+    /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
     public TValue this[Func<KeyValuePair<TKey, TValue>, bool> condition]
     {
         get
@@ -256,11 +301,14 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 根据条件获取或设置第一个匹配的值
+    /// 根据条件获取或设置第一个匹配的值。
     /// </summary>
-    /// <param name="condition">条件谓词，接受键和值作为参数，不能为 null</param>
-    /// <returns>匹配条件的第一个值，如果没有匹配项则返回 FallbackValue</returns>
-    /// <exception cref="ArgumentNullException">当 condition 为 null 时抛出</exception>
+    /// <remarks>
+    /// Gets or sets the first value that matches the specified condition.
+    /// </remarks>
+    /// <param name="condition">条件谓词，接受键和值作为参数 / The predicate that accepts key and value as parameters.</param>
+    /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
+    /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
     public TValue this[Func<TKey, TValue, bool> condition]
     {
         get
@@ -286,11 +334,14 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 根据条件获取或设置第一个匹配的值
+    /// 根据条件获取或设置第一个匹配的值。
     /// </summary>
-    /// <param name="condition">条件谓词，接受键作为参数，不能为 null</param>
-    /// <returns>匹配条件的第一个值，如果没有匹配项则返回 FallbackValue</returns>
-    /// <exception cref="ArgumentNullException">当 condition 为 null 时抛出</exception>
+    /// <remarks>
+    /// Gets or sets the first value that matches the specified condition.
+    /// </remarks>
+    /// <param name="condition">条件谓词，接受键作为参数 / The predicate that accepts key as parameter.</param>
+    /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
+    /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
     public TValue this[Func<TKey, bool> condition]
     {
         get
@@ -316,11 +367,14 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 根据条件获取或设置第一个匹配的值
+    /// 根据条件获取或设置第一个匹配的值。
     /// </summary>
-    /// <param name="condition">条件谓词，接受值作为参数，不能为 null</param>
-    /// <returns>匹配条件的第一个值，如果没有匹配项则返回 FallbackValue</returns>
-    /// <exception cref="ArgumentNullException">当 condition 为 null 时抛出</exception>
+    /// <remarks>
+    /// Gets or sets the first value that matches the specified condition.
+    /// </remarks>
+    /// <param name="condition">条件谓词，接受值作为参数 / The predicate that accepts value as parameter.</param>
+    /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
+    /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
     public TValue this[Func<TValue, bool> condition]
     {
         get
@@ -346,9 +400,13 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 获取或设置指定键的值
+    /// 获取或设置指定键的值。
     /// </summary>
-    /// <param name="key">键</param>
+    /// <remarks>
+    /// Gets or sets the value associated with the specified key.
+    /// </remarks>
+    /// <param name="key">要获取或设置的键 / The key to get or set.</param>
+    /// <value>与指定键关联的值；如果键不存在则返回 <see cref="FallbackValue"/> / The value associated with the specified key; returns <see cref="FallbackValue"/> if the key does not exist.</value>
     public TValue this[TKey key]
     {
         get { return TryGetValue(new NullObject<TKey>(key), out var value) ? value : FallbackValue; }
@@ -356,52 +414,67 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 判断字典是否包含指定的键
+    /// 判断字典是否包含指定的键。
     /// </summary>
-    /// <param name="key">键</param>
-    /// <returns>如果包含则返回 true，否则返回 false</returns>
+    /// <remarks>
+    /// Determines whether the dictionary contains the specified key.
+    /// </remarks>
+    /// <param name="key">要查找的键 / The key to locate.</param>
+    /// <returns>如果字典包含指定的键则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the dictionary contains the specified key; otherwise <c>false</c>.</returns>
     public bool ContainsKey(TKey key)
     {
         return base.ContainsKey(new NullObject<TKey>(key));
     }
 
     /// <summary>
-    /// 向字典中添加键值对
+    /// 向字典中添加指定的键值对。
     /// </summary>
-    /// <param name="key">键</param>
-    /// <param name="value">值</param>
+    /// <remarks>
+    /// Adds the specified key and value to the dictionary.
+    /// </remarks>
+    /// <param name="key">要添加的键 / The key to add.</param>
+    /// <param name="value">要添加的值 / The value to add.</param>
     public void Add(TKey key, TValue value)
     {
         base.Add(new NullObject<TKey>(key), value);
     }
 
     /// <summary>
-    /// 从字典中移除指定的键
+    /// 从字典中移除指定键的值。
     /// </summary>
-    /// <param name="key">键</param>
-    /// <returns>如果成功移除则返回 true，否则返回 false</returns>
+    /// <remarks>
+    /// Removes the value with the specified key from the dictionary.
+    /// </remarks>
+    /// <param name="key">要移除的键 / The key to remove.</param>
+    /// <returns>如果成功移除则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the element is successfully removed; otherwise <c>false</c>.</returns>
     public bool Remove(TKey key)
     {
         return base.Remove(new NullObject<TKey>(key));
     }
 
     /// <summary>
-    /// 尝试获取指定键的值
+    /// 尝试获取与指定键关联的值。
     /// </summary>
-    /// <param name="key">键</param>
-    /// <param name="value">输出参数，存储找到的值</param>
-    /// <returns>如果找到则返回 true，否则返回 false</returns>
+    /// <remarks>
+    /// Attempts to get the value associated with the specified key.
+    /// </remarks>
+    /// <param name="key">要查找的键 / The key to locate.</param>
+    /// <param name="value">输出参数，存储找到的值 / Output parameter that stores the found value.</param>
+    /// <returns>如果找到则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the key is found; otherwise <c>false</c>.</returns>
     public bool TryGetValue(TKey key, out TValue value)
     {
         return base.TryGetValue(new NullObject<TKey>(key), out value);
     }
 
     /// <summary>
-    /// 从 Dictionary&lt;TKey, TValue&gt; 隐式转换为 NullableDictionary&lt;TKey, TValue&gt;
+    /// 从 <see cref="Dictionary{TKey, TValue}"/> 隐式转换为 <see cref="NullableDictionary{TKey, TValue}"/>。
     /// </summary>
-    /// <param name="dic">源字典，不能为 null</param>
-    /// <returns>转换后的 NullableDictionary 实例</returns>
-    /// <exception cref="ArgumentNullException">当 dic 为 null 时抛出</exception>
+    /// <remarks>
+    /// Implicitly converts a <see cref="Dictionary{TKey, TValue}"/> to a <see cref="NullableDictionary{TKey, TValue}"/>.
+    /// </remarks>
+    /// <param name="dic">源字典 / The source dictionary.</param>
+    /// <returns>转换后的 <see cref="NullableDictionary{TKey, TValue}"/> 实例 / The converted <see cref="NullableDictionary{TKey, TValue}"/> instance.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> is null.</exception>
     public static implicit operator NullableDictionary<TKey, TValue>(Dictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -416,11 +489,14 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 从 ConcurrentDictionary&lt;TKey, TValue&gt; 隐式转换为 NullableDictionary&lt;TKey, TValue&gt;
+    /// 从 <see cref="ConcurrentDictionary{TKey, TValue}"/> 隐式转换为 <see cref="NullableDictionary{TKey, TValue}"/>。
     /// </summary>
-    /// <param name="dic">源字典，不能为 null</param>
-    /// <returns>转换后的 NullableDictionary 实例</returns>
-    /// <exception cref="ArgumentNullException">当 dic 为 null 时抛出</exception>
+    /// <remarks>
+    /// Implicitly converts a <see cref="ConcurrentDictionary{TKey, TValue}"/> to a <see cref="NullableDictionary{TKey, TValue}"/>.
+    /// </remarks>
+    /// <param name="dic">源字典 / The source dictionary.</param>
+    /// <returns>转换后的 <see cref="NullableDictionary{TKey, TValue}"/> 实例 / The converted <see cref="NullableDictionary{TKey, TValue}"/> instance.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> is null.</exception>
     public static implicit operator NullableDictionary<TKey, TValue>(ConcurrentDictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -435,11 +511,14 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     }
 
     /// <summary>
-    /// 从 NullableDictionary{TKey, TValue} 隐式转换为 Dictionary{TKey, TValue}
+    /// 从 <see cref="NullableDictionary{TKey, TValue}"/> 隐式转换为 <see cref="Dictionary{TKey, TValue}"/>。
     /// </summary>
-    /// <param name="dic">源字典，不能为 null</param>
-    /// <returns>转换后的 Dictionary 实例</returns>
-    /// <exception cref="ArgumentNullException">当 dic 为 null 时抛出</exception>
+    /// <remarks>
+    /// Implicitly converts a <see cref="NullableDictionary{TKey, TValue}"/> to a <see cref="Dictionary{TKey, TValue}"/>.
+    /// </remarks>
+    /// <param name="dic">源字典 / The source dictionary.</param>
+    /// <returns>转换后的 <see cref="Dictionary{TKey, TValue}"/> 实例 / The converted <see cref="Dictionary{TKey, TValue}"/> instance.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> is null.</exception>
     public static implicit operator Dictionary<TKey, TValue>(NullableDictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
