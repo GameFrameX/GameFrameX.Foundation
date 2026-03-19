@@ -39,21 +39,25 @@ namespace GameFrameX.Foundation.Http.Normalization;
 /// <summary>
 /// 提供用于处理HTTP JSON结果的扩展方法。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for handling HTTP JSON results.
+/// </remarks>
 public static class HttpJsonResultHelper
 {
     /// <summary>
-    /// 将JSON字符串转换为HttpJsonResultData对象
+    /// 将JSON字符串转换为HttpJsonResultData对象。
     /// </summary>
-    /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型，必须是引用类型且包含无参构造函数</typeparam>
-    /// <param name="jsonResult">需要转换的JSON字符串</param>
-    /// <returns>返回转换后的HttpJsonResultData对象，包含反序列化结果和状态信息</returns>
     /// <remarks>
-    /// 该方法会:
-    /// 1. 尝试将JSON字符串反序列化为HttpJsonResult对象
-    /// 2. 根据响应码(Code)判断请求是否成功（IsSuccess属性自动根据Code==0计算）
-    /// 3. 如果成功(Code=0)，则将Data字段反序列化为泛型类型T
-    /// 4. 如果失败，则保留错误信息，Data字段为默认值
+    /// Converts a JSON string to an HttpJsonResultData object.
+    /// This method will:
+    /// 1. Attempt to deserialize the JSON string into an HttpJsonResult object
+    /// 2. Determine if the request was successful based on the response code (IsSuccess property is automatically calculated based on Code==0)
+    /// 3. If successful (Code=0), deserialize the Data field into the generic type T
+    /// 4. If failed, preserve the error message and set the Data field to the default value
     /// </remarks>
+    /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型，必须是引用类型且包含无参构造函数 / Generic parameter T representing the target type to deserialize, must be a reference type with a parameterless constructor</typeparam>
+    /// <param name="jsonResult">需要转换的JSON字符串 / The JSON string to convert</param>
+    /// <returns>返回转换后的HttpJsonResultData对象，包含反序列化结果和状态信息 / The converted HttpJsonResultData object containing the deserialized result and status information</returns>
     public static HttpJsonResultData<T> ToHttpJsonResultData<T>(this string jsonResult) where T : class, new()
     {
         // 创建默认结果对象，Code初始化为失败状态
