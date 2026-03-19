@@ -38,22 +38,28 @@ using GameFrameX.Foundation.Json;
 namespace GameFrameX.Foundation.Http.Extension;
 
 /// <summary>
-/// HttpClient的POST请求扩展方法
+/// HttpClient的POST请求扩展方法。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for HttpClient POST requests.
+/// </remarks>
 public static class HttpClientPostExtension
 {
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data and reads the response content as a string.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostJsonToStringAsync<TValue>(this HttpClient httpClient, string url, TValue data, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -64,18 +70,21 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="jsonSerializerOptions">JSON序列化选项</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data using custom serialization options and reads the response content as a string.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostJsonToStringAsync<TValue>(this HttpClient httpClient, string url, TValue data, JsonSerializerOptions jsonSerializerOptions, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -86,19 +95,22 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data and custom headers, then reads the response content as a string.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostJsonToStringAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -114,20 +126,23 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="jsonSerializerOptions">JSON序列化选项</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data, custom headers and serialization options, then reads the response content as a string.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostJsonToStringAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, JsonSerializerOptions jsonSerializerOptions, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -143,17 +158,20 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字节数组形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data and reads the response content as a byte array.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字节数组形式 / The response content as a byte array</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<byte[]> PostJsonToByteArrayAsync<TValue>(this HttpClient httpClient, string url, TValue data, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -164,18 +182,21 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="jsonSerializerOptions">JSON序列化选项</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字节数组形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data using custom serialization options and reads the response content as a byte array.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字节数组形式 / The response content as a byte array</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<byte[]> PostJsonToByteArrayAsync<TValue>(this HttpClient httpClient, string url, TValue data, JsonSerializerOptions jsonSerializerOptions, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -186,19 +207,22 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字节数组形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data and custom headers, then reads the response content as a byte array.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字节数组形式 / The response content as a byte array</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<byte[]> PostJsonToByteArrayAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -214,20 +238,23 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组
+    /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为字节数组。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="jsonSerializerOptions">JSON序列化选项</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字节数组形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data, custom headers and serialization options, then reads the response content as a byte array.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字节数组形式 / The response content as a byte array</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<byte[]> PostJsonToByteArrayAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, JsonSerializerOptions jsonSerializerOptions, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -244,17 +271,20 @@ public static class HttpClientPostExtension
 
     /// <summary>
     /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为流。
-    /// 注意：调用方负责释放返回的流。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的流形式，调用方需负责释放</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data and reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<Stream> PostJsonToStreamAsync<TValue>(this HttpClient httpClient, string url, TValue data, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -268,18 +298,21 @@ public static class HttpClientPostExtension
 
     /// <summary>
     /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为流。
-    /// 注意：调用方负责释放返回的流。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="jsonSerializerOptions">JSON序列化选项</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的流形式，调用方需负责释放</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data using custom serialization options and reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<Stream> PostJsonToStreamAsync<TValue>(this HttpClient httpClient, string url, TValue data, JsonSerializerOptions jsonSerializerOptions, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -293,19 +326,22 @@ public static class HttpClientPostExtension
 
     /// <summary>
     /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为流。
-    /// 注意：调用方负责释放返回的流。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的流形式，调用方需负责释放</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data and custom headers, then reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<Stream> PostJsonToStreamAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -324,20 +360,23 @@ public static class HttpClientPostExtension
 
     /// <summary>
     /// 发送POST请求，将JSON数据序列化后发送，并将响应内容读取为流。
-    /// 注意：调用方负责释放返回的流。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="jsonSerializerOptions">JSON序列化选项</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的流形式，调用方需负责释放</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with JSON serialized data, custom headers and serialization options, then reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<Stream> PostJsonToStreamAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, JsonSerializerOptions jsonSerializerOptions, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -355,16 +394,19 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将表单数据发送，并将响应内容读取为字符串
+    /// 发送POST请求，将表单数据发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="formData">表单数据</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with form data and reads the response content as a string.
+    /// </remarks>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="formData">表单数据 / The form data</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostFormToStringAsync(this HttpClient httpClient, string url, IEnumerable<KeyValuePair<string, string>> formData, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -376,18 +418,21 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将表单数据发送，并将响应内容读取为字符串
+    /// 发送POST请求，将表单数据发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="formData">表单数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with form data and custom headers, then reads the response content as a string.
+    /// </remarks>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="formData">表单数据 / The form data</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostFormToStringAsync(this HttpClient httpClient, string url, IEnumerable<KeyValuePair<string, string>> formData, IDictionary<string, string> headers, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -413,16 +458,19 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将文件内容发送，并将响应内容读取为字符串
+    /// 发送POST请求，将文件内容发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="filePath">文件路径</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url或filePath为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with file content and reads the response content as a string.
+    /// </remarks>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="filePath">文件路径 / The file path</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 或 <paramref name="filePath"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> or <paramref name="filePath"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostFileToStringAsync(this HttpClient httpClient, string url, string filePath, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -438,18 +486,21 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将文件内容发送，并将响应内容读取为字符串
+    /// 发送POST请求，将文件内容发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="filePath">文件路径</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="timeout">超时时间(秒)，默认10秒</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url或filePath为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with file content and custom headers, then reads the response content as a string.
+    /// </remarks>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="filePath">文件路径 / The file path</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 或 <paramref name="filePath"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> or <paramref name="filePath"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostFileToStringAsync(this HttpClient httpClient, string url, string filePath, IDictionary<string, string> headers, int timeout = 10, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -480,18 +531,21 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 发送POST请求，将文件内容作为Multipart表单发送，并将响应内容读取为字符串
+    /// 发送POST请求，将文件内容作为Multipart表单发送，并将响应内容读取为字符串。
     /// </summary>
-    /// <param name="httpClient">HttpClient实例</param>
-    /// <param name="url">请求URL</param>
-    /// <param name="fileFieldName">文件字段名</param>
-    /// <param name="filePath">文件路径</param>
-    /// <param name="formData">额外的表单数据</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>响应内容的字符串形式</returns>
-    /// <exception cref="ArgumentNullException">当httpClient或url为null时抛出</exception>
-    /// <exception cref="ArgumentException">当url、fileFieldName或filePath为空字符串或空白字符串时抛出</exception>
-    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出</exception>
+    /// <remarks>
+    /// Sends a POST request with file content as multipart form data and reads the response content as a string.
+    /// </remarks>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="fileFieldName">文件字段名 / The file field name</param>
+    /// <param name="filePath">文件路径 / The file path</param>
+    /// <param name="formData">额外的表单数据 / Additional form data</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/>、<paramref name="fileFieldName"/> 或 <paramref name="filePath"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/>, <paramref name="fileFieldName"/>, or <paramref name="filePath"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
     public static async Task<string> PostMultipartFileToStringAsync(this HttpClient httpClient, string url, string fileFieldName, string filePath, Dictionary<string, string>? formData = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
@@ -519,14 +573,17 @@ public static class HttpClientPostExtension
     }
 
     /// <summary>
-    /// 创建POST请求消息（带JSON内容）
+    /// 创建POST请求消息（带JSON内容）。
     /// </summary>
-    /// <typeparam name="TValue">要发送的数据类型</typeparam>
-    /// <param name="url">请求URL</param>
-    /// <param name="data">要发送的数据</param>
-    /// <param name="headers">请求头字典</param>
-    /// <param name="jsonSerializerOptions">JSON序列化选项</param>
-    /// <returns>HttpRequestMessage实例</returns>
+    /// <remarks>
+    /// Creates a POST request message with JSON content and custom headers.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <returns>HttpRequestMessage实例 / The HttpRequestMessage instance</returns>
     private static HttpRequestMessage CreatePostRequest<TValue>(string url, TValue data, IDictionary<string, string> headers, JsonSerializerOptions jsonSerializerOptions)
     {
         var request = new HttpRequestMessage(HttpMethod.Post, url)
