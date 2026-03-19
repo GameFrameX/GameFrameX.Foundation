@@ -42,24 +42,28 @@ namespace GameFrameX.Foundation.Extensions;
 /// 提供 <see cref="Span{T}"/> 和 <see cref="ReadOnlySpan{T}"/> 的扩展方法，用于二进制数据的读写操作。
 /// </summary>
 /// <remarks>
-/// <para>该类提供了以下功能：</para>
+/// Provides extension methods for <see cref="Span{T}"/> and <see cref="ReadOnlySpan{T}"/> for binary data read/write operations.
+/// <para>该类提供了以下功能 / This class provides the following features:</para>
 /// <list type="bullet">
-/// <item><description>基础类型（byte、sbyte、bool）的读写</description></item>
-/// <item><description>大端字节序（BigEndian）的数值读写</description></item>
-/// <item><description>小端字节序（LittleEndian）的数值读写</description></item>
-/// <item><description>字节数组和字符串的读写</description></item>
+/// <item><description>基础类型（byte、sbyte、bool）的读写 / Read and write operations for basic types (byte, sbyte, bool)</description></item>
+/// <item><description>大端字节序（BigEndian）的数值读写 / Big-endian numeric read/write operations</description></item>
+/// <item><description>小端字节序（LittleEndian）的数值读写 / Little-endian numeric read/write operations</description></item>
+/// <item><description>字节数组和字符串的读写 / Byte array and string read/write operations</description></item>
 /// </list>
-/// <para>所有方法都支持自动更新偏移量，简化连续读写操作。</para>
+/// <para>所有方法都支持自动更新偏移量，简化连续读写操作 / All methods support automatic offset updates to simplify consecutive read/write operations.</para>
 /// </remarks>
 public static partial class SpanExtensions
 {
     /// <summary>
     /// 将字节值写入到指定的字节跨度中，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的字节值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a byte value to the specified byte span and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的字节值 / The byte value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteByteValue(this Span<byte> buffer, byte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -76,10 +80,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将有符号字节值写入到指定的字节跨度中，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的有符号字节值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a signed byte value to the specified byte span and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的有符号字节值 / The signed byte value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteSByteValue(this Span<byte> buffer, sbyte value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -96,10 +103,14 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将布尔值写入到指定的字节跨度中，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的布尔值，true 写入 1，false 写入 0。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a boolean value to the specified byte span and updates the offset.
+    /// Writes 1 for true and 0 for false.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的布尔值，true 写入 1，false 写入 0 / The boolean value to write, writes 1 for true, 0 for false.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteBoolValue(this Span<byte> buffer, bool value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -116,11 +127,14 @@ public static partial class SpanExtensions
     /// <summary>
     /// 在给定的偏移量位置，向缓冲区中写入字节序列，不包含长度信息。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的字节数组。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a byte sequence to the buffer at the given offset position without length information.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的字节数组 / The byte array to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after writing.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出 / Thrown when <paramref name="value"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static unsafe void WriteBytesWithoutLength(this Span<byte> buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -141,10 +155,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从给定的字节跨度中读取一个字节并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数。</param>
-    /// <returns>返回读取的字节值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a byte from the given byte span and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after reading.</param>
+    /// <returns>返回读取的字节值 / Returns the read byte value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static byte ReadByteValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -163,10 +180,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从给定的字节跨度中读取一个有符号字节并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数。</param>
-    /// <returns>返回读取的有符号字节值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a signed byte from the given byte span and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after reading.</param>
+    /// <returns>返回读取的有符号字节值 / Returns the read signed byte value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static sbyte ReadSByteValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -184,10 +204,14 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从给定的字节跨度中读取一个布尔值并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数。</param>
-    /// <returns>返回读取的布尔值，非零值为 true，零为 false。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a boolean value from the given byte span and updates the offset.
+    /// Non-zero values are interpreted as true, zero as false.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after reading.</param>
+    /// <returns>返回读取的布尔值，非零值为 true，零为 false / Returns the read boolean value, non-zero values are true, zero is false.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static bool ReadBoolValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));

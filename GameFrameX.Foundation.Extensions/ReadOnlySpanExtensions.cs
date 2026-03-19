@@ -38,17 +38,23 @@ using GameFrameX.Foundation.Extensions.Localization;
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// 提供对 ReadOnlySpan&lt;byte&gt; 的扩展方法，用于读取各种数据类型
+/// 提供对 ReadOnlySpan&lt;byte&gt; 的扩展方法，用于读取各种数据类型。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for ReadOnlySpan&lt;byte&gt; to read various data types.
+/// </remarks>
 public static class ReadOnlySpanExtensions
 {
     /// <summary>
     /// 从字节数组中以指定偏移量读取无符号整型（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的无符号整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned integer from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的无符号整型 / The read unsigned integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static uint ReadUIntBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -66,10 +72,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取整型（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an integer from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的整型 / The read integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static int ReadIntBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -87,10 +96,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取无符号长整型（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的无符号长整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned long integer from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的无符号长整型 / The read unsigned long integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static ulong ReadULongBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -108,10 +120,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取长整型（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的长整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a long integer from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的长整型 / The read long integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static long ReadLongBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -129,10 +144,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取无符号短整型（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的无符号短整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned short integer from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的无符号短整型 / The read unsigned short integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static ushort ReadUShortBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -150,10 +168,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取短整型（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的短整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a short integer from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的短整型 / The read short integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static short ReadShortBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -171,10 +192,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取单精度浮点数（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的单精度浮点数。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a single-precision floating-point number from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的单精度浮点数 / The read single-precision floating-point number.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static float ReadFloatBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -192,10 +216,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取双精度浮点数（大端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的双精度浮点数。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a double-precision floating-point number from the byte array at the specified offset in big-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的双精度浮点数 / The read double-precision floating-point number.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static double ReadDoubleBigEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -213,10 +240,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取无符号整型（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的无符号整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned integer from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的无符号整型 / The read unsigned integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static uint ReadUIntLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -234,10 +264,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取整型（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an integer from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的整型 / The read integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static int ReadIntLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -255,10 +288,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取无符号长整型（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的无符号长整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned long integer from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的无符号长整型 / The read unsigned long integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static ulong ReadULongLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -276,10 +312,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取长整型（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的长整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a long integer from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的长整型 / The read long integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static long ReadLongLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -297,10 +336,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取无符号短整型（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的无符号短整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads an unsigned short integer from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的无符号短整型 / The read unsigned short integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static ushort ReadUShortLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -318,10 +360,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取短整型（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的短整型。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a short integer from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的短整型 / The read short integer.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static short ReadShortLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -339,10 +384,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取单精度浮点数（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的单精度浮点数。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a single-precision floating-point number from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的单精度浮点数 / The read single-precision floating-point number.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static float ReadFloatLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -360,10 +408,13 @@ public static class ReadOnlySpanExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取双精度浮点数（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。不能为空。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。必须为非负数。</param>
-    /// <returns>读取的双精度浮点数。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reads a double-precision floating-point number from the byte array at the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组，不能为空 / The byte array to read data from, cannot be empty.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加，必须为非负数 / The starting offset for reading data, automatically increments after reading, must be non-negative.</param>
+    /// <returns>读取的双精度浮点数 / The read double-precision floating-point number.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当偏移量为负数或超出缓冲区有效范围时抛出 / Thrown when the offset is negative or exceeds the valid buffer range.</exception>
     public static double ReadDoubleLittleEndianValue(this ReadOnlySpan<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));

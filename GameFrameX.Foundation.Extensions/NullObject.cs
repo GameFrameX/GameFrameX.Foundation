@@ -39,13 +39,19 @@ namespace GameFrameX.Foundation.Extensions;
 /// <summary>
 /// 表示可为空的对象。
 /// </summary>
-/// <typeparam name="T">对象的类型。</typeparam>
+/// <remarks>
+/// Represents an object that can be null.
+/// </remarks>
+/// <typeparam name="T">对象的类型 / The type of the object.</typeparam>
 public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEquatable<NullObject<T>>
 {
     /// <summary>
     /// 初始化一个新的 <see cref="NullObject{T}" /> 实例。
     /// </summary>
-    /// <param name="item">对象的值。</param>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="NullObject{T}" /> struct.
+    /// </remarks>
+    /// <param name="item">对象的值 / The value of the object.</param>
     public NullObject(T item)
     {
         Item = item;
@@ -54,6 +60,9 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 获取一个表示空值的 <see cref="NullObject{T}" /> 实例。
     /// </summary>
+    /// <remarks>
+    /// Gets a <see cref="NullObject{T}" /> instance representing a null value.
+    /// </remarks>
     public static NullObject<T> Null
     {
         get { return new NullObject<T>(); }
@@ -62,14 +71,21 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 获取对象的值。
     /// </summary>
+    /// <remarks>
+    /// Gets the value of the object.
+    /// </remarks>
+    /// <value>对象的值 / The value of the object.</value>
     public T Item { get; }
 
     /// <summary>
     /// 比较当前对象与另一个对象。
     /// </summary>
-    /// <param name="value">要比较的对象。</param>
-    /// <returns>一个整数，指示当前对象与 <paramref name="value" /> 的相对顺序。</returns>
-    /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出。</exception>
+    /// <remarks>
+    /// Compares the current object with another object.
+    /// </remarks>
+    /// <param name="value">要比较的对象 / The object to compare with.</param>
+    /// <returns>一个整数，指示当前对象与 <paramref name="value" /> 的相对顺序 / An integer indicating the relative order of the current object and <paramref name="value" />.</returns>
+    /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出 / Thrown when Item is null and cannot be compared.</exception>
     public int CompareTo(object value)
     {
         if (value is null)
@@ -113,9 +129,12 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 比较当前对象与同一类型的另一个对象。
     /// </summary>
-    /// <param name="other">要比较的对象。</param>
-    /// <returns>一个整数，指示当前对象与 <paramref name="other" /> 的相对顺序。</returns>
-    /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出。</exception>
+    /// <remarks>
+    /// Compares the current object with another object of the same type.
+    /// </remarks>
+    /// <param name="other">要比较的对象 / The object to compare with.</param>
+    /// <returns>一个整数，指示当前对象与 <paramref name="other" /> 的相对顺序 / An integer indicating the relative order of the current object and <paramref name="other" />.</returns>
+    /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出 / Thrown when Item is null and cannot be compared.</exception>
     public int CompareTo(T other)
     {
         if (Item is null && other is null)
@@ -144,8 +163,11 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 指示当前对象是否等于同一类型的另一个对象。
     /// </summary>
-    /// <param name="other">一个与此对象进行比较的对象。</param>
-    /// <returns>如果当前对象等于 <paramref name="other" /> 参数，则为 true；否则为 false。</returns>
+    /// <remarks>
+    /// Indicates whether the current object is equal to another object of the same type.
+    /// </remarks>
+    /// <param name="other">一个与此对象进行比较的对象 / An object to compare with this object.</param>
+    /// <returns>如果当前对象等于 <paramref name="other" /> 参数，则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the current object equals the <paramref name="other" /> parameter; otherwise, <c>false</c>.</returns>
     public bool Equals(NullObject<T> other)
     {
         return EqualityComparer<T>.Default.Equals(Item, other.Item);
@@ -154,7 +176,10 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 将 <see cref="NullObject{T}" /> 隐式转换为类型 <typeparamref name="T" />。
     /// </summary>
-    /// <param name="nullObject">要转换的 <see cref="NullObject{T}" /> 实例。</param>
+    /// <remarks>
+    /// Implicitly converts a <see cref="NullObject{T}" /> to type <typeparamref name="T" />.
+    /// </remarks>
+    /// <param name="nullObject">要转换的 <see cref="NullObject{T}" /> 实例 / The <see cref="NullObject{T}" /> instance to convert.</param>
     public static implicit operator T(NullObject<T> nullObject)
     {
         return nullObject.Item;
@@ -163,7 +188,10 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 将类型 <typeparamref name="T" /> 隐式转换为 <see cref="NullObject{T}" />。
     /// </summary>
-    /// <param name="item">要转换的值。</param>
+    /// <remarks>
+    /// Implicitly converts a value of type <typeparamref name="T" /> to <see cref="NullObject{T}" />.
+    /// </remarks>
+    /// <param name="item">要转换的值 / The value to convert.</param>
     public static implicit operator NullObject<T>(T item)
     {
         return new NullObject<T>(item);
@@ -172,7 +200,10 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 返回对象的字符串表示形式。
     /// </summary>
-    /// <returns>对象的字符串表示形式，如果对象为 null，则返回 "NULL"。</returns>
+    /// <remarks>
+    /// Returns the string representation of the object.
+    /// </remarks>
+    /// <returns>对象的字符串表示形式，如果对象为 null，则返回 "NULL" / The string representation of the object, or "NULL" if the object is null.</returns>
     public override string ToString()
     {
         return Item != null ? Item.ToString() : "NULL";
@@ -181,7 +212,10 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <summary>
     /// 返回当前对象的哈希代码。
     /// </summary>
-    /// <returns>当前对象的哈希代码。</returns>
+    /// <remarks>
+    /// Returns the hash code of the current object.
+    /// </remarks>
+    /// <returns>当前对象的哈希代码 / The hash code of the current object.</returns>
     public override int GetHashCode()
     {
         return EqualityComparer<T>.Default.GetHashCode(Item);

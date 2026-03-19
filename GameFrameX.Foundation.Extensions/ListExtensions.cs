@@ -34,18 +34,24 @@
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// 提供List和IEnumerable的扩展方法
+/// 提供 List 和 IEnumerable 的扩展方法。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for List and IEnumerable.
+/// </remarks>
 public static class ListExtensions
 {
     /// <summary>
-    /// 异步遍历List中的每个元素并执行指定操作
+    /// 异步遍历 List 中的每个元素并执行指定操作。
     /// </summary>
-    /// <typeparam name="T">列表元素类型</typeparam>
-    /// <param name="list">要遍历的列表</param>
-    /// <param name="func">要执行的异步操作</param>
-    /// <returns>表示异步操作的任务</returns>
-    /// <exception cref="ArgumentNullException">当list或func为null时抛出</exception>
+    /// <remarks>
+    /// Asynchronically iterates through each element in the list and executes the specified operation.
+    /// </remarks>
+    /// <typeparam name="T">列表元素类型 / The type of list elements.</typeparam>
+    /// <param name="list">要遍历的列表，不能为 <c>null</c> / The list to iterate, cannot be <c>null</c>.</param>
+    /// <param name="func">要执行的异步操作，不能为 <c>null</c> / The asynchronous operation to execute, cannot be <c>null</c>.</param>
+    /// <returns>表示异步操作的任务 / A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 或 <paramref name="func"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="list"/> or <paramref name="func"/> is <c>null</c>.</exception>
     public static async Task ForEachAsync<T>(this List<T> list, Func<T, Task> func)
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
@@ -58,13 +64,16 @@ public static class ListExtensions
     }
 
     /// <summary>
-    /// 异步遍历IEnumerable中的每个元素并执行指定操作
+    /// 异步遍历 IEnumerable 中的每个元素并执行指定操作。
     /// </summary>
-    /// <typeparam name="T">集合元素类型</typeparam>
-    /// <param name="source">要遍历的集合</param>
-    /// <param name="action">要执行的异步操作</param>
-    /// <returns>表示异步操作的任务</returns>
-    /// <exception cref="ArgumentNullException">当source或action为null时抛出</exception>
+    /// <remarks>
+    /// Asynchronously iterates through each element in the IEnumerable and executes the specified operation.
+    /// </remarks>
+    /// <typeparam name="T">集合元素类型 / The type of collection elements.</typeparam>
+    /// <param name="source">要遍历的集合，不能为 <c>null</c> / The collection to iterate, cannot be <c>null</c>.</param>
+    /// <param name="action">要执行的异步操作，不能为 <c>null</c> / The asynchronous operation to execute, cannot be <c>null</c>.</param>
+    /// <returns>表示异步操作的任务 / A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/> 或 <paramref name="action"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="source"/> or <paramref name="action"/> is <c>null</c>.</exception>
     public static async Task ForEachAsync<T>(this IEnumerable<T> source, Func<T, Task> action)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));

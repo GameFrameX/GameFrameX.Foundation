@@ -36,16 +36,22 @@ using System.Collections.Concurrent;
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
-/// 字典扩展
+/// 字典扩展。
 /// </summary>
+/// <remarks>
+/// Dictionary extension methods.
+/// </remarks>
 public static class IDictionaryExtensions
 {
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <param name="self">目标字典</param>
-    /// <param name="that">另一个字典集</param>
-    /// <exception cref="ArgumentNullException">当 self 或 that 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates key-value pairs.
+    /// </remarks>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="that"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="that"/> is null.</exception>
     public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -58,11 +64,14 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <param name="self">目标字典</param>
-    /// <param name="that">另一个字典集</param>
-    /// <exception cref="ArgumentNullException">当 self 或 that 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates key-value pairs.
+    /// </remarks>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="that"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="that"/> is null.</exception>
     public static void AddOrUpdate<TKey, TValue>(this NullableDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -75,11 +84,14 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <param name="self">目标字典</param>
-    /// <param name="that">另一个字典集</param>
-    /// <exception cref="ArgumentNullException">当 self 或 that 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates key-value pairs.
+    /// </remarks>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="that"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="that"/> is null.</exception>
     public static void AddOrUpdate<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -92,13 +104,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair.
+    /// </remarks>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, TValue addValue, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -114,13 +129,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair.
+    /// </remarks>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this NullableDictionary<TKey, TValue> self, TKey key, TValue addValue, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -136,15 +154,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, TKey key, TValue addValue, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -160,15 +181,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValue">更新时的值</param>
-    /// <exception cref="ArgumentNullException">当 self 或 key 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValue">更新时的值 / The value to update.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="key"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="key"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, TValue addValue, TValue updateValue)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -183,13 +207,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValue">更新时的值</param>
-    /// <exception cref="ArgumentNullException">当 self 或 key 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair.
+    /// </remarks>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValue">更新时的值 / The value to update.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="key"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="key"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this NullableDictionary<TKey, TValue> self, TKey key, TValue addValue, TValue updateValue)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -204,15 +231,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValue">更新时的值</param>
-    /// <exception cref="ArgumentNullException">当 self 或 key 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValue">更新时的值 / The value to update.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/> 或 <paramref name="key"/> 为 null 时抛出 / Thrown when <paramref name="self"/> or <paramref name="key"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, TKey key, TValue addValue, TValue updateValue)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -227,14 +257,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、that 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates key-value pairs from another dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="that"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="that"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static void AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -248,14 +281,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、that 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates key-value pairs from another dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="that"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="that"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static void AddOrUpdate<TKey, TValue>(this NullableDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -269,14 +305,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、that 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates key-value pairs from another dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="that"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="that"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static void AddOrUpdate<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -290,15 +329,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValueFactory">添加时的操作</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key、addValueFactory 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair using factory functions.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加时的操作 / The function to create the value when adding.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/>、<paramref name="addValueFactory"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, <paramref name="addValueFactory"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -315,15 +357,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValueFactory">添加时的操作</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key、addValueFactory 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair using factory functions.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加时的操作 / The function to create the value when adding.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/>、<paramref name="addValueFactory"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, <paramref name="addValueFactory"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this NullableDictionary<TKey, TValue> self, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -340,15 +385,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValueFactory">添加时的操作</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key、addValueFactory 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Adds or updates a key-value pair using factory functions.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加时的操作 / The function to create the value when adding.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/>、<paramref name="addValueFactory"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, <paramref name="addValueFactory"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static TValue AddOrUpdate<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, TKey key, Func<TKey, TValue> addValueFactory, Func<TKey, TValue, TValue> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -365,15 +413,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Asynchronously adds or updates a key-value pair.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, TValue addValue, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -389,15 +440,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
-    /// <exception cref="ArgumentNullException">当 self、key 或 updateValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Asynchronously adds or updates a key-value pair.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/> 或 <paramref name="updateValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, or <paramref name="updateValueFactory"/> is null.</exception>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this NullableDictionary<TKey, TValue> self, TKey key, TValue addValue, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -413,14 +467,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="key">键</param>
-    /// <param name="addValue">添加时的值</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates a key-value pair.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">添加时的值 / The value to add.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, TKey key, TValue addValue, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         if (!self.TryAdd(key, addValue))
@@ -432,53 +489,65 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates key-value pairs from another dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static Task AddOrUpdateAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         return that.ForeachAsync(item => AddOrUpdateAsync(self, item.Key, item.Value, updateValueFactory));
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates key-value pairs from another dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static Task AddOrUpdateAsync<TKey, TValue>(this NullableDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         return that.ForeachAsync(item => AddOrUpdateAsync(self, item.Key, item.Value, updateValueFactory));
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates key-value pairs from another dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="that">另一个字典集 / Another dictionary.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static Task AddOrUpdateAsync<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         return that.ForeachAsync(item => AddOrUpdateAsync(self, item.Key, item.Value, updateValueFactory));
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="key">键</param>
-    /// <param name="addValueFactory">添加时的操作</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates a key-value pair using factory functions.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加时的异步操作 / The async function to create the value when adding.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, Func<TKey, Task<TValue>> addValueFactory, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         if (!self.TryAdd(key, await addValueFactory(key).ConfigureAwait(false)))
@@ -490,14 +559,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="key">键</param>
-    /// <param name="addValueFactory">添加时的操作</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates a key-value pair using factory functions.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加时的异步操作 / The async function to create the value when adding.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this NullableDictionary<TKey, TValue> self, TKey key, Func<TKey, Task<TValue>> addValueFactory, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         if (!self.TryAdd(key, await addValueFactory(key).ConfigureAwait(false)))
@@ -509,14 +581,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步添加或更新键值对。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="key">键</param>
-    /// <param name="addValueFactory">添加时的操作</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates a key-value pair using factory functions.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加时的异步操作 / The async function to create the value when adding.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static async Task<TValue> AddOrUpdateAsync<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, TKey key, Func<TKey, Task<TValue>> addValueFactory, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         if (!self.TryAdd(key, await addValueFactory(key).ConfigureAwait(false)))
@@ -528,10 +603,15 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
+    /// <remarks>
+    /// Adds or updates key-value pairs from the current dictionary to the target dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target dictionary.</param>
     public static void AddOrUpdateTo<TKey, TValue>(this IDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that)
     {
         foreach (var item in self)
@@ -541,10 +621,15 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
+    /// <remarks>
+    /// Adds or updates key-value pairs from the current NullableDictionary to the target dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target dictionary.</param>
     public static void AddOrUpdateTo<TKey, TValue>(this NullableDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that)
     {
         foreach (var item in self)
@@ -554,10 +639,15 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
+    /// <remarks>
+    /// Adds or updates key-value pairs from the current NullableConcurrentDictionary to the target dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target dictionary.</param>
     public static void AddOrUpdateTo<TKey, TValue>(this NullableConcurrentDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that)
     {
         foreach (var item in self)
@@ -567,13 +657,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Adds or updates key-value pairs from the current dictionary to the target dictionary with an update function.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target dictionary.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
     public static void AddOrUpdateTo<TKey, TValue>(this IDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, TValue> updateValueFactory)
     {
         foreach (var item in self)
@@ -583,13 +676,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Adds or updates key-value pairs from the current dictionary to the target NullableDictionary with an update function.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target NullableDictionary.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
     public static void AddOrUpdateTo<TKey, TValue>(this IDictionary<TKey, TValue> self, NullableDictionary<TKey, TValue> that, Func<TKey, TValue, TValue> updateValueFactory)
     {
         foreach (var item in self)
@@ -599,13 +695,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Adds or updates key-value pairs from the current dictionary to the target NullableConcurrentDictionary with an update function.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target NullableConcurrentDictionary.</param>
+    /// <param name="updateValueFactory">更新时的操作 / The function to update the value.</param>
     public static void AddOrUpdateTo<TKey, TValue>(this IDictionary<TKey, TValue> self, NullableConcurrentDictionary<TKey, TValue> that, Func<TKey, TValue, TValue> updateValueFactory)
     {
         foreach (var item in self)
@@ -615,53 +714,65 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates key-value pairs from the current dictionary to the target dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target dictionary.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static Task AddOrUpdateToAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, IDictionary<TKey, TValue> that, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         return self.ForeachAsync(item => AddOrUpdateAsync(that, item.Key, item.Value, updateValueFactory));
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates key-value pairs from the current dictionary to the target NullableDictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target NullableDictionary.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static Task AddOrUpdateToAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, NullableDictionary<TKey, TValue> that, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         return self.ForeachAsync(item => AddOrUpdateAsync(that, item.Key, item.Value, updateValueFactory));
     }
 
     /// <summary>
-    /// 添加或更新键值对
+    /// 异步将当前字典的键值对添加或更新到目标字典中。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="that">另一个字典集</param>
-    /// <param name="updateValueFactory">更新时的操作</param>
+    /// <remarks>
+    /// Asynchronously adds or updates key-value pairs from the current dictionary to the target NullableConcurrentDictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">源字典 / The source dictionary.</param>
+    /// <param name="that">目标字典 / The target NullableConcurrentDictionary.</param>
+    /// <param name="updateValueFactory">更新时的异步操作 / The async function to update the value.</param>
     public static Task AddOrUpdateToAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, NullableConcurrentDictionary<TKey, TValue> that, Func<TKey, TValue, Task<TValue>> updateValueFactory)
     {
         return self.ForeachAsync(item => AddOrUpdateAsync(that, item.Key, item.Value, updateValueFactory));
     }
 
     /// <summary>
-    /// 获取或添加
+    /// 获取或添加指定键对应的值。
     /// </summary>
-    /// <typeparam name="TKey">键的类型</typeparam>
-    /// <typeparam name="TValue">值的类型</typeparam>
-    /// <param name="self">目标字典</param>
-    /// <param name="key">键</param>
-    /// <param name="addValueFactory">添加值的工厂方法</param>
-    /// <exception cref="ArgumentNullException">当 self、key 或 addValueFactory 为 null 时抛出</exception>
+    /// <remarks>
+    /// Gets or adds a value for the specified key.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加值的工厂方法 / The factory method to create the value when adding.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="self"/>、<paramref name="key"/> 或 <paramref name="addValueFactory"/> 为 null 时抛出 / Thrown when <paramref name="self"/>, <paramref name="key"/>, or <paramref name="addValueFactory"/> is null.</exception>
     public static TValue GetOrAdd<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, Func<TValue> addValueFactory)
     {
         ArgumentNullException.ThrowIfNull(self, nameof(self));
@@ -677,26 +788,32 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 获取或添加
+    /// 获取或添加指定键对应的值。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="key"></param>
-    /// <param name="addValue"></param>
+    /// <remarks>
+    /// Gets or adds a value for the specified key.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValue">要添加的值 / The value to add when the key does not exist.</param>
     public static TValue GetOrAdd<TKey, TValue>(this Dictionary<TKey, TValue> self, TKey key, TValue addValue)
     {
         return self.TryAdd(key, addValue) ? addValue : self[key];
     }
 
     /// <summary>
-    /// 获取或添加
+    /// 异步获取或添加指定键对应的值。
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="self"></param>
-    /// <param name="key"></param>
-    /// <param name="addValueFactory"></param>
+    /// <remarks>
+    /// Asynchronously gets or adds a value for the specified key.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="self">目标字典 / The target dictionary.</param>
+    /// <param name="key">键 / The key.</param>
+    /// <param name="addValueFactory">添加值的异步工厂方法 / The async factory method to create the value when adding.</param>
     public static async Task<TValue> GetOrAddAsync<TKey, TValue>(this IDictionary<TKey, TValue> self, TKey key, Func<Task<TValue>> addValueFactory)
     {
         if (!self.ContainsKey(key))
@@ -724,11 +841,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 遍历字典
+    /// 遍历字典并执行指定操作。
     /// </summary>
-    /// <param name="dic">目标字典</param>
-    /// <param name="action">回调方法</param>
-    /// <exception cref="ArgumentNullException">当 dic 或 action 为 null 时抛出</exception>
+    /// <remarks>
+    /// Iterates through the dictionary and executes the specified action.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="dic">目标字典 / The target dictionary.</param>
+    /// <param name="action">回调方法 / The action to execute for each key-value pair.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 或 <paramref name="action"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> or <paramref name="action"/> is null.</exception>
     public static void ForEach<TKey, TValue>(this IDictionary<TKey, TValue> dic, Action<TKey, TValue> action)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -741,11 +863,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 异步遍历字典
+    /// 异步遍历字典并执行指定操作。
     /// </summary>
-    /// <param name="dic">目标字典</param>
-    /// <param name="action">回调方法</param>
-    /// <exception cref="ArgumentNullException">当 dic 或 action 为 null 时抛出</exception>
+    /// <remarks>
+    /// Asynchronously iterates through the dictionary and executes the specified action.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="dic">目标字典 / The target dictionary.</param>
+    /// <param name="action">回调方法 / The async action to execute for each key-value pair.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 或 <paramref name="action"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> or <paramref name="action"/> is null.</exception>
     public static Task ForEachAsync<TKey, TValue>(this IDictionary<TKey, TValue> dic, Func<TKey, TValue, Task> action)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -755,13 +882,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为字典，支持重复键。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <exception cref="ArgumentNullException">当 source 或 keySelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Safely converts a collection to a dictionary, supporting duplicate keys by overwriting.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/> 或 <paramref name="keySelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is null.</exception>
     public static NullableDictionary<TKey, TSource> ToDictionarySafety<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -778,14 +908,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为字典，支持重复键和默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
-    /// <exception cref="ArgumentNullException">当 source 或 keySelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Safely converts a collection to a dictionary, supporting duplicate keys and a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/> 或 <paramref name="keySelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is null.</exception>
     public static NullableDictionary<TKey, TSource> ToDictionarySafety<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, TSource defaultValue)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -805,15 +938,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为字典，支持重复键。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <exception cref="ArgumentNullException">当 source、keySelector 或 elementSelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Safely converts a collection to a dictionary, supporting duplicate keys by overwriting.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/>、<paramref name="keySelector"/> 或 <paramref name="elementSelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="elementSelector"/> is null.</exception>
     public static NullableDictionary<TKey, TElement> ToDictionarySafety<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -831,16 +967,19 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为字典，支持重复键和默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
-    /// <exception cref="ArgumentNullException">当 source、keySelector 或 elementSelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Safely converts a collection to a dictionary, supporting duplicate keys and a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/>、<paramref name="keySelector"/> 或 <paramref name="elementSelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="elementSelector"/> is null.</exception>
     public static NullableDictionary<TKey, TElement> ToDictionarySafety<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, TElement defaultValue)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -861,14 +1000,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为字典。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a dictionary safely.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
     public static async Task<NullableDictionary<TKey, TElement>> ToDictionarySafetyAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector)
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -878,15 +1020,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为字典，支持默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a dictionary safely with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static async Task<NullableDictionary<TKey, TElement>> ToDictionarySafetyAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector, TElement defaultValue)
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -899,12 +1044,15 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放字典。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable dictionary.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
     public static DisposableDictionary<TKey, TSource> ToDisposableDictionarySafety<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) where TSource : IDisposable
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -918,13 +1066,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放字典，支持默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static DisposableDictionary<TKey, TSource> ToDisposableDictionarySafety<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, TSource defaultValue) where TSource : IDisposable
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -941,14 +1092,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放字典。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable dictionary.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
     public static DisposableDictionary<TKey, TElement> ToDisposableDictionarySafety<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector) where TElement : IDisposable
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -962,15 +1116,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放字典，支持默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static DisposableDictionary<TKey, TElement> ToDisposableDictionarySafety<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, TElement defaultValue) where TElement : IDisposable
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -987,14 +1144,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为可释放字典。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a disposable dictionary safely.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
     public static async Task<DisposableDictionary<TKey, TElement>> ToDisposableDictionarySafetyAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector) where TElement : IDisposable
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -1004,15 +1164,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为可释放字典，支持默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a disposable dictionary safely with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static async Task<DisposableDictionary<TKey, TElement>> ToDisposableDictionarySafetyAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector, TElement defaultValue) where TElement : IDisposable
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -1025,14 +1188,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为并发字典。
     /// </summary>
-    /// <typeparam name="TSource">源类型</typeparam>
-    /// <typeparam name="TKey">键类型</typeparam>
-    /// <param name="source">源集合</param>
-    /// <param name="keySelector">键选择器</param>
-    /// <returns>转换后的NullableConcurrentDictionary</returns>
-    /// <exception cref="ArgumentNullException">当 source 或 keySelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Safely converts a collection to a concurrent dictionary.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <returns>转换后的 NullableConcurrentDictionary / The converted NullableConcurrentDictionary.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/> 或 <paramref name="keySelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is null.</exception>
     public static NullableConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -1048,13 +1214,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为并发字典，支持默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Safely converts a collection to a concurrent dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static NullableConcurrentDictionary<TKey, TSource> ToConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, TSource defaultValue)
     {
         var dic = new NullableConcurrentDictionary<TKey, TSource>
@@ -1070,16 +1239,19 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为并发字典。
     /// </summary>
-    /// <typeparam name="TSource">源类型</typeparam>
-    /// <typeparam name="TKey">键类型</typeparam>
-    /// <typeparam name="TElement">元素类型</typeparam>
-    /// <param name="source">源集合</param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <returns>转换后的NullableConcurrentDictionary</returns>
-    /// <exception cref="ArgumentNullException">当 source、keySelector 或 elementSelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Safely converts a collection to a concurrent dictionary.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
+    /// <returns>转换后的 NullableConcurrentDictionary / The converted NullableConcurrentDictionary.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/>、<paramref name="keySelector"/> 或 <paramref name="elementSelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="elementSelector"/> is null.</exception>
     public static NullableConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -1096,15 +1268,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为并发字典，支持默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue"></param>
+    /// <remarks>
+    /// Safely converts a collection to a concurrent dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static NullableConcurrentDictionary<TKey, TElement> ToConcurrentDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, TElement defaultValue)
     {
         var dic = new NullableConcurrentDictionary<TKey, TElement>
@@ -1120,14 +1295,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为并发字典。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a concurrent dictionary safely.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
     public static async Task<NullableConcurrentDictionary<TKey, TElement>> ToConcurrentDictionaryAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector)
     {
         var dic = new ConcurrentDictionary<TKey, TElement>();
@@ -1136,15 +1314,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为并发字典，支持默认值。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a concurrent dictionary safely with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static async Task<NullableConcurrentDictionary<TKey, TElement>> ToConcurrentDictionaryAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector, TElement defaultValue)
     {
         var dic = new NullableConcurrentDictionary<TKey, TElement>
@@ -1156,12 +1337,15 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放并发字典。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable concurrent dictionary.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
     public static DisposableConcurrentDictionary<TKey, TSource> ToDisposableConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) where TSource : IDisposable
     {
         var dic = new DisposableConcurrentDictionary<TKey, TSource>();
@@ -1174,11 +1358,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放并发字典，支持默认值。
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable concurrent dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static DisposableConcurrentDictionary<TKey, TSource> ToDisposableConcurrentDictionary<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, TSource defaultValue) where TSource : IDisposable
     {
         var dic = new DisposableConcurrentDictionary<TKey, TSource>
@@ -1194,11 +1383,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放并发字典。
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable concurrent dictionary.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
     public static DisposableConcurrentDictionary<TKey, TElement> ToDisposableConcurrentDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector) where TElement : IDisposable
     {
         var dic = new DisposableConcurrentDictionary<TKey, TElement>();
@@ -1211,12 +1406,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 安全地将集合转换为可释放并发字典，支持默认值。
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue"></param>
+    /// <remarks>
+    /// Safely converts a collection to a disposable concurrent dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static DisposableConcurrentDictionary<TKey, TElement> ToDisposableConcurrentDictionary<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, TElement defaultValue) where TElement : IDisposable
     {
         var dic = new DisposableConcurrentDictionary<TKey, TElement>
@@ -1232,11 +1433,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为可释放并发字典。
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a disposable concurrent dictionary safely.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
     public static async Task<DisposableConcurrentDictionary<TKey, TElement>> ToDisposableConcurrentDictionaryAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector) where TElement : IDisposable
     {
         var dic = new DisposableConcurrentDictionary<TKey, TElement>();
@@ -1245,12 +1452,18 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 安全的转换成字典集
+    /// 异步安全地将集合转换为可释放并发字典，支持默认值。
     /// </summary>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a disposable concurrent dictionary safely with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
     public static async Task<DisposableConcurrentDictionary<TKey, TElement>> ToDisposableConcurrentDictionaryAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector, TElement defaultValue) where TElement : IDisposable
     {
         var dic = new DisposableConcurrentDictionary<TKey, TElement>
@@ -1262,14 +1475,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 转换为Lookup
+    /// 将集合转换为 Lookup 结构。
     /// </summary>
-    /// <typeparam name="TSource">源类型</typeparam>
-    /// <typeparam name="TKey">键类型</typeparam>
-    /// <param name="source">源集合</param>
-    /// <param name="keySelector">键选择器</param>
-    /// <returns>转换后的LookupX</returns>
-    /// <exception cref="ArgumentNullException">当 source 或 keySelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Converts a collection to a Lookup structure.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <returns>转换后的 LookupX / The converted LookupX.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/> 或 <paramref name="keySelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is null.</exception>
     public static LookupX<TKey, TSource> ToLookupX<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -1294,16 +1510,19 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 转换为Lookup
+    /// 将集合转换为 Lookup 结构。
     /// </summary>
-    /// <typeparam name="TSource">源类型</typeparam>
-    /// <typeparam name="TKey">键类型</typeparam>
-    /// <typeparam name="TElement">元素类型</typeparam>
-    /// <param name="source">源集合</param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
-    /// <returns>转换后的LookupX</returns>
-    /// <exception cref="ArgumentNullException">当 source、keySelector 或 elementSelector 为 null 时抛出</exception>
+    /// <remarks>
+    /// Converts a collection to a Lookup structure.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The function to extract the value from each element.</param>
+    /// <returns>转换后的 LookupX / The converted LookupX.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="source"/>、<paramref name="keySelector"/> 或 <paramref name="elementSelector"/> 为 null 时抛出 / Thrown when <paramref name="source"/>, <paramref name="keySelector"/>, or <paramref name="elementSelector"/> is null.</exception>
     public static LookupX<TKey, TElement> ToLookupX<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector)
     {
         ArgumentNullException.ThrowIfNull(source, nameof(source));
@@ -1329,14 +1548,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 转换为Lookup
+    /// 异步将集合转换为 Lookup 结构。
     /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TKey"></typeparam>
-    /// <typeparam name="TElement"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="keySelector">键选择器</param>
-    /// <param name="elementSelector">值选择器</param>
+    /// <remarks>
+    /// Asynchronously converts a collection to a Lookup structure.
+    /// </remarks>
+    /// <typeparam name="TSource">源元素的类型 / The type of the source element.</typeparam>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TElement">元素的类型 / The type of the element.</typeparam>
+    /// <param name="source">源集合 / The source collection.</param>
+    /// <param name="keySelector">键选择器 / The function to extract the key from each element.</param>
+    /// <param name="elementSelector">值选择器 / The async function to extract the value from each element.</param>
     public static async Task<LookupX<TKey, TElement>> ToLookupAsync<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, Task<TElement>> elementSelector)
     {
         var items = source as IList<TSource> ?? source.ToList();
@@ -1357,11 +1579,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 转换成并发字典集合
+    /// 将普通字典转换为并发字典。
     /// </summary>
-    /// <param name="dic">源字典</param>
-    /// <returns>转换后的NullableConcurrentDictionary</returns>
-    /// <exception cref="ArgumentNullException">当 dic 为 null 时抛出</exception>
+    /// <remarks>
+    /// Converts a regular dictionary to a concurrent dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="dic">源字典 / The source dictionary.</param>
+    /// <returns>转换后的 NullableConcurrentDictionary / The converted NullableConcurrentDictionary.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> is null.</exception>
     public static NullableConcurrentDictionary<TKey, TValue> AsConcurrentDictionary<TKey, TValue>(this Dictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -1370,12 +1597,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 转换成并发字典集合
+    /// 将普通字典转换为并发字典，支持默认值。
     /// </summary>
-    /// <param name="dic">源字典</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
-    /// <returns>转换后的NullableConcurrentDictionary</returns>
-    /// <exception cref="ArgumentNullException">当 dic 为 null 时抛出</exception>
+    /// <remarks>
+    /// Converts a regular dictionary to a concurrent dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="dic">源字典 / The source dictionary.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
+    /// <returns>转换后的 NullableConcurrentDictionary / The converted NullableConcurrentDictionary.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> is null.</exception>
     public static NullableConcurrentDictionary<TKey, TValue> AsConcurrentDictionary<TKey, TValue>(this Dictionary<TKey, TValue> dic, TValue defaultValue)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -1393,11 +1625,16 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 转换成普通字典集合
+    /// 将并发字典转换为普通字典。
     /// </summary>
-    /// <param name="dic">源并发字典</param>
-    /// <returns>转换后的NullableDictionary</returns>
-    /// <exception cref="ArgumentNullException">当 dic 为 null 时抛出</exception>
+    /// <remarks>
+    /// Converts a concurrent dictionary to a regular dictionary.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="dic">源并发字典 / The source concurrent dictionary.</param>
+    /// <returns>转换后的 NullableDictionary / The converted NullableDictionary.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> is null.</exception>
     public static NullableDictionary<TKey, TValue> AsDictionary<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dic)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
@@ -1406,12 +1643,17 @@ public static class IDictionaryExtensions
     }
 
     /// <summary>
-    /// 转换成普通字典集合
+    /// 将并发字典转换为普通字典，支持默认值。
     /// </summary>
-    /// <param name="dic">源并发字典</param>
-    /// <param name="defaultValue">键未找到时的默认值</param>
-    /// <returns>转换后的NullableDictionary</returns>
-    /// <exception cref="ArgumentNullException">当 dic 为 null 时抛出</exception>
+    /// <remarks>
+    /// Converts a concurrent dictionary to a regular dictionary with a default fallback value.
+    /// </remarks>
+    /// <typeparam name="TKey">键的类型 / The type of the key.</typeparam>
+    /// <typeparam name="TValue">值的类型 / The type of the value.</typeparam>
+    /// <param name="dic">源并发字典 / The source concurrent dictionary.</param>
+    /// <param name="defaultValue">键未找到时的默认值 / The default value when a key is not found.</param>
+    /// <returns>转换后的 NullableDictionary / The converted NullableDictionary.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="dic"/> 为 null 时抛出 / Thrown when <paramref name="dic"/> is null.</exception>
     public static NullableDictionary<TKey, TValue> AsDictionary<TKey, TValue>(this ConcurrentDictionary<TKey, TValue> dic, TValue defaultValue)
     {
         ArgumentNullException.ThrowIfNull(dic, nameof(dic));
