@@ -38,16 +38,22 @@ namespace GameFrameX.Foundation.Extensions;
 /// <summary>
 /// 提供对 <see cref="Expression" /> 类型的扩展方法，用于组合和操作表达式树。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for the <see cref="Expression" /> type, used for combining and manipulating expression trees.
+/// </remarks>
 public static class ExpressionExtension
 {
     /// <summary>
     /// 将两个表达式进行逻辑与运算，使用短路求值。
     /// </summary>
-    /// <typeparam name="T">表达式的参数类型。</typeparam>
-    /// <param name="leftExpression">第一个表达式，作为逻辑与运算的左操作数。</param>
-    /// <param name="rightExpression">第二个表达式，作为逻辑与运算的右操作数。</param>
-    /// <returns>一个新的表达式，表示两个输入表达式的逻辑与运算结果。</returns>
-    /// <exception cref="ArgumentNullException">当 leftExpression 或 rightExpression 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Performs a logical AND operation on two expressions using short-circuit evaluation.
+    /// </remarks>
+    /// <typeparam name="T">表达式的参数类型 / The parameter type of the expression.</typeparam>
+    /// <param name="leftExpression">第一个表达式，作为逻辑与运算的左操作数 / The first expression, serving as the left operand of the logical AND operation.</param>
+    /// <param name="rightExpression">第二个表达式，作为逻辑与运算的右操作数 / The second expression, serving as the right operand of the logical AND operation.</param>
+    /// <returns>一个新的表达式，表示两个输入表达式的逻辑与运算结果 / A new expression representing the logical AND result of the two input expressions.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="leftExpression"/> 或 <paramref name="rightExpression"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="leftExpression"/> or <paramref name="rightExpression"/> is <c>null</c>.</exception>
     public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> leftExpression, Expression<Func<T, bool>> rightExpression)
     {
         ArgumentNullException.ThrowIfNull(leftExpression, nameof(leftExpression));
@@ -62,14 +68,18 @@ public static class ExpressionExtension
 
     /// <summary>
     /// 根据条件将两个表达式进行逻辑与运算，使用短路求值。
-    /// 当条件为false时，仅返回左表达式；当条件为true时，返回两个表达式的逻辑与运算结果。
+    /// 当条件为 false 时，仅返回左表达式；当条件为 true 时，返回两个表达式的逻辑与运算结果。
     /// </summary>
-    /// <typeparam name="T">表达式的参数类型。</typeparam>
-    /// <param name="leftExpression">第一个表达式，作为逻辑与运算的左操作数。</param>
-    /// <param name="condition">决定是否执行逻辑与运算的条件委托。</param>
-    /// <param name="rightExpression">第二个表达式，作为逻辑与运算的右操作数。</param>
-    /// <returns>当条件为true时返回两个表达式的逻辑与运算结果，否则返回左表达式。</returns>
-    /// <exception cref="ArgumentNullException">当任何参数为null时抛出。</exception>
+    /// <remarks>
+    /// Performs a logical AND operation on two expressions based on a condition, using short-circuit evaluation.
+    /// When the condition is false, only the left expression is returned; when the condition is true, the logical AND result of both expressions is returned.
+    /// </remarks>
+    /// <typeparam name="T">表达式的参数类型 / The parameter type of the expression.</typeparam>
+    /// <param name="leftExpression">第一个表达式，作为逻辑与运算的左操作数 / The first expression, serving as the left operand of the logical AND operation.</param>
+    /// <param name="condition">决定是否执行逻辑与运算的条件委托 / The condition delegate that determines whether to perform the logical AND operation.</param>
+    /// <param name="rightExpression">第二个表达式，作为逻辑与运算的右操作数 / The second expression, serving as the right operand of the logical AND operation.</param>
+    /// <returns>当条件为 <c>true</c> 时返回两个表达式的逻辑与运算结果，否则返回左表达式 / Returns the logical AND result of both expressions when the condition is <c>true</c>; otherwise, returns the left expression.</returns>
+    /// <exception cref="ArgumentNullException">当任何参数为 <c>null</c> 时抛出 / Thrown when any parameter is <c>null</c>.</exception>
     public static Expression<Func<T, bool>> AndIf<T>(this Expression<Func<T, bool>> leftExpression, Func<bool> condition, Expression<Func<T, bool>> rightExpression)
     {
         ArgumentNullException.ThrowIfNull(leftExpression, nameof(leftExpression));
@@ -93,11 +103,14 @@ public static class ExpressionExtension
     /// <summary>
     /// 将两个表达式进行逻辑或运算，使用短路求值。
     /// </summary>
-    /// <typeparam name="T">表达式的参数类型。</typeparam>
-    /// <param name="leftExpression">第一个表达式，作为逻辑或运算的左操作数。</param>
-    /// <param name="rightExpression">第二个表达式，作为逻辑或运算的右操作数。</param>
-    /// <returns>一个新的表达式，表示两个输入表达式的逻辑或运算结果。</returns>
-    /// <exception cref="ArgumentNullException">当 leftExpression 或 rightExpression 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Performs a logical OR operation on two expressions using short-circuit evaluation.
+    /// </remarks>
+    /// <typeparam name="T">表达式的参数类型 / The parameter type of the expression.</typeparam>
+    /// <param name="leftExpression">第一个表达式，作为逻辑或运算的左操作数 / The first expression, serving as the left operand of the logical OR operation.</param>
+    /// <param name="rightExpression">第二个表达式，作为逻辑或运算的右操作数 / The second expression, serving as the right operand of the logical OR operation.</param>
+    /// <returns>一个新的表达式，表示两个输入表达式的逻辑或运算结果 / A new expression representing the logical OR result of the two input expressions.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="leftExpression"/> 或 <paramref name="rightExpression"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="leftExpression"/> or <paramref name="rightExpression"/> is <c>null</c>.</exception>
     public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> leftExpression, Expression<Func<T, bool>> rightExpression)
     {
         ArgumentNullException.ThrowIfNull(leftExpression, nameof(leftExpression));
@@ -113,14 +126,18 @@ public static class ExpressionExtension
 
     /// <summary>
     /// 根据条件将两个表达式进行逻辑或运算，使用短路求值。
-    /// 当条件为false时，仅返回左表达式；当条件为true时，返回两个表达式的逻辑或运算结果。
+    /// 当条件为 false 时，仅返回左表达式；当条件为 true 时，返回两个表达式的逻辑或运算结果。
     /// </summary>
-    /// <typeparam name="T">表达式的参数类型。</typeparam>
-    /// <param name="leftExpression">第一个表达式，作为逻辑或运算的左操作数。</param>
-    /// <param name="condition">决定是否执行逻辑或运算的条件委托。</param>
-    /// <param name="rightExpression">第二个表达式，作为逻辑或运算的右操作数。</param>
-    /// <returns>当条件为true时返回两个表达式的逻辑或运算结果，否则返回左表达式。</returns>
-    /// <exception cref="ArgumentNullException">当任何参数为null时抛出。</exception>
+    /// <remarks>
+    /// Performs a logical OR operation on two expressions based on a condition, using short-circuit evaluation.
+    /// When the condition is false, only the left expression is returned; when the condition is true, the logical OR result of both expressions is returned.
+    /// </remarks>
+    /// <typeparam name="T">表达式的参数类型 / The parameter type of the expression.</typeparam>
+    /// <param name="leftExpression">第一个表达式，作为逻辑或运算的左操作数 / The first expression, serving as the left operand of the logical OR operation.</param>
+    /// <param name="condition">决定是否执行逻辑或运算的条件委托 / The condition delegate that determines whether to perform the logical OR operation.</param>
+    /// <param name="rightExpression">第二个表达式，作为逻辑或运算的右操作数 / The second expression, serving as the right operand of the logical OR operation.</param>
+    /// <returns>当条件为 <c>true</c> 时返回两个表达式的逻辑或运算结果，否则返回左表达式 / Returns the logical OR result of both expressions when the condition is <c>true</c>; otherwise, returns the left expression.</returns>
+    /// <exception cref="ArgumentNullException">当任何参数为 <c>null</c> 时抛出 / Thrown when any parameter is <c>null</c>.</exception>
     public static Expression<Func<T, bool>> OrIf<T>(this Expression<Func<T, bool>> leftExpression, Func<bool> condition, Expression<Func<T, bool>> rightExpression)
     {
         ArgumentNullException.ThrowIfNull(leftExpression, nameof(leftExpression));
@@ -143,13 +160,14 @@ public static class ExpressionExtension
     /// <summary>
     /// 对表达式进行逻辑非运算，对表达式的结果取反。
     /// </summary>
-    /// <typeparam name="T">表达式的参数类型。</typeparam>
-    /// <param name="expr">要进行逻辑非运算的表达式。</param>
-    /// <returns>一个新的表达式，表示输入表达式的逻辑非运算结果。</returns>
-    /// <exception cref="ArgumentNullException">当 expr 为 null 时抛出。</exception>
     /// <remarks>
-    /// 如果输入表达式为 x => x > 5，则输出表达式为 x => !(x > 5)，等价于 x => x &lt;= 5。
+    /// Performs a logical NOT operation on an expression, negating the result of the expression.
+    /// If the input expression is x => x > 5, the output expression is x => !(x > 5), equivalent to x => x &lt;= 5.
     /// </remarks>
+    /// <typeparam name="T">表达式的参数类型 / The parameter type of the expression.</typeparam>
+    /// <param name="expr">要进行逻辑非运算的表达式 / The expression to perform the logical NOT operation on.</param>
+    /// <returns>一个新的表达式，表示输入表达式的逻辑非运算结果 / A new expression representing the logical NOT result of the input expression.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="expr"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="expr"/> is <c>null</c>.</exception>
     public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> expr)
     {
         ArgumentNullException.ThrowIfNull(expr, nameof(expr));
@@ -162,6 +180,9 @@ public static class ExpressionExtension
     /// <summary>
     /// 表达式访问器的自定义实现。
     /// </summary>
+    /// <remarks>
+    /// Custom implementation of the expression visitor.
+    /// </remarks>
     internal sealed class CustomExpressionVisitor : ExpressionVisitor
     {
         private ParameterExpression _targetParameter;
@@ -169,8 +190,11 @@ public static class ExpressionExtension
         /// <summary>
         /// 初始化 <see cref="CustomExpressionVisitor" /> 类的新实例。
         /// </summary>
-        /// <param name="param">访问器中的参数表达式。不能为 null。</param>
-        /// <exception cref="ArgumentNullException">当 <paramref name="param"/> 为 null 时抛出。</exception>
+        /// <remarks>
+        /// Initializes a new instance of the <see cref="CustomExpressionVisitor" /> class.
+        /// </remarks>
+        /// <param name="param">访问器中的参数表达式，不能为 <c>null</c> / The parameter expression in the visitor, cannot be <c>null</c>.</param>
+        /// <exception cref="ArgumentNullException">当 <paramref name="param"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="param"/> is <c>null</c>.</exception>
         public CustomExpressionVisitor(ParameterExpression param)
         {
             ArgumentNullException.ThrowIfNull(param, nameof(param));
@@ -180,14 +204,21 @@ public static class ExpressionExtension
         /// <summary>
         /// 获取或设置访问器中的参数表达式。
         /// </summary>
+        /// <remarks>
+        /// Gets or sets the parameter expression in the visitor.
+        /// </remarks>
+        /// <value>参数表达式 / The parameter expression.</value>
         public ParameterExpression Parameter { get; }
 
         /// <summary>
-        /// 访问Lambda表达式，正确处理参数替换。
+        /// 访问 Lambda 表达式，正确处理参数替换。
         /// </summary>
-        /// <typeparam name="T">Lambda表达式的委托类型。</typeparam>
-        /// <param name="node">要访问的Lambda表达式。</param>
-        /// <returns>返回访问后的Lambda表达式。</returns>
+        /// <remarks>
+        /// Visits the lambda expression, correctly handling parameter substitution.
+        /// </remarks>
+        /// <typeparam name="T">Lambda 表达式的委托类型 / The delegate type of the lambda expression.</typeparam>
+        /// <param name="node">要访问的 Lambda 表达式 / The lambda expression to visit.</param>
+        /// <returns>返回访问后的 Lambda 表达式 / Returns the visited lambda expression.</returns>
         protected override Expression VisitLambda<T>(Expression<T> node)
         {
             ArgumentNullException.ThrowIfNull(node, nameof(node));
@@ -232,8 +263,11 @@ public static class ExpressionExtension
         /// <summary>
         /// 访问参数表达式。
         /// </summary>
-        /// <param name="node">要访问的参数表达式。</param>
-        /// <returns>返回访问后的表达式。</returns>
+        /// <remarks>
+        /// Visits the parameter expression.
+        /// </remarks>
+        /// <param name="node">要访问的参数表达式 / The parameter expression to visit.</param>
+        /// <returns>返回访问后的表达式 / Returns the visited expression.</returns>
         protected override Expression VisitParameter(ParameterExpression node)
         {
             ArgumentNullException.ThrowIfNull(node, nameof(node));
