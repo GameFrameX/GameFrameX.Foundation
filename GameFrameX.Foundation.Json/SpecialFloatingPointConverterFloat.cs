@@ -38,13 +38,23 @@ using System.Text.Json.Serialization;
 namespace GameFrameX.Foundation.Json;
 
 /// <summary>
-/// 处理特殊浮点值（NaN、Infinity、-Infinity）的 JSON 转换器 (float 版本)
+/// 处理特殊浮点值（NaN、Infinity、-Infinity）的 JSON 转换器（float 版本）。
 /// </summary>
+/// <remarks>
+/// JSON converter for handling special floating-point values (NaN, Infinity, -Infinity) (float version).
+/// </remarks>
 public class SpecialFloatingPointConverterFloat : JsonConverter<float>
 {
     /// <summary>
     /// 反序列化 JSON 时，将字符串或数值类型的特殊浮点值（如 "NaN"、"Infinity"、"-Infinity"）转换为对应的 float 类型值。
     /// </summary>
+    /// <remarks>
+    /// When deserializing JSON, converts string or numeric special floating-point values (such as "NaN", "Infinity", "-Infinity") to corresponding float type values.
+    /// </remarks>
+    /// <param name="reader">JSON 读取器 / The JSON reader</param>
+    /// <param name="typeToConvert">要转换的类型 / The type to convert</param>
+    /// <param name="options">序列化选项 / Serialization options</param>
+    /// <returns>读取的 float 值 / The read float value</returns>
     public override float Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType == JsonTokenType.String)
@@ -113,6 +123,12 @@ public class SpecialFloatingPointConverterFloat : JsonConverter<float>
     /// <summary>
     /// 序列化 float 类型为 JSON 时，将特殊浮点值（NaN、Infinity、-Infinity）以字符串形式写入，其他数值正常写入。
     /// </summary>
+    /// <remarks>
+    /// When serializing float type to JSON, writes special floating-point values (NaN, Infinity, -Infinity) as strings, while writing other values normally.
+    /// </remarks>
+    /// <param name="writer">JSON 写入器 / The JSON writer</param>
+    /// <param name="value">要写入的 float 值 / The float value to write</param>
+    /// <param name="options">序列化选项 / Serialization options</param>
     public override void Write(Utf8JsonWriter writer, float value, JsonSerializerOptions options)
     {
         if (float.IsNaN(value))

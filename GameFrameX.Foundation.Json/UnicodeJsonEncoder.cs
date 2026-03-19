@@ -43,11 +43,22 @@ namespace GameFrameX.Foundation.Json;
 /// 此编码器仅对必要的特殊字符进行转义（如双引号、反斜杠和控制字符），而保留其他字符的原始形式。
 /// </para>
 /// </summary>
+/// <remarks>
+/// Custom JSON encoder used to keep Chinese characters and Emoji expressions unescaped during JSON serialization.
+/// <para>
+/// The default <see cref="JavaScriptEncoder"/> escapes non-ASCII characters (including Chinese and Emoji) as Unicode escape sequences (e.g., \uXXXX).
+/// This encoder only escapes necessary special characters (such as double quotes, backslashes, and control characters), while preserving the original form of other characters.
+/// </para>
+/// </remarks>
 public sealed class UnicodeJsonEncoder : JavaScriptEncoder
 {
     /// <summary>
     /// 获取 <see cref="UnicodeJsonEncoder"/> 的单例实例。
     /// </summary>
+    /// <remarks>
+    /// Gets the singleton instance of <see cref="UnicodeJsonEncoder"/>.
+    /// </remarks>
+    /// <value><see cref="UnicodeJsonEncoder"/> 的单例实例 / The singleton instance of <see cref="UnicodeJsonEncoder"/></value>
     public static readonly UnicodeJsonEncoder Singleton = new UnicodeJsonEncoder();
 
     private readonly bool _preferHexEscape;
@@ -66,14 +77,21 @@ public sealed class UnicodeJsonEncoder : JavaScriptEncoder
     /// <summary>
     /// 获取每个输入字符可能产生的最大输出字符数。
     /// </summary>
+    /// <remarks>
+    /// Gets the maximum number of output characters that each input character may produce.
+    /// </remarks>
+    /// <value>每个输入字符可能产生的最大输出字符数 / The maximum number of output characters per input character</value>
     public override int MaxOutputCharactersPerInputCharacter => 6;
 
     /// <summary>
     /// 查找文本中第一个需要编码的字符的位置。
     /// </summary>
-    /// <param name="text">要检查的文本指针。</param>
-    /// <param name="textLength">文本长度。</param>
-    /// <returns>第一个需要编码的字符的索引，如果没有则返回 -1。</returns>
+    /// <remarks>
+    /// Finds the position of the first character in the text that needs encoding.
+    /// </remarks>
+    /// <param name="text">要检查的文本指针 / Pointer to the text to check</param>
+    /// <param name="textLength">文本长度 / Text length</param>
+    /// <returns>第一个需要编码的字符的索引，如果没有则返回 -1 / The index of the first character that needs encoding, or -1 if none</returns>
     public override unsafe int FindFirstCharacterToEncode(char* text, int textLength)
     {
         for (int index = 0; index < textLength; ++index)
@@ -92,11 +110,14 @@ public sealed class UnicodeJsonEncoder : JavaScriptEncoder
     /// <summary>
     /// 尝试将 Unicode 标量值编码到输出缓冲区。
     /// </summary>
-    /// <param name="unicodeScalar">要编码的 Unicode 标量值。</param>
-    /// <param name="buffer">输出缓冲区。</param>
-    /// <param name="bufferLength">缓冲区长度。</param>
-    /// <param name="numberOfCharactersWritten">写入的字符数。</param>
-    /// <returns>如果编码成功则为 true，否则为 false。</returns>
+    /// <remarks>
+    /// Attempts to encode a Unicode scalar value to the output buffer.
+    /// </remarks>
+    /// <param name="unicodeScalar">要编码的 Unicode 标量值 / The Unicode scalar value to encode</param>
+    /// <param name="buffer">输出缓冲区 / Output buffer</param>
+    /// <param name="bufferLength">缓冲区长度 / Buffer length</param>
+    /// <param name="numberOfCharactersWritten">写入的字符数 / Number of characters written</param>
+    /// <returns>如果编码成功则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if encoding succeeded; otherwise <c>false</c></returns>
     public override unsafe bool TryEncodeUnicodeScalar(int unicodeScalar, char* buffer, int bufferLength, out int numberOfCharactersWritten)
     {
         bool encode = WillEncode(unicodeScalar);
@@ -144,8 +165,11 @@ public sealed class UnicodeJsonEncoder : JavaScriptEncoder
     /// <summary>
     /// 确定指定的 Unicode 标量值是否需要编码。
     /// </summary>
-    /// <param name="unicodeScalar">要检查的 Unicode 标量值。</param>
-    /// <returns>如果该值需要编码则为 true，否则为 false。</returns>
+    /// <remarks>
+    /// Determines whether the specified Unicode scalar value needs encoding.
+    /// </remarks>
+    /// <param name="unicodeScalar">要检查的 Unicode 标量值 / The Unicode scalar value to check</param>
+    /// <returns>如果该值需要编码则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the value needs encoding; otherwise <c>false</c></returns>
     public override bool WillEncode(int unicodeScalar)
     {
         if (unicodeScalar > char.MaxValue)

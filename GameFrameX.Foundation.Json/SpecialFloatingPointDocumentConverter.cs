@@ -37,14 +37,25 @@ using System.Text.Json.Serialization;
 namespace GameFrameX.Foundation.Json;
 
 /// <summary>
-/// 处理特殊浮点值的JSON文档转换器
-/// 用于处理直接在JSON中出现的特殊浮点值（如NaN、Infinity）
+/// 处理特殊浮点值的 JSON 文档转换器。
+/// 用于处理直接在 JSON 中出现的特殊浮点值（如 NaN、Infinity）。
 /// </summary>
+/// <remarks>
+/// JSON document converter for handling special floating-point values.
+/// Used to handle special floating-point values (such as NaN, Infinity) that appear directly in JSON.
+/// </remarks>
 public class SpecialFloatingPointDocumentConverter : JsonConverter<JsonDocument>
 {
     /// <summary>
-    /// 读取并处理包含特殊浮点值的JSON，返回JsonDocument对象
+    /// 读取并处理包含特殊浮点值的 JSON，返回 JsonDocument 对象。
     /// </summary>
+    /// <remarks>
+    /// Reads and processes JSON containing special floating-point values, returning a JsonDocument object.
+    /// </remarks>
+    /// <param name="reader">JSON 读取器 / The JSON reader</param>
+    /// <param name="typeToConvert">要转换的类型 / The type to convert</param>
+    /// <param name="options">序列化选项 / Serialization options</param>
+    /// <returns>读取的 JsonDocument 对象 / The read JsonDocument object</returns>
     public override JsonDocument Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         using (JsonDocument document = JsonDocument.Parse(GetModifiedJson(reader)))
@@ -55,8 +66,14 @@ public class SpecialFloatingPointDocumentConverter : JsonConverter<JsonDocument>
     }
 
     /// <summary>
-    /// 将JsonDocument对象写入JSON，保留特殊浮点值（如NaN、Infinity）
+    /// 将 JsonDocument 对象写入 JSON，保留特殊浮点值（如 NaN、Infinity）。
     /// </summary>
+    /// <remarks>
+    /// Writes a JsonDocument object to JSON, preserving special floating-point values (such as NaN, Infinity).
+    /// </remarks>
+    /// <param name="writer">JSON 写入器 / The JSON writer</param>
+    /// <param name="value">要写入的 JsonDocument 对象 / The JsonDocument object to write</param>
+    /// <param name="options">序列化选项 / Serialization options</param>
     public override void Write(Utf8JsonWriter writer, JsonDocument value, JsonSerializerOptions options)
     {
         // 直接写入原始JSON
