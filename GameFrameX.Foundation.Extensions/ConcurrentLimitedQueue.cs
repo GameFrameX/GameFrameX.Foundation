@@ -38,14 +38,20 @@ namespace GameFrameX.Foundation.Extensions;
 /// <summary>
 /// 定长队列，当队列达到指定长度时，新元素入队会自动移除最旧的元素。
 /// </summary>
-/// <typeparam name="T">队列中元素的类型。</typeparam>
+/// <remarks>
+/// A fixed-length queue that automatically removes the oldest elements when new elements are enqueued and the queue reaches its maximum length.
+/// </remarks>
+/// <typeparam name="T">队列中元素的类型 / The type of elements in the queue.</typeparam>
 public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
 {
     /// <summary>
     /// 初始化一个新的 <see cref="ConcurrentLimitedQueue{T}" /> 实例，指定队列的最大长度。
     /// </summary>
-    /// <param name="limit">队列的最大长度，必须大于0。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="limit"/> 小于或等于0时抛出。</exception>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ConcurrentLimitedQueue{T}" /> class with the specified maximum length.
+    /// </remarks>
+    /// <param name="limit">队列的最大长度，必须大于0 / The maximum number of elements the queue can hold, must be greater than 0.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="limit"/> 小于或等于0时抛出 / Thrown when <paramref name="limit"/> is less than or equal to 0.</exception>
     public ConcurrentLimitedQueue(int limit)
     {
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(limit, 0, nameof(limit));
@@ -55,8 +61,11 @@ public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
     /// <summary>
     /// 使用指定的集合初始化一个新的 <see cref="ConcurrentLimitedQueue{T}" /> 实例，并设置队列的最大长度为集合的元素数量。
     /// </summary>
-    /// <param name="list">用于初始化队列的集合，不能为null。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 为null时抛出。</exception>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="ConcurrentLimitedQueue{T}" /> class with the specified collection and sets the maximum length to the number of elements in the collection.
+    /// </remarks>
+    /// <param name="list">用于初始化队列的集合，不能为null / The collection to initialize the queue with, cannot be null.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 为 null 时抛出 / Thrown when <paramref name="list"/> is null.</exception>
     public ConcurrentLimitedQueue(IEnumerable<T> list) : base(list ?? throw new ArgumentNullException(nameof(list)))
     {
         Limit = list.Count();
@@ -65,14 +74,21 @@ public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
     /// <summary>
     /// 队列的最大长度。
     /// </summary>
+    /// <remarks>
+    /// Gets or sets the maximum number of elements the queue can hold.
+    /// </remarks>
+    /// <value>队列的最大长度 / The maximum number of elements the queue can hold.</value>
     public int Limit { get; set; }
 
     /// <summary>
     /// 将一个列表隐式转换为 <see cref="ConcurrentLimitedQueue{T}" />。
     /// </summary>
-    /// <param name="list">要转换的列表，不能为null。</param>
-    /// <returns>一个新的 <see cref="ConcurrentLimitedQueue{T}" /> 实例。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 为null时抛出。</exception>
+    /// <remarks>
+    /// Implicitly converts a <see cref="List{T}"/> to a <see cref="ConcurrentLimitedQueue{T}"/>.
+    /// </remarks>
+    /// <param name="list">要转换的列表，不能为 null / The list to convert, cannot be null.</param>
+    /// <returns>一个新的 <see cref="ConcurrentLimitedQueue{T}" /> 实例 / A new <see cref="ConcurrentLimitedQueue{T}" /> instance.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 为 null 时抛出 / Thrown when <paramref name="list"/> is null.</exception>
     public static implicit operator ConcurrentLimitedQueue<T>(List<T> list)
     {
         ArgumentNullException.ThrowIfNull(list, nameof(list));
@@ -82,7 +98,10 @@ public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
     /// <summary>
     /// 将一个元素添加到队列中。如果队列已满，则移除最旧的元素。
     /// </summary>
-    /// <param name="item">要添加的元素。</param>
+    /// <remarks>
+    /// Adds an element to the queue. If the queue is full, the oldest element is removed.
+    /// </remarks>
+    /// <param name="item">要添加的元素 / The element to add to the queue.</param>
     public new void Enqueue(T item)
     {
         while (Count >= Limit)
