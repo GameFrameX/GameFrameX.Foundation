@@ -37,17 +37,23 @@ using System.Text;
 namespace GameFrameX.Foundation.Hash;
 
 /// <summary>
-/// SHA-512 哈希算法工具类
+/// SHA-512 哈希算法工具类。
 /// </summary>
+/// <remarks>
+/// SHA-512 hash algorithm utility class.
+/// </remarks>
 public static class Sha512Helper
 {
     /// <summary>
-    /// 计算字符串的 SHA-512 哈希值
+    /// 计算字符串的 SHA-512 哈希值。
     /// </summary>
-    /// <param name="input">要计算哈希值的字符串，不能为 null</param>
-    /// <param name="encoding">字符串编码方式，默认为 UTF8</param>
-    /// <returns>128个字符的十六进制字符串形式的哈希值，空字符串返回对应的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当 input 为 null 时抛出</exception>
+    /// <remarks>
+    /// Computes the SHA-512 hash of a string.
+    /// </remarks>
+    /// <param name="input">要计算哈希值的字符串，不能为 null / The string to compute the hash for, cannot be null</param>
+    /// <param name="encoding">字符串编码方式，默认为 UTF8 / The string encoding, defaults to UTF8</param>
+    /// <returns>128个字符的十六进制字符串形式的哈希值，空字符串返回对应的哈希值 / A 128-character hexadecimal string hash value. Returns the hash of an empty string for empty input</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="input"/> 为 null 时抛出 / Thrown when <paramref name="input"/> is null</exception>
     public static string ComputeHash(string input, Encoding encoding = null)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
@@ -57,11 +63,14 @@ public static class Sha512Helper
     }
 
     /// <summary>
-    /// 计算字节数组的 SHA-512 哈希值
+    /// 计算字节数组的 SHA-512 哈希值。
     /// </summary>
-    /// <param name="buffer">要计算哈希值的字节数组，不能为 null</param>
-    /// <returns>128个字符的十六进制字符串形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当 buffer 为 null 时抛出</exception>
+    /// <remarks>
+    /// Computes the SHA-512 hash of a byte array.
+    /// </remarks>
+    /// <param name="buffer">要计算哈希值的字节数组，不能为 null / The byte array to compute the hash for, cannot be null</param>
+    /// <returns>128个字符的十六进制字符串形式的哈希值 / A 128-character hexadecimal string hash value</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
     public static string ComputeHash(byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -72,11 +81,14 @@ public static class Sha512Helper
     }
 
     /// <summary>
-    /// 计算文件的 SHA-512 哈希值
+    /// 计算文件的 SHA-512 哈希值。
     /// </summary>
-    /// <param name="filePath">文件路径，不能为 null 或空字符串</param>
-    /// <returns>128个字符的十六进制字符串形式的哈希值，如果文件不存在则返回空字符串</returns>
-    /// <exception cref="ArgumentException">当 filePath 为 null 或空字符串时抛出</exception>
+    /// <remarks>
+    /// Computes the SHA-512 hash of a file.
+    /// </remarks>
+    /// <param name="filePath">文件路径，不能为 null 或空字符串 / The file path, cannot be null or empty</param>
+    /// <returns>128个字符的十六进制字符串形式的哈希值，如果文件不存在则返回空字符串 / A 128-character hexadecimal string hash value. Returns an empty string if the file does not exist</returns>
+    /// <exception cref="ArgumentException">当 <paramref name="filePath"/> 为 null 或空字符串时抛出 / Thrown when <paramref name="filePath"/> is null or empty</exception>
     public static string ComputeFileHash(string filePath)
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
@@ -93,14 +105,17 @@ public static class Sha512Helper
     }
 
     /// <summary>
-    /// 验证字符串的 SHA-512 哈希值是否匹配
+    /// 验证字符串的 SHA-512 哈希值是否匹配。
     /// </summary>
-    /// <param name="input">原始字符串，不能为 null</param>
-    /// <param name="hash">要验证的哈希值，不能为 null</param>
-    /// <param name="encoding">字符串编码方式，默认为 UTF8</param>
-    /// <returns>如果哈希值匹配则返回true，否则返回false</returns>
-    /// <exception cref="ArgumentNullException">当 input 或 hash 为 null 时抛出</exception>
-    /// <exception cref="ArgumentException">当 hash 为空字符串时抛出</exception>
+    /// <remarks>
+    /// Verifies if the SHA-512 hash of a string matches.
+    /// </remarks>
+    /// <param name="input">原始字符串，不能为 null / The original string, cannot be null</param>
+    /// <param name="hash">要验证的哈希值，不能为 null / The hash to verify, cannot be null</param>
+    /// <param name="encoding">字符串编码方式，默认为 UTF8 / The string encoding, defaults to UTF8</param>
+    /// <returns>如果哈希值匹配则返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if the hashes match; otherwise <c>false</c></returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="input"/> 或 <paramref name="hash"/> 为 null 时抛出 / Thrown when <paramref name="input"/> or <paramref name="hash"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="hash"/> 为空字符串时抛出 / Thrown when <paramref name="hash"/> is empty</exception>
     public static bool VerifyHash(string input, string hash, Encoding encoding = null)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
@@ -112,13 +127,16 @@ public static class Sha512Helper
     }
 
     /// <summary>
-    /// 验证字节数组的 SHA-512 哈希值是否匹配
+    /// 验证字节数组的 SHA-512 哈希值是否匹配。
     /// </summary>
-    /// <param name="buffer">原始字节数组，不能为 null</param>
-    /// <param name="hash">要验证的哈希值，不能为 null 或空字符串</param>
-    /// <returns>如果哈希值匹配则返回true，否则返回false</returns>
-    /// <exception cref="ArgumentNullException">当 buffer 或 hash 为 null 时抛出</exception>
-    /// <exception cref="ArgumentException">当 hash 为空字符串时抛出</exception>
+    /// <remarks>
+    /// Verifies if the SHA-512 hash of a byte array matches.
+    /// </remarks>
+    /// <param name="buffer">原始字节数组，不能为 null / The original byte array, cannot be null</param>
+    /// <param name="hash">要验证的哈希值，不能为 null 或空字符串 / The hash to verify, cannot be null or empty</param>
+    /// <returns>如果哈希值匹配则返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if the hashes match; otherwise <c>false</c></returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 或 <paramref name="hash"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> or <paramref name="hash"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="hash"/> 为空字符串时抛出 / Thrown when <paramref name="hash"/> is empty</exception>
     public static bool VerifyHash(byte[] buffer, string hash)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -130,12 +148,15 @@ public static class Sha512Helper
     }
 
     /// <summary>
-    /// 验证文件的 SHA-512 哈希值是否匹配
+    /// 验证文件的 SHA-512 哈希值是否匹配。
     /// </summary>
-    /// <param name="filePath">文件路径，不能为 null 或空字符串</param>
-    /// <param name="hash">要验证的哈希值，不能为 null 或空字符串</param>
-    /// <returns>如果哈希值匹配则返回true，否则返回false</returns>
-    /// <exception cref="ArgumentException">当 filePath 或 hash 为 null 或空字符串时抛出</exception>
+    /// <remarks>
+    /// Verifies if the SHA-512 hash of a file matches.
+    /// </remarks>
+    /// <param name="filePath">文件路径，不能为 null 或空字符串 / The file path, cannot be null or empty</param>
+    /// <param name="hash">要验证的哈希值，不能为 null 或空字符串 / The hash to verify, cannot be null or empty</param>
+    /// <returns>如果哈希值匹配则返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if the hashes match; otherwise <c>false</c></returns>
+    /// <exception cref="ArgumentException">当 <paramref name="filePath"/> 或 <paramref name="hash"/> 为 null 或空字符串时抛出 / Thrown when <paramref name="filePath"/> or <paramref name="hash"/> is null or empty</exception>
     public static bool VerifyFileHash(string filePath, string hash)
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));

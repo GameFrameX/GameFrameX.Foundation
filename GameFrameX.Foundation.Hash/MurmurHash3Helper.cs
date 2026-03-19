@@ -40,16 +40,25 @@ namespace GameFrameX.Foundation.Hash;
 /// MurmurHash是一种非加密型哈希算法，具有高性能和良好的哈希分布特性。
 /// 此实现基于MurmurHash3的32位版本。
 /// </summary>
+/// <remarks>
+/// MurmurHash3 computation utility class.
+/// MurmurHash is a non-cryptographic hash algorithm with high performance and good hash distribution characteristics.
+/// This implementation is based on the 32-bit version of MurmurHash3.
+/// </remarks>
 public static class MurmurHash3Helper
 {
     /// <summary>
     /// 使用 MurmurHash3 算法计算字符串的哈希值。
     /// 将字符串按UTF-8编码转换为字节数组后进行哈希计算。
     /// </summary>
-    /// <param name="str">要计算哈希值的字符串，不能为null</param>
-    /// <param name="seed">哈希算法的种子值，默认为27。不同的种子值会产生不同的哈希结果。</param>
-    /// <returns>32位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当str为null时抛出</exception>
+    /// <remarks>
+    /// Computes the hash of a string using the MurmurHash3 algorithm.
+    /// Converts the string to a byte array using UTF-8 encoding before computing the hash.
+    /// </remarks>
+    /// <param name="str">要计算哈希值的字符串，不能为null / The string to compute the hash for, cannot be null</param>
+    /// <param name="seed">哈希算法的种子值，默认为27。不同的种子值会产生不同的哈希结果 / The seed value for the hash algorithm, defaults to 27. Different seed values produce different hash results</param>
+    /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="str"/> 为 null 时抛出 / Thrown when <paramref name="str"/> is null</exception>
     public static uint Hash(string str, uint seed = 27)
     {
         ArgumentNullException.ThrowIfNull(str, nameof(str));
@@ -62,12 +71,16 @@ public static class MurmurHash3Helper
     /// 使用 MurmurHash3 算法计算字节数组的哈希值。
     /// 此方法实现了MurmurHash3的核心算法逻辑。
     /// </summary>
-    /// <param name="data">要计算哈希值的字节数组，不能为null</param>
-    /// <param name="length">字节数组的有效长度，不能超过数组实际长度</param>
-    /// <param name="seed">哈希算法的种子值，用于初始化哈希计算</param>
-    /// <returns>32位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当data为null时抛出</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当length超过数组长度时抛出</exception>
+    /// <remarks>
+    /// Computes the hash of a byte array using the MurmurHash3 algorithm.
+    /// This method implements the core algorithm logic of MurmurHash3.
+    /// </remarks>
+    /// <param name="data">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
+    /// <param name="length">字节数组的有效长度，不能超过数组实际长度 / The valid length of the byte array, cannot exceed the actual array length</param>
+    /// <param name="seed">哈希算法的种子值，用于初始化哈希计算 / The seed value for the hash algorithm, used to initialize hash computation</param>
+    /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="data"/> 为 null 时抛出 / Thrown when <paramref name="data"/> is null</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="length"/> 超过数组长度时抛出 / Thrown when <paramref name="length"/> exceeds the array length</exception>
     public static uint Hash(byte[] data, uint length, uint seed)
     {
         ArgumentNullException.ThrowIfNull(data, nameof(data));
@@ -144,8 +157,12 @@ public static class MurmurHash3Helper
     /// 对哈希值进行最终混合操作。
     /// 通过多次异或、乘法和位移操作增加最终哈希值的随机性。
     /// </summary>
-    /// <param name="h">要混合的哈希值</param>
-    /// <returns>混合后的最终哈希值</returns>
+    /// <remarks>
+    /// Performs final mixing on the hash value.
+    /// Increases the randomness of the final hash value through multiple XOR, multiplication, and bit shift operations.
+    /// </remarks>
+    /// <param name="h">要混合的哈希值 / The hash value to mix</param>
+    /// <returns>混合后的最终哈希值 / The final mixed hash value</returns>
     private static uint Fmix32(uint h)
     {
         h ^= h >> 16;
@@ -161,9 +178,13 @@ public static class MurmurHash3Helper
     /// 对32位整数进行循环左移操作。
     /// 循环左移是指将溢出的高位补到低位。
     /// </summary>
-    /// <param name="x">要进行循环左移的整数</param>
-    /// <param name="r">左移的位数</param>
-    /// <returns>循环左移后的整数</returns>
+    /// <remarks>
+    /// Performs a rotate left operation on a 32-bit integer.
+    /// Rotate left means the overflowed high bits are moved to the low bits.
+    /// </remarks>
+    /// <param name="x">要进行循环左移的整数 / The integer to rotate left</param>
+    /// <param name="r">左移的位数 / The number of bits to rotate left</param>
+    /// <returns>循环左移后的整数 / The rotated integer</returns>
     private static uint Rotl32(uint x, byte r)
     {
         return (x << r) | (x >> (32 - r));

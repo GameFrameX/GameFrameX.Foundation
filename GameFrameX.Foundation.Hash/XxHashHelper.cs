@@ -43,14 +43,22 @@ namespace GameFrameX.Foundation.Hash;
 /// 提供32位、64位和128位哈希值计算功能。
 /// xxHash是一种非加密型哈希算法，专注于高性能和高质量的哈希计算。
 /// </summary>
+/// <remarks>
+/// xxHash hash algorithm utility class.
+/// Provides 32-bit, 64-bit, and 128-bit hash computation capabilities.
+/// xxHash is a non-cryptographic hash algorithm focused on high performance and quality hash computation.
+/// </remarks>
 public static class XxHashHelper
 {
     /// <summary>
     /// 计算给定字节数组的32位哈希值。
     /// </summary>
-    /// <param name="buffer">要计算哈希值的字节数组，不能为null</param>
-    /// <returns>32位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 32-bit hash value for the given byte array.
+    /// </remarks>
+    /// <param name="buffer">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
+    /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
     public static ulong Hash32(byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -61,9 +69,13 @@ public static class XxHashHelper
     /// 计算给定文本的32位哈希值。
     /// 使用UTF-8编码将文本转换为字节数组后计算哈希值。
     /// </summary>
-    /// <param name="text">要计算哈希值的文本，不能为null</param>
-    /// <returns>32位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当text为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 32-bit hash value for the given text.
+    /// The text is converted to a byte array using UTF-8 encoding before computing the hash.
+    /// </remarks>
+    /// <param name="text">要计算哈希值的文本，不能为null / The text to compute the hash for, cannot be null</param>
+    /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
     public static uint Hash32(string text)
     {
         ArgumentNullException.ThrowIfNull(text, nameof(text));
@@ -74,9 +86,13 @@ public static class XxHashHelper
     /// 计算给定类型的32位哈希值。
     /// 基于类型的完全限定名计算哈希值。
     /// </summary>
-    /// <param name="type">要计算哈希值的类型，不能为null</param>
-    /// <returns>32位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当type为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 32-bit hash value for the given type.
+    /// The hash is computed based on the fully qualified name of the type.
+    /// </remarks>
+    /// <param name="type">要计算哈希值的类型，不能为null / The type to compute the hash for, cannot be null</param>
+    /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 为 null 时抛出 / Thrown when <paramref name="type"/> is null</exception>
     public static uint Hash32(Type type)
     {
         ArgumentNullException.ThrowIfNull(type, nameof(type));
@@ -87,8 +103,12 @@ public static class XxHashHelper
     /// 计算给定泛型类型参数的32位哈希值。
     /// 基于类型的完全限定名计算哈希值。
     /// </summary>
-    /// <typeparam name="T">要计算哈希值的泛型类型参数</typeparam>
-    /// <returns>32位无符号整数形式的哈希值</returns>
+    /// <remarks>
+    /// Computes a 32-bit hash value for the given generic type parameter.
+    /// The hash is computed based on the fully qualified name of the type.
+    /// </remarks>
+    /// <typeparam name="T">要计算哈希值的泛型类型参数 / The generic type parameter to compute the hash for</typeparam>
+    /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
     public static uint Hash32<T>()
     {
         return InternalXxHashHelper.Hash32<T>();
@@ -97,9 +117,12 @@ public static class XxHashHelper
     /// <summary>
     /// 计算给定字节数组的64位哈希值。
     /// </summary>
-    /// <param name="buffer">要计算哈希值的字节数组，不能为null</param>
-    /// <returns>64位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 64-bit hash value for the given byte array.
+    /// </remarks>
+    /// <param name="buffer">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
+    /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
     public static ulong Hash64(byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -110,9 +133,13 @@ public static class XxHashHelper
     /// 计算给定文本的64位哈希值。
     /// 使用UTF-8编码将文本转换为字节数组后计算哈希值。
     /// </summary>
-    /// <param name="text">要计算哈希值的文本，不能为null</param>
-    /// <returns>64位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当text为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 64-bit hash value for the given text.
+    /// The text is converted to a byte array using UTF-8 encoding before computing the hash.
+    /// </remarks>
+    /// <param name="text">要计算哈希值的文本，不能为null / The text to compute the hash for, cannot be null</param>
+    /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
     public static ulong Hash64(string text)
     {
         ArgumentNullException.ThrowIfNull(text, nameof(text));
@@ -123,9 +150,13 @@ public static class XxHashHelper
     /// 计算给定类型的64位哈希值。
     /// 基于类型的完全限定名计算哈希值。
     /// </summary>
-    /// <param name="type">要计算哈希值的类型，不能为null</param>
-    /// <returns>64位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当type为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 64-bit hash value for the given type.
+    /// The hash is computed based on the fully qualified name of the type.
+    /// </remarks>
+    /// <param name="type">要计算哈希值的类型，不能为null / The type to compute the hash for, cannot be null</param>
+    /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 为 null 时抛出 / Thrown when <paramref name="type"/> is null</exception>
     public static ulong Hash64(Type type)
     {
         ArgumentNullException.ThrowIfNull(type, nameof(type));
@@ -136,8 +167,12 @@ public static class XxHashHelper
     /// 计算给定泛型类型参数的64位哈希值。
     /// 基于类型的完全限定名计算哈希值。
     /// </summary>
-    /// <typeparam name="T">要计算哈希值的泛型类型参数</typeparam>
-    /// <returns>64位无符号整数形式的哈希值</returns>
+    /// <remarks>
+    /// Computes a 64-bit hash value for the given generic type parameter.
+    /// The hash is computed based on the fully qualified name of the type.
+    /// </remarks>
+    /// <typeparam name="T">要计算哈希值的泛型类型参数 / The generic type parameter to compute the hash for</typeparam>
+    /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
     public static ulong Hash64<T>()
     {
         return InternalXxHashHelper.Hash64<T>();
@@ -147,9 +182,13 @@ public static class XxHashHelper
     /// 计算给定字节数组的128位哈希值。
     /// 使用数组的全部长度进行计算。
     /// </summary>
-    /// <param name="buffer">要计算哈希值的字节数组，不能为null</param>
-    /// <returns>128位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 128-bit hash value for the given byte array.
+    /// Uses the entire length of the array for computation.
+    /// </remarks>
+    /// <param name="buffer">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
+    /// <returns>128位无符号整数形式的哈希值 / The 128-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
     public static uint128 Hash128(byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -157,10 +196,13 @@ public static class XxHashHelper
     }
 
     /// <summary>
-    /// 判断128位哈希值是否为默认值(全0)。
+    /// 判断128位哈希值是否为默认值（全0）。
     /// </summary>
-    /// <param name="self">要判断的128位哈希值</param>
-    /// <returns>如果高64位和低64位都为0则返回true，否则返回false</returns>
+    /// <remarks>
+    /// Determines whether a 128-bit hash value is the default value (all zeros).
+    /// </remarks>
+    /// <param name="self">要判断的128位哈希值 / The 128-bit hash value to check</param>
+    /// <returns>如果高64位和低64位都为0则返回 <c>true</c>，否则返回 <c>false</c> / Returns <c>true</c> if both high 64-bit and low 64-bit are zero; otherwise <c>false</c></returns>
     public static bool IsDefault(uint128 self)
     {
         return self is { high64: 0, low64: 0, };
@@ -170,11 +212,15 @@ public static class XxHashHelper
     /// 计算给定字节数组的128位哈希值。
     /// 使用指定的长度进行计算。
     /// </summary>
-    /// <param name="buffer">要计算哈希值的字节数组，不能为null</param>
-    /// <param name="length">要参与计算的字节长度，必须大于等于0且不超过数组长度</param>
-    /// <returns>128位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当length小于0或大于buffer长度时抛出</exception>
+    /// <remarks>
+    /// Computes a 128-bit hash value for the given byte array.
+    /// Uses the specified length for computation.
+    /// </remarks>
+    /// <param name="buffer">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
+    /// <param name="length">要参与计算的字节长度，必须大于等于0且不超过数组长度 / The number of bytes to include in the computation, must be &gt;= 0 and &lt;= buffer length</param>
+    /// <returns>128位无符号整数形式的哈希值 / The 128-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="length"/> 小于0或大于buffer长度时抛出 / Thrown when <paramref name="length"/> is negative or greater than buffer length</exception>
     public static uint128 Hash128(byte[] buffer, int length)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -187,9 +233,13 @@ public static class XxHashHelper
     /// 计算给定文本的128位哈希值。
     /// 使用UTF-8编码将文本转换为字节数组后计算哈希值。
     /// </summary>
-    /// <param name="text">要计算哈希值的文本，不能为null</param>
-    /// <returns>128位无符号整数形式的哈希值</returns>
-    /// <exception cref="ArgumentNullException">当text为null时抛出</exception>
+    /// <remarks>
+    /// Computes a 128-bit hash value for the given text.
+    /// The text is converted to a byte array using UTF-8 encoding before computing the hash.
+    /// </remarks>
+    /// <param name="text">要计算哈希值的文本，不能为null / The text to compute the hash for, cannot be null</param>
+    /// <returns>128位无符号整数形式的哈希值 / The 128-bit hash value as an unsigned integer</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
     public static uint128 Hash128(string text)
     {
         ArgumentNullException.ThrowIfNull(text, nameof(text));
@@ -200,12 +250,20 @@ public static class XxHashHelper
     /// 内部xxHash实现帮助类。
     /// 提供32位和64位哈希算法的底层实现。
     /// </summary>
+    /// <remarks>
+    /// Internal xxHash implementation helper class.
+    /// Provides low-level implementation of 32-bit and 64-bit hash algorithms.
+    /// </remarks>
     private static class InternalXxHashHelper
     {
         /// <summary>
         /// 计算32位xxHash值的核心算法。
         /// 直接操作内存指针以获得最佳性能。
         /// </summary>
+        /// <remarks>
+        /// Core algorithm for computing 32-bit xxHash values.
+        /// Directly operates on memory pointers for optimal performance.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe uint Hash32(byte* input, int length, uint seed = 0)
         {
@@ -292,6 +350,10 @@ public static class XxHashHelper
         /// 计算64位xxHash值的核心算法。
         /// 直接操作内存指针以获得最佳性能。
         /// </summary>
+        /// <remarks>
+        /// Core algorithm for computing 64-bit xxHash values.
+        /// Directly operates on memory pointers for optimal performance.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe ulong Hash64(byte* input, int length, uint seed = 0)
         {
@@ -411,9 +473,12 @@ public static class XxHashHelper
         /// <summary>
         /// 计算字节数组的32位哈希值。
         /// </summary>
-        /// <param name="buffer">要计算哈希值的字节数组，不能为null</param>
-        /// <returns>32位无符号整数形式的哈希值</returns>
-        /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
+        /// <remarks>
+        /// Computes a 32-bit hash value for a byte array.
+        /// </remarks>
+        /// <param name="buffer">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
+        /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+        /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Hash32(byte[] buffer)
         {
@@ -431,9 +496,12 @@ public static class XxHashHelper
         /// <summary>
         /// 计算字符串的32位哈希值。
         /// </summary>
-        /// <param name="text">要计算哈希值的文本，不能为null</param>
-        /// <returns>32位无符号整数形式的哈希值</returns>
-        /// <exception cref="ArgumentNullException">当text为null时抛出</exception>
+        /// <remarks>
+        /// Computes a 32-bit hash value for a string.
+        /// </remarks>
+        /// <param name="text">要计算哈希值的文本，不能为null / The text to compute the hash for, cannot be null</param>
+        /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+        /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Hash32(string text)
         {
@@ -444,9 +512,12 @@ public static class XxHashHelper
         /// <summary>
         /// 计算类型的32位哈希值。
         /// </summary>
-        /// <param name="type">要计算哈希值的类型，不能为null</param>
-        /// <returns>32位无符号整数形式的哈希值</returns>
-        /// <exception cref="ArgumentNullException">当type为null时抛出</exception>
+        /// <remarks>
+        /// Computes a 32-bit hash value for a type.
+        /// </remarks>
+        /// <param name="type">要计算哈希值的类型，不能为null / The type to compute the hash for, cannot be null</param>
+        /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
+        /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 为 null 时抛出 / Thrown when <paramref name="type"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Hash32(Type type)
         {
@@ -457,6 +528,9 @@ public static class XxHashHelper
         /// <summary>
         /// 计算泛型类型的32位哈希值。
         /// </summary>
+        /// <remarks>
+        /// Computes a 32-bit hash value for a generic type.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Hash32<T>()
         {
@@ -466,9 +540,12 @@ public static class XxHashHelper
         /// <summary>
         /// 计算字节数组的64位哈希值。
         /// </summary>
-        /// <param name="buffer">要计算哈希值的字节数组，不能为null</param>
-        /// <returns>64位无符号整数形式的哈希值</returns>
-        /// <exception cref="ArgumentNullException">当buffer为null时抛出</exception>
+        /// <remarks>
+        /// Computes a 64-bit hash value for a byte array.
+        /// </remarks>
+        /// <param name="buffer">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
+        /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
+        /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Hash64(byte[] buffer)
         {
@@ -486,9 +563,12 @@ public static class XxHashHelper
         /// <summary>
         /// 计算字符串的64位哈希值。
         /// </summary>
-        /// <param name="text">要计算哈希值的文本，不能为null</param>
-        /// <returns>64位无符号整数形式的哈希值</returns>
-        /// <exception cref="ArgumentNullException">当text为null时抛出</exception>
+        /// <remarks>
+        /// Computes a 64-bit hash value for a string.
+        /// </remarks>
+        /// <param name="text">要计算哈希值的文本，不能为null / The text to compute the hash for, cannot be null</param>
+        /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
+        /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Hash64(string text)
         {
@@ -499,9 +579,12 @@ public static class XxHashHelper
         /// <summary>
         /// 计算类型的64位哈希值。
         /// </summary>
-        /// <param name="type">要计算哈希值的类型，不能为null</param>
-        /// <returns>64位无符号整数形式的哈希值</returns>
-        /// <exception cref="ArgumentNullException">当type为null时抛出</exception>
+        /// <remarks>
+        /// Computes a 64-bit hash value for a type.
+        /// </remarks>
+        /// <param name="type">要计算哈希值的类型，不能为null / The type to compute the hash for, cannot be null</param>
+        /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
+        /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 为 null 时抛出 / Thrown when <paramref name="type"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Hash64(Type type)
         {
@@ -512,6 +595,9 @@ public static class XxHashHelper
         /// <summary>
         /// 计算泛型类型的64位哈希值。
         /// </summary>
+        /// <remarks>
+        /// Computes a 64-bit hash value for a generic type.
+        /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Hash64<T>()
         {

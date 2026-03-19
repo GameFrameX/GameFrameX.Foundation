@@ -40,34 +40,53 @@ namespace GameFrameX.Foundation.Hash;
 /// CRC校验相关的实用函数。
 /// 提供CRC32和CRC64两种校验算法的实现。
 /// </summary>
+/// <remarks>
+/// CRC (Cyclic Redundancy Check) utility functions.
+/// Provides implementations of both CRC32 and CRC64 checksum algorithms.
+/// </remarks>
 public static partial class CrcHelper
 {
     /// <summary>
-    /// 缓存字节数组的长度,用于分块读取大文件
+    /// 缓存字节数组的长度，用于分块读取大文件。
     /// </summary>
+    /// <remarks>
+    /// The length of the cached byte array, used for reading large files in chunks.
+    /// </remarks>
     private const int CachedBytesLength = 0x1000;
 
     /// <summary>
-    /// 用于缓存读取数据的字节数组
+    /// 用于缓存读取数据的字节数组。
     /// </summary>
+    /// <remarks>
+    /// Byte array used to cache read data.
+    /// </remarks>
     private static readonly byte[] SCachedBytes = new byte[CachedBytesLength];
 
     /// <summary>
-    /// CRC32算法的实例
+    /// CRC32算法的实例。
     /// </summary>
+    /// <remarks>
+    /// Instance of the CRC32 algorithm.
+    /// </remarks>
     private static readonly CrcHelper.Crc32 SAlgorithm = new();
 
     /// <summary>
-    /// CRC64算法的实例
+    /// CRC64算法的实例。
     /// </summary>
+    /// <remarks>
+    /// Instance of the CRC64 algorithm.
+    /// </remarks>
     private static readonly CrcHelper.Crc64 SAlgorithm64 = new();
 
     /// <summary>
-    /// 计算二进制流的CRC64值
+    /// 计算二进制流的CRC64值。
     /// </summary>
-    /// <param name="bytes">要计算的二进制字节数组</param>
-    /// <returns>计算得到的CRC64校验值</returns>
-    /// <exception cref="ArgumentNullException">当bytes参数为null时抛出</exception>
+    /// <remarks>
+    /// Calculates the CRC64 checksum of a byte array.
+    /// </remarks>
+    /// <param name="bytes">要计算的二进制字节数组 / The byte array to calculate</param>
+    /// <returns>计算得到的CRC64校验值 / The calculated CRC64 checksum value</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null</exception>
     public static ulong GetCrc64(byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -78,11 +97,14 @@ public static partial class CrcHelper
     }
 
     /// <summary>
-    /// 计算流的CRC64值
+    /// 计算流的CRC64值。
     /// </summary>
-    /// <param name="stream">要计算的数据流</param>
-    /// <returns>计算得到的CRC64校验值</returns>
-    /// <exception cref="ArgumentNullException">当stream参数为null时抛出</exception>
+    /// <remarks>
+    /// Calculates the CRC64 checksum of a stream.
+    /// </remarks>
+    /// <param name="stream">要计算的数据流 / The stream to calculate</param>
+    /// <returns>计算得到的CRC64校验值 / The calculated CRC64 checksum value</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="stream"/> 为 null 时抛出 / Thrown when <paramref name="stream"/> is null</exception>
     public static ulong GetCrc64(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream, nameof(stream));
@@ -93,11 +115,14 @@ public static partial class CrcHelper
     }
 
     /// <summary>
-    /// 计算二进制流的CRC32值
+    /// 计算二进制流的CRC32值。
     /// </summary>
-    /// <param name="bytes">要计算的二进制字节数组</param>
-    /// <returns>计算得到的CRC32校验值</returns>
-    /// <exception cref="ArgumentNullException">当bytes参数为null时抛出</exception>
+    /// <remarks>
+    /// Calculates the CRC32 checksum of a byte array.
+    /// </remarks>
+    /// <param name="bytes">要计算的二进制字节数组 / The byte array to calculate</param>
+    /// <returns>计算得到的CRC32校验值 / The calculated CRC32 checksum value</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null</exception>
     public static int GetCrc32(byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -106,14 +131,17 @@ public static partial class CrcHelper
     }
 
     /// <summary>
-    /// 计算二进制流指定范围的CRC32值
+    /// 计算二进制流指定范围的CRC32值。
     /// </summary>
-    /// <param name="bytes">要计算的二进制字节数组</param>
-    /// <param name="offset">起始偏移量</param>
-    /// <param name="length">要计算的长度</param>
-    /// <returns>计算得到的CRC32校验值</returns>
-    /// <exception cref="ArgumentNullException">当bytes参数为null时抛出</exception>
-    /// <exception cref="ArgumentException">当offset或length参数无效时抛出</exception>
+    /// <remarks>
+    /// Calculates the CRC32 checksum of a specified range in a byte array.
+    /// </remarks>
+    /// <param name="bytes">要计算的二进制字节数组 / The byte array to calculate</param>
+    /// <param name="offset">起始偏移量 / The starting offset</param>
+    /// <param name="length">要计算的长度 / The length to calculate</param>
+    /// <returns>计算得到的CRC32校验值 / The calculated CRC32 checksum value</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="offset"/> 或 <paramref name="length"/> 参数无效时抛出 / Thrown when <paramref name="offset"/> or <paramref name="length"/> is invalid</exception>
     public static int GetCrc32(byte[] bytes, int offset, int length)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -130,11 +158,14 @@ public static partial class CrcHelper
     }
 
     /// <summary>
-    /// 计算流的CRC32值
+    /// 计算流的CRC32值。
     /// </summary>
-    /// <param name="stream">要计算的数据流</param>
-    /// <returns>计算得到的CRC32校验值</returns>
-    /// <exception cref="ArgumentNullException">当stream参数为null时抛出</exception>
+    /// <remarks>
+    /// Calculates the CRC32 checksum of a stream.
+    /// </remarks>
+    /// <param name="stream">要计算的数据流 / The stream to calculate</param>
+    /// <returns>计算得到的CRC32校验值 / The calculated CRC32 checksum value</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="stream"/> 为 null 时抛出 / Thrown when <paramref name="stream"/> is null</exception>
     public static int GetCrc32(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream, nameof(stream));
@@ -159,33 +190,42 @@ public static partial class CrcHelper
     }
 
     /// <summary>
-    /// 将CRC32值转换为字节数组
+    /// 将CRC32值转换为字节数组。
     /// </summary>
-    /// <param name="crc32">要转换的CRC32值</param>
-    /// <returns>转换后的4字节数组，按大端序排列</returns>
+    /// <remarks>
+    /// Converts a CRC32 value to a byte array.
+    /// </remarks>
+    /// <param name="crc32">要转换的CRC32值 / The CRC32 value to convert</param>
+    /// <returns>转换后的4字节数组，按大端序排列 / A 4-byte array in big-endian order</returns>
     public static byte[] GetCrc32Bytes(int crc32)
     {
         return new[] { (byte)((crc32 >> 24) & 0xff), (byte)((crc32 >> 16) & 0xff), (byte)((crc32 >> 8) & 0xff), (byte)(crc32 & 0xff), };
     }
 
     /// <summary>
-    /// 将CRC32值转换为字节数组并存入指定数组
+    /// 将CRC32值转换为字节数组并存入指定数组。
     /// </summary>
-    /// <param name="crc32">要转换的CRC32值</param>
-    /// <param name="bytes">存放结果的目标数组</param>
+    /// <remarks>
+    /// Converts a CRC32 value to a byte array and stores it in the specified array.
+    /// </remarks>
+    /// <param name="crc32">要转换的CRC32值 / The CRC32 value to convert</param>
+    /// <param name="bytes">存放结果的目标数组 / The target array to store the result</param>
     public static void GetCrc32Bytes(int crc32, byte[] bytes)
     {
         GetCrc32Bytes(crc32, bytes, 0);
     }
 
     /// <summary>
-    /// 将CRC32值转换为字节数组并存入指定数组的指定位置
+    /// 将CRC32值转换为字节数组并存入指定数组的指定位置。
     /// </summary>
-    /// <param name="crc32">要转换的CRC32值</param>
-    /// <param name="bytes">存放结果的目标数组</param>
-    /// <param name="offset">在目标数组中的起始位置</param>
-    /// <exception cref="ArgumentNullException">当bytes参数为null时抛出</exception>
-    /// <exception cref="ArgumentException">当offset参数无效或目标数组剩余空间不足4字节时抛出</exception>
+    /// <remarks>
+    /// Converts a CRC32 value to a byte array and stores it at the specified position in the target array.
+    /// </remarks>
+    /// <param name="crc32">要转换的CRC32值 / The CRC32 value to convert</param>
+    /// <param name="bytes">存放结果的目标数组 / The target array to store the result</param>
+    /// <param name="offset">在目标数组中的起始位置 / The starting position in the target array</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="offset"/> 参数无效或目标数组剩余空间不足4字节时抛出 / Thrown when <paramref name="offset"/> is invalid or the remaining space is less than 4 bytes</exception>
     public static void GetCrc32Bytes(int crc32, byte[] bytes, int offset)
     {
         if (bytes == null)
@@ -205,14 +245,17 @@ public static partial class CrcHelper
     }
 
     /// <summary>
-    /// 使用指定编码计算流的CRC32值
+    /// 使用指定编码计算流的CRC32值。
     /// </summary>
-    /// <param name="stream">要计算的数据流</param>
-    /// <param name="code">用于编码的字节数组，将与数据进行XOR运算</param>
-    /// <param name="length">要计算的字节数，如果为负数或超过流长度则使用整个流</param>
-    /// <returns>计算得到的CRC32校验值</returns>
-    /// <exception cref="ArgumentNullException">当stream或code参数为null时抛出</exception>
-    /// <exception cref="ArgumentException">当code长度小于等于0时抛出</exception>
+    /// <remarks>
+    /// Calculates the CRC32 checksum of a stream using the specified encoding.
+    /// </remarks>
+    /// <param name="stream">要计算的数据流 / The stream to calculate</param>
+    /// <param name="code">用于编码的字节数组，将与数据进行XOR运算 / The byte array used for encoding, will be XORed with the data</param>
+    /// <param name="length">要计算的字节数，如果为负数或超过流长度则使用整个流 / The number of bytes to calculate, uses the entire stream if negative or exceeds stream length</param>
+    /// <returns>计算得到的CRC32校验值 / The calculated CRC32 checksum value</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="stream"/> 或 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="stream"/> or <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度小于等于0时抛出 / Thrown when <paramref name="code"/> length is less than or equal to 0</exception>
     internal static int GetCrc32(Stream stream, byte[] code, int length)
     {
         if (stream == null)
