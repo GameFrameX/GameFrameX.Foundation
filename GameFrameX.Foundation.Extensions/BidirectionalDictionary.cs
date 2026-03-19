@@ -37,28 +37,34 @@ namespace GameFrameX.Foundation.Extensions;
 /// 双向字典，实现键和值的双向映射。支持在两个方向上进行快速查找。
 /// 注意：键和值都必须是唯一的，不允许重复。
 /// </summary>
-/// <typeparam name="TKey">键的类型。必须是可以作为字典键的类型。</typeparam>
-/// <typeparam name="TValue">值的类型。必须是可以作为字典键的类型。</typeparam>
+/// <remarks>
+/// A bidirectional dictionary that implements bidirectional mapping between keys and values.
+/// Supports fast lookup in both directions.
+/// Note: Both keys and values must be unique, duplicates are not allowed.
+/// </remarks>
+/// <typeparam name="TKey">键的类型，必须是可以作为字典键的类型 / The type of keys, must be a valid dictionary key type.</typeparam>
+/// <typeparam name="TValue">值的类型，必须是可以作为字典键的类型 / The type of values, must be a valid dictionary key type.</typeparam>
 public class BidirectionalDictionary<TKey, TValue>
 {
-    /// <summary>
-    /// 存储键到值的映射关系
+ /// <summary>
+    /// 存储键到值的映射关系。
     /// </summary>
     private readonly Dictionary<TKey, TValue> _forwardDictionary;
 
-    /// <summary>
-    /// 存储值到键的映射关系
+ /// <summary>
+    /// 存储值到键的映射关系。
     /// </summary>
     private readonly Dictionary<TValue, TKey> _reverseDictionary;
 
     /// <summary>
     /// 初始化 <see cref="BidirectionalDictionary{TKey, TValue}" /> 类的新实例。
     /// </summary>
-    /// <param name="initialCapacity">初始容量，用于预分配内部字典的空间。默认值为8，必须大于等于0。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="initialCapacity"/> 小于0时抛出</exception>
     /// <remarks>
-    /// 合理设置初始容量可以避免频繁的内部扩容操作，提高性能。
+    /// Initializes a new instance of the <see cref="BidirectionalDictionary{TKey, TValue}" /> class.
+    /// Setting a reasonable initial capacity can avoid frequent internal expansion and improve performance.
     /// </remarks>
+    /// <param name="initialCapacity">初始容量，用于预分配内部字典的空间，默认值为 8，必须大于等于 0 / The initial capacity used to pre-allocate space for the internal dictionaries, defaults to 8, must be greater than or equal to 0.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="initialCapacity"/> 小于 0 时抛出 / Thrown when <paramref name="initialCapacity"/> is less than 0.</exception>
     public BidirectionalDictionary(int initialCapacity = 8)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(initialCapacity, nameof(initialCapacity));
@@ -69,13 +75,14 @@ public class BidirectionalDictionary<TKey, TValue>
     /// <summary>
     /// 尝试根据值获取对应的键。
     /// </summary>
-    /// <param name="value">要查找的值，不能为 null（如果 TValue 是引用类型）。</param>
-    /// <param name="key">查找到的键。如果未找到对应的键，将设置为默认值。</param>
-    /// <returns>如果成功找到键，则为 true；否则为 false。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 且 TValue 是引用类型时抛出</exception>
     /// <remarks>
-    /// 此操作的时间复杂度为 O(1)。
+    /// Tries to get the key associated with the specified value.
+    /// This operation has a time complexity of O(1).
     /// </remarks>
+    /// <param name="value">要查找的值，不能为 null（如果 TValue 是引用类型） / The value to find, cannot be null if TValue is a reference type.</param>
+    /// <param name="key">查找到的键。如果未找到对应的键，将设置为默认值 / The found key, will be set to the default value if no corresponding key is found.</param>
+    /// <returns>如果成功找到键，则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the key is found; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 且 TValue 是引用类型时抛出 / Thrown when <paramref name="value"/> is null and TValue is a reference type.</exception>
     public bool TryGetKey(TValue value, out TKey key)
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
@@ -85,13 +92,14 @@ public class BidirectionalDictionary<TKey, TValue>
     /// <summary>
     /// 尝试根据键获取对应的值。
     /// </summary>
-    /// <param name="key">要查找的键，不能为 null（如果 TKey 是引用类型）。</param>
-    /// <param name="value">查找到的值。如果未找到对应的值，将设置为默认值。</param>
-    /// <returns>如果成功找到值，则为 true；否则为 false。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="key"/> 为 null 且 TKey 是引用类型时抛出</exception>
     /// <remarks>
-    /// 此操作的时间复杂度为 O(1)。
+    /// Tries to get the value associated with the specified key.
+    /// This operation has a time complexity of O(1).
     /// </remarks>
+    /// <param name="key">要查找的键，不能为 null（如果 TKey 是引用类型） / The key to find, cannot be null if TKey is a reference type.</param>
+    /// <param name="value">查找到的值。如果未找到对应的值，将设置为默认值 / The found value, will be set to the default value if no corresponding value is found.</param>
+    /// <returns>如果成功找到值，则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the value is found; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="key"/> 为 null 且 TKey 是引用类型时抛出 / Thrown when <paramref name="key"/> is null and TKey is a reference type.</exception>
     public bool TryGetValue(TKey key, out TValue value)
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
@@ -102,8 +110,9 @@ public class BidirectionalDictionary<TKey, TValue>
     /// 清空双向字典中的所有键值对。
     /// </summary>
     /// <remarks>
-    /// 此操作会同时清空正向和反向的映射关系。
-    /// 清空后，字典的容量会保持不变，但所有元素都会被移除。
+    /// Clears all key-value pairs from the bidirectional dictionary.
+    /// This operation clears both forward and reverse mappings.
+    /// After clearing, the capacity of the dictionary remains the same, but all elements are removed.
     /// </remarks>
     public void Clear()
     {
@@ -114,15 +123,16 @@ public class BidirectionalDictionary<TKey, TValue>
     /// <summary>
     /// 尝试向双向字典中添加键值对。
     /// </summary>
-    /// <param name="key">要添加的键，不能为 null（如果 TKey 是引用类型）。</param>
-    /// <param name="value">要添加的值，不能为 null（如果 TValue 是引用类型）。</param>
-    /// <returns>如果成功添加键值对，则为 true；否则为 false。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="key"/> 或 <paramref name="value"/> 为 null 且对应类型是引用类型时抛出</exception>
     /// <remarks>
-    /// 如果键或值已存在，则添加失败并返回 false。
-    /// 添加成功时会同时更新正向和反向的映射关系。
-    /// 此操作的时间复杂度为 O(1)。
+    /// Tries to add a key-value pair to the bidirectional dictionary.
+    /// If the key or value already exists, the addition fails and returns false.
+    /// When successfully added, both forward and reverse mappings are updated.
+    /// This operation has a time complexity of O(1).
     /// </remarks>
+    /// <param name="key">要添加的键，不能为 null（如果 TKey 是引用类型） / The key to add, cannot be null if TKey is a reference type.</param>
+    /// <param name="value">要添加的值，不能为 null（如果 TValue 是引用类型） / The value to add, cannot be null if TValue is a reference type.</param>
+    /// <returns>如果成功添加键值对，则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the key-value pair was added; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="key"/> 或 <paramref name="value"/> 为 null 且对应类型是引用类型时抛出 / Thrown when <paramref name="key"/> or <paramref name="value"/> is null and the corresponding type is a reference type.</exception>
     public bool TryAdd(TKey key, TValue value)
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
@@ -138,11 +148,14 @@ public class BidirectionalDictionary<TKey, TValue>
     }
 
     /// <summary>
-    /// 尝试根据键移除键值对
+    /// 尝试根据键移除键值对。
     /// </summary>
-    /// <param name="key">要移除的键，不能为 null（如果 TKey 是引用类型）。</param>
-    /// <param name="value">查找到的值。如果未找到对应的值，将设置为默认值。</param>
-    /// <returns>如果成功找到值并移除键值对，则为 true；否则为 false。</returns>
+    /// <remarks>
+    /// Tries to remove a key-value pair by key.
+    /// </remarks>
+    /// <param name="key">要移除的键，不能为 null（如果 TKey 是引用类型） / The key to remove, cannot be null if TKey is a reference type.</param>
+    /// <param name="value">查找到的值。如果未找到对应的值，将设置为默认值 / The found value, will be set to the default value if no corresponding value is found.</param>
+    /// <returns>如果成功找到值并移除键值对，则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the value was found and the key-value pair was removed; otherwise, <c>false</c>.</returns>
     public bool TryRemoveKey(TKey key, out TValue value)
     {
         ArgumentNullException.ThrowIfNull(key, nameof(key));
@@ -156,11 +169,14 @@ public class BidirectionalDictionary<TKey, TValue>
     }
 
     /// <summary>
-    /// 尝试根据值移除键值对
+    /// 尝试根据值移除键值对。
     /// </summary>
-    /// <param name="value">要移除的值，不能为 null（如果 TValue 是引用类型）。</param>
-    /// <param name="key">查找到的键。如果未找到对应的值，将设置为默认值。</param>
-    /// <returns>如果成功找到值并移除键值对，则为 true；否则为 false。</returns>
+    /// <remarks>
+    /// Tries to remove a key-value pair by value.
+    /// </remarks>
+    /// <param name="value">要移除的值，不能为 null（如果 TValue 是引用类型） / The value to remove, cannot be null if TValue is a reference type.</param>
+    /// <param name="key">查找到的键。如果未找到对应的值，将设置为默认值 / The found key, will be set to the default value if no corresponding value is found.</param>
+    /// <returns>如果成功找到值并移除键值对，则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the value was found and the key-value pair was removed; otherwise, <c>false</c>.</returns>
     public bool TryRemoveValue(TValue value, out TKey key)
     {
         ArgumentNullException.ThrowIfNull(value, nameof(value));
