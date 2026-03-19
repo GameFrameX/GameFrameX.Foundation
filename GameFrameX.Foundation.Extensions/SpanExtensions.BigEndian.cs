@@ -46,10 +46,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将一个32位无符号整数以大端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的32位无符号整数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加4字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a 32-bit unsigned integer to the specified buffer in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的32位无符号整数值 / The 32-bit unsigned integer value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加4字节 / The starting position for read/write, automatically increments by 4 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteUIntBigEndianValue(this Span<byte> buffer, uint value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -66,10 +69,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将一个16位无符号整数以大端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的16位无符号整数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加2字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a 16-bit unsigned integer to the specified buffer in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的16位无符号整数值 / The 16-bit unsigned integer value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加2字节 / The starting position for read/write, automatically increments by 2 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteUShortBigEndianValue(this Span<byte> buffer, ushort value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -86,10 +92,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将一个16位有符号整数以大端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的16位有符号整数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加2字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a 16-bit signed integer to the specified buffer in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的16位有符号整数值 / The 16-bit signed integer value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加2字节 / The starting position for read/write, automatically increments by 2 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteShortBigEndianValue(this Span<byte> buffer, short value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -106,10 +115,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将32位有符号整数以大端字节序写入到指定的字节跨度中，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的32位有符号整数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加4字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a 32-bit signed integer to the specified byte span in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的32位有符号整数值 / The 32-bit signed integer value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加4字节 / The starting position for read/write, automatically increments by 4 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteIntBigEndianValue(this Span<byte> buffer, int value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -126,10 +138,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将64位有符号整数以大端字节序写入到指定的字节跨度中，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的64位有符号整数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加8字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a 64-bit signed integer to the specified byte span in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的64位有符号整数值 / The 64-bit signed integer value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加8字节 / The starting position for read/write, automatically increments by 8 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteLongBigEndianValue(this Span<byte> buffer, long value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -146,10 +161,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将一个64位无符号整数以大端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的64位无符号整数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加8字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a 64-bit unsigned integer to the specified buffer in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的64位无符号整数值 / The 64-bit unsigned integer value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加8字节 / The starting position for read/write, automatically increments by 8 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteULongBigEndianValue(this Span<byte> buffer, ulong value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -166,10 +184,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将单精度浮点数以大端字节序写入到指定的字节跨度中，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的单精度浮点数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加4字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a single-precision floating-point number to the specified byte span in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的单精度浮点数值 / The single-precision floating-point value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加4字节 / The starting position for read/write, automatically increments by 4 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteFloatBigEndianValue(this Span<byte> buffer, float value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -186,10 +207,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将双精度浮点数以大端字节序写入到指定的字节跨度中，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的双精度浮点数值。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加8字节。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a double-precision floating-point number to the specified byte span in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的双精度浮点数值 / The double-precision floating-point value to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加8字节 / The starting position for read/write, automatically increments by 8 bytes after writing.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteDoubleBigEndianValue(this Span<byte> buffer, double value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -206,11 +230,14 @@ public static partial class SpanExtensions
     /// <summary>
     /// 在给定的偏移量位置，向缓冲区中写入字节序列，包含长度信息。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的字节数组。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数（4字节长度 + 数据长度）。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Writes a byte sequence to the buffer at the given offset position with length information.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的字节数组 / The byte array to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数（4字节长度 + 数据长度）/ The starting position for read/write, automatically increments by the corresponding bytes (4-byte length + data length).</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出 / Thrown when <paramref name="value"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static void WriteBytesValue(this Span<byte> buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -227,11 +254,14 @@ public static partial class SpanExtensions
     /// <summary>
     /// 在给定的偏移量位置，向缓冲区中写入字符串，包含长度信息。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的字符串，使用 UTF-8 编码。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数（2字节长度 + UTF-8字节数据）。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数、超出缓冲区边界或字符串过长（超过65535字节）时抛出。</exception>
+    /// <remarks>
+    /// Writes a string to the buffer at the given offset position with length information using UTF-8 encoding.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的字符串，使用 UTF-8 编码 / The string to write using UTF-8 encoding.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数（2字节长度 + UTF-8字节数据）/ The starting position for read/write, automatically increments by the corresponding bytes (2-byte length + UTF-8 data).</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出 / Thrown when <paramref name="value"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数、超出缓冲区边界或字符串过长（超过65535字节）时抛出 / Thrown when <paramref name="offset"/> is negative, exceeds buffer bounds, or string is too long (exceeds 65535 bytes).</exception>
     public static void WriteStringValue(this Span<byte> buffer, string value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
@@ -257,10 +287,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 将字符串直接写入指定的缓冲区，不包含长度前缀，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的字节跨度。</param>
-    /// <param name="value">要写入的字符串。</param>
-    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数。</param>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a string directly to the specified buffer without a length prefix and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的字节跨度 / The byte span to write to.</param>
+    /// <param name="value">要写入的字符串 / The string to write.</param>
+    /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding bytes.</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteStringWithoutLength(this Span<byte> buffer, string value, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -292,10 +325,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从指定的字节缓冲区和偏移量以大端字节序读取一个32位有符号整数值，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加4字节。</param>
-    /// <returns>返回读取的32位有符号整数值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 32-bit signed integer from the specified byte buffer at the given offset in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加4字节 / The starting position for read/write, automatically increments by 4 bytes after reading.</param>
+    /// <returns>返回读取的32位有符号整数值 / Returns the read 32-bit signed integer value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static int ReadIntBigEndianValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -313,10 +349,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从指定的字节缓冲区和偏移量以大端字节序读取一个16位有符号整数值，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加2字节。</param>
-    /// <returns>返回读取的16位有符号整数值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 16-bit signed integer from the specified byte buffer at the given offset in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加2字节 / The starting position for read/write, automatically increments by 2 bytes after reading.</param>
+    /// <returns>返回读取的16位有符号整数值 / Returns the read 16-bit signed integer value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static short ReadShortBigEndianValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -334,10 +373,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从指定的字节缓冲区和偏移量以大端字节序读取一个16位无符号整数值，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加2字节。</param>
-    /// <returns>返回读取的16位无符号整数值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 16-bit unsigned integer from the specified byte buffer at the given offset in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加2字节 / The starting position for read/write, automatically increments by 2 bytes after reading.</param>
+    /// <returns>返回读取的16位无符号整数值 / Returns the read 16-bit unsigned integer value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static ushort ReadUShortBigEndianValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -355,10 +397,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从指定的字节缓冲区和偏移量以大端字节序读取一个32位无符号整数值，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加4字节。</param>
-    /// <returns>返回读取的32位无符号整数值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 32-bit unsigned integer from the specified byte buffer at the given offset in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加4字节 / The starting position for read/write, automatically increments by 4 bytes after reading.</param>
+    /// <returns>返回读取的32位无符号整数值 / Returns the read 32-bit unsigned integer value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static uint ReadUIntBigEndianValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -376,10 +421,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从指定的字节缓冲区和偏移量以大端字节序读取一个64位无符号整数值，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加8字节。</param>
-    /// <returns>返回读取的64位无符号整数值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 64-bit unsigned integer from the specified byte buffer at the given offset in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加8字节 / The starting position for read/write, automatically increments by 8 bytes after reading.</param>
+    /// <returns>返回读取的64位无符号整数值 / Returns the read 64-bit unsigned integer value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static ulong ReadULongBigEndianValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -397,10 +445,13 @@ public static partial class SpanExtensions
     /// <summary>
     /// 从指定的字节缓冲区和偏移量以大端字节序读取一个64位有符号整数值，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要读取的字节跨度。</param>
-    /// <param name="offset">读写操作的起始位置，读取后会自动增加8字节。</param>
-    /// <returns>返回读取的64位有符号整数值。</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 64-bit signed integer from the specified byte buffer at the given offset in big-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节跨度 / The byte span to read from.</param>
+    /// <param name="offset">读写操作的起始位置，读取后会自动增加8字节 / The starting position for read/write, automatically increments by 8 bytes after reading.</param>
+    /// <returns>返回读取的64位有符号整数值 / Returns the read 64-bit signed integer value.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
     public static long ReadLongBigEndianValue(this Span<byte> buffer, ref int offset)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
