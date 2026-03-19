@@ -42,6 +42,9 @@ namespace GameFrameX.Foundation.Extensions;
 /// <summary>
 /// 提供字节数组的小端字节序（LittleEndian）读写扩展方法。
 /// </summary>
+/// <remarks>
+/// Provides little-endian read/write extension methods for byte arrays.
+/// </remarks>
 public static partial class ByteExtensions
 {
     #region Write LittleEndian
@@ -49,11 +52,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个16位有符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a 16-bit signed integer to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteShortLittleEndianValue(this byte[] buffer, short value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.ShortSize);
@@ -64,11 +70,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个16位无符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a 16-bit unsigned integer to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteUShortLittleEndianValue(this byte[] buffer, ushort value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.UShortSize);
@@ -79,11 +88,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个32位有符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a 32-bit signed integer to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteIntLittleEndianValue(this byte[] buffer, int value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.IntSize);
@@ -94,11 +106,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个32位无符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a 32-bit unsigned integer to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteUIntLittleEndianValue(this byte[] buffer, uint value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.UIntSize);
@@ -109,11 +124,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个64位有符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a 64-bit signed integer to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteLongLittleEndianValue(this byte[] buffer, long value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.LongSize);
@@ -124,11 +142,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个64位无符号整数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a 64-bit unsigned integer to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteULongLittleEndianValue(this byte[] buffer, ulong value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.ULongSize);
@@ -139,11 +160,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个单精度浮点数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a single-precision floating-point number to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteFloatLittleEndianValue(this byte[] buffer, float value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.FloatSize);
@@ -154,11 +178,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个双精度浮点数以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a double-precision floating-point number to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteDoubleLittleEndianValue(this byte[] buffer, double value, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.DoubleSize);
@@ -169,11 +196,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个字节数组（带长度前缀）以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值，不能为 null。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 或 <paramref name="value"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a byte array (with length prefix) to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值，不能为 null / The value to write, cannot be null.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 或 <paramref name="value"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> or <paramref name="value"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteBytesLittleEndianValue(this byte[] buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -194,11 +224,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组直接写入指定的缓冲区，不包含长度前缀，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的字节数组，不能为 null。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 或 <paramref name="value"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a byte array directly to the specified buffer without length prefix and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的字节数组，不能为 null / The byte array to write, cannot be null.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 或 <paramref name="value"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> or <paramref name="value"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteBytesWithoutLengthLittleEndian(this byte[] buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -218,11 +251,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个字符串以小端字节序写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a string to the specified buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteStringLittleEndianValue(this byte[] buffer, string value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -253,11 +289,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字符串直接写入指定的缓冲区，不包含长度前缀，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的字符串。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a string directly to the specified buffer without length prefix and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的字符串 / The string to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteStringWithoutLengthLittleEndian(this byte[] buffer, string value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -291,11 +330,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以小端字节序读取16位有符号整数，并将偏移量前移。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的16位有符号整数。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 16-bit signed integer from the byte array in little-endian byte order and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的16位有符号整数 / Returns the read 16-bit signed integer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static short ReadShortLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.ShortSize);
@@ -307,11 +349,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以小端字节序读取16位无符号整数，并将偏移量向前移动。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的16位无符号整数。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 16-bit unsigned integer from the byte array in little-endian byte order and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的16位无符号整数 / Returns the read 16-bit unsigned integer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static ushort ReadUShortLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.UShortSize);
@@ -323,11 +368,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以小端字节序读取32位有符号整数，并将偏移量向前移动。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的32位有符号整数。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 32-bit signed integer from the byte array in little-endian byte order and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的32位有符号整数 / Returns the read 32-bit signed integer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static int ReadIntLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.IntSize);
@@ -339,11 +387,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以小端字节序读取32位无符号整数，并将偏移量向前移动。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的32位无符号整数。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 32-bit unsigned integer from the byte array in little-endian byte order and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的32位无符号整数 / Returns the read 32-bit unsigned integer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static uint ReadUIntLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.UIntSize);
@@ -355,11 +406,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以小端字节序读取64位有符号整数，并将偏移量向前移动。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的64位有符号整数。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 64-bit signed integer from the byte array in little-endian byte order and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的64位有符号整数 / Returns the read 64-bit signed integer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static long ReadLongLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.LongSize);
@@ -371,11 +425,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以小端字节序读取64位无符号整数，并将偏移量向前移动。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的64位无符号整数。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a 64-bit unsigned integer from the byte array in little-endian byte order and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的64位无符号整数 / Returns the read 64-bit unsigned integer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static ulong ReadULongLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.ULongSize);
@@ -387,11 +444,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从给定的字节缓冲区中以小端字节序读取浮点数，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">包含了要读取数据的字节缓冲区。</param>
-    /// <param name="offset">读取数据的起始位置，该方法会更新该值。</param>
-    /// <returns>从字节缓冲区中读取的浮点数。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a single-precision floating-point number from the given byte buffer in little-endian byte order and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">包含了要读取数据的字节缓冲区 / The byte buffer containing the data to read.</param>
+    /// <param name="offset">读取数据的起始位置，该方法会更新该值 / The starting position for reading, this method will update this value.</param>
+    /// <returns>从字节缓冲区中读取的浮点数 / The single-precision floating-point number read from the byte buffer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static float ReadFloatLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.FloatSize);
@@ -403,11 +463,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从指定偏移量以小端字节序读取 double 类型数据。
     /// </summary>
-    /// <param name="buffer">要操作的字节缓冲区。</param>
-    /// <param name="offset">操作的起始偏移量，操作完成后，会自动累加双精度浮点数的字节数。</param>
-    /// <returns>返回从缓冲区读取的 double 类型数据。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a double-precision floating-point number from the specified offset in little-endian byte order.
+    /// </remarks>
+    /// <param name="buffer">要操作的字节缓冲区 / The byte buffer to operate on.</param>
+    /// <param name="offset">操作的起始偏移量，操作完成后，会自动累加双精度浮点数的字节数 / The starting offset for the operation, automatically increments by the size of a double after the operation.</param>
+    /// <returns>返回从缓冲区读取的 double 类型数据 / Returns the double-precision floating-point number read from the buffer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static double ReadDoubleLittleEndianValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, ConstBaseTypeSize.DoubleSize);
@@ -419,12 +482,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从指定偏移量开始读取指定长度的字节数组（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要操作的字节缓冲区。</param>
-    /// <param name="offset">操作的起始偏移量。</param>
-    /// <param name="len">需要读取的字节数组长度。</param>
-    /// <returns>返回从缓冲区读取的 byte[] 类型数据。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a byte array of the specified length from the specified offset (little-endian byte order).
+    /// </remarks>
+    /// <param name="buffer">要操作的字节缓冲区 / The byte buffer to operate on.</param>
+    /// <param name="offset">操作的起始偏移量 / The starting offset for the operation.</param>
+    /// <param name="len">需要读取的字节数组长度 / The length of the byte array to read.</param>
+    /// <returns>返回从缓冲区读取的 byte[] 类型数据 / Returns the byte[] data read from the buffer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static byte[] ReadBytesLittleEndianValue(this byte[] buffer, int offset, int len)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -448,12 +514,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从指定偏移量开始读取指定长度的字节数组（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要操作的字节缓冲区。</param>
-    /// <param name="offset">操作的起始偏移量。</param>
-    /// <param name="len">需要读取的字节数组长度。</param>
-    /// <returns>返回从缓冲区读取的 byte[] 类型数据。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a byte array of the specified length from the specified offset and updates the offset (little-endian byte order).
+    /// </remarks>
+    /// <param name="buffer">要操作的字节缓冲区 / The byte buffer to operate on.</param>
+    /// <param name="offset">操作的起始偏移量 / The starting offset for the operation.</param>
+    /// <param name="len">需要读取的字节数组长度 / The length of the byte array to read.</param>
+    /// <returns>返回从缓冲区读取的 byte[] 类型数据 / Returns the byte[] data read from the buffer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static byte[] ReadBytesLittleEndianValue(this byte[] buffer, ref int offset, int len)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -478,11 +547,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从指定偏移量开始读取字节数组，长度作为 int 类型数据在字节数组的开头（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要操作的字节缓冲区。</param>
-    /// <param name="offset">操作的起始偏移量，操作完成后，会自动累加读取的字节长度以及 int 类型长度。</param>
-    /// <returns>返回从缓冲区读取的 byte[] 类型数据。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a byte array from the specified offset, with the length stored as an int at the beginning of the byte array (little-endian byte order).
+    /// </remarks>
+    /// <param name="buffer">要操作的字节缓冲区 / The byte buffer to operate on.</param>
+    /// <param name="offset">操作的起始偏移量，操作完成后，会自动累加读取的字节长度以及 int 类型长度 / The starting offset for the operation, automatically increments by the read byte length plus int size after the operation.</param>
+    /// <returns>返回从缓冲区读取的 byte[] 类型数据 / Returns the byte[] data read from the buffer.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static byte[] ReadBytesLittleEndianValue(this byte[] buffer, ref int offset)
     {
         var len = ReadIntLittleEndianValue(buffer, ref offset);
@@ -506,11 +578,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取字符串（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
-    /// <returns>读取的字符串，若读取长度小于等于0或偏移量超出数组长度，返回空字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a string from the byte array at the specified offset (little-endian byte order).
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组 / The byte array to read data from.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加 / The starting offset for reading, automatically increments after reading.</param>
+    /// <returns>读取的字符串，若读取长度小于等于0或偏移量超出数组长度，返回空字符串 / The read string, returns an empty string if the read length is less than or equal to 0 or offset exceeds array length.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static string ReadStringLittleEndianValue(this byte[] buffer, ref int offset)
     {
         var len = ReadShortLittleEndianValue(buffer, ref offset);
@@ -533,12 +608,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中以指定偏移量读取指定长度的字符串（小端字节序）。
     /// </summary>
-    /// <param name="buffer">要从中读取数据的字节数组。</param>
-    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加。</param>
-    /// <param name="len">要读取的字符串字节长度。</param>
-    /// <returns>读取的字符串，若读取长度小于等于0或偏移量超出数组长度，返回空字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a string of the specified length from the byte array at the specified offset (little-endian byte order).
+    /// </remarks>
+    /// <param name="buffer">要从中读取数据的字节数组 / The byte array to read data from.</param>
+    /// <param name="offset">读取数据的起始偏移量，此偏移量在读取后会自动增加 / The starting offset for reading, automatically increments after reading.</param>
+    /// <param name="len">要读取的字符串字节长度 / The byte length of the string to read.</param>
+    /// <returns>读取的字符串，若读取长度小于等于0或偏移量超出数组长度，返回空字符串 / The read string, returns an empty string if the read length is less than or equal to 0 or offset exceeds array length.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static string ReadStringLittleEndianValue(this byte[] buffer, ref int offset, int len)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));

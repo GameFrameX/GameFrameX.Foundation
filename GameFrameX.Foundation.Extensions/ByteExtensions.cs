@@ -41,6 +41,9 @@ namespace GameFrameX.Foundation.Extensions;
 /// <summary>
 /// 提供字节和字节数组的扩展方法，用于各种格式的转换操作。
 /// </summary>
+/// <remarks>
+/// Provides extension methods for bytes and byte arrays for various format conversion operations.
+/// </remarks>
 public static partial class ByteExtensions
 {
     #region Private Helpers
@@ -48,11 +51,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 验证缓冲区参数的有效性。
     /// </summary>
-    /// <param name="buffer">要验证的缓冲区。</param>
-    /// <param name="offset">当前偏移量。</param>
-    /// <param name="requiredSize">需要写入或读取的字节数。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Validates the buffer parameters for validity.
+    /// </remarks>
+    /// <param name="buffer">要验证的缓冲区 / The buffer to validate.</param>
+    /// <param name="offset">当前偏移量 / The current offset.</param>
+    /// <param name="requiredSize">需要写入或读取的字节数 / The number of bytes to write or read.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     internal static void ValidateBounds(byte[] buffer, int offset, int requiredSize)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -72,8 +78,11 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节转换为16进制字符串。
     /// </summary>
-    /// <param name="b">要转换的字节。</param>
-    /// <returns>16进制字符串。</returns>
+    /// <remarks>
+    /// Converts a byte to a hexadecimal string.
+    /// </remarks>
+    /// <param name="b">要转换的字节 / The byte to convert.</param>
+    /// <returns>16进制字符串 / A hexadecimal string.</returns>
     public static string ToHex(this byte b)
     {
         return b.ToString("X2");
@@ -82,9 +91,12 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组转换为字符串，每个字节之间用空格分隔。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <returns>字符串表示形式。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Converts a byte array to a string with each byte separated by a space.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <returns>字符串表示形式 / The string representation.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static string ToArrayString(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -102,9 +114,12 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组转换为16进制字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <returns>16进制字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Converts a byte array to a hexadecimal string.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <returns>16进制字符串 / A hexadecimal string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static string ToHex(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -122,10 +137,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组转换为指定格式的字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <param name="format">格式化字符串。</param>
-    /// <returns>格式化后的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Converts a byte array to a string with the specified format.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <param name="format">格式化字符串 / The format string.</param>
+    /// <returns>格式化后的字符串 / The formatted string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static string ToHex(this byte[] bytes, string format)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -143,12 +161,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组的指定范围转换为16进制字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <param name="offset">起始偏移量。</param>
-    /// <param name="count">要转换的字节数。</param>
-    /// <returns>16进制字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 或 <paramref name="count"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Converts a specified range of a byte array to a hexadecimal string.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <param name="offset">起始偏移量 / The starting offset.</param>
+    /// <param name="count">要转换的字节数 / The number of bytes to convert.</param>
+    /// <returns>16进制字符串 / A hexadecimal string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 或 <paramref name="count"/> 超出有效范围时抛出 / Thrown when <paramref name="offset"/> or <paramref name="count"/> is out of valid range.</exception>
     public static string ToHex(this byte[] bytes, int offset, int count)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -173,12 +194,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组转换为系统默认编码的字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <returns>系统默认编码的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
     /// <remarks>
-    /// 使用 <see cref="Encoding.Default"/> 进行编码转换。如需使用 UTF-8 编码，请使用 <see cref="ToUtf8String(byte[])"/> 方法。
+    /// Converts a byte array to a string using the system default encoding.
+    /// Uses <see cref="Encoding.Default"/> for encoding conversion. To use UTF-8 encoding, use the <see cref="ToUtf8String(byte[])"/> method.
     /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <returns>系统默认编码的字符串 / A string in system default encoding.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static string ToDefaultString(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -188,15 +210,16 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组的指定范围转换为系统默认编码的字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <param name="index">起始偏移量。</param>
-    /// <param name="count">要转换的字节数。</param>
-    /// <returns>系统默认编码的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="index"/> 或 <paramref name="count"/> 超出有效范围时抛出。</exception>
     /// <remarks>
-    /// 使用 <see cref="Encoding.Default"/> 进行编码转换。如需使用 UTF-8 编码，请使用 <see cref="ToUtf8String(byte[], int, int)"/> 方法。
+    /// Converts a specified range of a byte array to a string using the system default encoding.
+    /// Uses <see cref="Encoding.Default"/> for encoding conversion. To use UTF-8 encoding, use the <see cref="ToUtf8String(byte[], int, int)"/> method.
     /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <param name="index">起始偏移量 / The starting offset.</param>
+    /// <param name="count">要转换的字节数 / The number of bytes to convert.</param>
+    /// <returns>系统默认编码的字符串 / A string in system default encoding.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="index"/> 或 <paramref name="count"/> 超出有效范围时抛出 / Thrown when <paramref name="index"/> or <paramref name="count"/> is out of valid range.</exception>
     public static string ToDefaultString(this byte[] bytes, int index, int count)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -214,9 +237,12 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组转换为UTF8编码的字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <returns>UTF8编码的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Converts a byte array to a UTF-8 encoded string.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <returns>UTF8编码的字符串 / A UTF-8 encoded string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static string ToUtf8String(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -226,12 +252,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组的指定范围转换为UTF8编码的字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <param name="index">起始偏移量。</param>
-    /// <param name="count">要转换的字节数。</param>
-    /// <returns>UTF8编码的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="index"/> 或 <paramref name="count"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Converts a specified range of a byte array to a UTF-8 encoded string.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <param name="index">起始偏移量 / The starting offset.</param>
+    /// <param name="count">要转换的字节数 / The number of bytes to convert.</param>
+    /// <returns>UTF8编码的字符串 / A UTF-8 encoded string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="index"/> 或 <paramref name="count"/> 超出有效范围时抛出 / Thrown when <paramref name="index"/> or <paramref name="count"/> is out of valid range.</exception>
     public static string ToUtf8String(this byte[] bytes, int index, int count)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -253,10 +282,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 比较两个字节数组是否相等。
     /// </summary>
-    /// <param name="bytes1">第一个字节数组。</param>
-    /// <param name="bytes2">第二个字节数组。</param>
-    /// <returns>如果两个字节数组相等则返回 true，否则返回 false。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes1"/> 或 <paramref name="bytes2"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Compares two byte arrays for equality.
+    /// </remarks>
+    /// <param name="bytes1">第一个字节数组 / The first byte array.</param>
+    /// <param name="bytes2">第二个字节数组 / The second byte array.</param>
+    /// <returns>如果两个字节数组相等则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the byte arrays are equal; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes1"/> 或 <paramref name="bytes2"/> 为 null 时抛出 / Thrown when <paramref name="bytes1"/> or <paramref name="bytes2"/> is null.</exception>
     public static bool SequenceEqual(this byte[] bytes1, byte[] bytes2)
     {
         ArgumentNullException.ThrowIfNull(bytes1, nameof(bytes1));
@@ -268,9 +300,12 @@ public static partial class ByteExtensions
     /// <summary>
     /// 使用指定的值填充字节数组。
     /// </summary>
-    /// <param name="bytes">要填充的字节数组。</param>
-    /// <param name="value">用于填充的值。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Fills the byte array with the specified value.
+    /// </remarks>
+    /// <param name="bytes">要填充的字节数组 / The byte array to fill.</param>
+    /// <param name="value">用于填充的值 / The value to fill with.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static void Fill(this byte[] bytes, byte value)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -281,12 +316,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 使用指定的值填充字节数组的指定范围。
     /// </summary>
-    /// <param name="bytes">要填充的字节数组。</param>
-    /// <param name="value">用于填充的值。</param>
-    /// <param name="startIndex">填充的起始索引。</param>
-    /// <param name="count">要填充的字节数。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="count"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Fills a specified range of the byte array with the specified value.
+    /// </remarks>
+    /// <param name="bytes">要填充的字节数组 / The byte array to fill.</param>
+    /// <param name="value">用于填充的值 / The value to fill with.</param>
+    /// <param name="startIndex">填充的起始索引 / The starting index for filling.</param>
+    /// <param name="count">要填充的字节数 / The number of bytes to fill.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="count"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> or <paramref name="count"/> is out of valid range.</exception>
     public static void Fill(this byte[] bytes, byte value, int startIndex, int count)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -304,8 +342,11 @@ public static partial class ByteExtensions
     /// <summary>
     /// 反转字节数组中的字节顺序。
     /// </summary>
-    /// <param name="bytes">要反转的字节数组。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Reverses the byte order in the byte array.
+    /// </remarks>
+    /// <param name="bytes">要反转的字节数组 / The byte array to reverse.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static void Reverse(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -315,11 +356,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 反转字节数组指定范围内的字节顺序。
     /// </summary>
-    /// <param name="bytes">要反转的字节数组。</param>
-    /// <param name="index">反转范围的起始索引。</param>
-    /// <param name="length">要反转的字节数。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="index"/> 或 <paramref name="length"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Reverses the byte order in a specified range of the byte array.
+    /// </remarks>
+    /// <param name="bytes">要反转的字节数组 / The byte array to reverse.</param>
+    /// <param name="index">反转范围的起始索引 / The starting index of the range to reverse.</param>
+    /// <param name="length">要反转的字节数 / The number of bytes to reverse.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="index"/> 或 <paramref name="length"/> 超出有效范围时抛出 / Thrown when <paramref name="index"/> or <paramref name="length"/> is out of valid range.</exception>
     public static void Reverse(this byte[] bytes, int index, int length)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -337,9 +381,12 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组转换为Base64字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <returns>Base64编码的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Converts a byte array to a Base64 string.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <returns>Base64编码的字符串 / A Base64 encoded string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static string ToBase64String(this byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -349,12 +396,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将字节数组的指定范围转换为Base64字符串。
     /// </summary>
-    /// <param name="bytes">要转换的字节数组。</param>
-    /// <param name="offset">起始偏移量。</param>
-    /// <param name="length">要转换的字节数。</param>
-    /// <returns>Base64编码的字符串。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 或 <paramref name="length"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Converts a specified range of a byte array to a Base64 string.
+    /// </remarks>
+    /// <param name="bytes">要转换的字节数组 / The byte array to convert.</param>
+    /// <param name="offset">起始偏移量 / The starting offset.</param>
+    /// <param name="length">要转换的字节数 / The number of bytes to convert.</param>
+    /// <returns>Base64编码的字符串 / A Base64 encoded string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 或 <paramref name="length"/> 超出有效范围时抛出 / Thrown when <paramref name="offset"/> or <paramref name="length"/> is out of valid range.</exception>
     public static string ToBase64String(this byte[] bytes, int offset, int length)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -372,9 +422,12 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将 Base64 字符串转换为字节数组。
     /// </summary>
-    /// <param name="base64String">Base64 编码的字符串。</param>
-    /// <returns>解码后的字节数组。如果输入为空字符串，返回空数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="base64String"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Converts a Base64 string to a byte array.
+    /// </remarks>
+    /// <param name="base64String">Base64 编码的字符串 / The Base64 encoded string.</param>
+    /// <returns>解码后的字节数组。如果输入为空字符串，返回空数组 / The decoded byte array. Returns an empty array if input is an empty string.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="base64String"/> 为 null 时抛出 / Thrown when <paramref name="base64String"/> is null.</exception>
     public static byte[] ToByteArrayFromBase64(this string base64String)
     {
         ArgumentNullException.ThrowIfNull(base64String, nameof(base64String));
@@ -389,11 +442,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 对两个字节数组执行异或操作。
     /// </summary>
-    /// <param name="bytes1">第一个字节数组。</param>
-    /// <param name="bytes2">第二个字节数组。</param>
-    /// <returns>异或操作的结果字节数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes1"/> 或 <paramref name="bytes2"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentException">当两个字节数组长度不相等时抛出。</exception>
+    /// <remarks>
+    /// Performs an XOR operation on two byte arrays.
+    /// </remarks>
+    /// <param name="bytes1">第一个字节数组 / The first byte array.</param>
+    /// <param name="bytes2">第二个字节数组 / The second byte array.</param>
+    /// <returns>异或操作的结果字节数组 / The result byte array from the XOR operation.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes1"/> 或 <paramref name="bytes2"/> 为 null 时抛出 / Thrown when <paramref name="bytes1"/> or <paramref name="bytes2"/> is null.</exception>
+    /// <exception cref="ArgumentException">当两个字节数组长度不相等时抛出 / Thrown when the two byte arrays have different lengths.</exception>
     public static byte[] Xor(this byte[] bytes1, byte[] bytes2)
     {
         ArgumentNullException.ThrowIfNull(bytes1, nameof(bytes1));
@@ -416,10 +472,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 对字节数组与单个字节执行异或操作。
     /// </summary>
-    /// <param name="bytes">字节数组。</param>
-    /// <param name="value">用于异或的字节值。</param>
-    /// <returns>异或操作的结果字节数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Performs an XOR operation on a byte array with a single byte value.
+    /// </remarks>
+    /// <param name="bytes">字节数组 / The byte array.</param>
+    /// <param name="value">用于异或的字节值 / The byte value to XOR with.</param>
+    /// <returns>异或操作的结果字节数组 / The result byte array from the XOR operation.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static byte[] Xor(this byte[] bytes, byte value)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -436,10 +495,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 在字节数组中查找指定字节序列的第一个匹配位置。
     /// </summary>
-    /// <param name="bytes">要搜索的字节数组。</param>
-    /// <param name="pattern">要查找的字节序列。</param>
-    /// <returns>第一个匹配位置的索引，如果未找到则返回 -1。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="pattern"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Finds the first occurrence of a specified byte sequence in a byte array.
+    /// </remarks>
+    /// <param name="bytes">要搜索的字节数组 / The byte array to search.</param>
+    /// <param name="pattern">要查找的字节序列 / The byte sequence to find.</param>
+    /// <returns>第一个匹配位置的索引，如果未找到则返回 -1 / The index of the first occurrence, or -1 if not found.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="pattern"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="pattern"/> is null.</exception>
     public static int IndexOf(this byte[] bytes, byte[] pattern)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -479,10 +541,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 在字节数组中查找指定字节的第一个匹配位置。
     /// </summary>
-    /// <param name="bytes">要搜索的字节数组。</param>
-    /// <param name="value">要查找的字节值。</param>
-    /// <returns>第一个匹配位置的索引，如果未找到则返回 -1。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Finds the first occurrence of a specified byte in a byte array.
+    /// </remarks>
+    /// <param name="bytes">要搜索的字节数组 / The byte array to search.</param>
+    /// <param name="value">要查找的字节值 / The byte value to find.</param>
+    /// <returns>第一个匹配位置的索引，如果未找到则返回 -1 / The index of the first occurrence, or -1 if not found.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
     public static int IndexOf(this byte[] bytes, byte value)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -501,12 +566,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从指定位置开始在字节数组中查找指定字节的第一个匹配位置。
     /// </summary>
-    /// <param name="bytes">要搜索的字节数组。</param>
-    /// <param name="value">要查找的字节值。</param>
-    /// <param name="startIndex">搜索的起始位置。</param>
-    /// <returns>第一个匹配位置的索引，如果未找到则返回 -1。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Finds the first occurrence of a specified byte in a byte array starting from a specified position.
+    /// </remarks>
+    /// <param name="bytes">要搜索的字节数组 / The byte array to search.</param>
+    /// <param name="value">要查找的字节值 / The byte value to find.</param>
+    /// <param name="startIndex">搜索的起始位置 / The starting position for the search.</param>
+    /// <returns>第一个匹配位置的索引，如果未找到则返回 -1 / The index of the first occurrence, or -1 if not found.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> is out of valid range.</exception>
     public static int IndexOf(this byte[] bytes, byte value, int startIndex)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -531,10 +599,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 检查字节数组是否以指定的字节序列开头。
     /// </summary>
-    /// <param name="bytes">要检查的字节数组。</param>
-    /// <param name="prefix">前缀字节序列。</param>
-    /// <returns>如果字节数组以指定序列开头则返回 true，否则返回 false。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="prefix"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Checks whether a byte array starts with the specified byte sequence.
+    /// </remarks>
+    /// <param name="bytes">要检查的字节数组 / The byte array to check.</param>
+    /// <param name="prefix">前缀字节序列 / The prefix byte sequence.</param>
+    /// <returns>如果字节数组以指定序列开头则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the byte array starts with the specified sequence; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="prefix"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="prefix"/> is null.</exception>
     public static bool StartsWith(this byte[] bytes, byte[] prefix)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -559,10 +630,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 检查字节数组是否以指定的字节序列结尾。
     /// </summary>
-    /// <param name="bytes">要检查的字节数组。</param>
-    /// <param name="suffix">后缀字节序列。</param>
-    /// <returns>如果字节数组以指定序列结尾则返回 true，否则返回 false。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="suffix"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Checks whether a byte array ends with the specified byte sequence.
+    /// </remarks>
+    /// <param name="bytes">要检查的字节数组 / The byte array to check.</param>
+    /// <param name="suffix">后缀字节序列 / The suffix byte sequence.</param>
+    /// <returns>如果字节数组以指定序列结尾则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the byte array ends with the specified sequence; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="suffix"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="suffix"/> is null.</exception>
     public static bool EndsWith(this byte[] bytes, byte[] suffix)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -588,10 +662,13 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将当前字节数组与其他字节数组连接。
     /// </summary>
-    /// <param name="first">第一个字节数组。</param>
-    /// <param name="others">要连接的其他字节数组集合。</param>
-    /// <returns>连接后的字节数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="first"/> 或 <paramref name="others"/> 为 null 时抛出。</exception>
+    /// <remarks>
+    /// Concatenates the current byte array with other byte arrays.
+    /// </remarks>
+    /// <param name="first">第一个字节数组 / The first byte array.</param>
+    /// <param name="others">要连接的其他字节数组集合 / The collection of other byte arrays to concatenate.</param>
+    /// <returns>连接后的字节数组 / The concatenated byte array.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="first"/> 或 <paramref name="others"/> 为 null 时抛出 / Thrown when <paramref name="first"/> or <paramref name="others"/> is null.</exception>
     public static byte[] Concat(this byte[] first, params byte[][] others)
     {
         ArgumentNullException.ThrowIfNull(first, nameof(first));
@@ -625,11 +702,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 获取字节数组的子数组。
     /// </summary>
-    /// <param name="bytes">源字节数组。</param>
-    /// <param name="startIndex">起始索引。</param>
-    /// <returns>子数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Gets a subarray of the byte array.
+    /// </remarks>
+    /// <param name="bytes">源字节数组 / The source byte array.</param>
+    /// <param name="startIndex">起始索引 / The starting index.</param>
+    /// <returns>子数组 / The subarray.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> is out of valid range.</exception>
     public static byte[] SubArray(this byte[] bytes, int startIndex)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -646,12 +726,15 @@ public static partial class ByteExtensions
     /// <summary>
     /// 获取字节数组的子数组。
     /// </summary>
-    /// <param name="bytes">源字节数组。</param>
-    /// <param name="startIndex">起始索引。</param>
-    /// <param name="length">子数组长度。</param>
-    /// <returns>子数组。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出。</exception>
+    /// <remarks>
+    /// Gets a subarray of the byte array with the specified length.
+    /// </remarks>
+    /// <param name="bytes">源字节数组 / The source byte array.</param>
+    /// <param name="startIndex">起始索引 / The starting index.</param>
+    /// <param name="length">子数组长度 / The length of the subarray.</param>
+    /// <returns>子数组 / The subarray.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> or <paramref name="length"/> is out of valid range.</exception>
     public static byte[] SubArray(this byte[] bytes, int startIndex, int length)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
@@ -675,11 +758,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个字节写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a byte to the specified buffer and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteByteValue(this byte[] buffer, byte value, ref int offset)
     {
         ValidateBounds(buffer, offset, 1);
@@ -690,11 +776,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中读取一个字节，并将偏移量前移。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的字节。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a byte from the byte array and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的字节 / Returns the read byte.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static byte ReadByteValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, 1);
@@ -706,11 +795,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个带符号字节写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a signed byte to the specified buffer and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteSByteValue(this byte[] buffer, sbyte value, ref int offset)
     {
         ValidateBounds(buffer, offset, 1);
@@ -721,11 +813,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中读取一个带符号字节，并将偏移量前移。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的带符号字节。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a signed byte from the byte array and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的带符号字节 / Returns the read signed byte.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static sbyte ReadSByteValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, 1);
@@ -737,11 +832,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 将一个布尔值写入指定的缓冲区，并更新偏移量。
     /// </summary>
-    /// <param name="buffer">要写入的缓冲区。</param>
-    /// <param name="value">要写入的值。</param>
-    /// <param name="offset">要写入值的缓冲区中的偏移量。</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出。</exception>
+    /// <remarks>
+    /// Writes a boolean value to the specified buffer and updates the offset.
+    /// </remarks>
+    /// <param name="buffer">要写入的缓冲区 / The buffer to write to.</param>
+    /// <param name="value">要写入的值 / The value to write.</param>
+    /// <param name="offset">要写入值的缓冲区中的偏移量 / The offset in the buffer to write the value.</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或缓冲区空间不足时抛出 / Thrown when <paramref name="offset"/> is negative or buffer space is insufficient.</exception>
     public static void WriteBoolValue(this byte[] buffer, bool value, ref int offset)
     {
         ValidateBounds(buffer, offset, 1);
@@ -752,11 +850,14 @@ public static partial class ByteExtensions
     /// <summary>
     /// 从字节数组中读取一个布尔值，并将偏移量前移。
     /// </summary>
-    /// <param name="buffer">要读取的字节数组。</param>
-    /// <param name="offset">引用偏移量。</param>
-    /// <returns>返回读取的布尔值。</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出。</exception>
-    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出。</exception>
+    /// <remarks>
+    /// Reads a boolean value from the byte array and advances the offset.
+    /// </remarks>
+    /// <param name="buffer">要读取的字节数组 / The byte array to read from.</param>
+    /// <param name="offset">引用偏移量 / The reference offset.</param>
+    /// <returns>返回读取的布尔值 / Returns the read boolean value.</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或读取位置超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or read position exceeds buffer bounds.</exception>
     public static bool ReadBoolValue(this byte[] buffer, ref int offset)
     {
         ValidateBounds(buffer, offset, 1);
