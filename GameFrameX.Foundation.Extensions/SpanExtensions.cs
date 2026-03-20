@@ -226,4 +226,78 @@ public static partial class SpanExtensions
         offset += ConstBaseTypeSize.BoolSize;
         return value;
     }
+
+    /// <summary>
+    /// 按指定单元字节长度就地转换字节跨度的字节序。
+    /// </summary>
+    /// <param name="buffer">要转换的字节跨度。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="elementSize"/> 小于 1 时抛出。</exception>
+    /// <exception cref="ArgumentException">当长度不能被 <paramref name="elementSize"/> 整除时抛出。</exception>
+    public static void ConvertEndianInPlace(this Span<byte> buffer, int elementSize)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(elementSize, 1, nameof(elementSize));
+
+        if (buffer.Length <= 1 || elementSize == 1)
+        {
+            return;
+        }
+
+        if (buffer.Length % elementSize != 0)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetCountExceedBufferLength, buffer.Length, 0, buffer.Length), nameof(buffer));
+        }
+
+        for (var i = 0; i < buffer.Length; i += elementSize)
+        {
+            buffer.Slice(i, elementSize).Reverse();
+        }
+    }
+
+    /// <summary>
+    /// 按 2 字节单元就地转换字节跨度的字节序。
+    /// </summary>
+    /// <param name="buffer">要转换的字节跨度。</param>
+    public static void ConvertEndianByInt16InPlace(this Span<byte> buffer)
+    {
+        buffer.ConvertEndianInPlace(ConstBaseTypeSize.ShortSize);
+    }
+
+    /// <summary>
+    /// 按 4 字节单元就地转换字节跨度的字节序。
+    /// </summary>
+    /// <param name="buffer">要转换的字节跨度。</param>
+    public static void ConvertEndianByInt32InPlace(this Span<byte> buffer)
+    {
+        buffer.ConvertEndianInPlace(ConstBaseTypeSize.IntSize);
+    }
+
+    /// <summary>
+    /// 按 8 字节单元就地转换字节跨度的字节序。
+    /// </summary>
+    /// <param name="buffer">要转换的字节跨度。</param>
+    public static void ConvertEndianByInt64InPlace(this Span<byte> buffer)
+    {
+        buffer.ConvertEndianInPlace(ConstBaseTypeSize.LongSize);
+    }
+
+    /// <summary>
+    /// 将大端字节序数据就地转换为小端字节序数据。
+    /// </summary>
+    /// <param name="buffer">要转换的字节跨度。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    public static void BigEndianToLittleEndianInPlace(this Span<byte> buffer, int elementSize)
+    {
+        buffer.ConvertEndianInPlace(elementSize);
+    }
+
+    /// <summary>
+    /// 将小端字节序数据就地转换为大端字节序数据。
+    /// </summary>
+    /// <param name="buffer">要转换的字节跨度。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    public static void LittleEndianToBigEndianInPlace(this Span<byte> buffer, int elementSize)
+    {
+        buffer.ConvertEndianInPlace(elementSize);
+    }
 }

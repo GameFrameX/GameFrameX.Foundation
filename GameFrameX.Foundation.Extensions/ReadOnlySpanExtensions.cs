@@ -428,4 +428,78 @@ public static class ReadOnlySpanExtensions
         offset += ConstBaseTypeSize.DoubleSize;
         return value;
     }
+
+    /// <summary>
+    /// 按指定单元字节长度转换只读字节跨度的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="buffer">要转换的只读字节跨度。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="elementSize"/> 小于 1 时抛出。</exception>
+    /// <exception cref="ArgumentException">当长度不能被 <paramref name="elementSize"/> 整除时抛出。</exception>
+    public static byte[] ConvertEndian(this ReadOnlySpan<byte> buffer, int elementSize)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(elementSize, 1, nameof(elementSize));
+
+        if (buffer.Length % elementSize != 0)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetCountExceedBufferLength, buffer.Length, 0, buffer.Length), nameof(buffer));
+        }
+
+        var result = buffer.ToArray();
+        result.AsSpan().ConvertEndianInPlace(elementSize);
+        return result;
+    }
+
+    /// <summary>
+    /// 按 2 字节单元转换只读字节跨度的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="buffer">要转换的只读字节跨度。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    public static byte[] ConvertEndianByInt16(this ReadOnlySpan<byte> buffer)
+    {
+        return buffer.ConvertEndian(ConstBaseTypeSize.ShortSize);
+    }
+
+    /// <summary>
+    /// 按 4 字节单元转换只读字节跨度的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="buffer">要转换的只读字节跨度。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    public static byte[] ConvertEndianByInt32(this ReadOnlySpan<byte> buffer)
+    {
+        return buffer.ConvertEndian(ConstBaseTypeSize.IntSize);
+    }
+
+    /// <summary>
+    /// 按 8 字节单元转换只读字节跨度的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="buffer">要转换的只读字节跨度。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    public static byte[] ConvertEndianByInt64(this ReadOnlySpan<byte> buffer)
+    {
+        return buffer.ConvertEndian(ConstBaseTypeSize.LongSize);
+    }
+
+    /// <summary>
+    /// 将大端字节序数据转换为小端字节序数据，并返回新数组。
+    /// </summary>
+    /// <param name="buffer">要转换的只读字节跨度。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <returns>转换后的小端字节序数组。</returns>
+    public static byte[] BigEndianToLittleEndian(this ReadOnlySpan<byte> buffer, int elementSize)
+    {
+        return buffer.ConvertEndian(elementSize);
+    }
+
+    /// <summary>
+    /// 将小端字节序数据转换为大端字节序数据，并返回新数组。
+    /// </summary>
+    /// <param name="buffer">要转换的只读字节跨度。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <returns>转换后的大端字节序数组。</returns>
+    public static byte[] LittleEndianToBigEndian(this ReadOnlySpan<byte> buffer, int elementSize)
+    {
+        return buffer.ConvertEndian(elementSize);
+    }
 }

@@ -379,6 +379,170 @@ public static partial class ByteExtensions
     }
 
     /// <summary>
+    /// 按指定单元字节长度就地转换字节数组的字节序。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="elementSize"/> 小于 1 时抛出。</exception>
+    /// <exception cref="ArgumentException">当数组长度不能被 <paramref name="elementSize"/> 整除时抛出。</exception>
+    public static void ConvertEndianInPlace(this byte[] bytes, int elementSize)
+    {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
+        bytes.AsSpan().ConvertEndianInPlace(elementSize);
+    }
+
+    /// <summary>
+    /// 按指定单元字节长度就地转换字节数组指定范围的字节序。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <param name="offset">开始转换的偏移量。</param>
+    /// <param name="length">要转换的字节数。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/>、<paramref name="length"/> 或 <paramref name="elementSize"/> 非法时抛出。</exception>
+    /// <exception cref="ArgumentException">当范围越界或长度不能被 <paramref name="elementSize"/> 整除时抛出。</exception>
+    public static void ConvertEndianInPlace(this byte[] bytes, int offset, int length, int elementSize)
+    {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
+
+        if (offset + length > bytes.Length)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength, bytes.Length, offset, length), nameof(length));
+        }
+
+        bytes.AsSpan(offset, length).ConvertEndianInPlace(elementSize);
+    }
+
+    /// <summary>
+    /// 按指定单元字节长度转换字节数组的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="elementSize"/> 小于 1 时抛出。</exception>
+    /// <exception cref="ArgumentException">当数组长度不能被 <paramref name="elementSize"/> 整除时抛出。</exception>
+    public static byte[] ConvertEndian(this byte[] bytes, int elementSize)
+    {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
+
+        var result = new byte[bytes.Length];
+        bytes.CopyTo(result, 0);
+        result.ConvertEndianInPlace(elementSize);
+        return result;
+    }
+
+    /// <summary>
+    /// 按指定单元字节长度转换字节数组指定范围的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <param name="offset">开始转换的偏移量。</param>
+    /// <param name="length">要转换的字节数。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 为 null 时抛出。</exception>
+    /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/>、<paramref name="length"/> 或 <paramref name="elementSize"/> 非法时抛出。</exception>
+    /// <exception cref="ArgumentException">当范围越界或长度不能被 <paramref name="elementSize"/> 整除时抛出。</exception>
+    public static byte[] ConvertEndian(this byte[] bytes, int offset, int length, int elementSize)
+    {
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
+        ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
+        ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
+
+        if (offset + length > bytes.Length)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IndexCountExceedBufferLength, bytes.Length, offset, length), nameof(length));
+        }
+
+        var result = new byte[length];
+        Array.Copy(bytes, offset, result, 0, length);
+        result.ConvertEndianInPlace(elementSize);
+        return result;
+    }
+
+    /// <summary>
+    /// 按 2 字节单元就地转换字节数组的字节序。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    public static void ConvertEndianByInt16InPlace(this byte[] bytes)
+    {
+        bytes.ConvertEndianInPlace(ConstBaseTypeSize.ShortSize);
+    }
+
+    /// <summary>
+    /// 按 4 字节单元就地转换字节数组的字节序。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    public static void ConvertEndianByInt32InPlace(this byte[] bytes)
+    {
+        bytes.ConvertEndianInPlace(ConstBaseTypeSize.IntSize);
+    }
+
+    /// <summary>
+    /// 按 8 字节单元就地转换字节数组的字节序。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    public static void ConvertEndianByInt64InPlace(this byte[] bytes)
+    {
+        bytes.ConvertEndianInPlace(ConstBaseTypeSize.LongSize);
+    }
+
+    /// <summary>
+    /// 按 2 字节单元转换字节数组的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    public static byte[] ConvertEndianByInt16(this byte[] bytes)
+    {
+        return bytes.ConvertEndian(ConstBaseTypeSize.ShortSize);
+    }
+
+    /// <summary>
+    /// 按 4 字节单元转换字节数组的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    public static byte[] ConvertEndianByInt32(this byte[] bytes)
+    {
+        return bytes.ConvertEndian(ConstBaseTypeSize.IntSize);
+    }
+
+    /// <summary>
+    /// 按 8 字节单元转换字节数组的字节序，并返回新数组。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <returns>转换后的新字节数组。</returns>
+    public static byte[] ConvertEndianByInt64(this byte[] bytes)
+    {
+        return bytes.ConvertEndian(ConstBaseTypeSize.LongSize);
+    }
+
+    /// <summary>
+    /// 将大端字节序数据转换为小端字节序数据，并返回新数组。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <returns>转换后的小端字节序数组。</returns>
+    public static byte[] BigEndianToLittleEndian(this byte[] bytes, int elementSize)
+    {
+        return bytes.ConvertEndian(elementSize);
+    }
+
+    /// <summary>
+    /// 将小端字节序数据转换为大端字节序数据，并返回新数组。
+    /// </summary>
+    /// <param name="bytes">要转换的字节数组。</param>
+    /// <param name="elementSize">每个数据单元的字节长度。</param>
+    /// <returns>转换后的大端字节序数组。</returns>
+    public static byte[] LittleEndianToBigEndian(this byte[] bytes, int elementSize)
+    {
+        return bytes.ConvertEndian(elementSize);
+    }
+
+    /// <summary>
     /// 将字节数组转换为Base64字符串。
     /// </summary>
     /// <remarks>
