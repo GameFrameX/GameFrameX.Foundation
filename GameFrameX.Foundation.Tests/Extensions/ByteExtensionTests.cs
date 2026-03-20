@@ -2428,4 +2428,105 @@ public class ByteExtensionTests
     }
 
     #endregion
+
+    #region Endian Conversion Tests
+
+    [Fact]
+    public void ConvertEndianInPlace_ValidInput_ShouldConvertCorrectly()
+    {
+        // Arrange
+        byte[] buffer = { 0x12, 0x34, 0x56, 0x78 };
+
+        // Act
+        buffer.ConvertEndianInPlace(2);
+
+        // Assert
+        Assert.Equal(new byte[] { 0x34, 0x12, 0x78, 0x56 }, buffer);
+    }
+
+    [Fact]
+    public void ConvertEndian_ValidInput_ShouldReturnConvertedCopy()
+    {
+        // Arrange
+        byte[] source = { 0x01, 0x02, 0x03, 0x04 };
+
+        // Act
+        var result = source.ConvertEndian(2);
+
+        // Assert
+        Assert.Equal(new byte[] { 0x02, 0x01, 0x04, 0x03 }, result);
+        Assert.Equal(new byte[] { 0x01, 0x02, 0x03, 0x04 }, source);
+    }
+
+    [Fact]
+    public void BigEndianToLittleEndian_ValidInput_ShouldConvertCorrectly()
+    {
+        // Arrange
+        byte[] source = { 0x11, 0x22, 0x33, 0x44 };
+
+        // Act
+        var result = source.BigEndianToLittleEndian(2);
+
+        // Assert
+        Assert.Equal(new byte[] { 0x22, 0x11, 0x44, 0x33 }, result);
+    }
+
+    [Fact]
+    public void ConvertEndianInPlace_InvalidElementSize_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        byte[] buffer = { 0x12, 0x34 };
+
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => buffer.ConvertEndianInPlace(0));
+    }
+
+    [Fact]
+    public void ConvertEndianInPlace_LengthNotAligned_ShouldThrowArgumentException()
+    {
+        // Arrange
+        byte[] buffer = { 0x01, 0x02, 0x03 };
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => buffer.ConvertEndianInPlace(2));
+    }
+
+    [Fact]
+    public void ConvertEndianByInt16InPlace_ValidInput_ShouldConvertCorrectly()
+    {
+        // Arrange
+        byte[] buffer = { 0x12, 0x34, 0x56, 0x78 };
+
+        // Act
+        buffer.ConvertEndianByInt16InPlace();
+
+        // Assert
+        Assert.Equal(new byte[] { 0x34, 0x12, 0x78, 0x56 }, buffer);
+    }
+
+    [Fact]
+    public void ConvertEndianByInt32_ValidInput_ShouldReturnConvertedCopy()
+    {
+        // Arrange
+        byte[] source = { 0x01, 0x02, 0x03, 0x04 };
+
+        // Act
+        var result = source.ConvertEndianByInt32();
+
+        // Assert
+        Assert.Equal(new byte[] { 0x04, 0x03, 0x02, 0x01 }, result);
+        Assert.Equal(new byte[] { 0x01, 0x02, 0x03, 0x04 }, source);
+    }
+
+    [Fact]
+    public void ConvertEndianByInt64_LengthNotAligned_ShouldThrowArgumentException()
+    {
+        // Arrange
+        byte[] source = { 0x01, 0x02, 0x03, 0x04 };
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => source.ConvertEndianByInt64());
+    }
+
+    #endregion
 }

@@ -705,5 +705,68 @@ public class ReadOnlySpanExtensionsTests
 
     #endregion
 
+    #region Endian Conversion Tests
+
+    [Fact]
+    public void ConvertEndian_ValidInput_ShouldReturnConvertedArray()
+    {
+        // Arrange
+        var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+
+        // Act
+        var result = ((ReadOnlySpan<byte>)buffer).ConvertEndian(2);
+
+        // Assert
+        Assert.Equal(new byte[] { 0x02, 0x01, 0x04, 0x03 }, result);
+    }
+
+    [Fact]
+    public void LittleEndianToBigEndian_ValidInput_ShouldReturnConvertedArray()
+    {
+        // Arrange
+        var buffer = new byte[] { 0x78, 0x56, 0x34, 0x12 };
+
+        // Act
+        var result = ((ReadOnlySpan<byte>)buffer).LittleEndianToBigEndian(2);
+
+        // Assert
+        Assert.Equal(new byte[] { 0x56, 0x78, 0x12, 0x34 }, result);
+    }
+
+    [Fact]
+    public void ConvertEndian_LengthNotAligned_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var buffer = new byte[] { 0x01, 0x02, 0x03 };
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => ((ReadOnlySpan<byte>)buffer).ConvertEndian(2));
+    }
+
+    [Fact]
+    public void ConvertEndianByInt16_ValidInput_ShouldReturnConvertedArray()
+    {
+        // Arrange
+        var buffer = new byte[] { 0x12, 0x34, 0x56, 0x78 };
+
+        // Act
+        var result = ((ReadOnlySpan<byte>)buffer).ConvertEndianByInt16();
+
+        // Assert
+        Assert.Equal(new byte[] { 0x34, 0x12, 0x78, 0x56 }, result);
+    }
+
+    [Fact]
+    public void ConvertEndianByInt64_LengthNotAligned_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var buffer = new byte[] { 0x01, 0x02, 0x03, 0x04 };
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => ((ReadOnlySpan<byte>)buffer).ConvertEndianByInt64());
+    }
+
+    #endregion
+
     #endregion
 }
