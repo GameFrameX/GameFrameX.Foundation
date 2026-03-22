@@ -32,6 +32,7 @@
 // ==========================================================================================
 
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using GameFrameX.Foundation.Orm.Entity.Filter;
 
 namespace GameFrameX.Foundation.Orm.Entity;
@@ -72,6 +73,7 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
     /// </remarks>
     /// <value>创建人姓名 / Creator name</value>
     [Description("创建人姓名")]
+    [MaxLength(512)]
     public virtual string? CreatedName { get; set; }
 
     /// <summary>
@@ -112,6 +114,7 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
     /// </remarks>
     /// <value>更新人姓名 / Updater name</value>
     [Description("更新人姓名")]
+    [MaxLength(512)]
     public virtual string? UpdatedName { get; set; }
 
     /// <summary>
@@ -152,6 +155,7 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
     /// </remarks>
     /// <value>删除人姓名 / Deleter name</value>
     [Description("删除人姓名")]
+    [MaxLength(512)]
     public virtual string? DeletedName { get; set; }
 
     /// <summary>
@@ -213,6 +217,7 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter,
     /// </remarks>
     /// <value>创建人姓名 / Creator name</value>
     [Description("创建人姓名")]
+    [MaxLength(512)]
     public virtual string? CreatedName { get; set; }
 
     /// <summary>
@@ -253,6 +258,7 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter,
     /// </remarks>
     /// <value>更新人姓名 / Updater name</value>
     [Description("更新人姓名")]
+    [MaxLength(512)]
     public virtual string? UpdatedName { get; set; }
 
     /// <summary>
@@ -293,6 +299,7 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter,
     /// </remarks>
     /// <value>删除人姓名 / Deleter name</value>
     [Description("删除人姓名")]
+    [MaxLength(512)]
     public virtual string? DeletedName { get; set; }
 
     /// <summary>

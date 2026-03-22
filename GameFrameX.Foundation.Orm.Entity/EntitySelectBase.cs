@@ -32,6 +32,7 @@
 // ==========================================================================================
 
 using GameFrameX.Foundation.Orm.Entity.Filter;
+using System.ComponentModel.DataAnnotations;
 
 namespace GameFrameX.Foundation.Orm.Entity;
 
@@ -51,6 +52,7 @@ public abstract class EntitySelectBase : EntityBase, ISelectFilter
     /// </remarks>
     /// <value>名称 / Name</value>
     [System.ComponentModel.Description("名称")]
+    [MaxLength(512)]
     public virtual string? Name { get; set; }
 
     /// <summary>
@@ -61,6 +63,7 @@ public abstract class EntitySelectBase : EntityBase, ISelectFilter
     /// </remarks>
     /// <value>详细描述 / Detailed description</value>
     [System.ComponentModel.Description("详细描述")]
+    [MaxLength(4096)]
     public virtual string? Description { get; set; }
 }
 
@@ -82,6 +85,7 @@ public abstract class EntitySelectBase<TKey> : EntityBase<TKey>, ISelectFilter
     /// </remarks>
     /// <value>名称 / Name</value>
     [System.ComponentModel.Description("名称")]
+    [MaxLength(512)]
     public virtual string? Name { get; set; }
 
     /// <summary>
@@ -92,5 +96,6 @@ public abstract class EntitySelectBase<TKey> : EntityBase<TKey>, ISelectFilter
     /// </remarks>
     /// <value>详细描述 / Detailed description</value>
     [System.ComponentModel.Description("详细描述")]
+    [MaxLength(4096)]
     public virtual string? Description { get; set; }
 }
