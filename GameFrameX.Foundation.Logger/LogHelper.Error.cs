@@ -142,6 +142,126 @@ public static partial class LogHelper
     }
 
     /// <summary>
+    /// 记录带有四个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <remarks>
+    /// Uses structured logging to record error level messages with four properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3)
+    {
+        GetLogger().Error(messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3);
+    }
+
+    /// <summary>
+    /// 记录带有五个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <typeparam name="T4">第五个属性值的类型 / The type of the fifth property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <param name="propertyValue4">第五个属性值 / The fifth property value</param>
+    /// <remarks>
+    /// Uses structured logging to record error level messages with five properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3, T4>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4)
+    {
+        GetLogger().Error(messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4);
+    }
+
+    /// <summary>
+    /// 记录带有六个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <typeparam name="T4">第五个属性值的类型 / The type of the fifth property value</typeparam>
+    /// <typeparam name="T5">第六个属性值的类型 / The type of the sixth property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <param name="propertyValue4">第五个属性值 / The fifth property value</param>
+    /// <param name="propertyValue5">第六个属性值 / The sixth property value</param>
+    /// <remarks>
+    /// Uses structured logging to record error level messages with six properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3, T4, T5>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4, T5 propertyValue5)
+    {
+        GetLogger().Error(messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4, propertyValue5);
+    }
+
+    /// <summary>
+    /// 记录带有七个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <typeparam name="T4">第五个属性值的类型 / The type of the fifth property value</typeparam>
+    /// <typeparam name="T5">第六个属性值的类型 / The type of the sixth property value</typeparam>
+    /// <typeparam name="T6">第七个属性值的类型 / The type of the seventh property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <param name="propertyValue4">第五个属性值 / The fifth property value</param>
+    /// <param name="propertyValue5">第六个属性值 / The sixth property value</param>
+    /// <param name="propertyValue6">第七个属性值 / The seventh property value</param>
+    /// <remarks>
+    /// Uses structured logging to record error level messages with seven properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3, T4, T5, T6>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4, T5 propertyValue5, T6 propertyValue6)
+    {
+        GetLogger().Error(messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4, propertyValue5, propertyValue6);
+    }
+
+    /// <summary>
+    /// 记录带有八个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <typeparam name="T4">第五个属性值的类型 / The type of the fifth property value</typeparam>
+    /// <typeparam name="T5">第六个属性值的类型 / The type of the sixth property value</typeparam>
+    /// <typeparam name="T6">第七个属性值的类型 / The type of the seventh property value</typeparam>
+    /// <typeparam name="T7">第八个属性值的类型 / The type of the eighth property value</typeparam>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <param name="propertyValue4">第五个属性值 / The fifth property value</param>
+    /// <param name="propertyValue5">第六个属性值 / The sixth property value</param>
+    /// <param name="propertyValue6">第七个属性值 / The seventh property value</param>
+    /// <param name="propertyValue7">第八个属性值 / The eighth property value</param>
+    /// <remarks>
+    /// Uses structured logging to record error level messages with eight properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3, T4, T5, T6, T7>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4, T5 propertyValue5, T6 propertyValue6, T7 propertyValue7)
+    {
+        GetLogger().Error(messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4, propertyValue5, propertyValue6, propertyValue7);
+    }
+
+    /// <summary>
     /// 记录带有异常的错误消息模板。
     /// </summary>
     /// <param name="exception">异常信息 / The exception information</param>
@@ -203,6 +323,110 @@ public static partial class LogHelper
     public static void Error<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
     {
         GetLogger().Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
+    }
+
+    /// <summary>
+    /// 记录带有异常和四个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <remarks>
+    /// Records error level exception information and message template with four properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3)
+    {
+        GetLogger().Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3);
+    }
+
+    /// <summary>
+    /// 记录带有异常和五个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <typeparam name="T4">第五个属性值的类型 / The type of the fifth property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <param name="propertyValue4">第五个属性值 / The fifth property value</param>
+    /// <remarks>
+    /// Records error level exception information and message template with five properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3, T4>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4)
+    {
+        GetLogger().Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4);
+    }
+
+    /// <summary>
+    /// 记录带有异常和六个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <typeparam name="T4">第五个属性值的类型 / The type of the fifth property value</typeparam>
+    /// <typeparam name="T5">第六个属性值的类型 / The type of the sixth property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <param name="propertyValue4">第五个属性值 / The fifth property value</param>
+    /// <param name="propertyValue5">第六个属性值 / The sixth property value</param>
+    /// <remarks>
+    /// Records error level exception information and message template with six properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3, T4, T5>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4, T5 propertyValue5)
+    {
+        GetLogger().Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4, propertyValue5);
+    }
+
+    /// <summary>
+    /// 记录带有异常和七个属性值的错误消息模板。
+    /// </summary>
+    /// <typeparam name="T0">第一个属性值的类型 / The type of the first property value</typeparam>
+    /// <typeparam name="T1">第二个属性值的类型 / The type of the second property value</typeparam>
+    /// <typeparam name="T2">第三个属性值的类型 / The type of the third property value</typeparam>
+    /// <typeparam name="T3">第四个属性值的类型 / The type of the fourth property value</typeparam>
+    /// <typeparam name="T4">第五个属性值的类型 / The type of the fifth property value</typeparam>
+    /// <typeparam name="T5">第六个属性值的类型 / The type of the sixth property value</typeparam>
+    /// <typeparam name="T6">第七个属性值的类型 / The type of the seventh property value</typeparam>
+    /// <param name="exception">异常信息 / The exception information</param>
+    /// <param name="messageTemplate">消息模板 / The message template</param>
+    /// <param name="propertyValue0">第一个属性值 / The first property value</param>
+    /// <param name="propertyValue1">第二个属性值 / The second property value</param>
+    /// <param name="propertyValue2">第三个属性值 / The third property value</param>
+    /// <param name="propertyValue3">第四个属性值 / The fourth property value</param>
+    /// <param name="propertyValue4">第五个属性值 / The fifth property value</param>
+    /// <param name="propertyValue5">第六个属性值 / The sixth property value</param>
+    /// <param name="propertyValue6">第七个属性值 / The seventh property value</param>
+    /// <remarks>
+    /// Records error level exception information and message template with seven properties.
+    /// </remarks>
+    public static void Error<T0, T1, T2, T3, T4, T5, T6>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4, T5 propertyValue5, T6 propertyValue6)
+    {
+        GetLogger().Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4, propertyValue5, propertyValue6);
+    }
+
+    /// <summary>
+    /// 记录带有异常和八个属性值的错误消息模板。
+    /// </summary>
+    public static void Error<T0, T1, T2, T3, T4, T5, T6, T7>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2, T3 propertyValue3, T4 propertyValue4, T5 propertyValue5, T6 propertyValue6, T7 propertyValue7)
+    {
+        GetLogger().Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2, propertyValue3, propertyValue4, propertyValue5, propertyValue6, propertyValue7);
     }
 
     /// <summary>
