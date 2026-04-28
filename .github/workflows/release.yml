@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   release:
@@ -82,9 +83,16 @@ jobs:
         if: steps.check.outputs.need_release == 'true'
         run: dotnet pack --configuration Release --no-build --output ./artifacts
 
+      - name: NuGet login
+        if: steps.check.outputs.need_release == 'true'
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
       - name: Publish to NuGet
         if: steps.check.outputs.need_release == 'true'
-        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Push changes
         if: steps.check.outputs.need_release == 'true'
