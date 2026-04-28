@@ -1,3 +1,9 @@
+## [2.4.2] - 2026-04-28
+
+### Ci
+
+- 升级 actions/setup-dotnet@v5 和 action-gh-release@v3 适配 Node.js 24
+
 ## [2.4.1] - 2026-04-28
 
 ### Ci
