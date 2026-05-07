@@ -1,63 +1,81 @@
+<div align="center">
+
+![GameFrameX Logo](https://download.alianblank.com/gameframex/gameframex_logo_320.png)
+
 # GameFrameX.Foundation
 
+[![Version](https://img.shields.io/github/v/release/GameFrameX/GameFrameX.Foundation?label=version&color=green)](https://github.com/GameFrameX/GameFrameX.Foundation/releases)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)](https://dotnet.microsoft.com/)
+[![Documentation](https://img.shields.io/badge/docs-gameframex-brightgreen.svg)](https://gameframex.doc.alianblank.com)
 
-### 📦 程序集概览
+**All-in-One Solution for Indie Game Development · Empowering Indie Developers' Dreams**
 
-| 程序集                                      | 功能描述          | NuGet 包名                                   | 版本                                                                                                                                                                | 下载次数                                                                                                                                                               |
+[📖 Documentation](https://gameframex.doc.alianblank.com) • [🚀 Quick Start](#-quick-start)
+
+---
+
+🌐 **Language**: **English** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
+
+---
+
+</div>
+
+### 📦 Assembly Overview
+
+| Assembly                                      | Description          | NuGet Package                                   | Version                                                                                                                                                                | Downloads                                                                                                                                                               |
 |------------------------------------------|---------------|--------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| GameFrameX.Foundation.Encryption         | 加密工具库         | `GameFrameX.Foundation.Encryption`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/)                 |
-| GameFrameX.Foundation.Extensions         | 扩展方法库         | `GameFrameX.Foundation.Extensions`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/)                 |
-| GameFrameX.Foundation.Hash               | 哈希工具库         | `GameFrameX.Foundation.Hash`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/)                             |
-| GameFrameX.Foundation.Http.Extension     | HttpClient 扩展 | `GameFrameX.Foundation.Http.Extension`     | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         |
-| GameFrameX.Foundation.Http.Normalization | HTTP 消息标准化    | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
-| GameFrameX.Foundation.Json               | JSON 序列化工具    | `GameFrameX.Foundation.Json`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             |
-| GameFrameX.Foundation.Localization       | 本地化框架         | `GameFrameX.Foundation.Localization`       | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)             |
-| GameFrameX.Foundation.Logger             | Serilog 日志配置  | `GameFrameX.Foundation.Logger`             | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         |
-| GameFrameX.Foundation.Options            | 命令行参数处理       | `GameFrameX.Foundation.Options`            | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       |
-| GameFrameX.Foundation.Orm.Attribute      | ORM 特性标注      | `GameFrameX.Foundation.Orm.Attribute`      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           |
-| GameFrameX.Foundation.Orm.Entity         | ORM 实体基类      | `GameFrameX.Foundation.Orm.Entity`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Entity.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Entity.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity/)                 |
-| GameFrameX.Foundation.Utility            | 通用工具类         | `GameFrameX.Foundation.Utility`            | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Utility.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Utility/)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Utility.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Utility/)                       |
+| GameFrameX.Foundation.Encryption         | Encryption Library         | `GameFrameX.Foundation.Encryption`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Encryption.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Encryption/)                 |
+| GameFrameX.Foundation.Extensions         | Extension Methods         | `GameFrameX.Foundation.Extensions`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Extensions.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Extensions/)                 |
+| GameFrameX.Foundation.Hash               | Hash Library         | `GameFrameX.Foundation.Hash`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/)                             |
+| GameFrameX.Foundation.Http.Extension     | HttpClient Extensions | `GameFrameX.Foundation.Http.Extension`     | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension/)         |
+| GameFrameX.Foundation.Http.Normalization | HTTP Message Normalization    | `GameFrameX.Foundation.Http.Normalization` | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization/) |
+| GameFrameX.Foundation.Json               | JSON Serializer    | `GameFrameX.Foundation.Json`               | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Json.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Json/)                             |
+| GameFrameX.Foundation.Localization       | Localization Framework         | `GameFrameX.Foundation.Localization`       | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Localization.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Localization/)             |
+| GameFrameX.Foundation.Logger             | Serilog Logger Config  | `GameFrameX.Foundation.Logger`             | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger/)                         |
+| GameFrameX.Foundation.Options            | CLI Argument Parser       | `GameFrameX.Foundation.Options`            | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Options.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Options/)                       |
+| GameFrameX.Foundation.Orm.Attribute      | ORM Attributes      | `GameFrameX.Foundation.Orm.Attribute`      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Attribute.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Attribute/)           |
+| GameFrameX.Foundation.Orm.Entity         | ORM Entity Base      | `GameFrameX.Foundation.Orm.Entity`         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Entity.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity/)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Entity.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity/)                 |
+| GameFrameX.Foundation.Utility            | Utility Classes         | `GameFrameX.Foundation.Utility`            | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Utility.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Utility/)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Utility.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Utility/)                       |
 
-GameFrameX 的基础工具库，提供了一系列高性能、易用的基础组件和工具类，涵盖加密、哈希、HTTP、JSON、日志等常用功能。
+GameFrameX's foundational utility library providing a suite of high-performance, easy-to-use components covering encryption, hashing, HTTP, JSON, logging and more.
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 安装
+### Installation
 
-通过 NuGet 包管理器安装所需的组件：
+Install the required packages via NuGet:
 
 ```bash
-# 安装加密工具库
+# Install encryption library
 dotnet add package GameFrameX.Foundation.Encryption
 
-# 安装扩展方法库
+# Install extension methods library
 dotnet add package GameFrameX.Foundation.Extensions
 
-# 安装哈希工具库
+# Install hash library
 dotnet add package GameFrameX.Foundation.Hash
 
-# 安装 JSON 工具库
+# Install JSON library
 dotnet add package GameFrameX.Foundation.Json
 
-# 安装本地化框架
+# Install localization framework
 dotnet add package GameFrameX.Foundation.Localization
 
-# 安装日志工具库
+# Install logging library
 dotnet add package GameFrameX.Foundation.Logger
 
-# 安装命令行参数处理库
+# Install CLI argument parser
 dotnet add package GameFrameX.Foundation.Options
 
-# 安装 HTTP 扩展
+# Install HTTP extensions
 dotnet add package GameFrameX.Foundation.Http.Extension
 
-# 安装 HTTP 消息标准化
+# Install HTTP message normalization
 dotnet add package GameFrameX.Foundation.Http.Normalization
 ```
 
-### 基本使用
+### Basic Usage
 
 ```csharp
 using GameFrameX.Foundation.Encryption;
@@ -68,151 +86,151 @@ using GameFrameX.Foundation.Localization.Core;
 using GameFrameX.Foundation.Logger;
 using GameFrameX.Foundation.Options;
 
-// AES 加密
+// AES encryption
 string encrypted = AesHelper.Encrypt("Hello World", "your-key");
 string decrypted = AesHelper.Decrypt(encrypted, "your-key");
 
-// 扩展方法使用
+// Using extension methods
 var list = new List<int> { 1, 2, 3, 4, 5 };
-var randomItem = list.RandomElement(); // 随机获取元素
-var isNullOrEmpty = myString.IsNullOrEmpty(); // 字符串检查
+var randomItem = list.RandomElement(); // Get random element
+var isNullOrEmpty = myString.IsNullOrEmpty(); // String check
 
-// 字符串扩展
+// String extensions
 string base64 = "SGVsbG8gV29ybGQ=";
-string urlSafe = base64.ToUrlSafeBase64(); // URL安全Base64
-string centered = "Hello".CenterAlignedText(20); // 居中对齐
+string urlSafe = base64.ToUrlSafeBase64(); // URL-safe Base64
+string centered = "Hello".CenterAlignedText(20); // Center aligned
 
-// 对象验证
+// Object validation
 object obj = GetSomeObject();
-obj.ThrowIfNull(nameof(obj)); // 空值检查
+obj.ThrowIfNull(nameof(obj)); // Null check
 int value = 50;
-value.CheckRange(1, 100); // 范围检查
+value.CheckRange(1, 100); // Range check
 
-// 高性能字节操作
+// High performance byte operations
 Span<byte> buffer = stackalloc byte[8];
 int offset = 0;
 buffer.WriteUIntValue(12345u, ref offset);
 buffer.WriteFloatValue(3.14f, ref offset);
 
-// 双向字典
+// Bidirectional dictionary
 var biDict = new BidirectionalDictionary<string, int>();
 biDict.TryAdd("one", 1);
-if (biDict.TryGetKey(1, out string key)) { /* 反向查找 */ }
+if (biDict.TryGetKey(1, out string key)) { /* Reverse lookup */ }
 
-// 命令行参数处理
+// CLI options
 var builder = new OptionsBuilder<AppConfig>(args);
 var config = builder.Build();
 
-// SHA-256 哈希
+// SHA-256 hash
 string hash = Sha256Helper.ComputeHash("Hello World");
 
-// JSON 序列化
+// JSON serialization
 string json = JsonHelper.Serialize(myObject);
 MyClass obj = JsonHelper.Deserialize<MyClass>(json);
 
-// 本地化字符串获取
+// Get localized string
 var successMessage = LocalizationService.GetString("Success");
 var errorMessage = LocalizationService.GetString("Utility.Exceptions.TimestampOutOfRange");
 var formattedMessage = LocalizationService.GetString("Encryption.InvalidKeySize", 128, 256);
 
-// 日志记录
+// Logging
 LogHandler.Create(LogOptions.Default);
-LogHelper.Info("应用程序启动");
+LogHelper.Info("Application started");
 ```
 
-## 📚 详细文档
+## 📚 Detailed Documentation
 
-### 🧩 扩展方法库 (GameFrameX.Foundation.Extensions)
+### 🧩 Extension Methods (GameFrameX.Foundation.Extensions)
 
-提供丰富的扩展方法集合，增强 .NET 基础类型的功能，提高开发效率和代码可读性。
+A rich set of extension methods enhancing .NET base types, improving development efficiency and code readability.
 
-#### 核心组件概览
+#### Core Components Overview
 
-| 组件           | 文件名                                                               | 主要功能                           |
+| Component | File | Description |
 |--------------|-------------------------------------------------------------------|--------------------------------|
-| **集合扩展**     | `CollectionExtensions.cs`                                         | 为各种集合类型提供便捷操作方法                |
-| **字符串扩展**    | `StringExtensions.cs`                                             | 增强字符串处理能力，包含URL安全Base64、居中对齐等  |
-| **对象扩展**     | `ObjectExtensions.cs`                                             | 提供对象验证和数值范围检查                  |
-| **类型扩展**     | `TypeExtensions.cs`                                               | 类型检查和反射相关扩展方法                  |
-| **枚举扩展**     | `IEnumerableExtensions.cs`                                        | LINQ 增强和集合操作，支持交集、差集等          |
-| **字典扩展**     | `IDictionaryExtensions.cs`                                        | 字典操作增强，支持合并、条件移除等              |
-| **列表扩展**     | `ListExtensions.cs`                                               | 列表特定的扩展方法                      |
-| **字节扩展**     | `ByteExtensions.cs`                                               | 字节数组操作，包含子数组提取等                |
-| **Span扩展**   | `SpanExtensions.cs`                                               | 高性能内存操作，支持各种数据类型读写，包含大端序和小端序支持 |
-| **只读Span扩展** | `ReadOnlySpanExtensions.cs`                                       | 只读内存的高性能读取操作                   |
-| **序列读取器扩展**  | `SequenceReaderExtensions.cs`                                     | 序列数据的便捷读取方法                    |
-| **双向字典**     | `BidirectionalDictionary.cs`                                      | 支持双向查找的字典实现                    |
-| **查找表**      | `LookupX.cs`                                                      | 增强的一对多关系查找表                    |
-| **并发队列**     | `ConcurrentLimitedQueue.cs`                                       | 线程安全的有限容量队列                    |
-| **可空字典**     | `NullableDictionary.cs`<br/>`NullableConcurrentDictionary.cs`     | 支持空值的字典实现                      |
-| **可释放字典**    | `DisposableDictionary.cs`<br/>`DisposableConcurrentDictionary.cs` | 值可被自动释放的字典                     |
-| **常量定义**     | `ConstBaseTypeSize.cs`                                            | 基础数据类型字节大小常量                   |
-| **空对象模式**    | `NullObject.cs`                                                   | 类型安全的空对象实现                     |
-| **自定义异常**    | `ArgumentAlreadyException.cs`                                     | 参数已存在异常类型                      |
+| **Collection Extensions**     | `CollectionExtensions.cs`                                         | Convenient operations for various collection types                |
+| **String Extensions**    | `StringExtensions.cs`                                             | Enhanced string processing including URL-safe Base64, center alignment  |
+| **Object Extensions**     | `ObjectExtensions.cs`                                             | Object validation and numeric range checking                  |
+| **Type Extensions**     | `TypeExtensions.cs`                                               | Type checking and reflection extension methods                  |
+| **Enumerable Extensions**     | `IEnumerableExtensions.cs`                                        | LINQ enhancements and set operations          |
+| **Dictionary Extensions**     | `IDictionaryExtensions.cs`                                        | Dictionary enhancements with merge, conditional remove              |
+| **List Extensions**     | `ListExtensions.cs`                                               | List-specific extension methods                      |
+| **Byte Extensions**     | `ByteExtensions.cs`                                               | Byte array operations including sub-array extraction                |
+| **Span Extensions**   | `SpanExtensions.cs`                                               | High-performance memory operations with big/little endian support |
+| **ReadOnlySpan Extensions** | `ReadOnlySpanExtensions.cs`                                       | High-performance read-only memory operations                   |
+| **SequenceReader Extensions**  | `SequenceReaderExtensions.cs`                                     | Convenient sequence data reading methods                    |
+| **Bidirectional Dictionary**     | `BidirectionalDictionary.cs`                                      | Bidirectional lookup dictionary                    |
+| **Lookup Table**      | `LookupX.cs`                                                      | Enhanced one-to-many lookup table                    |
+| **Concurrent Queue**     | `ConcurrentLimitedQueue.cs`                                       | Thread-safe bounded queue                    |
+| **Nullable Dictionary**     | `NullableDictionary.cs`<br/>`NullableConcurrentDictionary.cs`     | Dictionary supporting null keys                      |
+| **Disposable Dictionary**    | `DisposableDictionary.cs`<br/>`DisposableConcurrentDictionary.cs` | Auto-disposable dictionary                     |
+| **Constants**     | `ConstBaseTypeSize.cs`                                            | Base type byte size constants                   |
+| **Null Object**    | `NullObject.cs`                                                   | Type-safe null object implementation                     |
+| **Custom Exception**    | `ArgumentAlreadyException.cs`                                     | Argument already exists exception                      |
 
-#### 集合扩展功能
+#### Collection Extensions
 
 ```csharp
 using GameFrameX.Foundation.Extensions;
 
-// 集合操作
+// Collection operations
 var list = new List<int> { 1, 2, 3, 4, 5 };
-var randomItem = list.RandomElement(); // 随机获取元素
-var isEmpty = list.IsNullOrEmpty(); // 检查是否为空
+var randomItem = list.RandomElement(); // Get random element
+var isEmpty = list.IsNullOrEmpty(); // Check if empty
 
-// 字典扩展
+// Dictionary extensions
 var dict = new Dictionary<string, int>();
-dict.Merge("key", 10, (old, new) => old + new); // 合并值
-var value = dict.GetOrAdd("key", k => 42); // 获取或添加
-dict.RemoveIf((k, v) => v > 100); // 条件移除
+dict.Merge("key", 10, (old, new) => old + new); // Merge values
+var value = dict.GetOrAdd("key", k => 42); // Get or add
+dict.RemoveIf((k, v) => v > 100); // Conditional removal
 
-// HashSet 扩展
+// HashSet extensions
 var hashSet = new HashSet<int>();
-hashSet.AddRange(new[] { 1, 2, 3, 4, 5 }); // 批量添加
+hashSet.AddRange(new[] { 1, 2, 3, 4, 5 }); // Batch add
 ```
 
-#### 字符串扩展功能
+#### String Extensions
 
 ```csharp
-// 字符串检查
+// String check
 string text = "Hello World";
 bool isEmpty = text.IsNullOrEmpty();
 bool isEmptyOrWhitespace = text.IsNullOrEmptyOrWhiteSpace();
 bool hasContent = text.IsNotNullOrEmptyOrWhiteSpace();
 
-// 字符串处理
+// String processing
 string base64 = "SGVsbG8gV29ybGQ=";
-string urlSafe = base64.ToUrlSafeBase64(); // 转换为 URL 安全格式
-string restored = urlSafe.FromUrlSafeBase64(); // 还原标准格式
+string urlSafe = base64.ToUrlSafeBase64(); // Convert to URL-safe format
+string restored = urlSafe.FromUrlSafeBase64(); // Restore standard format
 
-// 字符串操作
-string centered = "Hello".CenterAlignedText(20); // 居中对齐
-string cleaned = "Hello World   ".RemoveWhiteSpace(); // 移除空白字符
-string trimmed = "Hello!".RemoveSuffix('!'); // 移除后缀
+// String operations
+string centered = "Hello".CenterAlignedText(20); // Center aligned
+string cleaned = "Hello World   ".RemoveWhiteSpace(); // Remove whitespace
+string trimmed = "Hello!".RemoveSuffix('!'); // Remove suffix
 
-// 字符重复
+// Character repetition
 string repeated = 'A'.RepeatChar(5); // "AAAAA"
 ```
 
-#### 对象验证和范围检查
+#### Object Validation & Range Checking
 
 ```csharp
-// 空值检查
+// Null check
 object obj = GetSomeObject();
 if (obj.IsNotNull())
 {
-    // 对象不为空时的处理
+    // Handle non-null object
 }
 
-// 参数验证
-obj.ThrowIfNull(nameof(obj)); // 为空时抛出异常
+// Parameter validation
+obj.ThrowIfNull(nameof(obj)); // Throw when null
 
-// 数值范围检查
+// Numeric range check
 int value = 50;
-value.CheckRange(1, 100); // 检查范围，超出时抛出异常
-bool inRange = value.IsRange(1, 100); // 检查是否在范围内
+value.CheckRange(1, 100); // Check range, throw when out of bounds
+bool inRange = value.IsRange(1, 100); // Check if within range
 
-// 支持多种数值类型
+// Support multiple numeric types
 uint uintValue = 25;
 uintValue.CheckRange(0, 50);
 
@@ -220,52 +238,52 @@ long longValue = 1000;
 longValue.CheckRange(500, 2000);
 ```
 
-#### 类型检查扩展
+#### Type Checking Extensions
 
 ```csharp
-// 泛型接口检查
+// Generic interface check
 Type listType = typeof(List<string>);
 Type genericListType = typeof(List<>);
 bool implementsGeneric = listType.HasImplementedRawGeneric(genericListType);
 
-// 接口实现检查
+// Interface implementation check
 Type stringType = typeof(string);
 Type comparableType = typeof(IComparable);
 bool implementsInterface = stringType.IsImplWithInterface(comparableType);
 ```
 
-#### LINQ 增强扩展
+#### LINQ Enhancement Extensions
 
 ```csharp
-// 交集操作
+// Intersection operations
 var list1 = new[] { 1, 2, 3, 4, 5 };
 var list2 = new[] { 3, 4, 5, 6, 7 };
-var intersection = list1.IntersectBy(list2, x => x); // 按键取交集
+var intersection = list1.IntersectBy(list2, x => x); // Intersect by key
 
-// 多集合交集
+// Multi-set intersection
 var collections = new[] { list1, list2, new[] { 4, 5, 6 } };
-var allIntersection = collections.IntersectAll(); // 所有集合的交集
+var allIntersection = collections.IntersectAll(); // Intersection of all collections
 
-// 差集操作
+// Difference operations
 var difference = list1.ExceptBy(list2, (x, y) => x == y);
 
-// 批量添加
+// Batch add
 var collection = new List<int>();
-collection.AddRange(1, 2, 3, 4, 5); // 使用 params 参数
-collection.AddRange(new[] { 6, 7, 8 }); // 使用数组
+collection.AddRange(1, 2, 3, 4, 5); // Using params
+collection.AddRange(new[] { 6, 7, 8 }); // Using array
 ```
 
-#### 双向字典
+#### Bidirectional Dictionary
 
 ```csharp
-// 创建双向字典
+// Create bidirectional dictionary
 var biDict = new BidirectionalDictionary<string, int>();
 
-// 添加键值对
+// Add key-value pair
 biDict.TryAdd("one", 1);
 biDict.TryAdd("two", 2);
 
-// 双向查找
+// Bidirectional lookup
 if (biDict.TryGetValue("one", out int value))
 {
     Console.WriteLine($"Key 'one' maps to {value}");
@@ -276,220 +294,220 @@ if (biDict.TryGetKey(1, out string key))
     Console.WriteLine($"Value 1 maps to '{key}'");
 }
 
-// 清空字典
+// Clear dictionary
 biDict.Clear();
 ```
 
-#### 高性能扩展
+#### High Performance Extensions
 
 ```csharp
-// Span 和 ReadOnlySpan 扩展
+// Span and ReadOnlySpan extensions
 ReadOnlySpan<byte> span = stackalloc byte[] { 1, 2, 3, 4, 5 };
-// 提供针对 Span 的高性能操作扩展
+// High performance Span operation extensions
 
-// 序列读取器扩展
-// 为 SequenceReader 提供便捷的读取方法
+// Sequence reader extensions
+// Convenient read methods for SequenceReader
 ```
 
-#### 字节操作扩展
+#### Byte Operation Extensions
 
 ```csharp
-// 字节数组扩展
+// Byte array extensions
 byte[] data = { 1, 2, 3, 4, 5 };
-byte[] subArray = data.SubArray(1, 3); // 获取子数组
+byte[] subArray = data.SubArray(1, 3); // Get sub-array
 
-// Span 和 ReadOnlySpan 扩展 - 高性能字节操作
+// Span and ReadOnlySpan extensions - High performance byte operations
 Span<byte> buffer = stackalloc byte[16];
 int offset = 0;
 
-// 写入各种数据类型（支持大端序和小端序）
+// Write various data types (big-endian and little-endian)
 buffer.WriteUIntValue(12345u, ref offset);
 buffer.WriteFloatValue(3.14f, ref offset);
-buffer.WriteUIntBigEndianValue(12345u, ref offset); // 大端序写入
-buffer.WriteFloatBigEndianValue(3.14f, ref offset); // 大端序写入
+buffer.WriteUIntBigEndianValue(12345u, ref offset); // Big-endian write
+buffer.WriteFloatBigEndianValue(3.14f, ref offset); // Big-endian write
 
-// 读取数据类型
+// Read data type
 offset = 0;
 uint value = buffer.ReadUIntValue(ref offset);
 float floatValue = buffer.ReadFloatValue(ref offset);
-uint bigEndianValue = buffer.ReadUIntBigEndianValue(ref offset); // 大端序读取
+uint bigEndianValue = buffer.ReadUIntBigEndianValue(ref offset); // Big-endian read
 
-// ReadOnlySpan 读取操作
+// ReadOnlySpan read operations
 ReadOnlySpan<byte> readBuffer = buffer;
 offset = 0;
 uint readValue = readBuffer.ReadUIntValue(ref offset);
 float readFloatValue = readBuffer.ReadFloatBigEndianValue(ref offset);
 ```
 
-#### 序列读取器扩展
+#### Sequence Reader Extensions
 
 ```csharp
-// 为 SequenceReader 提供便捷的读取方法
-// 支持带长度前缀的字节数组读取
-// 提供 TryPeek 方法进行非破坏性读取
+// Convenient read methods for SequenceReader
+// Support length-prefixed byte array reading
+// Non-destructive read with TryPeek
 ```
 
-#### 特殊工具类
+#### Special Utility Classes
 
-- **ConstBaseTypeSize**: 基础数据类型字节大小常量定义，包含所有.NET基础类型的字节大小
-- **NullObject**: 空对象模式实现，提供类型安全的空对象
-- **NullableConcurrentDictionary**: 支持空值的线程安全并发字典
-- **NullableDictionary**: 支持空值的普通字典
-- **LookupX**: 增强的查找表实现，支持一对多关系映射
-- **ArgumentAlreadyException**: 参数已存在异常，用于参数验证场景
-- **ConcurrentLimitedQueue**: 线程安全的有限容量队列，自动移除最旧元素
-- **DisposableConcurrentDictionary/DisposableDictionary**: 值可被自动释放的字典类型
+- **ConstBaseTypeSize**: Base type byte size constants for all .NET primitive types
+- **NullObject**: Type-safe null object pattern implementation
+- **NullableConcurrentDictionary**: Thread-safe concurrent dictionary supporting null values
+- **NullableDictionary**: Dictionary supporting null values
+- **LookupX**: Enhanced lookup table with one-to-many mapping
+- **ArgumentAlreadyException**: Argument already exists exception for parameter validation
+- **ConcurrentLimitedQueue**: Thread-safe bounded queue that auto-removes oldest elements
+- **DisposableConcurrentDictionary/DisposableDictionary**: Auto-disposable dictionary types
 
-### 🔐 加密工具库 (GameFrameX.Foundation.Encryption)
+### 🔐 Encryption Library (GameFrameX.Foundation.Encryption)
 
-提供多种加密算法的实现，确保数据安全传输和存储。
+Provides implementations of multiple encryption algorithms for secure data transmission and storage.
 
-#### 支持的算法
+#### Supported Algorithms
 
-- **AES 加密** (`AesHelper`): 对称加密算法，支持字符串和字节数组
-- **RSA 加密** (`RsaHelper`): 非对称加密算法，支持密钥对生成、加密解密、数字签名
-- **DSA 签名** (`DsaHelper`): 数字签名算法，支持签名和验证
-- **SM2/SM4 加密** (`Sm2Helper`/`Sm4Helper`): 国密算法实现
-    - SM2: 非对称加密算法
-    - SM4: 对称加密算法，支持 ECB/CBC 模式
-- **XOR 加密** (`XorHelper`): 异或加密，支持快速加密和完整加密模式
+- **AES Encryption** (`AesHelper`): Symmetric encryption supporting strings and byte arrays
+- **RSA Encryption** (`RsaHelper`): Asymmetric encryption with key generation, encryption/decryption and digital signatures
+- **DSA Signing** (`DsaHelper`): Digital signature algorithm supporting signing and verification
+- **SM2/SM4 Encryption** (`Sm2Helper`/`Sm4Helper`): National cryptographic algorithm implementation
+    - SM2: Asymmetric encryption
+    - SM4: Symmetric encryption, ECB/CBC modes
+- **XOR Encryption** (`XorHelper`): XOR encryption with fast and complete encryption modes
 
-#### 使用示例
+#### Usage Examples
 
 ```csharp
-// AES 加密
-string encrypted = AesHelper.Encrypt("敏感数据", "your-secret-key");
+// AES encryption
+string encrypted = AesHelper.Encrypt("Sensitive data", "your-secret-key");
 string decrypted = AesHelper.Decrypt(encrypted, "your-secret-key");
 
-// RSA 加密
+// RSA encryption
 var keys = RsaHelper.Make();
 string encrypted = RsaHelper.Encrypt(keys["publicKey"], "Hello World");
 string decrypted = RsaHelper.Decrypt(keys["privateKey"], encrypted);
 
-// SM4 加密
+// SM4 encryption
 string encrypted = Sm4Helper.EncryptCbc("your-key", "Hello World");
 string decrypted = Sm4Helper.DecryptCbc("your-key", encrypted);
 ```
 
-### 🔗 哈希工具库 (GameFrameX.Foundation.Hash)
+### 🔗 Hash Library (GameFrameX.Foundation.Hash)
 
-提供多种哈希算法实现，适用于数据完整性校验、快速查找等场景。
+Provides multiple hash algorithm implementations for data integrity verification, fast lookup and more.
 
-#### 支持的算法
+#### Supported Algorithms
 
-- **MD5** (`Md5Helper`): 128位哈希值，支持加盐
-- **SHA 系列**:
-    - SHA-1 (`Sha1Helper`): 160位哈希值
-    - SHA-256 (`Sha256Helper`): 256位哈希值
-    - SHA-512 (`Sha512Helper`): 512位哈希值
-- **HMAC-SHA256** (`HmacSha256Helper`): 基于密钥的消息认证码
-- **CRC 校验** (`CrcHelper`): CRC32/CRC64 循环冗余校验
-- **MurmurHash3** (`MurmurHash3Helper`): 高性能非加密哈希
-- **xxHash** (`XxHashHelper`): 超高性能哈希算法，支持32/64/128位
+- **MD5** (`Md5Helper`): 128-bit hash with salt support
+- **SHA Series**:
+    - SHA-1 (`Sha1Helper`): 160-bit hash
+    - SHA-256 (`Sha256Helper`): 256-bit hash
+    - SHA-512 (`Sha512Helper`): 512-bit hash
+- **HMAC-SHA256** (`HmacSha256Helper`): Key-based message authentication code
+- **CRC Checksum** (`CrcHelper`): CRC32/CRC64 cyclic redundancy check
+- **MurmurHash3** (`MurmurHash3Helper`): High-performance non-cryptographic hash
+- **xxHash** (`XxHashHelper`): Ultra-high performance hash, 32/64/128-bit
 
-#### 使用示例
+#### Usage Examples
 
 ```csharp
-// MD5 哈希
+// MD5 hash
 string md5Hash = Md5Helper.Hash("Hello World");
 string saltedHash = Md5Helper.HashWithSalt("Hello World", "salt");
 
-// SHA-256 哈希
+// SHA-256 hash
 string sha256Hash = Sha256Helper.ComputeHash("Hello World");
 
 // HMAC-SHA256
 string hmacHash = HmacSha256Helper.Hash("message", "secret-key");
 
-// xxHash (高性能)
+// xxHash (High performance)
 ulong xxHash = XxHashHelper.Hash64("Hello World");
 ```
 
-### 🌐 HTTP 工具库
+### 🌐 HTTP Tools
 
-#### HTTP 扩展 (GameFrameX.Foundation.Http.Extension)
+#### HTTP Extensions (GameFrameX.Foundation.Http.Extension)
 
-为 HttpClient 提供便捷的扩展方法，简化 JSON 数据的发送和接收。
+Convenient extension methods for HttpClient, simplifying JSON data sending and receiving.
 
 ```csharp
-// POST JSON 请求
+// POST JSON request
 string response = await httpClient.PostJsonToStringAsync<MyClass>(url, myObject);
 ```
 
-#### HTTP 消息标准化 (GameFrameX.Foundation.Http.Normalization)
+#### HTTP Message Normalization (GameFrameX.Foundation.Http.Normalization)
 
-提供统一的 HTTP 响应格式，包含 `code`、`message` 和 `data` 字段，适用于 GameFrameX 生态系统。
+Provides a unified HTTP response format with `code`, `message` and `data` fields for the GameFrameX ecosystem.
 
-### 📄 JSON 序列化 (GameFrameX.Foundation.Json)
+### 📄 JSON Serialization (GameFrameX.Foundation.Json)
 
-基于 `System.Text.Json` 的高性能序列化工具，提供优化的默认配置。
+High-performance serialization tool based on `System.Text.Json` with optimized defaults.
 
-#### 特性
+#### Features
 
-- 高性能序列化/反序列化
-- 枚举序列化为字符串
-- 忽略 null 值属性
-- 忽略循环引用
-- 属性名称大小写不敏感
-- 提供格式化和紧凑两种输出模式
+- High-performance serialization/deserialization
+- Enums serialized as strings
+- Ignore null value properties
+- Ignore circular references
+- Case-insensitive property names
+- Formatted and compact output modes
 
-#### 使用示例
+#### Usage Examples
 
 ```csharp
-// 序列化
+// Serialization
 string json = JsonHelper.Serialize(myObject);
 string formattedJson = JsonHelper.Serialize(myObject, JsonHelper.FormatOptions);
 
-// 反序列化
+// Deserialization
 MyClass obj = JsonHelper.Deserialize<MyClass>(json);
 
-// 安全的反序列化
+// Safe deserialization
 if (JsonHelper.TryDeserialize<MyClass>(json, out var result))
 {
-    // 处理结果
+    // Process result
 }
 ```
 
-### 🌐 本地化框架 (GameFrameX.Foundation.Localization)
+### 🌐 Localization Framework (GameFrameX.Foundation.Localization)
 
-提供轻量级、高性能的本地化解决方案，支持零配置使用和懒加载机制，为整个 GameFrameX.Foundation 生态系统提供统一的本地化支持。
+A lightweight, high-performance localization solution with zero-config usage and lazy loading, providing unified localization support for the entire GameFrameX.Foundation ecosystem.
 
-#### 主要特性
+#### Key Features
 
-- **零配置使用**: 无需任何初始化配置，自动发现和加载本地化资源
-- **懒加载机制**: 首次使用时才加载资源，启动性能优异
-- **多语言支持**: 内置中文（简体）和英文支持，可扩展更多语言
-- **线程安全**: 支持并发访问，适用于多线程环境
-- **高度可扩展**: 支持自定义资源提供者，灵活的优先级管理
-- **优先级解析**: 自定义提供者 > 程序集资源 > 默认资源
+- **Zero-config usage**: No initialization required, auto-discovers and loads localization resources
+- **Lazy loading**: Resources loaded on first use for excellent startup performance
+- **Multi-language support**: Built-in Chinese (Simplified) and English, extensible to more languages
+- **Thread safe**: Supports concurrent access for multi-threaded environments
+- **Highly extensible**: Custom resource providers with flexible priority management
+- **Priority resolution**: Custom providers > Assembly resources > Default resources
 
-#### 核心组件
+#### Core Components
 
-| 组件         | 文件名                           | 功能                  |
+| Component | File | Description |
 |------------|-------------------------------|---------------------|
-| **本地化服务**  | `LocalizationService.cs`      | 统一的本地化入口点，提供静态方法API |
-| **资源管理器**  | `ResourceManager.cs`          | 管理多个资源提供者，实现优先级解析   |
-| **默认提供者**  | `DefaultResourceProvider.cs`  | 提供英文默认消息，包含50+常用消息  |
-| **程序集提供者** | `AssemblyResourceProvider.cs` | 从.resx文件加载本地化资源     |
+| **Localization Service**  | `LocalizationService.cs`      | Unified localization entry point with static method API |
+| **Resource Manager**  | `ResourceManager.cs`          | Manages multiple resource providers with priority resolution   |
+| **Default Provider**  | `DefaultResourceProvider.cs`  | Provides English default messages with 50+ common messages  |
+| **Assembly Provider** | `AssemblyResourceProvider.cs` | Loads localization resources from .resx files     |
 
-#### 基础使用
+#### Basic Usage
 
 ```csharp
 using GameFrameX.Foundation.Localization.Core;
 
-// 获取简单的本地化字符串
+// Get simple localized string
 var successMessage = LocalizationService.GetString("Success");
-Console.WriteLine(successMessage); // 根据当前文化显示 "Success" 或 "成功"
+Console.WriteLine(successMessage); // Display based on current culture "Success" or "Success"
 
-// 带参数的格式化消息
+// Parameterized formatted message
 var errorMessage = LocalizationService.GetString("ArgumentNull", "username");
 Console.WriteLine(errorMessage); // "Value cannot be null. (Parameter 'username')"
 
-// 如果键不存在，返回键名本身
+// If key not found, return key name itself
 var unknown = LocalizationService.GetString("Some.Unknown.Key");
-Console.WriteLine(unknown); // 输出: "Some.Unknown.Key"
+Console.WriteLine(unknown); // Output: "Some.Unknown.Key"
 ```
 
-#### 异常处理中的本地化
+#### Localization in Exception Handling
 
 ```csharp
 using GameFrameX.Foundation.Utility.Localization;
@@ -505,14 +523,14 @@ public class UserService
                 nameof(input));
         }
 
-        // 其他验证逻辑...
+        // Other validation logic...
     }
 }
 ```
 
-#### 模块集成本地化
+#### Module Localization Integration
 
-##### 1. 定义本地化键
+##### 1. Define Localization Keys
 
 ```csharp
 // YourModule/Localization/Keys.cs
@@ -534,12 +552,12 @@ public static class LocalizationKeys
 }
 ```
 
-##### 2. 创建资源文件
+##### 2. Create Resource Files
 
-在项目中创建 `Localization/Messages/Resources.resx` 和 `Localization/Messages/Resources.zh-CN.resx`：
+Create `Localization/Messages/Resources.resx` and `Localization/Messages/Resources.zh-CN.resx` in the project:
 
 ```xml
-<!-- Resources.resx (默认英文) -->
+<!-- Resources.resx (default English) -->
 <root>
   <data name="YourModule.Validation.EmailRequired" xml:space="preserve">
     <value>Email address is required</value>
@@ -551,18 +569,18 @@ public static class LocalizationKeys
 ```
 
 ```xml
-<!-- Resources.zh-CN.resx (中文) -->
+<!-- Resources.zh-CN.resx (Chinese) -->
 <root>
   <data name="YourModule.Validation.EmailRequired" xml:space="preserve">
-    <value>邮箱地址是必填项</value>
+    <value>Email address is required</value>
   </data>
   <data name="YourModule.Messages.UserCreated" xml:space="preserve">
-    <value>用户 '{0}' 已成功创建</value>
+    <value>User '{0}' has been created successfully</value>
   </data>
 </root>
 ```
 
-##### 3. 在业务逻辑中使用
+##### 3. Use in Business Logic
 
 ```csharp
 using GameFrameX.Foundation.Localization.Core;
@@ -578,7 +596,7 @@ public class UserService
                 LocalizationService.GetString(LocalizationKeys.Validation.EmailRequired));
         }
 
-        // 创建用户逻辑...
+        // Create user logic...
 
         var successMessage = LocalizationService.GetString(
             LocalizationKeys.Messages.UserCreated, userDto.Username);
@@ -587,7 +605,7 @@ public class UserService
 }
 ```
 
-#### 自定义资源提供者
+#### Custom Resource Providers
 
 ```csharp
 public class DatabaseResourceProvider : IResourceProvider
@@ -607,55 +625,55 @@ public class DatabaseResourceProvider : IResourceProvider
     }
 }
 
-// 注册自定义提供者（具有最高优先级）
+// Register custom provider (highest priority)
 var dbProvider = new DatabaseResourceProvider(yourDbConnection);
 LocalizationService.RegisterProvider(dbProvider);
 ```
 
-#### 预加载和性能优化
+#### Preloading & Performance Optimization
 
 ```csharp
-// 应用启动时预加载所有本地化资源（可选）
+// Preload all localization resources at startup (optional)
 LocalizationService.EnsureLoaded();
 
-// 获取本地化系统统计信息
+// Get localization system statistics
 var stats = LocalizationService.GetStatistics();
-Console.WriteLine($"提供者已加载: {stats.ProvidersLoaded}");
-Console.WriteLine($"总提供者数量: {stats.TotalProviderCount}");
-Console.WriteLine($"程序集提供者数量: {stats.AssemblyProviderCount}");
+Console.WriteLine($"Providers loaded: {stats.ProvidersLoaded}");
+Console.WriteLine($"Total provider count: {stats.TotalProviderCount}");
+Console.WriteLine($"Assembly provider count: {stats.AssemblyProviderCount}");
 
-// 获取所有提供者信息
+// Get all provider information
 var providers = LocalizationService.GetProviders();
 foreach (var provider in providers)
 {
-    Console.WriteLine($"提供者: {provider.GetType().Name}");
+    Console.WriteLine($"Provider: {provider.GetType().Name}");
 }
 ```
 
-#### 资源命名约定
+#### Resource Naming Convention
 
-- **模式**: `{模块名}.{类别}.{具体键名}`
-- **示例**:
+- **Pattern**: `{Module}.{Category}.{SpecificKeyName}`
+- **Example**:
     - `Utility.Exceptions.TimestampOutOfRange`
     - `Encryption.InvalidKeySize`
     - `Authentication.UserNotFound`
     - `Success`
     - `ArgumentNull`
 
-#### 已集成的模块
+#### Integrated Modules
 
-目前以下模块已完成本地化集成：
+The following modules have completed localization integration:
 
-| 模块                               | 本地化键数量 | 状态   |
+| Module                               | Localization Keys | Status   |
 |----------------------------------|--------|------|
-| GameFrameX.Foundation.Utility    | 4      | ✅ 完成 |
-| GameFrameX.Foundation.Encryption | 20+    | ✅ 完成 |
-| GameFrameX.Foundation.Extensions | 7      | ✅ 完成 |
-| GameFrameX.Foundation.Hash       | 2      | ✅ 完成 |
+| GameFrameX.Foundation.Utility    | 4      | ✅ Done |
+| GameFrameX.Foundation.Encryption | 20+    | ✅ Done |
+| GameFrameX.Foundation.Extensions | 7      | ✅ Done |
+| GameFrameX.Foundation.Hash       | 2      | ✅ Done |
 
-#### 高级功能
+#### Advanced Features
 
-##### 动态语言切换
+##### Dynamic Language Switching
 
 ```csharp
 public void SwitchLanguage(string cultureCode)
@@ -663,12 +681,12 @@ public void SwitchLanguage(string cultureCode)
     Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultureCode);
     Thread.CurrentThread.CurrentCulture = new CultureInfo(cultureCode);
 
-    // 可选：预加载新语言的资源
+    // Optional: preload resources for new language
     LocalizationService.EnsureLoaded();
 }
 ```
 
-##### 监控和诊断
+##### Monitoring & Diagnostics
 
 ```csharp
 public class LocalizationDiagnostics
@@ -676,9 +694,9 @@ public class LocalizationDiagnostics
     public void PrintStatus()
     {
         var stats = LocalizationService.GetStatistics();
-        Console.WriteLine("=== 本地化系统状态 ===");
-        Console.WriteLine($"提供者已加载: {stats.ProvidersLoaded}");
-        Console.WriteLine($"总提供者数量: {stats.TotalProviderCount}");
+        Console.WriteLine("=== Localization System Status ===");
+        Console.WriteLine($"Providers loaded: {stats.ProvidersLoaded}");
+        Console.WriteLine($"Total provider count: {stats.TotalProviderCount}");
 
         var providers = LocalizationService.GetProviders();
         foreach (var provider in providers)
@@ -689,17 +707,17 @@ public class LocalizationDiagnostics
 }
 ```
 
-#### 最佳实践
+#### Best Practices
 
-1. **键命名规范**: 使用 `{模块名}.{类别}.{具体键名}` 的命名模式
-2. **参数化消息**: 使用 `string.Format` 格式支持参数替换
-3. **异常处理**: 在异常消息中集成本地化支持
-4. **性能优化**: 应用启动时可选择预加载资源
-5. **测试验证**: 为本地化功能编写单元测试
+1. **Key naming convention**: Use the `{Module}.{Category}.{KeyName}` naming pattern
+2. **Parameterized messages**: Use `string.Format` for parameter substitution
+3. **Exception handling**: integrate localization support in exception messages
+4. **Performance optimization**: optionally preload resources at app startup
+5. **Test verification**: write unit tests for localization functions
 
-#### 配置项目文件
+#### Configure Project File
 
-确保项目文件包含本地化资源文件：
+Ensure the project file includes localization resources:
 
 ```xml
 <PropertyGroup>
@@ -711,50 +729,50 @@ public class LocalizationDiagnostics
 </ItemGroup>
 ```
 
-更多详细信息请参考：
+For more details, see:
 
-- [本地化框架完整文档](GameFrameX.Foundation.Localization/README.Localization.md)
-- [使用示例和最佳实践](GameFrameX.Foundation.Localization/USAGE_EXAMPLES.md)
+- [Localization Framework Documentation](GameFrameX.Foundation.Localization/README.Localization.md)
+- [Usage Examples and Best Practices](GameFrameX.Foundation.Localization/USAGE_EXAMPLES.md)
 
-### �️ ORM 实体基类 (GameFrameX.Foundation.Orm.Entity)
+### �️ ORM Entity Base (GameFrameX.Foundation.Orm.Entity)
 
-提供ORM框架的实体基类和接口定义，支持审计跟踪、软删除、乐观锁等企业级功能。
+Provides ORM entity base classes and interface definitions supporting audit trails, soft deletes, optimistic locking and other enterprise features.
 
-#### 核心组件概览
+#### Core Components Overview
 
-| 组件           | 文件名                   | 主要功能                          |
+| Component | File | Description |
 |--------------|-----------------------|-------------------------------|
-| **实体基类**     | `EntityBase.cs`       | 完整功能的实体基类，包含ID、审计、软删除、版本控制等功能 |
-| **实体基类(泛型)** | `EntityBaseId.cs`     | 支持自定义主键类型的实体基类                |
-| **实体接口**     | `IEntity.cs`          | 基础实体接口定义，提供ID属性               |
-| **审计接口**     | `IAuditableEntity.cs` | 审计功能接口，定义创建时间、更新时间、操作用户等审计字段  |
+| **Entity Base**     | `EntityBase.cs`       | Full-featured entity base with ID, audit, soft delete, version control |
+| **Entity Base (Generic)** | `EntityBaseId.cs`     | Entity base with custom primary key type                |
+| **Entity Interface**     | `IEntity.cs`          | Base entity interface providing ID property               |
+| **Audit Interface**     | `IAuditableEntity.cs` | Audit interface defining creation/update time and user fields  |
 
-#### 实体基类功能
+#### Entity Base Class Features
 
 ```csharp
 using GameFrameX.Foundation.Orm.Entity;
 
-// 继承EntityBase的实体类自动获得完整的企业级功能
+// Classes inheriting EntityBase automatically gain full enterprise features
 public class User : EntityBase
 {
     public string Username { get; set; }
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     
-    // 以下属性由EntityBase提供：
-    // - long Id                    // 主键ID
-    // - DateTime CreateTime        // 创建时间
-    // - DateTime UpdateTime        // 更新时间
-    // - long CreateUserId          // 创建用户ID
-    // - long UpdateUserId          // 更新用户ID
-    // - string CreateUserName      // 创建用户名
-    // - string UpdateUserName      // 更新用户名
-    // - bool IsDelete              // 软删除标记
-    // - long Version               // 乐观锁版本号
-    // - bool IsEnabled             // 启用状态
+    // Properties provided by EntityBase:
+    // - long Id                    // Primary key ID
+    // - DateTime CreateTime        // Created time
+    // - DateTime UpdateTime        // Updated time
+    // - long CreateUserId          // Creator user ID
+    // - long UpdateUserId          // Updater user ID
+    // - string CreateUserName      // Creator user name
+    // - string UpdateUserName      // Updater user name
+    // - bool IsDelete              // Soft delete flag
+    // - long Version               // Optimistic lock version
+    // - bool IsEnabled             // Enabled status
 }
 
-// 使用示例
+// Usage Examples
 var user = new User
 {
     Username = "john_doe",
@@ -767,38 +785,38 @@ var user = new User
 };
 ```
 
-#### 自定义主键类型
+#### Custom Primary Key Types
 
 ```csharp
 using GameFrameX.Foundation.Orm.Entity;
 
-// 使用字符串作为主键
+// Use string as primary key
 public class Product : EntityBaseId<string>
 {
     public string Name { get; set; }
     public decimal Price { get; set; }
     public string Description { get; set; }
     
-    // Id属性类型为string，由EntityBaseId<string>提供
+    // Id property type is string, provided by EntityBaseId<string>
 }
 
-// 使用Guid作为主键
+// Use Guid as primary key
 public class Order : EntityBaseId<Guid>
 {
     public string OrderNumber { get; set; }
     public decimal TotalAmount { get; set; }
     public DateTime OrderDate { get; set; }
     
-    // Id属性类型为Guid，由EntityBaseId<Guid>提供
+    // Id property type is Guid, provided by EntityBaseId<Guid>
 }
 
-// 使用示例
+// Usage Examples
 var product = new Product
 {
     Id = "PROD-001",
-    Name = "笔记本电脑",
+    Name = "Laptop",
     Price = 5999.99m,
-    Description = "高性能笔记本电脑"
+    Description = "High performance laptop"
 };
 
 var order = new Order
@@ -810,12 +828,12 @@ var order = new Order
 };
 ```
 
-#### 接口实现
+#### Interface Implementation
 
 ```csharp
 using GameFrameX.Foundation.Orm.Entity;
 
-// 实现基础实体接口
+// Implement base entity interface
 public class Category : IEntity<int>
 {
     public int Id { get; set; }
@@ -823,14 +841,14 @@ public class Category : IEntity<int>
     public string Description { get; set; }
 }
 
-// 实现审计接口
+// Implement audit interface
 public class AuditableCategory : IEntity<int>, IAuditableEntity
 {
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     
-    // IAuditableEntity接口要求的属性
+    // Properties required by IAuditableEntity interface
     public DateTime CreateTime { get; set; }
     public DateTime UpdateTime { get; set; }
     public long CreateUserId { get; set; }
@@ -840,23 +858,23 @@ public class AuditableCategory : IEntity<int>, IAuditableEntity
 }
 ```
 
-#### 企业级功能详解
+#### Enterprise Features
 
-##### 1. 审计跟踪 (Audit Trail)
+##### 1. Audit Trail
 
 ```csharp
-// EntityBase自动提供审计字段
+// EntityBase auto-provides audit fields
 public class Document : EntityBase
 {
     public string Title { get; set; }
     public string Content { get; set; }
 }
 
-// 在业务逻辑中设置审计信息
+// Set audit info in business logic
 var document = new Document
 {
-    Title = "重要文档",
-    Content = "文档内容...",
+    Title = "Important Document",
+    Content = "Document content...",
     CreateTime = DateTime.UtcNow,
     CreateUserId = currentUser.Id,
     CreateUserName = currentUser.Username,
@@ -865,18 +883,18 @@ var document = new Document
     UpdateUserName = currentUser.Username
 };
 
-// 更新时自动维护审计信息
-document.Content = "更新后的内容";
+// Auto-maintain audit info on update
+document.Content = "Updated content";
 document.UpdateTime = DateTime.UtcNow;
 document.UpdateUserId = currentUser.Id;
 document.UpdateUserName = currentUser.Username;
-document.Version++; // 乐观锁版本递增
+document.Version++; // Optimistic lock version increment
 ```
 
-##### 2. 软删除 (Soft Delete)
+##### 2. Soft Delete
 
 ```csharp
-// 软删除：不真正删除记录，而是标记为已删除
+// Soft delete: mark as deleted instead of physically deleting
 public void SoftDeleteUser(User user)
 {
     user.IsDelete = true;
@@ -884,16 +902,16 @@ public void SoftDeleteUser(User user)
     user.UpdateUserId = currentUser.Id;
     user.UpdateUserName = currentUser.Username;
     
-    // 保存到数据库，记录仍然存在但被标记为已删除
+    // Save to database, record exists but marked as deleted
     dbContext.SaveChanges();
 }
 
-// 查询时过滤已删除的记录
+// Filter deleted records in queries
 var activeUsers = dbContext.Users
     .Where(u => !u.IsDelete)
     .ToList();
 
-// 恢复已删除的记录
+// Restore deleted record
 public void RestoreUser(User user)
 {
     user.IsDelete = false;
@@ -905,10 +923,10 @@ public void RestoreUser(User user)
 }
 ```
 
-##### 3. 乐观锁 (Optimistic Locking)
+##### 3. Optimistic Locking
 
 ```csharp
-// 使用Version字段实现乐观锁
+// Implement optimistic locking with Version field
 public void UpdateUserWithOptimisticLock(long userId, string newEmail)
 {
     var user = dbContext.Users.Find(userId);
@@ -916,16 +934,16 @@ public void UpdateUserWithOptimisticLock(long userId, string newEmail)
     
     var originalVersion = user.Version;
     
-    // 修改数据
+    // Modify data
     user.Email = newEmail;
     user.UpdateTime = DateTime.UtcNow;
     user.UpdateUserId = currentUser.Id;
     user.UpdateUserName = currentUser.Username;
-    user.Version++; // 版本号递增
+    user.Version++; // Version number increment
     
     try
     {
-        // 保存时检查版本号
+        // Check version on save
         var rowsAffected = dbContext.Database.ExecuteSqlRaw(
             "UPDATE Users SET Email = {0}, UpdateTime = {1}, UpdateUserId = {2}, UpdateUserName = {3}, Version = {4} " +
             "WHERE Id = {5} AND Version = {6}",
@@ -933,28 +951,28 @@ public void UpdateUserWithOptimisticLock(long userId, string newEmail)
             
         if (rowsAffected == 0)
         {
-            throw new ConcurrencyException("数据已被其他用户修改，请刷新后重试");
+            throw new ConcurrencyException("Data modified by another user, please refresh and retry");
         }
     }
     catch (DbUpdateConcurrencyException)
     {
-        throw new ConcurrencyException("并发冲突，请刷新后重试");
+        throw new ConcurrencyException("Concurrency conflict, please refresh and retry");
     }
 }
 ```
 
-##### 4. 启用状态管理
+##### 4. Enable/Disable State Management
 
 ```csharp
-// 使用IsEnabled字段管理实体的启用状态
+// Manage entity enabled status using IsEnabled field
 public class Feature : EntityBase
 {
     public string Name { get; set; }
     public string Description { get; set; }
-    // IsEnabled由EntityBase提供
+    // IsEnabled provided by EntityBase
 }
 
-// 启用/禁用功能
+// Enable/disable functionality
 public void ToggleFeature(long featureId, bool enabled)
 {
     var feature = dbContext.Features.Find(featureId);
@@ -969,13 +987,13 @@ public void ToggleFeature(long featureId, bool enabled)
     dbContext.SaveChanges();
 }
 
-// 查询启用的功能
+// Query enabled functions
 var enabledFeatures = dbContext.Features
     .Where(f => f.IsEnabled && !f.IsDelete)
     .ToList();
 ```
 
-#### 完整使用示例
+#### Complete Usage Example
 
 ```csharp
 using GameFrameX.Foundation.Orm.Entity;
@@ -983,7 +1001,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MyApplication.Entities
 {
-    // 用户实体
+    // User entity
     public class User : EntityBase
     {
         public string Username { get; set; }
@@ -993,12 +1011,12 @@ namespace MyApplication.Entities
         public string LastName { get; set; }
         public DateTime? LastLoginTime { get; set; }
         
-        // 导航属性
+        // Navigation property
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
     }
     
-    // 订单实体（使用Guid主键）
+    // Order entity (using Guid primary key)
     public class Order : EntityBaseId<Guid>
     {
         public string OrderNumber { get; set; }
@@ -1007,12 +1025,12 @@ namespace MyApplication.Entities
         public DateTime OrderDate { get; set; }
         public OrderStatus Status { get; set; }
         
-        // 导航属性
+        // Navigation property
         public virtual User User { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
     
-    // 订单项实体
+    // Order item entity
     public class OrderItem : EntityBase
     {
         public Guid OrderId { get; set; }
@@ -1021,12 +1039,12 @@ namespace MyApplication.Entities
         public decimal UnitPrice { get; set; }
         public decimal TotalPrice { get; set; }
         
-        // 导航属性
+        // Navigation property
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
     }
     
-    // 产品实体（使用字符串主键）
+    // Product entity (using string primary key)
     public class Product : EntityBaseId<string>
     {
         public string Name { get; set; }
@@ -1035,12 +1053,12 @@ namespace MyApplication.Entities
         public int StockQuantity { get; set; }
         public string CategoryId { get; set; }
         
-        // 导航属性
+        // Navigation property
         public virtual Category Category { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
     
-    // 分类实体（实现接口）
+    // Category entity (implementing interfaces)
     public class Category : IEntity<string>, IAuditableEntity
     {
         public string Id { get; set; }
@@ -1048,7 +1066,7 @@ namespace MyApplication.Entities
         public string Description { get; set; }
         public string ParentId { get; set; }
         
-        // IAuditableEntity接口属性
+        // IAuditableEntity interface properties
         public DateTime CreateTime { get; set; }
         public DateTime UpdateTime { get; set; }
         public long CreateUserId { get; set; }
@@ -1056,7 +1074,7 @@ namespace MyApplication.Entities
         public string CreateUserName { get; set; }
         public string UpdateUserName { get; set; }
         
-        // 导航属性
+        // Navigation property
         public virtual Category Parent { get; set; }
         public virtual ICollection<Category> Children { get; set; }
         public virtual ICollection<Product> Products { get; set; }
@@ -1072,7 +1090,7 @@ namespace MyApplication.Entities
     }
 }
 
-// 业务服务示例
+// Business service example
 namespace MyApplication.Services
 {
     public class UserService
@@ -1119,12 +1137,12 @@ namespace MyApplication.Services
                 .FirstOrDefaultAsync();
                 
             if (user == null)
-                throw new EntityNotFoundException($"用户 {userId} 不存在");
+                throw new EntityNotFoundException($"User {userId} does not exist");
             
             var currentUser = await _currentUserService.GetCurrentUserAsync();
             var originalVersion = user.Version;
             
-            // 更新字段
+            // Update field
             user.Email = email;
             user.FirstName = firstName;
             user.LastName = lastName;
@@ -1140,7 +1158,7 @@ namespace MyApplication.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw new ConcurrencyException("用户信息已被其他用户修改，请刷新后重试");
+                throw new ConcurrencyException("User info modified by another user, please refresh and retry");
             }
         }
         
@@ -1151,7 +1169,7 @@ namespace MyApplication.Services
                 .FirstOrDefaultAsync();
                 
             if (user == null)
-                throw new EntityNotFoundException($"用户 {userId} 不存在");
+                throw new EntityNotFoundException($"User {userId} does not exist");
             
             var currentUser = await _currentUserService.GetCurrentUserAsync();
             
@@ -1174,34 +1192,34 @@ namespace MyApplication.Services
         
         private string HashPassword(string password)
         {
-            // 实现密码哈希逻辑
+            // Implement password hash logic
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
     }
 }
 
-### 🏷️ ORM 属性标记 (GameFrameX.Foundation.Orm.Attribute)
+### 🏷️ ORM Attribute Markers (GameFrameX.Foundation.Orm.Attribute)
 
-提供ORM框架的属性标记，用于标识实体类的特殊功能，如审计跟踪、缓存策略、软删除和版本控制等。
+Provides ORM framework attribute markers to identify special entity class features such as audit trails, caching strategies, soft deletes, and version control.
 
-#### 核心组件概览
+#### Core Components Overview
 
-| 组件           | 文件名                    | 主要功能                                    |
+| Component | File | Main Function |
 |--------------|------------------------|-----------------------------------------|
-| **审计表属性**    | `AuditTableAttribute.cs` | 标记实体类支持审计跟踪功能，记录数据变更历史                  |
-| **缓存表属性**    | `CacheTableAttribute.cs` | 标记实体类支持缓存策略，提升数据访问性能                    |
-| **软删除属性**    | `SoftDeleteAttribute.cs` | 标记实体类支持软删除功能，逻辑删除而非物理删除                 |
-| **版本控制属性**   | `VersionControlAttribute.cs` | 标记实体类支持数据版本管理，实现乐观锁和并发控制               |
+| **Audit Table Attribute** | `AuditTableAttribute.cs` | Marks entity classes for audit trail functionality, recording data change history |
+| **Cache Table Attribute**    | `CacheTableAttribute.cs` | Marks entities for caching strategy to improve data access performance                    |
+| **Soft Delete Attribute** | `SoftDeleteAttribute.cs` | Marks entity classes for soft delete functionality (logical delete, not physical) |
+| **Version Control Attribute**   | `VersionControlAttribute.cs` | Marks entities for data versioning with optimistic locking and concurrency control               |
 
-#### 审计表属性 (AuditTableAttribute)
+#### Audit Table Attribute (AuditTableAttribute)
 
-用于标记需要进行审计跟踪的实体类，系统会自动记录数据的创建、修改、删除等操作历史。
+Marks entity classes that require audit trails. The system automatically records data creation, modification, and deletion history.
 
 ```csharp
 using GameFrameX.Foundation.Orm.Attribute;
 using GameFrameX.Foundation.Orm.Entity;
 
-// 标记用户表需要审计跟踪
+// Mark user table for audit trail
 [AuditTable]
 public class User : EntityBase
 {
@@ -1209,12 +1227,12 @@ public class User : EntityBase
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     
-    // EntityBase已包含审计字段：
+    // EntityBase already includes audit fields:
     // CreateTime, UpdateTime, CreateUserId, UpdateUserId, 
     // CreateUserName, UpdateUserName
 }
 
-// 标记订单表需要审计跟踪
+// Mark order table for audit trail
 [AuditTable]
 public class Order : EntityBase
 {
@@ -1224,7 +1242,7 @@ public class Order : EntityBase
     public DateTime OrderDate { get; set; }
 }
 
-// 审计拦截器示例
+// Audit interceptor example
 public class AuditInterceptor : IDbCommandInterceptor
 {
     private readonly ICurrentUserService _currentUserService;
@@ -1276,15 +1294,15 @@ public class AuditInterceptor : IDbCommandInterceptor
 }
 ```
 
-#### 缓存表属性 (CacheTableAttribute)
+#### Cache Table Attribute (CacheTableAttribute)
 
-用于标记支持缓存策略的实体类，系统会自动对这些表的数据进行缓存管理。
+Used to mark entity classes supporting caching strategies. The system automatically manages caching for these tables.
 
 ```csharp
 using GameFrameX.Foundation.Orm.Attribute;
 using GameFrameX.Foundation.Orm.Entity;
 
-// 标记配置表支持缓存（配置数据变化频率低，适合缓存）
+// Mark config table for caching (config data changes infrequently, suitable for caching)
 [CacheTable]
 public class SystemConfig : EntityBase
 {
@@ -1294,7 +1312,7 @@ public class SystemConfig : EntityBase
     public string Category { get; set; }
 }
 
-// 标记字典表支持缓存（字典数据相对稳定，适合缓存）
+// Mark dictionary table for caching (dictionary data is relatively stable, suitable for caching)
 [CacheTable]
 public class Dictionary : EntityBase
 {
@@ -1305,7 +1323,7 @@ public class Dictionary : EntityBase
     public int SortOrder { get; set; }
 }
 
-// 标记权限表支持缓存（权限数据访问频繁但变化不频繁）
+// Mark permission table for caching (permission data is accessed frequently but changes infrequently)
 [CacheTable]
 public class Permission : EntityBase
 {
@@ -1315,7 +1333,7 @@ public class Permission : EntityBase
     public string Module { get; set; }
 }
 
-// 缓存服务示例
+// Cache service example
 public class CacheService<T> where T : class
 {
     private readonly IMemoryCache _memoryCache;
@@ -1336,7 +1354,7 @@ public class CacheService<T> where T : class
         
         if (cacheAttribute == null)
         {
-            // 不支持缓存，直接从数据库查询
+            // Caching not supported, query directly from database
             return await _dbContext.Set<T>().ToListAsync();
         }
         
@@ -1344,22 +1362,22 @@ public class CacheService<T> where T : class
         
         if (_memoryCache.TryGetValue(cacheKey, out List<T> cachedData))
         {
-            _logger.LogDebug($"从缓存获取数据: {cacheKey}");
+            _logger.LogDebug($"Get data from cache: {cacheKey}");
             return cachedData;
         }
         
-        // 从数据库查询并缓存
+        // Query from database and cache
         var data = await _dbContext.Set<T>().ToListAsync();
         
         var cacheOptions = new MemoryCacheEntryOptions
         {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30), // 30分钟过期
-            SlidingExpiration = TimeSpan.FromMinutes(5), // 5分钟滑动过期
+            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(30), // 30min expiry
+            SlidingExpiration = TimeSpan.FromMinutes(5), // 5min sliding expiry
             Priority = CacheItemPriority.Normal
         };
         
         _memoryCache.Set(cacheKey, data, cacheOptions);
-        _logger.LogDebug($"数据已缓存: {cacheKey}, 记录数: {data.Count}");
+        _logger.LogDebug($"Data cached: {cacheKey}, records: {data.Count}");
         
         return data;
     }
@@ -1370,11 +1388,11 @@ public class CacheService<T> where T : class
         var cacheKey = $"CacheTable_{entityType.Name}_All";
         
         _memoryCache.Remove(cacheKey);
-        _logger.LogDebug($"缓存已失效: {cacheKey}");
+        _logger.LogDebug($"Cache invalidated: {cacheKey}");
     }
 }
 
-// 缓存管理器示例
+// Cache manager example
 public class CacheManager
 {
     private readonly IServiceProvider _serviceProvider;
@@ -1408,27 +1426,27 @@ public class CacheManager
                     var getAllMethod = serviceType.GetMethod("GetAllAsync");
                     await (Task)getAllMethod.Invoke(service, null);
                     
-                    _logger.LogInformation($"缓存表 {type.Name} 已刷新");
+                    _logger.LogInformation($"Cache table {type.Name} refreshed");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"刷新缓存表 {type.Name} 时发生错误");
+                _logger.LogError(ex, $"Error refreshing cache table {type.Name}");
             }
         }
     }
 }
 ```
 
-#### 软删除属性 (SoftDeleteAttribute)
+#### Soft Delete Attribute (SoftDeleteAttribute)
 
-用于标记支持软删除功能的实体类，删除操作会将记录标记为已删除而不是物理删除。
+Marks entity classes that support soft delete functionality. Delete operations mark records as deleted instead of physical deletion.
 
 ```csharp
 using GameFrameX.Foundation.Orm.Attribute;
 using GameFrameX.Foundation.Orm.Entity;
 
-// 标记用户表支持软删除
+// Mark user table for soft delete
 [SoftDelete]
 public class User : EntityBase
 {
@@ -1436,10 +1454,10 @@ public class User : EntityBase
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     
-    // EntityBase已包含IsDelete字段
+    // EntityBase already includes IsDelete field
 }
 
-// 标记文章表支持软删除
+// Mark article table for soft delete
 [SoftDelete]
 public class Article : EntityBase
 {
@@ -1449,7 +1467,7 @@ public class Article : EntityBase
     public DateTime PublishTime { get; set; }
 }
 
-// 软删除拦截器
+// Soft delete interceptor
 public class SoftDeleteInterceptor : IDbCommandInterceptor
 {
     public override InterceptionResult<int> NonQueryExecuting(
@@ -1459,7 +1477,7 @@ public class SoftDeleteInterceptor : IDbCommandInterceptor
     {
         var context = eventData.Context;
         
-        // 处理软删除实体的删除操作
+        // Handle soft delete entity delete operations
         var softDeleteEntries = context.ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Deleted && 
                        e.Entity.GetType().GetCustomAttribute<SoftDeleteAttribute>() != null)
@@ -1467,14 +1485,14 @@ public class SoftDeleteInterceptor : IDbCommandInterceptor
             
         foreach (var entry in softDeleteEntries)
         {
-            // 将删除操作转换为更新操作
+            // Convert delete operation to update operation
             entry.State = EntityState.Modified;
             
             if (entry.Entity is EntityBase entityBase)
             {
                 entityBase.IsDelete = true;
                 entityBase.UpdateTime = DateTime.UtcNow;
-                // 设置更新用户信息...
+                // Set update user info...
             }
         }
         
@@ -1482,7 +1500,7 @@ public class SoftDeleteInterceptor : IDbCommandInterceptor
     }
 }
 
-// 软删除查询过滤器
+// Soft delete query filter
 public static class SoftDeleteQueryExtensions
 {
     public static IQueryable<T> WhereNotDeleted<T>(this IQueryable<T> query) 
@@ -1502,7 +1520,7 @@ public static class SoftDeleteQueryExtensions
     public static IQueryable<T> IncludeDeleted<T>(this IQueryable<T> query) 
         where T : class
     {
-        // 返回包含已删除记录的查询
+        // Return query including deleted records
         return query;
     }
     
@@ -1517,11 +1535,11 @@ public static class SoftDeleteQueryExtensions
             return query.Where(e => ((EntityBase)(object)e).IsDelete);
         }
         
-        return query.Where(_ => false); // 如果不支持软删除，返回空结果
+        return query.Where(_ => false); // If soft delete is not supported, return empty result
     }
 }
 
-// 使用示例
+// Usage Examples
 public class UserService
 {
     private readonly ApplicationDbContext _context;
@@ -1531,7 +1549,7 @@ public class UserService
         _context = context;
     }
     
-    // 获取活跃用户（自动过滤已删除）
+    // Get active users (auto-filter deleted)
     public async Task<List<User>> GetActiveUsersAsync()
     {
         return await _context.Users
@@ -1539,7 +1557,7 @@ public class UserService
             .ToListAsync();
     }
     
-    // 获取已删除用户
+    // Get deleted users
     public async Task<List<User>> GetDeletedUsersAsync()
     {
         return await _context.Users
@@ -1547,7 +1565,7 @@ public class UserService
             .ToListAsync();
     }
     
-    // 获取所有用户（包含已删除）
+    // Get all users (including deleted)
     public async Task<List<User>> GetAllUsersAsync()
     {
         return await _context.Users
@@ -1555,18 +1573,18 @@ public class UserService
             .ToListAsync();
     }
     
-    // 软删除用户
+    // Soft delete user
     public async Task SoftDeleteUserAsync(long userId)
     {
         var user = await _context.Users.FindAsync(userId);
         if (user != null)
         {
-            _context.Users.Remove(user); // 会被拦截器转换为软删除
+            _context.Users.Remove(user); // Will be converted to soft delete by interceptor
             await _context.SaveChangesAsync();
         }
     }
     
-    // 恢复已删除用户
+    // Restore deleted user
     public async Task RestoreUserAsync(long userId)
     {
         var user = await _context.Users
@@ -1583,15 +1601,15 @@ public class UserService
 }
 ```
 
-#### 版本控制属性 (VersionControlAttribute)
+#### Version Control Attribute (VersionControlAttribute)
 
-用于标记支持数据版本管理的实体类，实现乐观锁和并发控制功能。
+Marks entity classes that support data version management, implementing optimistic locking and concurrency control.
 
 ```csharp
 using GameFrameX.Foundation.Orm.Attribute;
 using GameFrameX.Foundation.Orm.Entity;
 
-// 标记用户表支持版本控制
+// Mark user table for version control
 [VersionControl]
 public class User : EntityBase
 {
@@ -1599,10 +1617,10 @@ public class User : EntityBase
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     
-    // EntityBase已包含Version字段
+    // EntityBase already includes Version field
 }
 
-// 标记库存表支持版本控制（防止超卖）
+// Mark inventory table for version control (prevent overselling)
 [VersionControl]
 public class Inventory : EntityBase
 {
@@ -1612,7 +1630,7 @@ public class Inventory : EntityBase
     public decimal UnitCost { get; set; }
 }
 
-// 标记账户余额表支持版本控制（防止并发操作导致余额错误）
+// Mark account balance table for version control (prevent concurrent balance errors)
 [VersionControl]
 public class AccountBalance : EntityBase
 {
@@ -1622,7 +1640,7 @@ public class AccountBalance : EntityBase
     public string Currency { get; set; }
 }
 
-// 版本控制拦截器
+// Version control interceptor
 public class VersionControlInterceptor : IDbCommandInterceptor
 {
     public override InterceptionResult<int> NonQueryExecuting(
@@ -1632,7 +1650,7 @@ public class VersionControlInterceptor : IDbCommandInterceptor
     {
         var context = eventData.Context;
         
-        // 处理版本控制实体的更新操作
+        // Handle version-controlled entity update operations
         var versionControlEntries = context.ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Modified && 
                        e.Entity.GetType().GetCustomAttribute<VersionControlAttribute>() != null)
@@ -1642,10 +1660,10 @@ public class VersionControlInterceptor : IDbCommandInterceptor
         {
             if (entry.Entity is EntityBase entityBase)
             {
-                // 自动递增版本号
+                // Auto-increment version number
                 entityBase.Version++;
                 
-                // 标记Version字段为已修改
+                // Mark Version field as modified
                 entry.Property(nameof(EntityBase.Version)).IsModified = true;
             }
         }
@@ -1654,7 +1672,7 @@ public class VersionControlInterceptor : IDbCommandInterceptor
     }
 }
 
-// 版本控制服务
+// Version control service
 public class VersionControlService<T> where T : EntityBase
 {
     private readonly IDbContext _dbContext;
@@ -1673,7 +1691,7 @@ public class VersionControlService<T> where T : EntityBase
         
         if (versionControlAttribute == null)
         {
-            throw new InvalidOperationException($"实体类型 {entityType.Name} 未标记 VersionControlAttribute");
+            throw new InvalidOperationException($"Entity type {entityType.Name} is not marked with VersionControlAttribute");
         }
         
         for (int attempt = 1; attempt <= maxRetries; attempt++)
@@ -1683,45 +1701,45 @@ public class VersionControlService<T> where T : EntityBase
                 var entity = await _dbContext.Set<T>().FindAsync(id);
                 if (entity == null)
                 {
-                    throw new EntityNotFoundException($"实体 {entityType.Name} (ID: {id}) 不存在");
+                    throw new EntityNotFoundException($"Entity {entityType.Name} (ID: {id}) not found");
                 }
                 
                 var originalVersion = entity.Version;
                 
-                // 执行更新操作
+                // Execute update operation
                 updateAction(entity);
                 
-                // 设置更新时间
+                // Set update time
                 entity.UpdateTime = DateTime.UtcNow;
                 
-                // 保存更改
+                // Save changes
                 await _dbContext.SaveChangesAsync();
                 
-                _logger.LogDebug($"实体 {entityType.Name} (ID: {id}) 更新成功，版本从 {originalVersion} 更新到 {entity.Version}");
+                _logger.LogDebug($"Entity {entityType.Name} (ID: {id}) updated successfully, version from {originalVersion} to {entity.Version}");
                 return entity;
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.LogWarning($"实体 {entityType.Name} (ID: {id}) 版本冲突，第 {attempt} 次重试");
+                _logger.LogWarning($"Entity {entityType.Name} (ID: {id}) version conflict, attempt {attempt} retry");
                 
                 if (attempt == maxRetries)
                 {
-                    throw new ConcurrencyException($"实体 {entityType.Name} (ID: {id}) 在 {maxRetries} 次重试后仍然存在版本冲突", ex);
+                    throw new ConcurrencyException($"Entity {entityType.Name} (ID: {id}) still has version conflicts after {maxRetries} retries", ex);
                 }
                 
-                // 重新加载实体以获取最新版本
+                // Reload entity to get latest version
                 _dbContext.Entry(await _dbContext.Set<T>().FindAsync(id)).Reload();
                 
-                // 等待一段时间后重试
+                // Wait before retrying
                 await Task.Delay(TimeSpan.FromMilliseconds(100 * attempt));
             }
         }
         
-        throw new InvalidOperationException("不应该到达这里");
+        throw new InvalidOperationException("Should not reach here");
     }
 }
 
-// 使用示例
+// Usage Examples
 public class InventoryService
 {
     private readonly VersionControlService<Inventory> _versionControlService;
@@ -1733,7 +1751,7 @@ public class InventoryService
         _context = context;
     }
     
-    // 减少库存（防止超卖）
+    // Reduce inventory (prevent overselling)
     public async Task<bool> ReduceInventoryAsync(string productId, int quantity)
     {
         var inventory = await _context.Inventories
@@ -1741,7 +1759,7 @@ public class InventoryService
             
         if (inventory == null)
         {
-            throw new EntityNotFoundException($"产品 {productId} 的库存记录不存在");
+            throw new EntityNotFoundException($"Inventory record for product {productId} not found");
         }
         
         try
@@ -1750,7 +1768,7 @@ public class InventoryService
             {
                 if (inv.Quantity < quantity)
                 {
-                    throw new InsufficientInventoryException($"库存不足，当前库存: {inv.Quantity}，需要: {quantity}");
+                    throw new InsufficientInventoryException($"Insufficient inventory: {inv.Quantity}, required: {quantity}");
                 }
                 
                 inv.Quantity -= quantity;
@@ -1760,12 +1778,12 @@ public class InventoryService
         }
         catch (ConcurrencyException)
         {
-            // 版本冲突，可能是并发操作导致
-            throw new ConcurrencyException("库存更新失败，请重试");
+            // Version conflict, likely due to concurrent operations
+            throw new ConcurrencyException("Inventory update failed, please retry");
         }
     }
     
-    // 增加库存
+    // Add inventory
     public async Task AddInventoryAsync(string productId, int quantity)
     {
         var inventory = await _context.Inventories
@@ -1773,7 +1791,7 @@ public class InventoryService
             
         if (inventory == null)
         {
-            throw new EntityNotFoundException($"产品 {productId} 的库存记录不存在");
+            throw new EntityNotFoundException($"Inventory record for product {productId} not found");
         }
         
         await _versionControlService.UpdateWithVersionCheckAsync(inventory.Id, inv =>
@@ -1783,7 +1801,7 @@ public class InventoryService
     }
 }
 
-// 账户余额服务示例
+// Account balance service example
 public class AccountBalanceService
 {
     private readonly VersionControlService<AccountBalance> _versionControlService;
@@ -1795,7 +1813,7 @@ public class AccountBalanceService
         _context = context;
     }
     
-    // 扣减余额
+    // Deduct balance
     public async Task<bool> DeductBalanceAsync(long userId, decimal amount, string currency = "CNY")
     {
         var balance = await _context.AccountBalances
@@ -1803,7 +1821,7 @@ public class AccountBalanceService
             
         if (balance == null)
         {
-            throw new EntityNotFoundException($"用户 {userId} 的 {currency} 账户不存在");
+            throw new EntityNotFoundException($"Account for user {userId} ({currency}) not found");
         }
         
         try
@@ -1812,7 +1830,7 @@ public class AccountBalanceService
             {
                 if (bal.Balance < amount)
                 {
-                    throw new InsufficientBalanceException($"余额不足，当前余额: {bal.Balance}，需要: {amount}");
+                    throw new InsufficientBalanceException($"Insufficient balance: {bal.Balance}, required: {amount}");
                 }
                 
                 bal.Balance -= amount;
@@ -1822,11 +1840,11 @@ public class AccountBalanceService
         }
         catch (ConcurrencyException)
         {
-            throw new ConcurrencyException("余额更新失败，请重试");
+            throw new ConcurrencyException("Balance update failed, please retry");
         }
     }
     
-    // 增加余额
+    // Add balance
     public async Task AddBalanceAsync(long userId, decimal amount, string currency = "CNY")
     {
         var balance = await _context.AccountBalances
@@ -1834,7 +1852,7 @@ public class AccountBalanceService
             
         if (balance == null)
         {
-            throw new EntityNotFoundException($"用户 {userId} 的 {currency} 账户不存在");
+            throw new EntityNotFoundException($"Account for user {userId} ({currency}) not found");
         }
         
         await _versionControlService.UpdateWithVersionCheckAsync(balance.Id, bal =>
@@ -1845,7 +1863,7 @@ public class AccountBalanceService
 }
 ```
 
-#### 完整集成示例
+#### Complete Integration Example
 
 ```csharp
 using GameFrameX.Foundation.Orm.Attribute;
@@ -1854,7 +1872,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MyApplication.Entities
 {
-    // 用户实体：支持审计、软删除、版本控制
+    // User entity: audit, soft delete, version control
     [AuditTable]
     [SoftDelete]
     [VersionControl]
@@ -1868,7 +1886,7 @@ namespace MyApplication.Entities
         public DateTime? LastLoginTime { get; set; }
     }
     
-    // 系统配置：支持缓存、审计
+    // System config: caching, audit
     [CacheTable]
     [AuditTable]
     public class SystemConfig : EntityBase
@@ -1879,7 +1897,7 @@ namespace MyApplication.Entities
         public string Category { get; set; }
     }
     
-    // 库存记录：支持版本控制、审计
+    // Inventory: version control, audit
     [VersionControl]
     [AuditTable]
     public class Inventory : EntityBase
@@ -1891,7 +1909,7 @@ namespace MyApplication.Entities
         public string WarehouseCode { get; set; }
     }
     
-    // 订单记录：支持审计、软删除
+    // Order: audit, soft delete
     [AuditTable]
     [SoftDelete]
     public class Order : EntityBase
@@ -1907,7 +1925,7 @@ namespace MyApplication.Entities
     }
 }
 
-// DbContext配置
+// DbContext configuration
 public class ApplicationDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
@@ -1927,7 +1945,7 @@ public class ApplicationDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // 为所有标记了SoftDeleteAttribute的实体添加全局查询过滤器
+        // Add global query filter for all SoftDeleteAttribute-marked entities
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             var clrType = entityType.ClrType;
@@ -1947,7 +1965,7 @@ public class ApplicationDbContext : DbContext
     }
 }
 
-// 服务注册
+// Service registration
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddDbContext<ApplicationDbContext>(options =>
@@ -1965,82 +1983,82 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-### 🖊️ 日志工具库 (GameFrameX.Foundation.Logger)
+### 🖊️ Logger Library (GameFrameX.Foundation.Logger)
 
-基于 Serilog 的日志配置工具，提供简单易用的日志记录功能。
+Serilog-based logging configuration tool providing simple and easy-to-use logging capabilities.
 
-#### 特性
+#### Features
 
-- 支持多种日志级别 (Debug, Info, Warning, Error, Fatal)
-- 灵活的输出配置
-- 支持自定义日志提供程序
-- 提供日志自我诊断
-- ✅ **预初始化日志支持**: 无需手动初始化，直接使用 LogHelper 即可输出日志
-- ✅ **日志自动合并**: 初始化前后的日志会自动合并到正式日志系统
+- Multiple log levels (Debug, Info, Warning, Error, Fatal)
+- Flexible output configuration
+- Custom log provider support
+- Log self-diagnostics
+- ✅ **Pre-initialization logging**: Use LogHelper directly without manual initialization
+- ✅ **Auto log merging**: Pre and post-initialization logs are automatically merged
 
-#### 预初始化日志功能
+#### Pre-initialization Logging
 
-在正式日志系统初始化之前，可以直接使用 LogHelper 输出日志到控制台。当调用 `LogHandler.Create()` 初始化正式日志后，之前的临时日志会自动合并到新日志系统中，确保日志不丢失。
+Before the formal logging system initializes, you can use LogHelper to output logs to the console. When `LogHandler.Create()` initializes the formal logger, previous temporary logs are automatically merged into the new logging system, ensuring no logs are lost.
 
 ```csharp
 class Program
 {
     static void Main(string[] args)
     {
-        // 无需任何初始化，直接使用 LogHelper
-        LogHelper.Info("正在加载配置...");
-        LogHelper.Debug("参数: {Args}", string.Join(", ", args));
-        LogHelper.Warning("配置不存在，使用默认值");
+        // No initialization required, use LogHelper directly
+        LogHelper.Info("Loading configuration...");
+        LogHelper.Debug("Parameters: {Args}", string.Join(", ", args));
+        LogHelper.Warning("Configuration not found, using defaults");
 
-        // 初始化正式日志系统
+        // Initialize formal logging system
         var logger = LogHandler.Create(options);
 
-        // 之前的临时日志已自动合并到新日志
-        LogHelper.Info("系统启动完成");
+        // Previous temporary logs have been auto-merged into the new logging system
+        LogHelper.Info("System startup complete");
     }
 }
 ```
 
-#### 使用示例
+#### Usage Examples
 
 ```csharp
-// 初始化日志
+// Initialize logging
 LogHandler.Create(LogOptions.Default);
 
-// 记录日志
-LogHelper.Debug("调试信息");
-LogHelper.Info("普通信息");
-LogHelper.Warning("警告信息");
-LogHelper.Error("错误信息");
-LogHelper.Fatal("致命错误");
+// Log messages
+LogHelper.Debug("Debug message");
+LogHelper.Info("Info message");
+LogHelper.Warning("Warning message");
+LogHelper.Error("Error message");
+LogHelper.Fatal("Fatal error");
 ```
 
-### ⚙️ 命令行参数处理 (GameFrameX.Foundation.Options)
+### ⚙️ CLI Options (GameFrameX.Foundation.Options)
 
-一个强大的命令行参数和环境变量解析库，支持将命令行参数和环境变量自动映射到强类型配置对象。
+A powerful command-line argument and environment variable parsing library that automatically maps to strongly-typed configuration objects.
 
-#### 特性
+#### Features
 
-- ✅ **参数优先级处理**: 命令行参数 > 环境变量 > 默认值
-- ✅ **泛型支持**: 支持任意强类型配置类
-- ✅ **多种启动方式兼容**: 支持Docker、exe、shell等启动方式
-- ✅ **自动前缀处理**: 自动为参数添加`--`前缀
-- ✅ **布尔参数支持**: 支持多种布尔参数格式
-- ✅ **环境变量映射**: 自动映射环境变量到配置属性
-- ✅ **类型转换**: 自动转换字符串参数到目标类型
-- ✅ **特性支持**: 支持丰富的配置特性
+- ✅ **Argument priority**: Command-line args > Environment variables > Defaults
+- ✅ **Generic support**: Supports any strongly-typed configuration class
+- ✅ **Multiple launch modes**: Supports Docker, exe, shell, etc.
+- ✅ **Auto prefix handling**: Automatically adds `--` prefix to arguments
+- ✅ **Boolean parameter support**: Supports multiple boolean formats
+- ✅ **Environment variable mapping**: Auto-maps env vars to config properties
+- ✅ **Type conversion**: Auto-converts string arguments to target types
+- ✅ **Attribute support**: Rich configuration attributes
 
-#### 核心组件
+#### Core Components
 
-| 组件                             | 功能描述                 |
+| Component                             | FunctionDescription                 |
 |--------------------------------|----------------------|
-| `CommandLineArgumentConverter` | 命令行参数转换器，提供参数处理的核心功能 |
-| `OptionsBuilder<T>`            | 配置构建器，用于构建泛型配置对象     |
-| `OptionsProvider`              | 配置提供器，用于获取和管理配置对象    |
+| `CommandLineArgumentConverter` | Command-line argument converter, core argument processing |
+| `OptionsBuilder<T>` | Configuration builder for constructing generic config objects |
+| `OptionsProvider` | Configuration provider for managing config objects |
 
-#### 快速开始
+#### Quick Start
 
-##### 1. 定义配置类
+##### 1. Define Configuration Class
 
 ```csharp
 public class AppConfig
@@ -2053,7 +2071,7 @@ public class AppConfig
 }
 ```
 
-##### 2. 使用OptionsBuilder
+##### 2. Using OptionsBuilder
 
 ```csharp
 using GameFrameX.Foundation.Options;
@@ -2062,54 +2080,54 @@ class Program
 {
     static void Main(string[] args)
     {
-        // 创建选项构建器
+        // Create options builder
         var builder = new OptionsBuilder<AppConfig>(args);
         
-        // 构建配置对象
+        // Build configuration object
         var config = builder.Build();
         
-        // 使用配置
-        Console.WriteLine($"服务器: {config.Host}:{config.Port}");
-        Console.WriteLine($"调试模式: {config.Debug}");
-        Console.WriteLine($"日志级别: {config.LogLevel}");
-        Console.WriteLine($"超时时间: {config.Timeout}秒");
+        // Use configuration
+        Console.WriteLine($"Server: {config.Host}:{config.Port}");
+        Console.WriteLine($"Debug mode: {config.Debug}");
+        Console.WriteLine($"Log level: {config.LogLevel}");
+        Console.WriteLine($"Timeout: {config.Timeout}s");
     }
 }
 ```
 
-#### 使用方式
+#### Usage
 
-##### 命令行参数
+##### Command-Line Arguments
 
-支持多种参数格式：
+Supports multiple argument formats:
 
 ```bash
-# 键值对格式
+# Key-value format
 myapp.exe --host=example.com --port=9090 --debug=true
 
-# 分离格式
+# Separate format
 myapp.exe --host example.com --port 9090 --debug true
 
-# 布尔标志格式
+# Boolean flag format
 myapp.exe --host example.com --port 9090 --debug
 
-# 混合格式
+# Mixed format
 myapp.exe --host=example.com --port 9090 --debug
 ```
 
-##### 环境变量
+##### Environment Variables
 
 ```bash
-# 设置环境变量
+# Set environment variables
 export HOST=example.com
 export PORT=9090
 export DEBUG=true
 
-# 运行程序
+# Run the program
 myapp.exe
 ```
 
-##### Docker支持
+##### Docker Support
 
 ```dockerfile
 # Dockerfile
@@ -2120,16 +2138,16 @@ ENTRYPOINT ["dotnet", "MyApp.dll"]
 ```
 
 ```bash
-# Docker运行
+# Docker run
 docker run myapp --host example.com --port 9090 --debug
 
-# 或使用环境变量
+# Or use environment variables
 docker run -e HOST=example.com -e PORT=9090 -e DEBUG=true myapp
 ```
 
-#### 高级特性
+#### Advanced Features
 
-##### 使用特性配置
+##### Using Attribute Configuration
 
 ```csharp
 using GameFrameX.Foundation.Options.Attributes;
@@ -2137,20 +2155,20 @@ using GameFrameX.Foundation.Options.Attributes;
 public class AdvancedConfig
 {
     [Option("h", "host", Required = false, DefaultValue = "localhost")]
-    [HelpText("服务器主机地址")]
+    [HelpText("Server host address")]
     public string Host { get; set; }
 
     [Option("p", "port", Required = true)]
-    [HelpText("服务器端口号")]
+    [HelpText("Server port")]
     public int Port { get; set; }
 
     [FlagOption("d", "debug")]
-    [HelpText("启用调试模式")]
+    [HelpText("Enable debug mode")]
     public bool Debug { get; set; }
 
     [RequiredOption("api-key", Required = true)]
     [EnvironmentVariable("API_KEY")]
-    [HelpText("API密钥")]
+    [HelpText("API key")]
     public string ApiKey { get; set; }
 
     [DefaultValue(30.0)]
@@ -2158,85 +2176,85 @@ public class AdvancedConfig
 }
 ```
 
-##### 构建器选项
+##### Builder Options
 
 ```csharp
 var builder = new OptionsBuilder<AppConfig>(
     args: args,
-    boolFormat: BoolArgumentFormat.Flag,        // 布尔参数格式
-    ensurePrefixedKeys: true,                   // 确保参数有前缀
-    useEnvironmentVariables: true              // 使用环境变量
+    boolFormat: BoolArgumentFormat.Flag,        // Boolean parameter format
+    ensurePrefixedKeys: true,                   // Ensure parameters have prefix
+    useEnvironmentVariables: true              // Use environment variables
 );
 
-var config = builder.Build(skipValidation: false); // 是否跳过验证
+var config = builder.Build(skipValidation: false); // Skip validation or not
 ```
 
-#### 参数优先级
+#### Argument Priority
 
-参数按以下优先级应用（高优先级覆盖低优先级）：
+Parameters are applied with the following priority (higher priority overrides lower):
 
-1. **命令行参数** (最高优先级)
-2. **环境变量**
-3. **默认值** (最低优先级)
+1. **Command-line arguments** (highest priority)
+2. **Environment variables**
+3. **Default values** (lowest priority)
 
-##### 示例
+##### Example
 
 ```csharp
 public class Config
 {
-    public string Host { get; set; } = "localhost";  // 默认值
-    public int Port { get; set; } = 8080;           // 默认值
+    public string Host { get; set; } = "localhost";  // Default value
+    public int Port { get; set; } = 8080;           // Default value
 }
 ```
 
 ```bash
-# 设置环境变量
+# Set environment variables
 export HOST=env.example.com
 export PORT=7070
 
-# 运行程序（命令行参数覆盖环境变量）
+# Run the program(command-line args override environment variables)
 myapp.exe --host cmd.example.com
 
-# 结果：
-# Host = "cmd.example.com"  (来自命令行参数)
-# Port = 7070               (来自环境变量)
+# Result:
+# Host = "cmd.example.com"  (from command-line args)
+# Port = 7070               (from environment variables)
 ```
 
-#### 布尔参数处理
+#### Boolean Options
 
-支持多种布尔参数格式：
+Supports multiple boolean parameter formats:
 
 ```bash
-# 标志格式（推荐）
+# Flag format (recommended)
 myapp.exe --debug                    # debug = true
 
-# 键值对格式
+# Key-value format
 myapp.exe --debug=true               # debug = true
 myapp.exe --debug=false              # debug = false
 
-# 分离格式
+# Separate format
 myapp.exe --debug true               # debug = true
 myapp.exe --debug false              # debug = false
 
-# 支持的布尔值
+# Supported boolean values
 true, false, 1, 0, yes, no, on, off
 ```
 
-#### 类型转换
+#### Type Conversion
 
-自动支持以下类型转换：
+Automatically supports the following type conversions:
 
-- `string` - 直接使用
-- `int`, `int?` - 整数转换
-- `bool`, `bool?` - 布尔值转换
-- `double`, `double?` - 双精度浮点数转换
-- `float`, `float?` - 单精度浮点数转换
-- `decimal`, `decimal?` - 十进制数转换
-- `DateTime`, `DateTime?` - 日期时间转换
-- `Guid`, `Guid?` - GUID转换
-- `Enum` - 枚举转换
+- `string` - Direct use
+- `int`, `int?` - Integer conversion
+- `bool`, `bool?` - Boolean conversion
+- `double`, `double?` - Double conversion
+- `float`, `float?` - Float conversion
+- `decimal`, `decimal?` - Decimal conversion
+- `DateTime`, `DateTime?` - DateTime conversion
+- `Guid`, `Guid?` - GUID conversion
+- `Enum` - Enum conversion
 
-##### 示例
+##### Example
 
 ```csharp
 public class TypedConfig
@@ -2244,7 +2262,7 @@ public class TypedConfig
     public int Port { get; set; }
     public bool Debug { get; set; }
     public DateTime StartTime { get; set; }
-    public LogLevel Level { get; set; }  // 枚举
+    public LogLevel Level { get; set; }  // Enum
 }
 
 public enum LogLevel
@@ -2257,9 +2275,9 @@ public enum LogLevel
 myapp.exe --port 9090 --debug true --start-time "2024-01-01 10:00:00" --level Info
 ```
 
-#### 错误处理
+#### Error Handling
 
-##### 必需参数验证
+##### Required Parameter Validation
 
 ```csharp
 public class Config
@@ -2269,38 +2287,38 @@ public class Config
 }
 ```
 
-如果缺少必需参数，会抛出 `ArgumentException`：
+If a required parameter is missing, an `ArgumentException` is thrown:
 
 ```
-缺少必需的选项: api-key
+Missing required option: api-key
 ```
 
-##### 类型转换错误
+##### Type Conversion Errors
 
-当参数值无法转换为目标类型时，会使用默认值并在控制台输出警告信息。
+When a parameter value cannot be converted to the target type, the default value is used and a warning is displayed.
 
-#### 最佳实践
+#### Best Practices
 
-##### 1. 配置类设计
+##### 1. Configuration Class Design
 
 ```csharp
 public class AppConfig
 {
-    // 使用有意义的默认值
+    // Use meaningful default values
     public string Host { get; set; } = "localhost";
     public int Port { get; set; } = 8080;
     
-    // 布尔属性默认为false
+    // Boolean properties default to false
     public bool Debug { get; set; } = false;
     
-    // 使用特性提供更多信息
+    // Use attributes for additional info
     [RequiredOption("database-url", Required = true)]
     [EnvironmentVariable("DATABASE_URL")]
     public string DatabaseUrl { get; set; }
 }
 ```
 
-##### 2. 错误处理
+##### 2. Error Handling
 
 ```csharp
 try
@@ -2308,17 +2326,17 @@ try
     var builder = new OptionsBuilder<AppConfig>(args);
     var config = builder.Build();
     
-    // 使用配置启动应用
+    // Use configuration to start app
     StartApplication(config);
 }
 catch (ArgumentException ex)
 {
-    Console.WriteLine($"配置错误: {ex.Message}");
+    Console.WriteLine($"Configuration error: {ex.Message}");
     Environment.Exit(1);
 }
 ```
 
-##### 3. Docker集成
+##### 3. Docker Integration
 
 ```csharp
 // Program.cs
@@ -2329,8 +2347,8 @@ public class Program
         var builder = new OptionsBuilder<AppConfig>(args);
         var config = builder.Build();
         
-        // 在Docker中，通常使用环境变量
-        // 在开发中，通常使用命令行参数
+        // In Docker, typically use environment variables
+        // In development, typically use command-line args
         
         var app = CreateApplication(config);
         app.Run();
@@ -2351,7 +2369,7 @@ services:
     command: [ "--log-level", "info" ]
 ```
 
-#### 完整示例
+#### Complete Example
 
 ```csharp
 using GameFrameX.Foundation.Options;
@@ -2363,27 +2381,27 @@ namespace MyApp
     {
         [Option("h", "host", DefaultValue = "localhost")]
         [EnvironmentVariable("SERVER_HOST")]
-        [HelpText("服务器主机地址")]
+        [HelpText("Server host address")]
         public string Host { get; set; }
 
         [Option("p", "port", DefaultValue = 8080)]
         [EnvironmentVariable("SERVER_PORT")]
-        [HelpText("服务器端口号")]
+        [HelpText("Server port")]
         public int Port { get; set; }
 
         [FlagOption("d", "debug")]
         [EnvironmentVariable("DEBUG")]
-        [HelpText("启用调试模式")]
+        [HelpText("Enable debug mode")]
         public bool Debug { get; set; }
 
         [RequiredOption("database-url", Required = true)]
         [EnvironmentVariable("DATABASE_URL")]
-        [HelpText("数据库连接字符串")]
+        [HelpText("Database connection string")]
         public string DatabaseUrl { get; set; }
 
         [Option("timeout", DefaultValue = 30.0)]
         [EnvironmentVariable("REQUEST_TIMEOUT")]
-        [HelpText("请求超时时间（秒）")]
+        [HelpText("Request timeout (seconds)")]
         public double Timeout { get; set; }
     }
 
@@ -2396,19 +2414,19 @@ namespace MyApp
                 var builder = new OptionsBuilder<ServerConfig>(args);
                 var config = builder.Build();
 
-                Console.WriteLine("服务器配置:");
-                Console.WriteLine($"  主机: {config.Host}");
-                Console.WriteLine($"  端口: {config.Port}");
-                Console.WriteLine($"  调试: {config.Debug}");
-                Console.WriteLine($"  数据库: {config.DatabaseUrl}");
-                Console.WriteLine($"  超时: {config.Timeout}秒");
+                Console.WriteLine("Server configuration:");
+                Console.WriteLine($"  Host: {config.Host}");
+                Console.WriteLine($"  Port: {config.Port}");
+                Console.WriteLine($"  Debug: {config.Debug}");
+                Console.WriteLine($"  Database: {config.DatabaseUrl}");
+                Console.WriteLine($"  Timeout: {config.Timeout}s");
 
-                // 启动服务器
+                // Start server
                 StartServer(config);
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine($"配置错误: {ex.Message}");
+                Console.WriteLine($"Configuration error: {ex.Message}");
                 ShowHelp();
                 Environment.Exit(1);
             }
@@ -2416,209 +2434,209 @@ namespace MyApp
 
         static void StartServer(ServerConfig config)
         {
-            // 服务器启动逻辑
-            Console.WriteLine($"服务器启动在 {config.Host}:{config.Port}");
+            // Server startup logic
+            Console.WriteLine($"Server started at {config.Host}:{config.Port}");
         }
 
         static void ShowHelp()
         {
-            Console.WriteLine("用法:");
-            Console.WriteLine("  myapp.exe --host <主机> --port <端口> --database-url <数据库URL> [选项]");
+            Console.WriteLine("Usage:");
+            Console.WriteLine("  myapp.exe --host <host> --port <port> --database-url <db-url> [options]");
             Console.WriteLine();
-            Console.WriteLine("选项:");
-            Console.WriteLine("  -h, --host <主机>           服务器主机地址 (默认: localhost)");
-            Console.WriteLine("  -p, --port <端口>           服务器端口号 (默认: 8080)");
-            Console.WriteLine("  -d, --debug                 启用调试模式");
-            Console.WriteLine("      --database-url <URL>    数据库连接字符串 (必需)");
-            Console.WriteLine("      --timeout <秒>          请求超时时间 (默认: 30.0)");
+            Console.WriteLine("Options:");
+            Console.WriteLine("  -h, --host <host>           Server host address (default: localhost)");
+            Console.WriteLine("  -p, --port <port>           Server port (default: 8080)");
+            Console.WriteLine("  -d, --debug                 Enable debug mode");
+            Console.WriteLine("      --database-url <URL>    Database connection string (required)");
+            Console.WriteLine("      --timeout <seconds>     Request timeout (default: 30.0)");
         }
     }
 }
 ```
 
-#### CommandLineArgumentConverter 使用
+#### CommandLineArgumentConverter Usage
 
-除了 OptionsBuilder 之外，您也可以直接使用底层的 CommandLineArgumentConverter：
+In addition to OptionsBuilder, you can also use the underlying CommandLineArgumentConverter directly:
 
 ```csharp
 using GameFrameX.Foundation.Options;
 
-// 创建转换器实例
+// Create converter instance
 var converter = new CommandLineArgumentConverter();
 
-// 原始命令行参数
+// Raw command-line arguments
 var args = new[] { "--port", "8080", "-h", "localhost" };
 
-// 设置环境变量（可选）
+// Set environment variables (optional)
 Environment.SetEnvironmentVariable("APP_NAME", "MyApplication");
 Environment.SetEnvironmentVariable("LOG_LEVEL", "debug-mode");
 
-// 转换为标准格式（合并命令行参数和环境变量）
+// Convert to standard format (merge args and env vars)
 var standardArgs = converter.ConvertToStandardFormat(args);
-// 结果: ["--port", "8080", "-h", "localhost", "--APP_NAME", "MyApplication", "--LOG_LEVEL", "debugmode"]
+// Result: ["--port", "8080", "-h", "localhost", "--APP_NAME", "MyApplication", "--LOG_LEVEL", "debugmode"]
 
-// 转换为命令行字符串
+// Convert to command-line string
 var commandLineString = converter.ToCommandLineString(standardArgs);
-// 结果: "--port 8080 -h localhost --APP_NAME MyApplication --LOG_LEVEL debugmode"
+// Result: "--port 8080 -h localhost --APP_NAME MyApplication --LOG_LEVEL debugmode"
 
-// 获取所有环境变量
+// Get all environment variables
 var envVars = converter.GetEnvironmentVariables();
-Console.WriteLine($"检测到 {envVars.Count} 个环境变量");
+Console.WriteLine($"Detected {envVars.Count} environment variables");
 ```
 
-##### 布尔类型参数支持
+##### Boolean Parameter Support
 
-`CommandLineArgumentConverter` 支持智能识别和处理布尔类型参数，提供三种格式：
+`CommandLineArgumentConverter` supports intelligent recognition and processing of boolean parameters with three formats:
 
 ```csharp
 using GameFrameX.Foundation.Options;
 
-// 设置布尔类型环境变量
+// Set boolean environment variables
 Environment.SetEnvironmentVariable("ENABLE_LOGGING", "true");
 Environment.SetEnvironmentVariable("DEBUG_MODE", "false");
 Environment.SetEnvironmentVariable("VERBOSE", "yes");
 
 var converter = new CommandLineArgumentConverter();
 
-// 1. 标志格式 (默认) - 只为 true 值添加标志
+// 1. Flag format (default) - only add flags for true values
 converter.BoolFormat = BoolArgumentFormat.Flag;
 var flagArgs = converter.ConvertToStandardFormat(Array.Empty<string>());
-// 结果: ["--ENABLE_LOGGING", "--VERBOSE"] (只包含 true 值)
+// Result: ["--ENABLE_LOGGING", "--VERBOSE"] (only true values)
 
-// 2. 键值对格式 - 添加键值对
+// 2. Key-value format - add key-value pairs
 converter.BoolFormat = BoolArgumentFormat.KeyValue;
 var keyValueArgs = converter.ConvertToStandardFormat(Array.Empty<string>());
-// 结果: ["--ENABLE_LOGGING", "true", "--DEBUG_MODE", "false", "--VERBOSE", "true"]
+// Result: ["--ENABLE_LOGGING", "true", "--DEBUG_MODE", "false", "--VERBOSE", "true"]
 
-// 3. 分离格式 - 键和值分开
+// 3. Separated format - key and value separated
 converter.BoolFormat = BoolArgumentFormat.Separated;
 var separatedArgs = converter.ConvertToStandardFormat(Array.Empty<string>());
-// 结果: ["--ENABLE_LOGGING", "true", "--DEBUG_MODE", "false", "--VERBOSE", "true"]
+// Result: ["--ENABLE_LOGGING", "true", "--DEBUG_MODE", "false", "--VERBOSE", "true"]
 ```
 
-支持的布尔值格式：
+Supported boolean value formats:
 
-- **True 值**: `"true"`, `"1"`, `"yes"`, `"on"`, `"enabled"` (不区分大小写)
-- **False 值**: `"false"`, `"0"`, `"no"`, `"off"`, `"disabled"` (不区分大小写)
+- **True values**: `"true"`, `"1"`, `"yes"`, `"on"`, `"enabled"` (case-insensitive)
+- **False values**: `"false"`, `"0"`, `"no"`, `"off"`, `"disabled"` (case-insensitive)
 
-### 🛠️ 通用工具类 (GameFrameX.Foundation.Utility)
+### 🛠️ Utility Classes (GameFrameX.Foundation.Utility)
 
-提供一系列实用的工具类，包含控制台操作、环境管理、时间处理和雪花ID生成等功能。
+Provides a collection of practical utility classes including console operations, environment management, time processing, and Snowflake ID generation.
 
-#### 核心组件概览
+#### Core Components Overview
 
-| 组件        | 文件名                    | 主要功能                      |
+| Component | File | Description |
 |-----------|------------------------|---------------------------|
-| **控制台助手** | `ConsoleHelper.cs`     | 控制台Logo打印和格式化输出           |
-| **环境助手**  | `EnvironmentHelper.cs` | 环境变量管理和环境类型定义             |
-| **时间助手**  | `TimerHelper.cs`       | Unix时间戳处理和时间转换            |
-| **雪花ID**  | `SnowFlakeIdHelper.cs` | 分布式唯一ID生成器（Snowflake算法实现） |
+| **Console Helper** | `ConsoleHelper.cs`     | Console logo printing and formatted output |
+| **Environment Helper** | `EnvironmentHelper.cs` | Environment variable management and type definitions |
+**Time Helper** | `TimerHelper.cs`       | Unix timestamp processing and time conversion |
+| **Snowflake ID** | `SnowFlakeIdHelper.cs` | Distributed unique ID generator (Snowflake algorithm implementation) |
 
-#### 控制台助手功能
+#### Console Helper
 
 ```csharp
 using GameFrameX.Foundation.Utility;
 
-// 打印应用程序Logo
+// Print application logo
 ConsoleHelper.PrintLogo();
-// 输出格式化的控制台Logo，用于应用程序启动时的品牌展示
+// Print formatted console logo for app startup branding
 ```
 
-#### 环境管理功能
+#### Environment Management
 
 ```csharp
 using GameFrameX.Foundation.Utility;
 
-// 获取当前环境类型
+// Get current environment type
 string currentEnv = Environments.Development;
-Console.WriteLine($"当前环境: {currentEnv}");
+Console.WriteLine($"Current environment: {currentEnv}");
 
-// 环境判断
+// Environment check
 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
 {
-    // 开发环境特定逻辑
-    Console.WriteLine("运行在开发环境");
+    // Development-specific logic
+    Console.WriteLine("Running in development environment");
 }
 ```
 
-#### 时间处理功能
+#### Time Processing
 
 ```csharp
 using GameFrameX.Foundation.Utility;
 
-// Unix时间戳常量
-DateTime epochLocal = TimerHelper.EpochLocal;   // 本地时区的Unix纪元时间
-DateTime epochUtc = TimerHelper.EpochUtc;       // UTC时区的Unix纪元时间
+// Unix timestamp constants
+DateTime epochLocal = TimerHelper.EpochLocal;   // Unix epoch in local timezone
+DateTime epochUtc = TimerHelper.EpochUtc;       // Unix epoch in UTC timezone
 
-// 获取当前Unix时间戳（秒）
+// Get current Unix timestamp (seconds)
 long unixSeconds = TimerHelper.UnixTimeSeconds();
-Console.WriteLine($"当前Unix时间戳（秒）: {unixSeconds}");
+Console.WriteLine($"Current Unix timestamp (seconds): {unixSeconds}");
 
-// 获取当前Unix时间戳（毫秒）
+// Get current Unix timestamp (milliseconds)
 long unixMilliseconds = TimerHelper.UnixTimeMilliseconds();
-Console.WriteLine($"当前Unix时间戳（毫秒）: {unixMilliseconds}");
+Console.WriteLine($"Current Unix timestamp (milliseconds): {unixMilliseconds}");
 
-// 时间戳转换示例
+// Timestamp conversion example
 DateTime currentTime = DateTime.UtcNow;
 long timestamp = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
 DateTime restored = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
 ```
 
-#### 雪花ID生成器
+#### Snowflake ID Generator
 
 ```csharp
 using GameFrameX.Foundation.Utility;
 
-// 使用默认配置生成ID
+// Generate ID with default config
 long id1 = SnowFlakeIdHelper.GenerateId();
 long id2 = SnowFlakeIdHelper.GenerateId();
-Console.WriteLine($"生成的ID: {id1}, {id2}");
+Console.WriteLine($"Generated IDs: {id1}, {id2}");
 
-// 配置工作节点ID和数据中心ID
-SnowFlakeIdHelper.WorkId = 1;        // 工作节点ID (0-31)
-SnowFlakeIdHelper.DataCenterId = 1;  // 数据中心ID (0-31)
+// Configure worker ID and data center ID
+SnowFlakeIdHelper.WorkId = 1;        // Worker ID (0-31)
+SnowFlakeIdHelper.DataCenterId = 1;  // Data center ID (0-31)
 
-// 生成配置后的ID
+// Generate configured ID
 long configuredId = SnowFlakeIdHelper.GenerateId();
-Console.WriteLine($"配置后的ID: {configuredId}");
+Console.WriteLine($"Configured ID: {configuredId}");
 
-// 获取时间戳相关信息
-DateTime utcStart = SnowFlakeIdHelper.UtcTimeStart;  // UTC起始时间
-long epochTime = SnowFlakeIdHelper.EpochTime;        // 纪元时间戳
+// Get timestamp related info
+DateTime utcStart = SnowFlakeIdHelper.UtcTimeStart;  // UTC start time
+long epochTime = SnowFlakeIdHelper.EpochTime;        // Epoch timestamp
 
-Console.WriteLine($"雪花ID起始时间: {utcStart}");
-Console.WriteLine($"纪元时间戳: {epochTime}");
+Console.WriteLine($"Snowflake ID start time: {utcStart}");
+Console.WriteLine($"Epoch timestamp: {epochTime}");
 ```
 
-##### 雪花ID算法说明
+##### Snowflake ID Algorithm Details
 
-雪花ID（Snowflake）是Twitter开源的分布式ID生成算法，具有以下特点：
+Snowflake ID is an open-source distributed ID generation algorithm by Twitter with the following characteristics:
 
-- **全局唯一**: 在分布式环境中保证ID的全局唯一性
-- **趋势递增**: 生成的ID大致按时间递增，有利于数据库索引
-- **高性能**: 单机每秒可生成数百万个ID
-- **无依赖**: 不依赖数据库或其他外部系统
+- **Globally unique**: Ensures ID uniqueness in distributed environments
+- **Trend increasing**: Generated IDs increase roughly by time, benefiting database indexing
+- **High performance**: Single machine can generate millions of IDs per second
+- **No dependencies**: Does not depend on databases or other external systems
 
-ID结构（64位）：
+ID structure (64 bits):
 
 ```
 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
 |   |                                             |   |       |       |
-|   |<-------------- 41位时间戳 ---------------->|   |<-5位->|<-5位->|<--12位-->
+|   |<-------------- 41-bit timestamp ---------------->|   |<-5-bit->|<-5-bit->|<--12-bit-->
 |                                                 |           |       |
-符号位(1位)                                        |      数据中心ID   序列号
-                                                  |      (5位)      (12位)
-                                               工作节点ID
-                                                (5位)
+Sign bit (1-bit)                                        |      Data center ID   Sequence
+                                                  |      (5-bit)      (12-bit)
+                                               Worker ID
+                                                (5-bit)
 ```
 
-- **1位符号位**: 固定为0
-- **41位时间戳**: 精确到毫秒，可使用约69年
-- **5位数据中心ID**: 支持32个数据中心
-- **5位工作节点ID**: 每个数据中心支持32个工作节点
-- **12位序列号**: 同一毫秒内支持4096个ID
+- **1-bit sign bit**: Always 0
+- **41-bit timestamp**: Millisecond precision, ~69 years of use
+- **5-bit Data center ID**: Supports 32 data centers
+- **5-bit Worker ID**: Each data center supports 32 worker nodes
+- **12-bit Sequence**: Supports 4096 IDs per millisecond
 
-#### 完整使用示例
+#### Complete Usage Examples
 
 ```csharp
 using GameFrameX.Foundation.Utility;
@@ -2629,295 +2647,295 @@ namespace MyApplication
     {
         static void Main(string[] args)
         {
-            // 打印应用程序Logo
+            // Print application logo
             ConsoleHelper.PrintLogo();
             
-            // 检查运行环境
+            // Check runtime environment
             string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environments.Development;
-            Console.WriteLine($"当前运行环境: {env}");
+            Console.WriteLine($"Current environment: {env}");
             
-            // 配置雪花ID生成器
+            // Configure Snowflake ID generator
             SnowFlakeIdHelper.WorkId = 1;
             SnowFlakeIdHelper.DataCenterId = 1;
             
-            // 生成唯一ID
+            // Generate unique IDs
             for (int i = 0; i < 5; i++)
             {
                 long id = SnowFlakeIdHelper.GenerateId();
                 long timestamp = TimerHelper.UnixTimeMilliseconds();
                 
-                Console.WriteLine($"ID: {id}, 时间戳: {timestamp}");
+                Console.WriteLine($"ID: {id}, Timestamp: {timestamp}");
                 
-                // 短暂延迟以观察ID变化
+                // Brief delay to observe ID changes
                 Thread.Sleep(1);
             }
             
-            // 时间处理示例
-            Console.WriteLine($"Unix纪元时间(UTC): {TimerHelper.EpochUtc}");
-            Console.WriteLine($"Unix纪元时间(本地): {TimerHelper.EpochLocal}");
-            Console.WriteLine($"当前Unix时间戳(秒): {TimerHelper.UnixTimeSeconds()}");
-            Console.WriteLine($"当前Unix时间戳(毫秒): {TimerHelper.UnixTimeMilliseconds()}");
+            // Time processing example
+            Console.WriteLine($"Unix epoch (UTC): {TimerHelper.EpochUtc}");
+            Console.WriteLine($"Unix epoch (local): {TimerHelper.EpochLocal}");
+            Console.WriteLine($"Current Unix timestamp (seconds): {TimerHelper.UnixTimeSeconds()}");
+            Console.WriteLine($"Current Unix timestamp (ms): {TimerHelper.UnixTimeMilliseconds()}");
         }
     }
 }
 ```
 
-## 🧪 测试
+## 🧪 Testing
 
-项目包含完整的单元测试，确保代码质量和功能正确性。所有核心功能都有对应的测试用例，测试覆盖率达到95%以上。
+The project includes comprehensive unit tests ensuring code quality and functional correctness. All core features have corresponding test cases with over 95% test coverage.
 
-### 测试覆盖范围
+### Test Coverage
 
-#### 🧩 扩展方法库测试 (Extensions)
+#### 🧩 Extension Method Library Tests (Extensions)
 
-- **ArgumentAlreadyExceptionTests**: 参数已存在异常测试
-- **BidirectionalDictionaryTests**: 双向字典功能测试
-- **ByteExtensionTests**: 字节数组扩展方法测试
-- **CollectionExtensionsTests**: 集合扩展方法测试
-- **ConcurrentLimitedQueueTests**: 并发限制队列测试
-- **DisposableConcurrentDictionaryTests**: 可释放并发字典测试
-- **DisposableDictionaryTests**: 可释放字典测试
-- **IDictionaryExtensionsTests**: 字典扩展方法测试
-- **IEnumerableExtensionsTests**: 枚举扩展方法测试
-- **ListExtensionsTests**: 列表扩展方法测试
-- **LookupXTests**: 查找表功能测试
-- **NullObjectTests**: 空对象模式测试
-- **NullableConcurrentDictionaryTests**: 可空并发字典测试
-- **NullableDictionaryTests**: 可空字典测试
-- **ObjectExtensionsTests**: 对象扩展方法测试
-- **ReadOnlySpanExtensionsTests**: 只读Span扩展测试
-- **SequenceReaderExtensionsTests**: 序列读取器扩展测试
-- **SpanExtensionsTests**: Span扩展方法测试
-- **StringExtensionsTests**: 字符串扩展方法测试
-- **TypeExtensionsTests**: 类型扩展方法测试
+- **ArgumentAlreadyExceptionTests**: Argument already exists exception tests
+- **BidirectionalDictionaryTests**: Bidirectional dictionary tests
+- **ByteExtensionTests**: Byte extension method tests
+- **CollectionExtensionsTests**: Collection extension method tests
+- **ConcurrentLimitedQueueTests**: Concurrent limited queue tests
+- **DisposableConcurrentDictionaryTests**: Disposable concurrent dictionary tests
+- **DisposableDictionaryTests**: Disposable dictionary tests
+- **IDictionaryExtensionsTests**: Dictionary extension method tests
+- **IEnumerableExtensionsTests**: Enumerable extension method tests
+- **ListExtensionsTests**: List extension method tests
+- **LookupXTests**: Lookup table tests
+- **NullObjectTests**: Null object pattern tests
+- **NullableConcurrentDictionaryTests**: Nullable concurrent dictionary tests
+- **NullableDictionaryTests**: Nullable dictionary tests
+- **ObjectExtensionsTests**: Object extension method tests
+- **ReadOnlySpanExtensionsTests**: ReadOnlySpan extension tests
+- **SequenceReaderExtensionsTests**: Sequence reader extension tests
+- **SpanExtensionsTests**: Span extension method tests
+- **StringExtensionsTests**: String extension method tests
+- **TypeExtensionsTests**: Type extension method tests
 
-#### 🔐 加密工具库测试 (Encryption)
+#### 🔐 Encryption Library Tests (Encryption)
 
-- **AesHelperTests**: AES加密算法测试
-- **DsaHelperTests**: DSA数字签名测试
-- **RsaHelperTests**: RSA加密算法测试
-- **Sm2HelperTests**: SM2国密算法测试
-- **Sm4HelperTests**: SM4国密算法测试
-- **XorHelperTests**: XOR异或加密测试
+- **AesHelperTests**: AES encryption algorithm tests
+- **DsaHelperTests**: DSA digital signature tests
+- **RsaHelperTests**: RSA encryption algorithm tests
+- **Sm2HelperTests**: SM2 national crypto algorithm tests
+- **Sm4HelperTests**: SM4 national crypto algorithm tests
+- **XorHelperTests**: XOR encryption tests
 
-#### 🌐 本地化框架测试 (Localization)
+#### 🌐 Localization Framework Tests (Localization)
 
-- **LocalizationServiceTests**: 本地化服务核心功能测试
-    - 单例模式验证测试
-    - 本地化字符串获取测试
-    - 参数化消息格式化测试
-    - 未知键处理测试
-    - 线程安全并发测试
-- **ResourceManagerTests**: 资源管理器测试
-    - 提供者优先级测试
-    - 懒加载机制测试
-    - 统计信息验证测试
-- **DefaultResourceProviderTests**: 默认资源提供者测试
-- **AssemblyResourceProviderTests**: 程序集资源提供者测试
-    - .resx文件加载测试
-    - 多文化支持测试
-    - 资源缓存机制测试
+- **LocalizationServiceTests**: Localization service core tests
+    - Singleton pattern validation tests
+    - Localized string retrieval tests
+    - Parameterized message formatting tests
+    - Unknown key handling tests
+    - Thread safety concurrency tests
+- **ResourceManagerTests**: Resource manager tests
+        - Provider priority tests
+    - Lazy loading mechanism tests
+    - Statistics validation tests
+- **DefaultResourceProviderTests**: Default resource provider tests
+- **AssemblyResourceProviderTests**: Assembly resource provider tests
+    - .resx file loading tests
+    - Multi-culture support tests
+    - Resource caching mechanism tests
 
-#### 🔗 哈希工具库测试 (Hash)
+#### 🔗 Hash Library Tests (Hash)
 
-- **CrcHelperTests**: CRC校验算法测试
-- **HmacSha256HelperTests**: HMAC-SHA256测试
-- **Md5HelperTests**: MD5哈希算法测试
-- **MurmurHash3HelperTests**: MurmurHash3算法测试
-- **Sha1HelperTests**: SHA-1哈希算法测试
-- **Sha256HelperTests**: SHA-256哈希算法测试
-- **Sha512HelperTests**: SHA-512哈希算法测试
-- **XxHashHelperTests**: xxHash高性能哈希测试
+- **CrcHelperTests**: CRC checksum algorithm tests
+- **HmacSha256HelperTests**: HMAC-SHA256 tests
+- **Md5HelperTests**: MD5 hash algorithm tests
+- **MurmurHash3HelperTests**: MurmurHash3 algorithm tests
+- **Sha1HelperTests**: SHA-1 hash algorithm tests
+- **Sha256HelperTests**: SHA-256 hash algorithm tests
+- **Sha512HelperTests**: SHA-512 hash algorithm tests
+- **XxHashHelperTests**: xxHash high performance hash tests
 
-#### 🌐 HTTP工具库测试 (Http.Extension)
+#### 🌐 HTTP Extension Library Tests (Http.Extension)
 
-- **HttpExtensionTests**: HTTP客户端扩展方法测试
+- **HttpExtensionTests**: HTTP client extension method tests
 
-#### ⚙️ 命令行参数处理测试 (Options)
+#### ⚙️ CLI Options Tests (Options)
 
-- **CommandLineArgumentConverterTests**: 命令行参数转换器功能测试
-    - 空参数数组处理测试
-    - 空参数值处理测试
-    - 重复参数检测测试
-    - 环境变量转换测试
-    - 值清理功能测试
-    - 单连字符参数转换测试
-    - 命令行字符串生成测试
-    - 环境变量获取测试
-    - 完整工作流程测试
-    - 布尔类型参数处理测试
-        - 标志格式布尔参数测试
-        - 键值对格式布尔参数测试
-        - 分离格式布尔参数测试
-        - 多种布尔值格式解析测试
-        - 非布尔值处理测试
-- **OptionsBuilderTests**: 选项构建器功能测试
-    - 基本配置构建测试
-    - 特性配置测试
-    - 类型转换测试
-    - 验证功能测试
-- **OptionsProviderTests**: 选项提供器功能测试
-    - 配置注册和获取测试
-    - 全局配置管理测试
+- **CommandLineArgumentConverterTests**: Command-line argument converter tests
+    - Empty argument array handling tests
+    - Empty argument value handling tests
+    - Duplicate argument detection tests
+    - Environment variable conversion tests
+    - Value cleanup tests
+    - Single hyphen argument conversion tests
+    - Command-line string generation tests
+    - Environment variable retrieval tests
+    - Full workflow tests
+    - Boolean options tests
+        - Flag format boolean parameter tests
+        - Key-value format boolean parameter tests
+        - Separator format boolean parameter tests
+        - Multiple boolean value format parsing tests
+        - Non-boolean value handling tests
+- **OptionsBuilderTests**: Options builder tests
+    - Basic configuration build tests
+    - Attribute configuration tests
+    - Type conversion tests
+    - Validation tests
+- **OptionsProviderTests**: Options provider tests
+    - Configuration registration and retrieval tests
+    - Global configuration management tests
 
-### 运行测试
+### Run tests
 
 ```bash
-# 运行所有测试
+# Run all tests
 dotnet test
 
-# 运行特定模块测试
+# Run specific module tests
 dotnet test --filter "FullyQualifiedName~Extensions"
 dotnet test --filter "FullyQualifiedName~Encryption"
 dotnet test --filter "FullyQualifiedName~Hash"
 dotnet test --filter "FullyQualifiedName~Localization"
 dotnet test --filter "FullyQualifiedName~Options"
 
-# 运行特定测试类
+# Run specific test class
 dotnet test --filter "ClassName=XxHashHelperTests"
 dotnet test --filter "ClassName=StringExtensionsTests"
 dotnet test --filter "ClassName=LocalizationServiceTests"
 dotnet test --filter "ClassName=CommandLineArgumentConverterTests"
 
-# 生成测试覆盖率报告
+# Generate test coverage report
 dotnet test --collect:"XPlat Code Coverage"
 
-# 运行性能测试
+# Run performance tests
 dotnet test --filter "Category=Performance"
 ```
 
-### 测试特点
+### Test Characteristics
 
-- **全面覆盖**: 每个公共方法都有对应的测试用例
-- **边界测试**: 包含空值、边界值、异常情况的测试
-- **性能测试**: 对关键算法进行性能基准测试
-- **并发测试**: 验证线程安全的组件在多线程环境下的正确性
-- **兼容性测试**: 确保在不同.NET版本下的兼容性
+- **Full coverage**: Every public method has corresponding test cases
+- **Edge case testing**: Tests for null, boundary values, and exceptions
+- **Performance testing**: Benchmarks for key algorithms
+- **Concurrency testing**: Verifies thread-safe components under multi-threaded conditions
+- **Compatibility testing**: Ensures compatibility across .NET versions
 
-## 🏗️ 架构设计
+## 🏗️ Architecture
 
-### 设计原则
+### Design Principles
 
-- **高性能**: 所有组件都经过性能优化，适用于高并发场景
-- **易用性**: 提供简洁的 API 设计，降低学习成本
-- **可扩展**: 模块化设计，支持自定义扩展
-- **类型安全**: 充分利用 .NET 的类型系统，减少运行时错误
-- **内存友好**: 使用 Span<T> 和 Memory<T> 等现代 .NET 特性，减少内存分配
+- **High performance**: All components are performance-optimized for high-concurrency scenarios
+- **Ease of use**: Clean API design to reduce learning curve
+- **Extensible**: Modular design, supports custom extensions
+- **Type safety**: Leverages .NET type system to reduce runtime errors
+- **Memory efficient**: Uses modern .NET features like Span<T> and Memory<T> to reduce allocations
 
-### 依赖关系
+### Dependencies
 
 ```
-GameFrameX.Foundation.Extensions (核心扩展)
-├── GameFrameX.Foundation.Encryption (加密工具)
-├── GameFrameX.Foundation.Hash (哈希工具)
-├── GameFrameX.Foundation.Json (JSON工具)
-├── GameFrameX.Foundation.Logger (日志工具)
-├── GameFrameX.Foundation.Options (参数处理)
-├── GameFrameX.Foundation.Http.Extension (HTTP扩展)
-└── GameFrameX.Foundation.Http.Normalization (HTTP标准化)
+GameFrameX.Foundation.Extensions (Core Extensions)
+├── GameFrameX.Foundation.Encryption (Encryption)
+├── GameFrameX.Foundation.Hash (Hash)
+├── GameFrameX.Foundation.Json (JSON)
+├── GameFrameX.Foundation.Logger (Logger)
+├── GameFrameX.Foundation.Options (Options)
+├── GameFrameX.Foundation.Http.Extension (HTTP Extensions)
+└── GameFrameX.Foundation.Http.Normalization (HTTP Normalization)
 ```
 
-## 🔧 开发指南
+## 🔧 Development Guide
 
-### 环境要求
+### Environment Requirements
 
-- .NET 10.0 或更高版本
-- C# 12.0 或更高版本
+- .NET 10.0 or higher
+- C# 12.0 or higher
 
-### 构建项目
+### Build the project
 
 ```bash
-# 克隆仓库
+# Clone the repository
 git clone https://github.com/GameFrameX/GameFrameX.Foundation.git
 cd GameFrameX.Foundation
 
-# 还原依赖
+# Restore dependencies
 dotnet restore
 
-# 构建项目
+# Build the project
 dotnet build
 
-# 运行测试
+# Run tests
 dotnet test
 ```
 
-### 贡献指南
+### Contributing Guide
 
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📊 性能基准
+## 📊 Performance Benchmarks
 
-### 扩展方法性能
+### Extension Method Performance
 
-| 操作        | 传统方法  | 扩展方法  | 性能提升 |
+| Operation        | Traditional  | Extension Method  | Improvement |
 |-----------|-------|-------|------|
-| 字符串空值检查   | 100ns | 15ns  | 85%  |
-| 集合随机元素获取  | 200ns | 50ns  | 75%  |
-| Span 字节操作 | 500ns | 80ns  | 84%  |
-| 双向字典查找    | 150ns | 120ns | 20%  |
+| String null check   | 100ns | 15ns  | 85%  |
+| Collection random element  | 200ns | 50ns  | 75%  |
+| Span byte operations | 500ns | 80ns  | 84%  |
+| Bidirectional dict lookup    | 150ns | 120ns | 20%  |
 
-### 加密算法性能
+### Encryption Algorithm Performance
 
-| 算法       | 数据大小 | 加密时间   | 解密时间   |
+| Algorithm       | Data Size | Encrypt Time   | Decrypt Time   |
 |----------|------|--------|--------|
 | AES-256  | 1KB  | 0.05ms | 0.04ms |
 | RSA-2048 | 1KB  | 2.1ms  | 0.8ms  |
 | SM4      | 1KB  | 0.08ms | 0.07ms |
 | XOR      | 1KB  | 0.01ms | 0.01ms |
 
-### 哈希算法性能
+### Hash Algorithm Performance
 
-| 算法          | 数据大小 | 处理时间  | 吞吐量      |
+| Algorithm          | Data Size | Process Time  | Throughput      |
 |-------------|------|-------|----------|
 | MD5         | 1MB  | 2.1ms | 476MB/s  |
 | SHA-256     | 1MB  | 3.8ms | 263MB/s  |
 | xxHash64    | 1MB  | 0.8ms | 1.25GB/s |
 | MurmurHash3 | 1MB  | 1.2ms | 833MB/s  |
 
-## 📋 系统要求
+## 📋 System Requirements
 
-- .NET 10.0 或更高版本
-- 支持 Windows、Linux、macOS
+- .NET 10.0 or higher
+- Supports Windows, Linux, macOS
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎提交 Issue 和 Pull Request 来改进项目。
+Issues and Pull Requests are welcome to improve the project.
 
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开 Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 🤝 社区支持
+## 🤝 Community Support
 
-- **问题反馈**: [GitHub Issues](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
-- **功能请求**: [GitHub Discussions](https://github.com/GameFrameX/GameFrameX.Foundation/discussions)
-- **文档贡献**: 欢迎提交文档改进的 PR
+- **Issue reports**: [GitHub Issues](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
+- **Feature requests**: [GitHub Discussions](https://github.com/GameFrameX/GameFrameX.Foundation/discussions)
+- **Documentation**: PRs for documentation improvements are welcome
 
-## 📄 许可证
+## 📄 License
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 致谢
+## 🙏 Acknowledgements
 
-感谢所有为 GameFrameX.Foundation 做出贡献的开发者们！
+Thanks to all developers who have contributed to GameFrameX.Foundation!
 
-## 🔗 相关链接
+## 🔗 Related Links
 
-- [GameFrameX 官网](https://gameframex.doc.alianblank.com)
-- [文档中心](https://gameframex.doc.alianblank.com)
-- [问题反馈](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
+- [GameFrameX Official Site](https://gameframex.doc.alianblank.com)
+- [Documentation Center](https://gameframex.doc.alianblank.com)
+- [Issue Feedback](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
 
 ---
 
 <div align="center">
 
-**[⬆ 回到顶部](#gamefamex-foundation)**
+**[⬆ Back to Top](#gameframexfoundation)**
 
 Made with ❤️ by GameFrameX Team
 
