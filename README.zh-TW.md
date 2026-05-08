@@ -6,11 +6,11 @@
 
 [![Version](https://img.shields.io/github/v/release/GameFrameX/GameFrameX.Foundation?label=version&color=green)](https://github.com/GameFrameX/GameFrameX.Foundation/releases)
 [![License](https://img.shields.io/badge/license-MIT+Apache%202.0-orange.svg)](LICENSE.md)
-[![Documentation](https://img.shields.io/badge/docs-gameframex-brightgreen.svg)](https://alianblank.github.io/GameFrameX.Docs)
+[![Documentation](https://img.shields.io/badge/docs-gameframex-brightgreen.svg)](https://gameframex.doc.alianblank.com)
 
 **獨立遊戲前後端一體化解決方案 · 獨立遊戲開發者的圓夢大使**
 
-[📖 文檔](https://alianblank.github.io/GameFrameX.Docs/zh-TW) • [🚀 快速開始](https://alianblank.github.io/GameFrameX.Docs/zh-TWgetting-started) • [💬 QQ群: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
+[📖 文檔](https://gameframex.doc.alianblank.com/zh-TW) • [🚀 快速開始](https://gameframex.doc.alianblank.com/zh-TW/server/foundation) • [💬 QQ群: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
 
 ---
 
@@ -73,22 +73,22 @@ var sha256 = ShaHelper.ComputeSha256("Hello World");
 
 | 模組 | 套件名 | 說明 | 依賴 | 文檔 |
 |------|--------|------|------|------|
-| Localization | `GameFrameX.Foundation.Localization` | Lightweight localization with lazy-loading mechanism | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/localization) |
-| JSON | `GameFrameX.Foundation.Json` | Unified JSON serialization/deserialization interfaces | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/json) |
-| Options | `GameFrameX.Foundation.Options` | Command-line option/configuration builder | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/options) |
-| ORM Attribute | `GameFrameX.Foundation.Orm.Attribute` | ORM attribute definitions for audit, cache, soft-delete | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/orm-attribute) |
-| Extensions | `GameFrameX.Foundation.Extensions` | Core extension methods and collection helpers | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/extensions) |
-| Encryption | `GameFrameX.Foundation.Encryption` | AES, RSA, DSA, SM2/SM4, XOR encryption | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/encryption) |
-| Hash | `GameFrameX.Foundation.Hash` | CRC32/64, MD5, SHA, HMAC, MurmurHash3, xxHash | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/hash) |
-| Utility | `GameFrameX.Foundation.Utility` | Console, environment, time, Snowflake ID utilities | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/utility) |
-| Logger | `GameFrameX.Foundation.Logger` | Unified logging with Serilog, Loki, MongoDB sinks | → Extensions + JSON | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/logger) |
-| HTTP Extension | `GameFrameX.Foundation.Http.Extension` | HTTP client extension methods | → JSON | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/http-extension) |
-| HTTP Normalization | `GameFrameX.Foundation.Http.Normalization` | Standardized HTTP JSON response structures | → Logger | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/http-normalization) |
-| ORM Entity | `GameFrameX.Foundation.Orm.Entity` | ORM entity base classes with enterprise features | → Utility | [Docs](https://alianblank.github.io/GameFrameX.Docs/zh-TWmodules/orm-entity) |
+| Localization | `GameFrameX.Foundation.Localization` | Lightweight localization with lazy-loading mechanism | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/localization) |
+| JSON | `GameFrameX.Foundation.Json` | Unified JSON serialization/deserialization interfaces | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/json) |
+| Options | `GameFrameX.Foundation.Options` | Command-line option/configuration builder | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/options) |
+| ORM Attribute | `GameFrameX.Foundation.Orm.Attribute` | ORM attribute definitions for audit, cache, soft-delete | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/orm-attribute) |
+| Extensions | `GameFrameX.Foundation.Extensions` | Core extension methods and collection helpers | → Localization | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/extensions) |
+| Encryption | `GameFrameX.Foundation.Encryption` | AES, RSA, DSA, SM2/SM4, XOR encryption | → Localization | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/encryption) |
+| Hash | `GameFrameX.Foundation.Hash` | CRC32/64, MD5, SHA, HMAC, MurmurHash3, xxHash | → Localization | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/hash) |
+| Utility | `GameFrameX.Foundation.Utility` | Console, environment, time, Snowflake ID utilities | → Localization | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/utility) |
+| Logger | `GameFrameX.Foundation.Logger` | Unified logging with Serilog, Loki, MongoDB sinks | → Extensions + JSON | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/logger) |
+| HTTP Extension | `GameFrameX.Foundation.Http.Extension` | HTTP client extension methods | → JSON | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/http-extension) |
+| HTTP Normalization | `GameFrameX.Foundation.Http.Normalization` | Standardized HTTP JSON response structures | → Logger | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/http-normalization) |
+| ORM Entity | `GameFrameX.Foundation.Orm.Entity` | ORM entity base classes with enterprise features | → Utility | [Docs](https://gameframex.doc.alianblank.com/zh-TW/server/foundation/orm-entity) |
 
 ## 架構
 
-查看完整的[架構文檔](https://alianblank.github.io/GameFrameX.Docs/zh-TW/server/foundation)了解設計原則和依賴關係圖。
+查看完整的[架構文檔](https://gameframex.doc.alianblank.com/zh-TW/server/foundation)了解設計原則和依賴關係圖。
 
 ## 系統要求
 
@@ -101,7 +101,7 @@ var sha256 = ShaHelper.ComputeSha256("Hello World");
 
 ## 相關連結
 
-- [文檔](https://alianblank.github.io/GameFrameX.Docs)
+- [文檔](https://gameframex.doc.alianblank.com)
 - [GitHub 倉庫](https://github.com/GameFrameX/GameFrameX.Foundation)
 - [問題追蹤](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
 - [GameFrameX 官網](https://gameframex.doc.alianblank.com)

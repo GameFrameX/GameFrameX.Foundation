@@ -6,11 +6,11 @@
 
 [![Version](https://img.shields.io/github/v/release/GameFrameX/GameFrameX.Foundation?label=version&color=green)](https://github.com/GameFrameX/GameFrameX.Foundation/releases)
 [![License](https://img.shields.io/badge/license-MIT+Apache%202.0-orange.svg)](LICENSE.md)
-[![Documentation](https://img.shields.io/badge/docs-gameframex-brightgreen.svg)](https://alianblank.github.io/GameFrameX.Docs)
+[![Documentation](https://img.shields.io/badge/docs-gameframex-brightgreen.svg)](https://gameframex.doc.alianblank.com)
 
 **All-in-One Solution for Indie Game Development · Empowering Indie Developers' Dreams**
 
-[📖 Documentation](https://alianblank.github.io/GameFrameX.Docs/) • [🚀 Quick Start](https://alianblank.github.io/GameFrameX.Docs/server/foundation) • [💬 QQ Group: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
+[📖 Documentation](https://gameframex.doc.alianblank.com/) • [🚀 Quick Start](https://gameframex.doc.alianblank.com/en/server/foundation) • [💬 QQ Group: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
 
 ---
 
@@ -73,22 +73,22 @@ var sha256 = ShaHelper.ComputeSha256("Hello World");
 
 | Module | Package | Description | Dependencies | Docs |
 |--------|---------|-------------|--------------|------|
-| Localization | `GameFrameX.Foundation.Localization` | Lightweight localization with lazy-loading mechanism | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/localization) |
-| JSON | `GameFrameX.Foundation.Json` | Unified JSON serialization/deserialization interfaces | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/json) |
-| Options | `GameFrameX.Foundation.Options` | Command-line option/configuration builder | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/options) |
-| ORM Attribute | `GameFrameX.Foundation.Orm.Attribute` | ORM attribute definitions for audit, cache, soft-delete | Zero dependencies | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/orm-attribute) |
-| Extensions | `GameFrameX.Foundation.Extensions` | Core extension methods and collection helpers | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/extensions) |
-| Encryption | `GameFrameX.Foundation.Encryption` | AES, RSA, DSA, SM2/SM4, XOR encryption | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/encryption) |
-| Hash | `GameFrameX.Foundation.Hash` | CRC32/64, MD5, SHA, HMAC, MurmurHash3, xxHash | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/hash) |
-| Utility | `GameFrameX.Foundation.Utility` | Console, environment, time, Snowflake ID utilities | → Localization | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/utility) |
-| Logger | `GameFrameX.Foundation.Logger` | Unified logging with Serilog, Loki, MongoDB sinks | → Extensions + JSON | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/logger) |
-| HTTP Extension | `GameFrameX.Foundation.Http.Extension` | HTTP client extension methods | → JSON | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/http-extension) |
-| HTTP Normalization | `GameFrameX.Foundation.Http.Normalization` | Standardized HTTP JSON response structures | → Logger | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/http-normalization) |
-| ORM Entity | `GameFrameX.Foundation.Orm.Entity` | ORM entity base classes with enterprise features | → Utility | [Docs](https://alianblank.github.io/GameFrameX.Docs/server/foundation/orm-entity) |
+| Localization | `GameFrameX.Foundation.Localization` | Lightweight localization with lazy-loading mechanism | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/localization) |
+| JSON | `GameFrameX.Foundation.Json` | Unified JSON serialization/deserialization interfaces | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/json) |
+| Options | `GameFrameX.Foundation.Options` | Command-line option/configuration builder | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/options) |
+| ORM Attribute | `GameFrameX.Foundation.Orm.Attribute` | ORM attribute definitions for audit, cache, soft-delete | Zero dependencies | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/orm-attribute) |
+| Extensions | `GameFrameX.Foundation.Extensions` | Core extension methods and collection helpers | → Localization | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/extensions) |
+| Encryption | `GameFrameX.Foundation.Encryption` | AES, RSA, DSA, SM2/SM4, XOR encryption | → Localization | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/encryption) |
+| Hash | `GameFrameX.Foundation.Hash` | CRC32/64, MD5, SHA, HMAC, MurmurHash3, xxHash | → Localization | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/hash) |
+| Utility | `GameFrameX.Foundation.Utility` | Console, environment, time, Snowflake ID utilities | → Localization | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/utility) |
+| Logger | `GameFrameX.Foundation.Logger` | Unified logging with Serilog, Loki, MongoDB sinks | → Extensions + JSON | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/logger) |
+| HTTP Extension | `GameFrameX.Foundation.Http.Extension` | HTTP client extension methods | → JSON | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/http-extension) |
+| HTTP Normalization | `GameFrameX.Foundation.Http.Normalization` | Standardized HTTP JSON response structures | → Logger | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/http-normalization) |
+| ORM Entity | `GameFrameX.Foundation.Orm.Entity` | ORM entity base classes with enterprise features | → Utility | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/orm-entity) |
 
 ## Architecture
 
-See the full [architecture documentation](https://alianblank.github.io/GameFrameX.Docs/server/foundation) for design principles and dependency graph.
+See the full [architecture documentation](https://gameframex.doc.alianblank.com/en/server/foundation) for design principles and dependency graph.
 
 ## System Requirements
 
@@ -101,7 +101,7 @@ This project is licensed under [MIT License](LICENSE) + Apache 2.0.
 
 ## Related Links
 
-- [Documentation](https://alianblank.github.io/GameFrameX.Docs)
+- [Documentation](https://gameframex.doc.alianblank.com)
 - [GitHub Repository](https://github.com/GameFrameX/GameFrameX.Foundation)
 - [Issue Tracker](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
 - [GameFrameX Official Site](https://gameframex.doc.alianblank.com)
