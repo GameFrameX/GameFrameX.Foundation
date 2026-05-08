@@ -1,3 +1,16 @@
+## [2.4.4] - 2026-05-08
+
+### Bug Fixes
+
+- 修复文档链接地址和语言路径
+
+### Documentation
+
+- 精简主 README 为项目概览
+- 完善 ORM Entity 模块文档
+- 完善 Utility 模块文档
+- 添加 Localization 模块文档
+
 ## [2.4.3] - 2026-05-07
 
 ### Documentation
