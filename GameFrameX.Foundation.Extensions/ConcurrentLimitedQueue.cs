@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Collections;
 using System.Collections.Concurrent;
 
 namespace GameFrameX.Foundation.Extensions;
@@ -42,8 +43,12 @@ namespace GameFrameX.Foundation.Extensions;
 /// A fixed-length queue that automatically removes the oldest elements when new elements are enqueued and the queue reaches its maximum length.
 /// </remarks>
 /// <typeparam name="T">队列中元素的类型 / The type of elements in the queue.</typeparam>
-public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
+public class ConcurrentLimitedQueue<T> : IProducerConsumerCollection<T>, IReadOnlyCollection<T>
 {
+    private readonly ConcurrentQueue<T> _queue;
+    private readonly object _syncRoot = new();
+    private int _limit;
+
     /// <summary>
     /// 初始化一个新的 <see cref="ConcurrentLimitedQueue{T}" /> 实例，指定队列的最大长度。
     /// </summary>
@@ -55,7 +60,8 @@ public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
     public ConcurrentLimitedQueue(int limit)
     {
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(limit, 0, nameof(limit));
-        Limit = limit;
+        _queue = new ConcurrentQueue<T>();
+        _limit = limit;
     }
 
     /// <summary>
@@ -66,9 +72,15 @@ public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
     /// </remarks>
     /// <param name="list">用于初始化队列的集合，不能为null / The collection to initialize the queue with, cannot be null.</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="list"/> 为 null 时抛出 / Thrown when <paramref name="list"/> is null.</exception>
-    public ConcurrentLimitedQueue(IEnumerable<T> list) : base(list ?? throw new ArgumentNullException(nameof(list)))
+    public ConcurrentLimitedQueue(IEnumerable<T> list)
     {
-        Limit = list.Count();
+        ArgumentNullException.ThrowIfNull(list);
+
+        var items = list as ICollection<T> ?? list.ToArray();
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(items.Count, 0, nameof(list));
+
+        _queue = new ConcurrentQueue<T>(items);
+        _limit = items.Count;
     }
 
     /// <summary>
@@ -78,7 +90,43 @@ public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
     /// Gets or sets the maximum number of elements the queue can hold.
     /// </remarks>
     /// <value>队列的最大长度 / The maximum number of elements the queue can hold.</value>
-    public int Limit { get; set; }
+    public int Limit
+    {
+        get
+        {
+            lock (_syncRoot)
+            {
+                return _limit;
+            }
+        }
+        set
+        {
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(value, 0, nameof(value));
+
+            lock (_syncRoot)
+            {
+                _limit = value;
+                TrimToLimit();
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    public int Count => _queue.Count;
+
+    /// <inheritdoc />
+    public bool IsSynchronized => false;
+
+    /// <inheritdoc />
+    public object SyncRoot => _syncRoot;
+
+    /// <summary>
+    /// 获取队列是否为空。
+    /// </summary>
+    /// <remarks>
+    /// Gets whether the queue is empty.
+    /// </remarks>
+    public bool IsEmpty => _queue.IsEmpty;
 
     /// <summary>
     /// 将一个列表隐式转换为 <see cref="ConcurrentLimitedQueue{T}" />。
@@ -102,13 +150,103 @@ public class ConcurrentLimitedQueue<T> : ConcurrentQueue<T>
     /// Adds an element to the queue. If the queue is full, the oldest element is removed.
     /// </remarks>
     /// <param name="item">要添加的元素 / The element to add to the queue.</param>
-    public new void Enqueue(T item)
+    public void Enqueue(T item)
     {
-        while (Count >= Limit)
+        lock (_syncRoot)
         {
-            TryDequeue(out _);
+            TrimToLimit(extraItemCount: 1);
+            _queue.Enqueue(item);
         }
+    }
 
-        base.Enqueue(item);
+    /// <inheritdoc />
+    public bool TryAdd(T item)
+    {
+        Enqueue(item);
+        return true;
+    }
+
+    /// <summary>
+    /// 尝试移除并返回队列开头的对象。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to remove and return the object at the beginning of the queue.
+    /// </remarks>
+    /// <param name="result">移除的元素 / The removed element.</param>
+    /// <returns>移除成功返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if an element was removed; otherwise, <c>false</c>.</returns>
+    public bool TryDequeue(out T result)
+    {
+        return _queue.TryDequeue(out result);
+    }
+
+    /// <inheritdoc />
+    public bool TryTake(out T item)
+    {
+        return TryDequeue(out item);
+    }
+
+    /// <summary>
+    /// 尝试返回队列开头的对象但不移除。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to return the object at the beginning of the queue without removing it.
+    /// </remarks>
+    /// <param name="result">队列开头的元素 / The element at the beginning of the queue.</param>
+    /// <returns>读取成功返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if an element was read; otherwise, <c>false</c>.</returns>
+    public bool TryPeek(out T result)
+    {
+        return _queue.TryPeek(out result);
+    }
+
+    /// <summary>
+    /// 移除队列中的所有元素。
+    /// </summary>
+    /// <remarks>
+    /// Removes all elements from the queue.
+    /// </remarks>
+    public void Clear()
+    {
+        _queue.Clear();
+    }
+
+    /// <inheritdoc />
+    public T[] ToArray()
+    {
+        return _queue.ToArray();
+    }
+
+    /// <inheritdoc />
+    public void CopyTo(T[] array, int index)
+    {
+        _queue.CopyTo(array, index);
+    }
+
+    /// <inheritdoc />
+    public void CopyTo(Array array, int index)
+    {
+        ((ICollection)_queue).CopyTo(array, index);
+    }
+
+    /// <inheritdoc />
+    public IEnumerator<T> GetEnumerator()
+    {
+        return _queue.GetEnumerator();
+    }
+
+    /// <inheritdoc />
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    private void TrimToLimit(int extraItemCount = 0)
+    {
+        while (_queue.Count + extraItemCount > _limit)
+        {
+            if (!_queue.TryDequeue(out _))
+            {
+                break;
+            }
+        }
     }
 }
