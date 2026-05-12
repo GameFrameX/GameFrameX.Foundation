@@ -56,6 +56,7 @@ public class ResourceManager
     private readonly Lazy<ConcurrentDictionary<string, AssemblyResourceProvider>> _assemblyProviders;
     private volatile bool _providersLoaded;
     private readonly object _loadLock;
+    private readonly object _providersLock;
 
     /// <summary>
     /// 初始化 ResourceManager 的新实例
@@ -68,6 +69,7 @@ public class ResourceManager
     {
         _providers = new List<IResourceProvider>();
         _assemblyProviders = new Lazy<ConcurrentDictionary<string, AssemblyResourceProvider>>();
+        _providersLock = new object();
         var kvs = DiscoverAssemblyProviders();
         foreach (var kv in kvs)
         {
@@ -107,7 +109,13 @@ public class ResourceManager
 
         EnsureProvidersLoaded();
 
-        foreach (var provider in _providers)
+        IResourceProvider[] providers;
+        lock (_providersLock)
+        {
+            providers = _providers.ToArray();
+        }
+
+        foreach (var provider in providers)
         {
             try
             {
@@ -177,12 +185,15 @@ public class ResourceManager
             var assemblyProviders = _assemblyProviders.Value;
             foreach (var provider in assemblyProviders)
             {
-                if (_providers.Exists(m => m.AssemblyName == provider.Value.AssemblyName))
+                lock (_providersLock)
                 {
-                    continue;
-                }
+                    if (_providers.Exists(m => m.AssemblyName == provider.Value.AssemblyName))
+                    {
+                        continue;
+                    }
 
-                _providers.Insert(0, provider.Value); // 插入到列表开头，优先级更高
+                    _providers.Insert(0, provider.Value); // 插入到列表开头，优先级更高
+                }
             }
         }
         catch (Exception ex)
@@ -265,7 +276,10 @@ public class ResourceManager
         }
 
         EnsureProvidersLoaded();
-        _providers.Insert(0, provider); // 插入到开头，最高优先级
+        lock (_providersLock)
+        {
+            _providers.Insert(0, provider); // 插入到开头，最高优先级
+        }
     }
 
     /// <summary>
@@ -290,7 +304,10 @@ public class ResourceManager
     public IReadOnlyList<IResourceProvider> GetProviders()
     {
         EnsureProvidersLoaded();
-        return _providers.ToList().AsReadOnly();
+        lock (_providersLock)
+        {
+            return _providers.ToList().AsReadOnly();
+        }
     }
 
     /// <summary>
@@ -312,13 +329,19 @@ public class ResourceManager
     {
         EnsureProvidersLoaded();
 
-        var assemblyProviders = _providers.OfType<AssemblyResourceProvider>().ToList();
+        IResourceProvider[] providers;
+        lock (_providersLock)
+        {
+            providers = _providers.ToArray();
+        }
+
+        var assemblyProviders = providers.OfType<AssemblyResourceProvider>().ToList();
 
         return new ResourceManagerStatistics
         {
             ProvidersLoaded = _providersLoaded,
-            TotalProviderCount = _providers.Count,
-            DefaultProviderExists = _providers.Any(p => p is AssemblyResourceProvider),
+            TotalProviderCount = providers.Length,
+            DefaultProviderExists = assemblyProviders.Count > 0,
             AssemblyProviderCount = assemblyProviders.Count,
             AssemblyProviders = assemblyProviders.Select(p => p.GetStatistics()).ToList()
         };
@@ -333,7 +356,14 @@ public class ResourceManager
     /// </remarks>
     public void Dispose()
     {
-        foreach (var provider in _providers)
+        IResourceProvider[] providers;
+        lock (_providersLock)
+        {
+            providers = _providers.ToArray();
+            _providers.Clear();
+        }
+
+        foreach (var provider in providers)
         {
             if (provider is IDisposable disposable)
             {
@@ -347,7 +377,5 @@ public class ResourceManager
                 }
             }
         }
-
-        _providers.Clear();
     }
 }
