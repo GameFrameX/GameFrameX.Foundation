@@ -50,8 +50,7 @@ public static class HttpClientGetExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
 
         using var request = CreateGetRequest(url, headers);
         using var response = await httpClient.SendAsync(request, cts.Token);
@@ -101,8 +100,7 @@ public static class HttpClientGetExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
 
         using var request = CreateGetRequest(url, headers);
         using var response = await httpClient.SendAsync(request, cts.Token);
@@ -128,11 +126,8 @@ public static class HttpClientGetExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
-        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
         var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStreamAsync(cancellationToken);
+        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cancellationToken);
     }
 
     /// <summary>
@@ -156,15 +151,11 @@ public static class HttpClientGetExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+        var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
 
         using var request = CreateGetRequest(url, headers);
-        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
-        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
         var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStreamAsync(cts.Token);
+        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
     }
 
     /// <summary>

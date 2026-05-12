@@ -52,8 +52,7 @@ public static class HttpClientOptionsExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-        cts.CancelAfter(TimeSpan.FromSeconds(timeout));
+        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
 
         using var request = CreateOptionsRequest(url, headers);
         using var response = await httpClient.SendAsync(request, cts.Token);
