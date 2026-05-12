@@ -11,6 +11,7 @@ namespace GameFrameX.Foundation.Tests.Options
     /// 针对 CODE_REVIEW 中已修复问题的单元测试
     /// Unit tests for issues fixed in CODE_REVIEW
     /// </summary>
+    [Collection(OptionsProviderCollection.Name)]
     public class CodeReviewFixTests
     {
         #region 测试配置类
