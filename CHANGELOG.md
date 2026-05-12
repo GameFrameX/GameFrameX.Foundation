@@ -1,3 +1,26 @@
+## [2.4.6] - 2026-05-12
+
+### Bug Fixes
+
+- ResourceManager 线程安全修复
+- Async void 修正为 ValueTask
+- 修复命令行解析负数参数问题
+
+### Refactor
+
+- 加密算法升级
+- ConcurrentLimitedQueue 改为组合模式
+- CrcHelper 清理静态缓存字段
+- 提取超时和响应流辅助类
+- 移除 Deserialize 泛型约束
+- 移除 ToHttpJsonResultData 泛型约束
+- LogOptions.Default 改为共享实例
+
+### Testing
+
+- 更新测试适配业务代码变更
+- 添加测试集合隔离
+
 ## [2.4.5] - 2026-05-08
 
 ### Build
