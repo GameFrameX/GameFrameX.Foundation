@@ -294,11 +294,11 @@ public static class JsonHelper
     /// Uses the default serialization configuration (DefaultOptions), if the default configuration fails, it will try to use the formatted configuration (FormatOptions), if both fail, it will try to preprocess special floating-point values and try again.
     /// </remarks>
     /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
-    /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数 / The target type, must be a reference type with a parameterless constructor</typeparam>
+    /// <typeparam name="T">目标类型 / The target type</typeparam>
     /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="json"/> 为 null 时抛出 / Thrown when <paramref name="json"/> is null</exception>
     /// <exception cref="ArgumentException">当 <paramref name="json"/> 为空字符串或仅包含空白字符时抛出 / Thrown when <paramref name="json"/> is an empty string or contains only whitespace characters</exception>
-    public static T Deserialize<T>(string json) where T : class, new()
+    public static T Deserialize<T>(string json)
     {
         ArgumentNullException.ThrowIfNull(json, nameof(json));
         ArgumentException.ThrowIfNullOrEmpty(json, nameof(json));
@@ -364,11 +364,11 @@ public static class JsonHelper
     /// </remarks>
     /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
     /// <param name="options">自定义序列化配置 / Custom serialization configuration</param>
-    /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数 / The target type, must be a reference type with a parameterless constructor</typeparam>
+    /// <typeparam name="T">目标类型 / The target type</typeparam>
     /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="json"/> 或 <paramref name="options"/> 为 null 时抛出 / Thrown when <paramref name="json"/> or <paramref name="options"/> is null</exception>
     /// <exception cref="ArgumentException">当 <paramref name="json"/> 为空字符串或仅包含空白字符时抛出 / Thrown when <paramref name="json"/> is an empty string or contains only whitespace characters</exception>
-    public static T Deserialize<T>(string json, JsonSerializerOptions options) where T : class, new()
+    public static T Deserialize<T>(string json, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(json, nameof(json));
         ArgumentException.ThrowIfNullOrEmpty(json, nameof(json));
@@ -457,10 +457,10 @@ public static class JsonHelper
     /// Uses the default serialization configuration (DefaultOptions), if the default configuration fails, it will try to use the formatted configuration (FormatOptions).
     /// </remarks>
     /// <param name="utf8Bytes">UTF8编码的JSON字节数组 / The UTF-8 encoded JSON byte array</param>
-    /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数 / The target type, must be a reference type with a parameterless constructor</typeparam>
+    /// <typeparam name="T">目标类型 / The target type</typeparam>
     /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="utf8Bytes"/> 为 null 时抛出 / Thrown when <paramref name="utf8Bytes"/> is null</exception>
-    public static T DeserializeFromUtf8Bytes<T>(byte[] utf8Bytes) where T : class, new()
+    public static T DeserializeFromUtf8Bytes<T>(byte[] utf8Bytes)
     {
         ArgumentNullException.ThrowIfNull(utf8Bytes, nameof(utf8Bytes));
         try
@@ -504,10 +504,10 @@ public static class JsonHelper
     /// </remarks>
     /// <param name="utf8Bytes">UTF8编码的JSON字节数组 / The UTF-8 encoded JSON byte array</param>
     /// <param name="options">自定义序列化配置 / Custom serialization configuration</param>
-    /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数 / The target type, must be a reference type with a parameterless constructor</typeparam>
+    /// <typeparam name="T">目标类型 / The target type</typeparam>
     /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="utf8Bytes"/> 或 <paramref name="options"/> 为 null 时抛出 / Thrown when <paramref name="utf8Bytes"/> or <paramref name="options"/> is null</exception>
-    public static T DeserializeFromUtf8Bytes<T>(byte[] utf8Bytes, JsonSerializerOptions options) where T : class, new()
+    public static T DeserializeFromUtf8Bytes<T>(byte[] utf8Bytes, JsonSerializerOptions options)
     {
         ArgumentNullException.ThrowIfNull(utf8Bytes, nameof(utf8Bytes));
         ArgumentNullException.ThrowIfNull(options, nameof(options));
@@ -526,11 +526,11 @@ public static class JsonHelper
     /// </remarks>
     /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
     /// <param name="result">反序列化结果，如果失败则为null / The deserialization result, null if failed</param>
-    /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数 / The target type, must be a reference type with a parameterless constructor</typeparam>
+    /// <typeparam name="T">目标类型 / The target type</typeparam>
     /// <returns>反序列化是否成功 / Whether the deserialization was successful</returns>
-    public static bool TryDeserialize<T>(string json, out T result) where T : class, new()
+    public static bool TryDeserialize<T>(string json, out T result)
     {
-        result = null;
+        result = default;
         if (string.IsNullOrWhiteSpace(json))
         {
             return false;
@@ -560,11 +560,11 @@ public static class JsonHelper
     /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
     /// <param name="result">反序列化结果，如果失败则为null / The deserialization result, null if failed</param>
     /// <param name="options">自定义序列化配置 / Custom serialization configuration</param>
-    /// <typeparam name="T">目标类型，必须是引用类型且有无参构造函数 / The target type, must be a reference type with a parameterless constructor</typeparam>
+    /// <typeparam name="T">目标类型 / The target type</typeparam>
     /// <returns>反序列化是否成功 / Whether the deserialization was successful</returns>
-    public static bool TryDeserialize<T>(string json, out T result, JsonSerializerOptions options) where T : class, new()
+    public static bool TryDeserialize<T>(string json, out T result, JsonSerializerOptions options)
     {
-        result = null;
+        result = default;
         if (string.IsNullOrWhiteSpace(json))
         {
             return false;

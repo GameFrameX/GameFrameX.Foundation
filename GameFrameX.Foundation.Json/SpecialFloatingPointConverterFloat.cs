@@ -85,39 +85,7 @@ public class SpecialFloatingPointConverterFloat : JsonConverter<float>
         {
             return reader.GetSingle();
         }
-        else if (reader.TokenType == JsonTokenType.Null)
-        {
-            return 0;
-        }
-        else
-        {
-            // 尝试处理非标准格式，如直接的NaN、Infinity等
-            try
-            {
-                string propertyName = reader.GetString();
-                if (string.Equals(propertyName, "NaN", StringComparison.OrdinalIgnoreCase))
-                {
-                    return float.NaN;
-                }
-
-                if (string.Equals(propertyName, "Infinity", StringComparison.OrdinalIgnoreCase))
-                {
-                    return float.PositiveInfinity;
-                }
-
-                if (string.Equals(propertyName, "-Infinity", StringComparison.OrdinalIgnoreCase))
-                {
-                    return float.NegativeInfinity;
-                }
-            }
-            catch
-            {
-                // 忽略异常，继续尝试其他方式
-            }
-        }
-
-        // 如果无法解析，返回默认值
-        return 0;
+        throw new JsonException($"Cannot convert JSON token '{reader.TokenType}' to {nameof(Single)}.");
     }
 
     /// <summary>
