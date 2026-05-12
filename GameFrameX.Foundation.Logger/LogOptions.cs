@@ -66,7 +66,7 @@ public sealed class LogOptions
     /// <remarks>
     /// Use this static instance to quickly get a log configuration object with default settings.
     /// </remarks>
-    public static readonly LogOptions Default = new();
+    public static LogOptions Default => new();
 
     /// <summary>
     /// 是否写入文件，默认为 true。 / Whether to write to file, default is true.

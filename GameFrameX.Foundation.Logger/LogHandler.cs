@@ -63,7 +63,7 @@ public static class LogHandler
             return;
         }
 
-        Serilog.Debugging.SelfLog.Enable((message) => { Console.WriteLine($"Serilog:SelfLog:{message}"); });
+        Serilog.Debugging.SelfLog.Enable(message => System.Diagnostics.Debug.WriteLine($"Serilog:SelfLog:{message}"));
         _isInitSerilogDiagnosis = true;
     }
 

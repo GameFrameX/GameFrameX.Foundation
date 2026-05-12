@@ -64,9 +64,9 @@ public static partial class LogHelper
     /// <remarks>
     /// Asynchronously closes the logger and flushes all pending log entries to persistent storage.
     /// </remarks>
-    public static async void CloseAndFlushAsync()
+    public static ValueTask CloseAndFlushAsync()
     {
-        await Log.CloseAndFlushAsync();
+        return Log.CloseAndFlushAsync();
     }
 
     /// <summary>
