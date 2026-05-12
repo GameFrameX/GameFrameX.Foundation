@@ -127,16 +127,12 @@ public static class XorHelper
     /// </remarks>
     /// <param name="bytes">原始二进制流 / Original binary stream</param>
     /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
-    /// <returns>异或后的二进制流。如果输入为null则返回null。 / XORed binary stream. Returns null if input is null.</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <returns>异或后的二进制流 / XORed binary stream</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="code"/> is null</exception>
     /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     public static byte[] GetXorBytes(byte[] bytes, byte[] code)
     {
-        if (bytes == null)
-        {
-            return null;
-        }
-        
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
         
         if (code.Length == 0)
@@ -157,15 +153,11 @@ public static class XorHelper
     /// </remarks>
     /// <param name="bytes">原始及异或后的二进制流 / Original and XORed binary stream</param>
     /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="code"/> is null</exception>
     /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     public static void GetSelfXorBytes(byte[] bytes, byte[] code)
     {
-        if (bytes == null)
-        {
-            return;
-        }
-        
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
         
         if (code.Length == 0)
@@ -188,17 +180,13 @@ public static class XorHelper
     /// <param name="startIndex">异或计算的开始位置 / Start position for XOR calculation</param>
     /// <param name="length">异或计算长度 / Length for XOR calculation</param>
     /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
-    /// <returns>异或后的二进制流。如果输入为null则返回null。 / XORed binary stream. Returns null if input is null.</returns>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <returns>异或后的二进制流 / XORed binary stream</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="code"/> is null</exception>
     /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> or <paramref name="length"/> is out of valid range</exception>
     public static byte[] GetXorBytes(byte[] bytes, int startIndex, int length, byte[] code)
     {
-        if (bytes == null)
-        {
-            return null;
-        }
-        
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
         
         if (code.Length == 0)
@@ -233,16 +221,12 @@ public static class XorHelper
     /// <param name="startIndex">异或计算的开始位置 / Start position for XOR calculation</param>
     /// <param name="length">异或计算长度 / Length for XOR calculation</param>
     /// <param name="code">异或二进制流(密钥) / XOR binary stream (key)</param>
-    /// <exception cref="ArgumentNullException">当 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="code"/> is null</exception>
+    /// <exception cref="ArgumentNullException">当 <paramref name="bytes"/> 或 <paramref name="code"/> 为 null 时抛出 / Thrown when <paramref name="bytes"/> or <paramref name="code"/> is null</exception>
     /// <exception cref="ArgumentException">当 <paramref name="code"/> 长度为 0 时抛出 / Thrown when <paramref name="code"/> length is 0</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="startIndex"/> 或 <paramref name="length"/> 超出有效范围时抛出 / Thrown when <paramref name="startIndex"/> or <paramref name="length"/> is out of valid range</exception>
     public static void GetSelfXorBytes(byte[] bytes, int startIndex, int length, byte[] code)
     {
-        if (bytes == null)
-        {
-            return;
-        }
-
+        ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
 
         if (code.Length == 0)

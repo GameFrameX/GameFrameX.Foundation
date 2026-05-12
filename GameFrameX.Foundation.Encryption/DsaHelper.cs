@@ -183,6 +183,11 @@ public sealed class DsaHelper : IDisposable
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
 
         var res = SignData(Encoding.UTF8.GetBytes(dataToSign), privateKey);
+        if (res == null)
+        {
+            throw new CryptographicException("Invalid DSA private key.");
+        }
+
         return Convert.ToBase64String(res);
     }
 

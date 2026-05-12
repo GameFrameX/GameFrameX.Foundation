@@ -39,16 +39,14 @@ using GameFrameX.Foundation.Encryption.Localization;
 namespace GameFrameX.Foundation.Encryption;
 
 /// <summary>
-/// AES 加密解密工具类，提供基于 AES-CBC 算法的加密和解密功能。
+/// AES 加密解密工具类，提供基于 AES-GCM 算法的认证加密和解密功能。
 /// </summary>
 /// <remarks>
-/// AES encryption and decryption utility class, providing encryption and decryption based on AES-CBC algorithm.
-/// 加密输出格式：[Salt(16 字节) | IV(16 字节) | 密文]
-/// Encryption output format: [Salt(16 bytes) | IV(16 bytes) | Ciphertext]
-/// Salt 和 IV 每次随机生成，与密文拼接存储，解密时自动从密文头部读取。
-/// Salt and IV are randomly generated each time, concatenated with the ciphertext for storage, and automatically read from the ciphertext header during decryption.
-/// 此格式与旧版本（固定 IV/Salt）不兼容。
-/// This format is incompatible with older versions (fixed IV/Salt).
+/// AES encryption and decryption utility class, providing authenticated encryption and decryption based on AES-GCM algorithm.
+/// 加密输出格式：[Version(1 字节) | Salt(16 字节) | Nonce(12 字节) | Tag(16 字节) | 密文]
+/// Encryption output format: [Version(1 byte) | Salt(16 bytes) | Nonce(12 bytes) | Tag(16 bytes) | Ciphertext]
+/// Salt 和 Nonce 每次随机生成，与认证标签和密文拼接存储，解密时自动从密文头部读取。
+/// Salt and Nonce are randomly generated each time, concatenated with authentication tag and ciphertext, and automatically read from the ciphertext header during decryption.
 /// </remarks>
 public static class AesHelper
 {
@@ -69,20 +67,36 @@ public static class AesHelper
     private const int SaltSize = 16;
 
     /// <summary>
-    /// IV 长度（字节）。
+    /// 当前加密格式版本。
     /// </summary>
     /// <remarks>
-    /// IV length in bytes.
+    /// Current encryption payload format version.
     /// </remarks>
-    private const int IvSize = 16;
+    private const byte CurrentVersion = 2;
 
     /// <summary>
-    /// 输出头部长度 = Salt + IV。
+    /// Nonce 长度（字节）。
     /// </summary>
     /// <remarks>
-    /// Output header length = Salt + IV.
+    /// Nonce length in bytes.
     /// </remarks>
-    private const int HeaderSize = SaltSize + IvSize;
+    private const int NonceSize = 12;
+
+    /// <summary>
+    /// 认证标签长度（字节）。
+    /// </summary>
+    /// <remarks>
+    /// Authentication tag length in bytes.
+    /// </remarks>
+    private const int TagSize = 16;
+
+    /// <summary>
+    /// 输出头部长度 = Version + Salt + Nonce + Tag。
+    /// </summary>
+    /// <remarks>
+    /// Output header length = Version + Salt + Nonce + Tag.
+    /// </remarks>
+    private const int HeaderSize = 1 + SaltSize + NonceSize + TagSize;
 
     /// <summary>
     /// 使用 AES 算法加密字符串（输出 Base64 编码）。
@@ -92,7 +106,7 @@ public static class AesHelper
     /// </remarks>
     /// <param name="encryptString">待加密的明文字符串 / Plain text string to encrypt</param>
     /// <param name="encryptKey">加密密钥 / Encryption key</param>
-    /// <returns>加密后的 Base64 编码字符串，格式为 [Salt(16) | IV(16) | 密文] 的 Base64 表示 / Base64 encoded encrypted string, format is Base64 representation of [Salt(16) | IV(16) | Ciphertext]</returns>
+    /// <returns>加密后的 Base64 编码字符串，格式为 [Version(1) | Salt(16) | Nonce(12) | Tag(16) | 密文] 的 Base64 表示 / Base64 encoded encrypted string, format is Base64 representation of [Version(1) | Salt(16) | Nonce(12) | Tag(16) | Ciphertext]</returns>
     /// <exception cref="ArgumentException">当明文或密钥为空时抛出 / Thrown when plain text or key is empty</exception>
     public static string Encrypt(string encryptString, string encryptKey)
     {
@@ -110,12 +124,12 @@ public static class AesHelper
     }
 
     /// <summary>
-    /// 使用 AES-CBC 算法加密字节数组。
-    /// 每次加密随机生成 Salt 和 IV，输出格式：[Salt(16 字节) | IV(16 字节) | 密文]。
+    /// 使用 AES-GCM 算法加密字节数组。
+    /// 每次加密随机生成 Salt 和 Nonce，输出格式：[Version(1 字节) | Salt(16 字节) | Nonce(12 字节) | Tag(16 字节) | 密文]。
     /// </summary>
     /// <remarks>
-    /// Encrypts a byte array using AES-CBC algorithm.
-    /// Salt and IV are randomly generated for each encryption, output format: [Salt(16 bytes) | IV(16 bytes) | Ciphertext].
+    /// Encrypts a byte array using AES-GCM algorithm.
+    /// Salt and Nonce are randomly generated for each encryption, output format: [Version(1 byte) | Salt(16 bytes) | Nonce(12 bytes) | Tag(16 bytes) | Ciphertext].
     /// </remarks>
     /// <param name="encryptByte">待加密的明文字节数组 / Plain text byte array to encrypt</param>
     /// <param name="encryptKey">加密密钥，用于通过 PBKDF2(600,000 次) 派生密钥 / Encryption key used to derive key via PBKDF2(600,000 iterations)</param>
@@ -140,30 +154,25 @@ public static class AesHelper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.EncryptionKeyCannotBeNullOrEmpty), nameof(encryptKey));
         }
 
-        // 每次加密随机生成 Salt 和 IV，确保语义安全（C-02 修复）
+        // 每次加密随机生成 Salt 和 Nonce，确保语义安全并提供密文完整性认证。
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
-        var iv = RandomNumberGenerator.GetBytes(IvSize);
+        var nonce = RandomNumberGenerator.GetBytes(NonceSize);
+        var tag = new byte[TagSize];
+        var cipherText = new byte[encryptByte.Length];
 
-        using var aesProvider = Aes.Create();
-        // PBKDF2 迭代次数提升至 600,000（C-03 修复）；使用推荐的静态 Pbkdf2 方法（.NET 10+）
         var keyBytes = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(encryptKey), salt, Pbkdf2Iterations, HashAlgorithmName.SHA256, 32);
 
-        using var encryptor = aesProvider.CreateEncryptor(keyBytes, iv);
-        using var memoryStream = new MemoryStream();
+        using var aesGcm = new AesGcm(keyBytes, TagSize);
+        aesGcm.Encrypt(nonce, encryptByte, cipherText, tag);
 
-        // 将 Salt 和 IV 写入输出头部，解密时从此处读取
-        memoryStream.Write(salt, 0, SaltSize);
-        memoryStream.Write(iv, 0, IvSize);
-
-        // 使用 CryptoStream 写入密文（C-01 修复：不再捕获异常，让其自然传播）
-        using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
-        {
-            cryptoStream.Write(encryptByte, 0, encryptByte.Length);
-            cryptoStream.FlushFinalBlock();
-        }
-
-        return memoryStream.ToArray();
+        var result = new byte[HeaderSize + cipherText.Length];
+        result[0] = CurrentVersion;
+        Buffer.BlockCopy(salt, 0, result, 1, SaltSize);
+        Buffer.BlockCopy(nonce, 0, result, 1 + SaltSize, NonceSize);
+        Buffer.BlockCopy(tag, 0, result, 1 + SaltSize + NonceSize, TagSize);
+        Buffer.BlockCopy(cipherText, 0, result, HeaderSize, cipherText.Length);
+        return result;
     }
 
     /// <summary>
@@ -172,7 +181,7 @@ public static class AesHelper
     /// <remarks>
     /// Decrypts a string using AES algorithm.
     /// </remarks>
-    /// <param name="decryptString">待解密的 Base64 编码字符串（格式：[Salt(16) | IV(16) | 密文] 的 Base64 表示）/ Base64 encoded string to decrypt (format: Base64 representation of [Salt(16) | IV(16) | Ciphertext])</param>
+    /// <param name="decryptString">待解密的 Base64 编码字符串（格式：[Version(1) | Salt(16) | Nonce(12) | Tag(16) | 密文] 的 Base64 表示）/ Base64 encoded string to decrypt (format: Base64 representation of [Version(1) | Salt(16) | Nonce(12) | Tag(16) | Ciphertext])</param>
     /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同 / Decryption key, must be the same as the key used for encryption</param>
     /// <returns>解密后的明文字符串 / Decrypted plain text string</returns>
     /// <exception cref="ArgumentException">当密文或密钥为空时抛出 / Thrown when ciphertext or key is empty</exception>
@@ -193,12 +202,12 @@ public static class AesHelper
     }
 
     /// <summary>
-    /// 使用 AES-CBC 算法解密字节数组。
-    /// 期望输入格式：[Salt(16 字节) | IV(16 字节) | 密文]，与 <see cref="Encrypt(byte[],string)"/> 输出格式对应。
+    /// 使用 AES-GCM 算法解密字节数组。
+    /// 期望输入格式：[Version(1 字节) | Salt(16 字节) | Nonce(12 字节) | Tag(16 字节) | 密文]，与 <see cref="Encrypt(byte[],string)"/> 输出格式对应。
     /// </summary>
     /// <remarks>
-    /// Decrypts a byte array using AES-CBC algorithm.
-    /// Expected input format: [Salt(16 bytes) | IV(16 bytes) | Ciphertext], corresponding to <see cref="Encrypt(byte[],string)"/> output format.
+    /// Decrypts a byte array using AES-GCM algorithm.
+    /// Expected input format: [Version(1 byte) | Salt(16 bytes) | Nonce(12 bytes) | Tag(16 bytes) | Ciphertext], corresponding to <see cref="Encrypt(byte[],string)"/> output format.
     /// </remarks>
     /// <param name="decryptByte">待解密的密文字节数组，头部须包含 Salt 和 IV / Ciphertext byte array to decrypt, must contain Salt and IV in the header</param>
     /// <param name="decryptKey">解密密钥，必须与加密时使用的密钥相同 / Decryption key, must be the same as the key used for encryption</param>
@@ -213,8 +222,7 @@ public static class AesHelper
             throw new ArgumentNullException(nameof(decryptByte), @"Cipher text byte array cannot be null");
         }
 
-        // 最小长度：Salt(16) + IV(16) + 至少一个完整加密块(16)
-        if (decryptByte.Length < HeaderSize + 16)
+        if (decryptByte.Length < HeaderSize)
         {
             throw new ArgumentException("Cipher text byte array is too short to be valid.", nameof(decryptByte));
         }
@@ -224,32 +232,26 @@ public static class AesHelper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DecryptionKeyCannotBeNullOrEmpty), nameof(decryptKey));
         }
 
-        // 从密文头部读取 Salt 和 IV（C-02 修复）
+        if (decryptByte[0] != CurrentVersion)
+        {
+            throw new CryptographicException("Unsupported AES payload format version.");
+        }
+
         var salt = new byte[SaltSize];
-        var iv = new byte[IvSize];
-        Array.Copy(decryptByte, 0, salt, 0, SaltSize);
-        Array.Copy(decryptByte, SaltSize, iv, 0, IvSize);
+        var nonce = new byte[NonceSize];
+        var tag = new byte[TagSize];
+        var cipherText = new byte[decryptByte.Length - HeaderSize];
+        Buffer.BlockCopy(decryptByte, 1, salt, 0, SaltSize);
+        Buffer.BlockCopy(decryptByte, 1 + SaltSize, nonce, 0, NonceSize);
+        Buffer.BlockCopy(decryptByte, 1 + SaltSize + NonceSize, tag, 0, TagSize);
+        Buffer.BlockCopy(decryptByte, HeaderSize, cipherText, 0, cipherText.Length);
 
-        int cipherOffset = HeaderSize;
-        int cipherLength = decryptByte.Length - cipherOffset;
-        var cipherData = new byte[cipherLength];
-        Array.Copy(decryptByte, cipherOffset, cipherData, 0, cipherLength);
-
-        using var aesProvider = Aes.Create();
-        // PBKDF2 迭代次数与加密时一致（C-03 修复）；使用推荐的静态 Pbkdf2 方法（.NET 10+）
         var keyBytes = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(decryptKey), salt, Pbkdf2Iterations, HashAlgorithmName.SHA256, 32);
 
-        using var decryptor = aesProvider.CreateDecryptor(keyBytes, iv);
-        using var memoryStream = new MemoryStream();
-
-        // C-01 修复：不再捕获异常，解密失败（密钥错误/数据篡改）时自然抛出 CryptographicException
-        using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
-        {
-            cryptoStream.Write(cipherData, 0, cipherData.Length);
-            cryptoStream.FlushFinalBlock();
-        }
-
-        return memoryStream.ToArray();
+        var plainText = new byte[cipherText.Length];
+        using var aesGcm = new AesGcm(keyBytes, TagSize);
+        aesGcm.Decrypt(nonce, cipherText, tag, plainText);
+        return plainText;
     }
 }
