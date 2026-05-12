@@ -55,10 +55,10 @@ public static class HttpJsonResultHelper
     /// 3. If successful (Code=0), deserialize the Data field into the generic type T
     /// 4. If failed, preserve the error message and set the Data field to the default value
     /// </remarks>
-    /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型，必须是引用类型且包含无参构造函数 / Generic parameter T representing the target type to deserialize, must be a reference type with a parameterless constructor</typeparam>
+    /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型 / Generic parameter T representing the target type to deserialize</typeparam>
     /// <param name="jsonResult">需要转换的JSON字符串 / The JSON string to convert</param>
     /// <returns>返回转换后的HttpJsonResultData对象，包含反序列化结果和状态信息 / The converted HttpJsonResultData object containing the deserialized result and status information</returns>
-    public static HttpJsonResultData<T> ToHttpJsonResultData<T>(this string jsonResult) where T : class, new()
+    public static HttpJsonResultData<T> ToHttpJsonResultData<T>(this string jsonResult)
     {
         // 创建默认结果对象，Code初始化为失败状态
         HttpJsonResultData<T> resultData = new()
@@ -80,7 +80,7 @@ public static class HttpJsonResultHelper
             // 设置成功状态（IsSuccess会自动根据Code==0返回true）
             resultData.Code = HttpJsonResultConstants.SuccessCode;
             // 反序列化数据部分，如果数据为空则返回类型T的默认实例
-            resultData.Data = string.IsNullOrEmpty(httpJsonResult.Data) ? new T() : JsonHelper.Deserialize<T>(httpJsonResult.Data);
+            resultData.Data = string.IsNullOrEmpty(httpJsonResult.Data) ? default : JsonHelper.Deserialize<T>(httpJsonResult.Data);
         }
         catch (Exception e)
         {
