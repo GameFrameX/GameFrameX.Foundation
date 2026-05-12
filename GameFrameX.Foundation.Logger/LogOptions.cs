@@ -66,7 +66,20 @@ public sealed class LogOptions
     /// <remarks>
     /// Use this static instance to quickly get a log configuration object with default settings.
     /// </remarks>
-    public static LogOptions Default => new();
+    public static readonly LogOptions Default = new();
+
+    /// <summary>
+    /// 创建一个新的默认日志配置对象。
+    /// </summary>
+    /// <remarks>
+    /// Creates a new log configuration object with default settings.
+    /// Use this method when a caller needs an independent mutable configuration instance instead of the shared startup default.
+    /// </remarks>
+    /// <returns>新的默认日志配置对象 / A new default log configuration object.</returns>
+    public static LogOptions CreateDefault()
+    {
+        return new LogOptions();
+    }
 
     /// <summary>
     /// 是否写入文件，默认为 true。 / Whether to write to file, default is true.

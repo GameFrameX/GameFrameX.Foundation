@@ -181,15 +181,21 @@ public class TempLoggerTests : IDisposable
     }
 
     [Fact]
-    public void LogOptionsDefault_ShouldReturnIndependentInstances()
+    public void LogOptionsDefault_ShouldReturnSharedStartupInstance()
     {
         var first = LogOptions.Default;
         var second = LogOptions.Default;
 
-        first.LogType = "Changed";
+        Assert.Same(first, second);
+    }
+
+    [Fact]
+    public void LogOptionsCreateDefault_ShouldReturnIndependentInstances()
+    {
+        var first = LogOptions.CreateDefault();
+        var second = LogOptions.CreateDefault();
 
         Assert.NotSame(first, second);
-        Assert.NotEqual(first.LogType, second.LogType);
     }
 
     private static object? GetTempLoggerField()
