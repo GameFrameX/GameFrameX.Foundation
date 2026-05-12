@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -77,18 +78,14 @@ public class ConcurrentLimitedQueueTests
     }
 
     [Fact]
-    public void Constructor_WithEmptyList_ShouldCreateEmptyQueue()
+    public void Constructor_WithEmptyList_ShouldThrowArgumentOutOfRangeException()
     {
         // Arrange
         var list = new List<int>();
 
-        // Act
-        var queue = new ConcurrentLimitedQueue<int>(list);
-
-        // Assert
-        Assert.NotNull(queue);
-        Assert.Equal(0, queue.Limit);
-        Assert.Empty(queue);
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => new ConcurrentLimitedQueue<int>(list));
+        Assert.Equal("list", exception.ParamName);
     }
 
     #endregion
@@ -215,6 +212,25 @@ public class ConcurrentLimitedQueueTests
         Assert.Equal(3, queue.ToArray()[0]);
     }
 
+    [Fact]
+    public void TryAdd_ThroughProducerConsumerCollection_ShouldMaintainLimit()
+    {
+        // Arrange
+        IProducerConsumerCollection<int> queue = new ConcurrentLimitedQueue<int>(2);
+
+        // Act
+        queue.TryAdd(1);
+        queue.TryAdd(2);
+        queue.TryAdd(3);
+
+        // Assert
+        Assert.Equal(2, queue.Count);
+        var items = queue.ToArray();
+        Assert.DoesNotContain(1, items);
+        Assert.Contains(2, items);
+        Assert.Contains(3, items);
+    }
+
     #endregion
 
     #region Limit Property Tests
@@ -247,7 +263,19 @@ public class ConcurrentLimitedQueueTests
 
         // Assert
         Assert.Equal(2, queue.Limit);
-        Assert.Equal(3, queue.Count); // Existing elements should remain
+        Assert.Equal(2, queue.Count);
+        Assert.Equal(new[] { 2, 3 }, queue.ToArray());
+    }
+
+    [Fact]
+    public void Limit_SetInvalidValue_ShouldThrowArgumentOutOfRangeException()
+    {
+        // Arrange
+        var queue = new ConcurrentLimitedQueue<int>(5);
+
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => queue.Limit = 0);
+        Assert.Equal("value", exception.ParamName);
     }
 
     #endregion

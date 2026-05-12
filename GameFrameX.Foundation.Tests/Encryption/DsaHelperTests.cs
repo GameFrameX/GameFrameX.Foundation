@@ -2,6 +2,7 @@ using System.Text;
 using Xunit;
 using GameFrameX.Foundation.Encryption;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 namespace GameFrameX.Foundation.Tests.Encryption;
 
@@ -233,6 +234,12 @@ public class DsaHelperTests
 
         // Assert
         Assert.Null(signature);
+    }
+
+    [Fact]
+    public void SignData_StringWithInvalidPrivateKey_ShouldThrowCryptographicException()
+    {
+        Assert.Throws<CryptographicException>(() => DsaHelper.SignData(TestData, "invalid_key"));
     }
 
     [Fact]

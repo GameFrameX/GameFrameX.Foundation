@@ -224,19 +224,16 @@ namespace GameFrameX.Foundation.Tests.Options
         /// 测试异常处理
         /// </summary>
         [Fact]
-        public void Build_WithInvalidArgs_ShouldReturnDefaultConfigObject()
+        public void Build_WithInvalidArgs_ShouldThrowArgumentException()
         {
             // 准备测试数据
             var args = new[] { "--port", "invalid" }; // 无效的端口值
             
-            // 执行测试
             var builder = new OptionsBuilder<TestConfig>(args);
-            var config = builder.Build();
-            
-            // 验证结果
-            Assert.NotNull(config);
-            Assert.Equal("localhost", config.Host); // 默认值
-            Assert.Equal(8080, config.Port); // 默认值
+
+            // 执行测试并验证结果
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
+            Assert.Contains("port", exception.Message, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

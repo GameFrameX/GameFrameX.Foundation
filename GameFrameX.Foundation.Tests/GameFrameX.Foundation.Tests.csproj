@@ -30,9 +30,11 @@
     <ProjectReference Include="..\GameFrameX.Foundation.Http.Normalization\GameFrameX.Foundation.Http.Normalization.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj" />
-      <ProjectReference Include="..\GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj"/>
-      <ProjectReference Include="..\GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj"/>
-      <ProjectReference Include="..\GameFrameX.Foundation.Localization\GameFrameX.Foundation.Localization.csproj"/>
+    <ProjectReference Include="..\GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Localization\GameFrameX.Foundation.Localization.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Orm.Attribute\GameFrameX.Foundation.Orm.Attribute.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Orm.Entity\GameFrameX.Foundation.Orm.Entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

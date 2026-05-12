@@ -172,6 +172,26 @@ public class TempLoggerTests : IDisposable
         Assert.Throws<ArgumentNullException>(() => LogHelper.SetLogger(null!));
     }
 
+    [Fact]
+    public void CloseAndFlushAsync_ShouldReturnAwaitableTask()
+    {
+        var flushTask = LogHelper.CloseAndFlushAsync().AsTask();
+
+        Assert.NotNull(flushTask);
+    }
+
+    [Fact]
+    public void LogOptionsDefault_ShouldReturnIndependentInstances()
+    {
+        var first = LogOptions.Default;
+        var second = LogOptions.Default;
+
+        first.LogType = "Changed";
+
+        Assert.NotSame(first, second);
+        Assert.NotEqual(first.LogType, second.LogType);
+    }
+
     private static object? GetTempLoggerField()
     {
         var field = typeof(LogHelper).GetField("_tempLogger", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);

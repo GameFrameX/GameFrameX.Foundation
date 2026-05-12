@@ -1,5 +1,6 @@
 using System.Text;
 using System;
+using System.Security.Cryptography;
 using Xunit;
 using GameFrameX.Foundation.Encryption;
 
@@ -255,5 +256,14 @@ public class AesHelperTests
         // Assert
         Assert.Equal(largeText, decryptedText);
         Assert.True(stopwatch.ElapsedMilliseconds < 1000, $"加密解密耗时过长: {stopwatch.ElapsedMilliseconds}ms");
+    }
+
+    [Fact]
+    public void Decrypt_TamperedCipherText_ShouldThrowCryptographicException()
+    {
+        var encryptedBytes = AesHelper.Encrypt(Encoding.UTF8.GetBytes(TestPlainText), TestKey);
+        encryptedBytes[^1] ^= 0x01;
+
+        Assert.ThrowsAny<CryptographicException>(() => AesHelper.Decrypt(encryptedBytes, TestKey));
     }
 }

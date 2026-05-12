@@ -302,13 +302,11 @@ public class XorHelperTests
     }
 
     [Fact]
-    public void GetXorBytes_WithNullData_ShouldReturnNull()
+    public void GetXorBytes_WithNullData_ShouldThrowArgumentNullException()
     {
         var keyBytes = Encoding.UTF8.GetBytes(TestKey);
 
-        var result = XorHelper.GetXorBytes(null, keyBytes);
-
-        Assert.Null(result);
+        Assert.Throws<ArgumentNullException>(() => XorHelper.GetXorBytes(null, keyBytes));
     }
 
     [Fact]
@@ -320,11 +318,11 @@ public class XorHelperTests
     }
 
     [Fact]
-    public void GetSelfXorBytes_WithNullData_ShouldNotThrow()
+    public void GetSelfXorBytes_WithNullData_ShouldThrowArgumentNullException()
     {
         var keyBytes = Encoding.UTF8.GetBytes(TestKey);
 
-        XorHelper.GetSelfXorBytes(null, keyBytes); // 不应抛出
+        Assert.Throws<ArgumentNullException>(() => XorHelper.GetSelfXorBytes(null, keyBytes));
     }
 
     [Fact]

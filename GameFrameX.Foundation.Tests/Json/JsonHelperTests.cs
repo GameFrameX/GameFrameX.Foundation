@@ -418,6 +418,27 @@ namespace GameFrameX.Foundation.Tests.Json
             Assert.Equal("制表符\t测试", deserialized.Tab);
             Assert.Equal("中文测试", deserialized.Chinese);
         }
+
+        [Fact]
+        public void Deserialize_ValueType_ShouldReturnValue()
+        {
+            var result = JsonHelper.Deserialize<int>("123");
+
+            Assert.Equal(123, result);
+        }
+
+        [Fact]
+        public void Deserialize_InvalidFloatingPointString_ShouldThrowJsonException()
+        {
+            const string json = "{\"Value\":\"not-a-number\"}";
+
+            Assert.Throws<JsonException>(() => JsonHelper.Deserialize<TestDoubleClass>(json));
+        }
+    }
+
+    public class TestDoubleClass
+    {
+        public double Value { get; set; }
     }
 
     /// <summary>

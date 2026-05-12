@@ -187,21 +187,19 @@ namespace GameFrameX.Foundation.Tests.Options
         }
 
         /// <summary>
-        /// [H-002] 测试类型转换失败时的容错处理
+        /// [H-002] 测试类型转换失败时应抛出明确异常
         /// </summary>
         [Fact]
-        public void OptionsBuilder_TypeConversionFailure_ShouldNotThrow()
+        public void OptionsBuilder_TypeConversionFailure_ShouldThrow()
         {
             // 准备测试数据 - 提供无效的端口值
             var args = new[] { "--port", "not_a_number" };
 
-            // 执行测试 - 不应该抛出异常
             var builder = new OptionsBuilder<BasicConfig>(args);
-            var config = builder.Build();
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
 
-            // 验证结果 - 应该使用默认值
-            Assert.NotNull(config);
-            Assert.Equal(8080, config.Port); // 默认值
+            // 验证结果 - 应报告具体选项
+            Assert.Contains("port", exception.Message, StringComparison.OrdinalIgnoreCase);
         }
 
         #endregion
@@ -209,10 +207,10 @@ namespace GameFrameX.Foundation.Tests.Options
         #region H-003: 空 catch 代码块修复测试
 
         /// <summary>
-        /// [H-003] 测试无效值转换时的日志输出（确保 catch 不是空的）
+        /// [H-003] 测试无效值转换时不再静默忽略
         /// </summary>
         [Fact]
-        public void OptionsBuilder_InvalidValueConversion_ShouldHandleGracefully()
+        public void OptionsBuilder_InvalidValueConversion_ShouldThrow()
         {
             // 准备测试数据 - 各种无效值
             var testCases = new[]
@@ -225,13 +223,45 @@ namespace GameFrameX.Foundation.Tests.Options
 
             foreach (var args in testCases)
             {
-                // 执行测试 - 不应该抛出异常
                 var builder = new OptionsBuilder<BasicConfig>(args);
-                var config = builder.Build();
 
-                // 验证结果 - 应该使用默认值
-                Assert.NotNull(config);
-                Assert.Equal(8080, config.Port); // 默认值
+                Assert.Throws<ArgumentException>(() => builder.Build());
+            }
+        }
+
+        [Fact]
+        public void OptionsBuilder_NegativeNumberValue_ShouldParseAsValue()
+        {
+            var builder = new OptionsBuilder<BasicConfig>(new[] { "--port", "-1" });
+
+            var config = builder.Build(skipValidation: true);
+
+            Assert.Equal(-1, config.Port);
+        }
+
+        [Fact]
+        public void OptionsProvider_DefaultDebugMode_ShouldBeDisabled()
+        {
+            var originalOptionsDebug = Environment.GetEnvironmentVariable("GAMEFRAMEX_OPTIONS_DEBUG");
+            var originalAspNetEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var originalDotnetEnvironment = Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+            var originalEnvironment = Environment.GetEnvironmentVariable("ENVIRONMENT");
+
+            try
+            {
+                Environment.SetEnvironmentVariable("GAMEFRAMEX_OPTIONS_DEBUG", null);
+                Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", null);
+                Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", null);
+                Environment.SetEnvironmentVariable("ENVIRONMENT", null);
+
+                Assert.False(OptionsProvider.IsDebugModeEnabled());
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("GAMEFRAMEX_OPTIONS_DEBUG", originalOptionsDebug);
+                Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", originalAspNetEnvironment);
+                Environment.SetEnvironmentVariable("DOTNET_ENVIRONMENT", originalDotnetEnvironment);
+                Environment.SetEnvironmentVariable("ENVIRONMENT", originalEnvironment);
             }
         }
 

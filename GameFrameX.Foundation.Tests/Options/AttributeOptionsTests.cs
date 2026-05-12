@@ -243,7 +243,7 @@ public class AttributeOptionsTests
     }
 
     [Fact]
-    public void Build_WithUndefinedEnvironmentVariableValue_ShouldUseDefaultValue()
+    public void Build_WithUndefinedEnvironmentVariableValue_ShouldThrowForInvalidNumericValue()
     {
         // 安排 - 测试"undefined"环境变量值不会导致IndexOutOfRangeException
         var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
@@ -256,14 +256,9 @@ public class AttributeOptionsTests
 
         try
         {
-            // 执行 - 这里不应该抛出IndexOutOfRangeException
-            var options = builder.Build();
-
-            // 断言 - 对于字符串类型，"undefined"会被当作有效值使用
-            // 对于数字类型，"undefined"无法解析，应该使用默认值
-            Assert.Equal(8080, options.Port); // 无法解析"undefined"为int，使用默认值
-            Assert.Equal("undefined", options.Host); // 字符串类型直接使用"undefined"
-            Assert.Equal("test-key", options.ApiKey);
+            // 执行并断言 - 数字类型环境变量值无效时应明确失败
+            var exception = Assert.Throws<ArgumentException>(() => builder.Build());
+            Assert.Contains("Port", exception.Message, StringComparison.OrdinalIgnoreCase);
         }
         finally
         {
