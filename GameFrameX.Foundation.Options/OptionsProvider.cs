@@ -118,8 +118,8 @@ public static class OptionsProvider
             }
         }
 
-        // 默认启用调试输出（便于部署时验证配置）
-        return true;
+        // 默认禁用调试输出，避免库代码在生产或测试环境产生意外控制台输出。
+        return false;
     }
 
     /// <summary>

@@ -573,12 +573,12 @@ public sealed class OptionsBuilder<T> where T : class, new()
             }
 
             // 处理分离格式 (--key value)
-            if (arg.StartsWith("-"))
+            if (IsOptionToken(arg))
             {
                 var key = NormalizeKey(arg);
 
                 // 检查是否有值
-                if (i < standardArgs.Count - 1 && !standardArgs[i + 1].StartsWith("-"))
+                if (i < standardArgs.Count - 1 && !IsOptionToken(standardArgs[i + 1]))
                 {
                     var value = standardArgs[i + 1];
                     // 如果值为null，不添加到字典中，这样会使用默认值
@@ -604,6 +604,21 @@ public sealed class OptionsBuilder<T> where T : class, new()
         }
 
         return result;
+    }
+
+    private static bool IsOptionToken(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return false;
+        }
+
+        if (!value.StartsWith("-"))
+        {
+            return false;
+        }
+
+        return !decimal.TryParse(value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var parsed) || parsed >= 0;
     }
 
     /// <summary>
@@ -743,171 +758,79 @@ public sealed class OptionsBuilder<T> where T : class, new()
             {
                 try
                 {
-                    // 如果值为 null，跳过设置，保持默认值
                     if (kvp.Value == null)
                     {
                         continue;
                     }
 
-                    // 获取字符串值
-                    string stringValue = kvp.Value?.ToString();
-
-                    // 根据目标类型进行转换
-                    object convertedValue = null;
-
-                    if (property.PropertyType == typeof(string))
-                    {
-                        // 对于字符串类型，即使是空字符串也要设置
-                        convertedValue = stringValue;
-                    }
-                    else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(int?))
-                    {
-                        if (!string.IsNullOrEmpty(stringValue) && int.TryParse(stringValue, out int intValue))
-                        {
-                            convertedValue = intValue;
-                        }
-                    }
-                    else if (property.PropertyType == typeof(bool) || property.PropertyType == typeof(bool?))
-                    {
-                        // 处理布尔值
-                        if (kvp.Value is bool boolValue)
-                        {
-                            convertedValue = boolValue;
-                        }
-                        else if (string.IsNullOrEmpty(stringValue))
-                        {
-                            // 空字符串对于布尔值跳过，保持默认值
-                            continue;
-                        }
-                        else if (stringValue.Equals("true", StringComparison.OrdinalIgnoreCase))
-                        {
-                            convertedValue = true;
-                        }
-                        else if (stringValue.Equals("false", StringComparison.OrdinalIgnoreCase))
-                        {
-                            convertedValue = false;
-                        }
-                        else if (stringValue.Equals("1") || stringValue.Equals("yes", StringComparison.OrdinalIgnoreCase) ||
-                                 stringValue.Equals("on", StringComparison.OrdinalIgnoreCase))
-                        {
-                            convertedValue = true;
-                        }
-                        else if (stringValue.Equals("0") || stringValue.Equals("no", StringComparison.OrdinalIgnoreCase) ||
-                                 stringValue.Equals("off", StringComparison.OrdinalIgnoreCase))
-                        {
-                            convertedValue = false;
-                        }
-                        else
-                        {
-                            // 如果是标志格式，值就是 true
-                            convertedValue = true;
-                        }
-                    }
-                    else if (property.PropertyType == typeof(double) || property.PropertyType == typeof(double?))
-                    {
-                        if (!string.IsNullOrEmpty(stringValue) && double.TryParse(stringValue, out double doubleValue))
-                        {
-                            convertedValue = doubleValue;
-                        }
-                    }
-                    else if (property.PropertyType == typeof(float) || property.PropertyType == typeof(float?))
-                    {
-                        if (!string.IsNullOrEmpty(stringValue) && float.TryParse(stringValue, out float floatValue))
-                        {
-                            convertedValue = floatValue;
-                        }
-                    }
-                    else if (property.PropertyType == typeof(decimal) || property.PropertyType == typeof(decimal?))
-                    {
-                        if (!string.IsNullOrEmpty(stringValue) && decimal.TryParse(stringValue, out decimal decimalValue))
-                        {
-                            convertedValue = decimalValue;
-                        }
-                    }
-                    else if (property.PropertyType == typeof(DateTime) || property.PropertyType == typeof(DateTime?))
-                    {
-                        if (!string.IsNullOrEmpty(stringValue) && DateTime.TryParse(stringValue, out DateTime dateTimeValue))
-                        {
-                            convertedValue = dateTimeValue;
-                        }
-                    }
-                    else if (property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?))
-                    {
-                        if (!string.IsNullOrEmpty(stringValue) && Guid.TryParse(stringValue, out Guid guidValue))
-                        {
-                            convertedValue = guidValue;
-                        }
-                    }
-                    else if (property.PropertyType.IsEnum)
-                    {
-                        if (!string.IsNullOrEmpty(stringValue))
-                        {
-                            try
-                            {
-                                convertedValue = Enum.Parse(property.PropertyType, stringValue, true);
-                            }
-                            catch
-                            {
-                                // 解析失败，使用默认值
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // 尝试使用 Convert 类进行转换
-                        if (!string.IsNullOrEmpty(stringValue))
-                        {
-                            try
-                            {
-                                convertedValue = Convert.ChangeType(stringValue, property.PropertyType);
-                            }
-                            catch (FormatException)
-                            {
-                                // 转换失败，使用默认值
-                                // Conversion failed, use default value
-                                System.Diagnostics.Debug.WriteLine($"属性 {property.Name} 的值 '{stringValue}' 转换为 {property.PropertyType.Name} 失败");
-                            }
-                            catch (InvalidCastException)
-                            {
-                                // 类型转换失败，使用默认值
-                                // Type conversion failed, use default value
-                                System.Diagnostics.Debug.WriteLine($"属性 {property.Name} 无法将值 '{stringValue}' 转换为 {property.PropertyType.Name}");
-                            }
-                        }
-                    }
-
-                    // 如果转换成功，设置属性值
-                    if (convertedValue != null || property.PropertyType == typeof(string))
-                    {
-                        property.SetValue(target, convertedValue);
-                    }
+                    var convertedValue = ConvertOptionValue(property, kvp.Value);
+                    property.SetValue(target, convertedValue);
                 }
                 catch (ArgumentException ex)
                 {
-                    // 属性设置参数错误，保持属性的默认状态
-                    // Property setting argument error, keep the property's default state
-                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生参数错误: {ex.Message}");
+                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.Message}", ex);
                 }
                 catch (TargetInvocationException ex)
                 {
-                    // 属性设置调用错误，保持属性的默认状态
-                    // Property setting invocation error, keep the property's default state
-                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生调用错误: {ex.InnerException?.Message ?? ex.Message}");
+                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.InnerException?.Message ?? ex.Message}", ex);
                 }
                 catch (FormatException ex)
                 {
-                    // 格式转换错误，保持属性的默认状态
-                    // Format conversion error, keep the property's default state
-                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生格式错误: {ex.Message}");
+                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
                 }
                 catch (InvalidCastException ex)
                 {
-                    // 类型转换错误，保持属性的默认状态
-                    // Type conversion error, keep the property's default state
-                    System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 时发生类型转换错误: {ex.Message}");
+                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
+                }
+                catch (OverflowException ex)
+                {
+                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 超出 {property.PropertyType.Name} 的范围: {ex.Message}", ex);
                 }
             }
         }
+    }
+
+    private static object ConvertOptionValue(PropertyInfo property, object value)
+    {
+        if (property.PropertyType == typeof(string))
+        {
+            return value.ToString();
+        }
+
+        var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+        var stringValue = value.ToString();
+
+        if (string.IsNullOrEmpty(stringValue))
+        {
+            throw new FormatException("非字符串选项不能使用空值。");
+        }
+
+        if (targetType == typeof(bool))
+        {
+            if (value is bool boolValue)
+            {
+                return boolValue;
+            }
+
+            if (BooleanParser.IsBooleanValue(stringValue))
+            {
+                return BooleanParser.ParseBooleanValue(stringValue);
+            }
+
+            throw new FormatException("布尔值必须是 true/false、1/0、yes/no 或 on/off。");
+        }
+
+        if (targetType.IsEnum)
+        {
+            return Enum.Parse(targetType, stringValue, true);
+        }
+
+        if (targetType == typeof(Guid))
+        {
+            return Guid.Parse(stringValue);
+        }
+
+        return Convert.ChangeType(stringValue, targetType, System.Globalization.CultureInfo.InvariantCulture);
     }
 
     /// <summary>

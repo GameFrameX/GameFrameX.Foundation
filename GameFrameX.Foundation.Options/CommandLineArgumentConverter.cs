@@ -87,12 +87,12 @@ public sealed class CommandLineArgumentConverter
             var arg = args[i];
 
             // 如果是选项名
-            if (arg.StartsWith("-"))
+            if (IsOptionToken(arg))
             {
                 result.Add(arg);
 
                 // 如果不是最后一个参数，且下一个参数不是选项
-                if (i < args.Count - 1 && !args[i + 1].StartsWith("-"))
+                if (i < args.Count - 1 && !IsOptionToken(args[i + 1]))
                 {
                     var value = args[i + 1];
 
@@ -187,7 +187,7 @@ public sealed class CommandLineArgumentConverter
 
                 // 根据EnsurePrefixedKeys设置处理参数键
                 string argKey;
-                if (!arg.StartsWith("-"))
+                if (!IsOptionToken(arg))
                 {
                     if (EnsurePrefixedKeys)
                     {
@@ -219,7 +219,7 @@ public sealed class CommandLineArgumentConverter
                     }
 
                     // 如果下一个参数不是选项（不以-开头），则作为当前参数的值
-                    if (!nextArg.StartsWith("-"))
+                    if (!IsOptionToken(nextArg))
                     {
                         // 对于布尔标志格式，检查是否为布尔值
                         if (BoolFormat == BoolArgumentFormat.Flag && BooleanParser.IsBooleanValue(nextArg))
@@ -243,5 +243,25 @@ public sealed class CommandLineArgumentConverter
         {
             throw new ArgumentException($"处理命令行参数时发生错误 (An error occurred while processing command-line arguments): {ex.Message}", ex);
         }
+    }
+
+    private static bool IsOptionToken(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return false;
+        }
+
+        if (!value.StartsWith("-"))
+        {
+            return false;
+        }
+
+        return !IsNegativeNumber(value);
+    }
+
+    private static bool IsNegativeNumber(string value)
+    {
+        return decimal.TryParse(value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var parsed) && parsed < 0;
     }
 }
