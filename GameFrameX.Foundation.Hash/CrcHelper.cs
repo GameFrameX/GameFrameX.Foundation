@@ -55,30 +55,6 @@ public static partial class CrcHelper
     private const int CachedBytesLength = 0x1000;
 
     /// <summary>
-    /// 用于缓存读取数据的字节数组。
-    /// </summary>
-    /// <remarks>
-    /// Byte array used to cache read data.
-    /// </remarks>
-    private static readonly byte[] SCachedBytes = new byte[CachedBytesLength];
-
-    /// <summary>
-    /// CRC32算法的实例。
-    /// </summary>
-    /// <remarks>
-    /// Instance of the CRC32 algorithm.
-    /// </remarks>
-    private static readonly CrcHelper.Crc32 SAlgorithm = new();
-
-    /// <summary>
-    /// CRC64算法的实例。
-    /// </summary>
-    /// <remarks>
-    /// Instance of the CRC64 algorithm.
-    /// </remarks>
-    private static readonly CrcHelper.Crc64 SAlgorithm64 = new();
-
-    /// <summary>
     /// 计算二进制流的CRC64值。
     /// </summary>
     /// <remarks>
@@ -90,10 +66,10 @@ public static partial class CrcHelper
     public static ulong GetCrc64(byte[] bytes)
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
-        
-        SAlgorithm64.Reset();
-        SAlgorithm64.Append(bytes);
-        return SAlgorithm64.GetCurrentHashAsUInt64();
+
+        var algorithm = new Crc64();
+        algorithm.Append(bytes);
+        return algorithm.GetCurrentHashAsUInt64();
     }
 
     /// <summary>
@@ -108,10 +84,10 @@ public static partial class CrcHelper
     public static ulong GetCrc64(Stream stream)
     {
         ArgumentNullException.ThrowIfNull(stream, nameof(stream));
-        
-        SAlgorithm64.Reset();
-        SAlgorithm64.Append(stream);
-        return SAlgorithm64.GetCurrentHashAsUInt64();
+
+        var algorithm = new Crc64();
+        algorithm.Append(stream);
+        return algorithm.GetCurrentHashAsUInt64();
     }
 
     /// <summary>
@@ -151,10 +127,9 @@ public static partial class CrcHelper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Validation.InvalidDataLength), nameof(offset));
         }
 
-        SAlgorithm.HashCore(bytes, offset, length);
-        var result = (int)SAlgorithm.HashFinal();
-        SAlgorithm.Initialize();
-        return result;
+        var algorithm = new Crc32();
+        algorithm.HashCore(bytes, offset, length);
+        return (int)algorithm.HashFinal();
     }
 
     /// <summary>
@@ -170,12 +145,14 @@ public static partial class CrcHelper
     {
         ArgumentNullException.ThrowIfNull(stream, nameof(stream));
 
+        var cachedBytes = new byte[CachedBytesLength];
+        var algorithm = new Crc32();
         while (true)
         {
-            var bytesRead = stream.Read(SCachedBytes, 0, CachedBytesLength);
+            var bytesRead = stream.Read(cachedBytes, 0, CachedBytesLength);
             if (bytesRead > 0)
             {
-                SAlgorithm.HashCore(SCachedBytes, 0, bytesRead);
+                algorithm.HashCore(cachedBytes, 0, bytesRead);
             }
             else
             {
@@ -183,10 +160,7 @@ public static partial class CrcHelper
             }
         }
 
-        var result = (int)SAlgorithm.HashFinal();
-        SAlgorithm.Initialize();
-        Array.Clear(SCachedBytes, 0, CachedBytesLength);
-        return result;
+        return (int)algorithm.HashFinal();
     }
 
     /// <summary>
@@ -280,24 +254,26 @@ public static partial class CrcHelper
             length = bytesLength;
         }
 
+        var cachedBytes = new byte[CachedBytesLength];
+        var algorithm = new Crc32();
         var codeIndex = 0;
         while (true)
         {
-            var bytesRead = stream.Read(SCachedBytes, 0, CachedBytesLength);
+            var bytesRead = stream.Read(cachedBytes, 0, CachedBytesLength);
             if (bytesRead > 0)
             {
                 if (length > 0)
                 {
                     for (var i = 0; i < bytesRead && i < length; i++)
                     {
-                        SCachedBytes[i] ^= code[codeIndex++];
+                        cachedBytes[i] ^= code[codeIndex++];
                         codeIndex %= codeLength;
                     }
 
                     length -= bytesRead;
                 }
 
-                SAlgorithm.HashCore(SCachedBytes, 0, bytesRead);
+                algorithm.HashCore(cachedBytes, 0, bytesRead);
             }
             else
             {
@@ -305,9 +281,6 @@ public static partial class CrcHelper
             }
         }
 
-        var result = (int)SAlgorithm.HashFinal();
-        SAlgorithm.Initialize();
-        Array.Clear(SCachedBytes, 0, CachedBytesLength);
-        return result;
+        return (int)algorithm.HashFinal();
     }
 }
