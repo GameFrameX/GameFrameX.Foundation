@@ -287,11 +287,12 @@ public static class JsonHelper
 
     /// <summary>
     /// 反序列化JSON字符串为指定类型的对象。
-    /// 使用默认序列化配置(DefaultOptions)，如果使用默认配置失败，会尝试使用格式化配置(FormatOptions)，如果两者都失败，会尝试预处理特殊浮点值后再次尝试。
+    /// 使用默认序列化配置(DefaultOptions)，如果因特殊浮点值失败，会预处理后重试。
     /// </summary>
     /// <remarks>
     /// Deserializes a JSON string to an object of the specified type.
-    /// Uses the default serialization configuration (DefaultOptions), if the default configuration fails, it will try to use the formatted configuration (FormatOptions), if both fail, it will try to preprocess special floating-point values and try again.
+    /// Uses the default serialization configuration (DefaultOptions). If it fails due to special floating-point values,
+    /// it preprocesses them and retries with DefaultOptions. If both attempts fail, the original exception is thrown.
     /// </remarks>
     /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
     /// <typeparam name="T">目标类型 / The target type</typeparam>
@@ -307,27 +308,11 @@ public static class JsonHelper
         {
             return JsonSerializer.Deserialize<T>(json, DefaultOptions);
         }
-        catch
+        catch (JsonException) when (json.Contains("NaN") || json.Contains("Infinity"))
         {
-            try
-            {
-                // 如果使用默认配置失败，尝试使用格式化配置
-                return JsonSerializer.Deserialize<T>(json, FormatOptions);
-            }
-            catch
-            {
-                // 如果两者都失败，尝试预处理特殊浮点值
-                string processedJson = PreprocessSpecialFloatingPointValues(json);
-                try
-                {
-                    return JsonSerializer.Deserialize<T>(processedJson, DefaultOptions);
-                }
-                catch
-                {
-                    // 最后尝试使用格式化配置
-                    return JsonSerializer.Deserialize<T>(processedJson, FormatOptions);
-                }
-            }
+            // 特殊浮点值（NaN, Infinity, -Infinity）需要预处理
+            string processedJson = PreprocessSpecialFloatingPointValues(json);
+            return JsonSerializer.Deserialize<T>(processedJson, DefaultOptions);
         }
     }
 
@@ -379,11 +364,12 @@ public static class JsonHelper
 
     /// <summary>
     /// 将JSON字符串反序列化为指定Type类型的对象。
-    /// 使用默认序列化配置(DefaultOptions)，如果使用默认配置失败，会尝试使用格式化配置(FormatOptions)。
+    /// 使用默认序列化配置(DefaultOptions)，如果因特殊浮点值失败，会预处理后重试。
     /// </summary>
     /// <remarks>
     /// Deserializes a JSON string to an object of the specified Type.
-    /// Uses the default serialization configuration (DefaultOptions), if the default configuration fails, it will try to use the formatted configuration (FormatOptions).
+    /// Uses the default serialization configuration (DefaultOptions). If it fails due to special floating-point values,
+    /// it preprocesses them and retries with DefaultOptions. If both attempts fail, the original exception is thrown.
     /// </remarks>
     /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
     /// <param name="type">目标类型的Type对象 / The Type object of the target type</param>
@@ -400,27 +386,11 @@ public static class JsonHelper
         {
             return JsonSerializer.Deserialize(json, type, DefaultOptions);
         }
-        catch
+        catch (JsonException) when (json.Contains("NaN") || json.Contains("Infinity"))
         {
-            try
-            {
-                // 如果使用默认配置失败，尝试使用格式化配置
-                return JsonSerializer.Deserialize(json, type, FormatOptions);
-            }
-            catch
-            {
-                // 如果两者都失败，尝试预处理特殊浮点值
-                string processedJson = PreprocessSpecialFloatingPointValues(json);
-                try
-                {
-                    return JsonSerializer.Deserialize(processedJson, type, DefaultOptions);
-                }
-                catch
-                {
-                    // 最后尝试使用格式化配置
-                    return JsonSerializer.Deserialize(processedJson, type, FormatOptions);
-                }
-            }
+            // 特殊浮点值（NaN, Infinity, -Infinity）需要预处理
+            string processedJson = PreprocessSpecialFloatingPointValues(json);
+            return JsonSerializer.Deserialize(processedJson, type, DefaultOptions);
         }
     }
 
