@@ -158,6 +158,7 @@ public static class Sm4Helper
     /// <returns>加密后的密文字符串 / Encrypted cipher text string</returns>
     /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
     /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
+    [Obsolete("ECB mode is not semantically secure. Use EncryptCbc with a random IV instead. This method is retained only for backward compatibility with existing data.")]
     public static string EncryptEcb(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);
@@ -202,6 +203,7 @@ public static class Sm4Helper
     /// <returns>解密后的原文字符串 / Decrypted plain text string</returns>
     /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
     /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
+    [Obsolete("ECB mode is not semantically secure. Use DecryptCbc with a random IV instead. This method is retained only for backward compatibility with existing data.")]
     public static string DecryptEcb(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);
