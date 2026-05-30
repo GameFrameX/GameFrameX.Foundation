@@ -85,7 +85,7 @@ public static class HttpJsonResultHelper
         catch (Exception e)
         {
             // 捕获并输出异常信息
-            LogHelper.Fatal(e, "JSON Deserialize Error: {ErrorMessage}", e.Message);
+            LogHelper.Error(e, "JSON Deserialize Error: {ErrorMessage}", e.Message);
         }
 
         return resultData; // 返回结果数据
