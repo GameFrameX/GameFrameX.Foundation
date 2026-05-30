@@ -59,8 +59,8 @@ public static class HmacSha256Helper
     /// <returns>返回Base64编码的哈希值字符串。哈希值为32字节(256位)长 / Returns a Base64-encoded hash string. The hash is 32 bytes (256 bits) long</returns>
     public static string Hash(string message, string key)
     {
-        ArgumentException.ThrowIfNullOrEmpty(message, nameof(message));
-        ArgumentException.ThrowIfNullOrEmpty(key, nameof(key));
+        ArgumentNullException.ThrowIfNull(message, nameof(message));
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
 
         var keyBytes = Encoding.UTF8.GetBytes(key);
         var messageBytes = Encoding.UTF8.GetBytes(message);
