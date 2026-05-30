@@ -449,29 +449,18 @@ public sealed class RsaHelper : IDisposable
     /// </summary>
     /// <param name="dataToSign">待签名的数据。</param>
     /// <param name="privateKey">RSA 私钥，XML 格式。</param>
-    /// <returns>签名后的字节数组；如果私钥格式无效则返回 null。</returns>
+    /// <returns>签名后的字节数组。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="dataToSign"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentException">当 <paramref name="privateKey"/> 为 null 或空字符串时抛出。</exception>
+    /// <exception cref="CryptographicException">当私钥格式非法或签名过程失败时抛出。</exception>
     public static byte[] SignData(byte[] dataToSign, string privateKey)
     {
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
         ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
 
-        try
-        {
-            // C-10 修复：using 确保释放；C-04 修复：SHA256；C-01(同类) 修复：不再静默返回 null
-            using var rsa = RSA.Create();
-            rsa.FromXmlString(privateKey);
-            return rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-        }
-        catch (CryptographicException)
-        {
-            return null;
-        }
-        catch (XmlException)
-        {
-            return null;
-        }
+        using var rsa = RSA.Create();
+        rsa.FromXmlString(privateKey);
+        return rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
     }
 
     /// <summary>
@@ -482,6 +471,7 @@ public sealed class RsaHelper : IDisposable
     /// <returns>签名后的数据，以 Base64 编码的字符串形式返回。</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="dataToSign"/> 为 null 时抛出。</exception>
     /// <exception cref="ArgumentException">当 <paramref name="privateKey"/> 为 null 或空字符串时抛出。</exception>
+    /// <exception cref="CryptographicException">当私钥格式非法或签名过程失败时抛出。</exception>
     public static string SignData(string dataToSign, string privateKey)
     {
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
