@@ -218,6 +218,6 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <returns>当前对象的哈希代码 / The hash code of the current object.</returns>
     public override int GetHashCode()
     {
-        return EqualityComparer<T>.Default.GetHashCode(Item);
+        return Item == null ? 0 : EqualityComparer<T>.Default.GetHashCode(Item);
     }
 }
