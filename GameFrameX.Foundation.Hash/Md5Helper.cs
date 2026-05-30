@@ -51,16 +51,6 @@ namespace GameFrameX.Foundation.Hash;
 public static class Md5Helper
 {
     /// <summary>
-    /// MD5加密服务提供程序的实例。
-    /// 使用静态字段缓存实例以提高性能。
-    /// </summary>
-    /// <remarks>
-    /// Instance of the MD5 cryptographic service provider.
-    /// Uses a static field to cache the instance for improved performance.
-    /// </remarks>
-    private static readonly MD5 Md5Cryptography = MD5.Create();
-
-    /// <summary>
     /// 获取字符串的 MD5 哈希值。
     /// 使用UTF-8编码将字符串转换为字节数组后计算哈希值。
     /// </summary>
@@ -75,7 +65,8 @@ public static class Md5Helper
     public static string Hash(string input, bool isUpper = false)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        var data = Md5Cryptography.ComputeHash(Encoding.UTF8.GetBytes(input));
+        using var md5 = MD5.Create();
+        var data = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
         return ToHash(data, isUpper);
     }
 
@@ -122,7 +113,8 @@ public static class Md5Helper
         Buffer.BlockCopy(inputBytes, 0, saltedBytes, 0, inputBytes.Length);
         Buffer.BlockCopy(salt, 0, saltedBytes, inputBytes.Length, salt.Length);
         
-        var data = Md5Cryptography.ComputeHash(saltedBytes);
+        using var md5 = MD5.Create();
+        var data = md5.ComputeHash(saltedBytes);
         return ToHash(data, isUpper);
     }
 
@@ -141,7 +133,8 @@ public static class Md5Helper
     public static string Hash(byte[] input, bool isUpper = false)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        var data = Md5Cryptography.ComputeHash(input);
+        using var md5 = MD5.Create();
+        var data = md5.ComputeHash(input);
         return ToHash(data, isUpper);
     }
 
@@ -159,7 +152,8 @@ public static class Md5Helper
     public static string Hash(Stream input)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        var data = Md5Cryptography.ComputeHash(input);
+        using var md5 = MD5.Create();
+        var data = md5.ComputeHash(input);
         return ToHash(data);
     }
 
