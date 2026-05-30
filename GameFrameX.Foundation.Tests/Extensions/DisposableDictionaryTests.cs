@@ -132,7 +132,7 @@ public class DisposableDictionaryTests
     }
 
     [Fact]
-    public void Finalizer_ShouldDisposeValues()
+    public void Finalizer_ShouldNotDisposeValues()
     {
         // Arrange
         var value = new TestDisposable("value");
@@ -144,7 +144,9 @@ public class DisposableDictionaryTests
         GC.Collect();
 
         // Assert
-        Assert.True(value.IsDisposed);
+        // 终结器路径 (disposing=false) 不应访问 Values 等托管集合，
+        // 因此值不应被终结器释放。必须显式调用 Dispose() 来释放。
+        Assert.False(value.IsDisposed);
     }
 
     private static void CreateAndAbandonDictionary(TestDisposable value)
