@@ -276,17 +276,15 @@ public class RsaHelperTests
     }
 
     [Fact]
-    public void SignData_WithInvalidPrivateKey_ShouldReturnNull()
+    public void SignData_WithInvalidPrivateKey_ShouldThrowCryptographicException()
     {
         // Arrange
         var invalidPrivateKey = "invalid_key";
         var dataBytes = Encoding.UTF8.GetBytes(TestData);
 
-        // Act
-        var signature = RsaHelper.SignData(dataBytes, invalidPrivateKey);
-
-        // Assert
-        Assert.Null(signature);
+        // Act & Assert
+        Assert.Throws<System.Security.Cryptography.CryptographicException>(() =>
+            RsaHelper.SignData(dataBytes, invalidPrivateKey));
     }
 
     [Fact]
