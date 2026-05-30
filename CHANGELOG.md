@@ -1,3 +1,28 @@
+## [2.4.7] - 2026-05-30
+
+### Bug Fixes
+
+- HmacSha256Helper 补充参数验证
+- RsaHelper.SignData 不再静默返回 null
+- DisposableDictionary.Dispose(bool) 检查 disposing 参数
+- Sm4Helper 标记 ECB 模式方法为 Obsolete
+- JsonHelper 简化反序列化 fallback 模式
+- LogHelper.Error 移除昂贵的 StackTrace 构造
+- HttpJsonResultHelper 日志级别 Fatal 降级为 Error
+- NullObject.GetHashCode 增加 null 检查
+- Md5Helper 移除静态 MD5 缓存实例，改用 MD5.Create()
+- LogConsole 补全标题超长时的边界处理
+- LogHandler 修复 GrafanaLoki null 检查与错误日志结构化
+- Info(ILogger, Exception) 实际使用传入的 logger 参数
+- WarningConsole 用 try/finally 保护 ConsoleColor.Reset
+- DisposableAction 用 Interlocked 防止重复执行
+- HmacSha256Helper 空字符串改为合法输入，仅拒绝 null
+
+### Testing
+
+- RsaHelperTests 适配 SignData 不再返回 null 的新行为
+- DisposableDictionaryTests 终结器不再释放值的测试适配
+
 ## [2.4.6] - 2026-05-12
 
 ### Bug Fixes
