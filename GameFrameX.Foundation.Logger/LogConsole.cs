@@ -173,6 +173,12 @@ internal sealed class LogConsole
         // 获取文本的实际显示宽度（中文字符宽度为2，英文字符宽度为1）
         var stringWidth = title.GetDisplayWidth();
         var remaining = _frameLength - stringWidth - 2;
+        if (remaining < 0)
+        {
+            Console.WriteLine($"║ {title} ║");
+            return;
+        }
+
         var surplus = remaining % 2;
         // 如果剩余空间为奇数，在文本后添加一个空格以保持左右对称
         if (surplus > 0)
@@ -218,6 +224,16 @@ internal sealed class LogConsole
         // 计算标题的显示宽度并生成居中的顶部边框
         var stringWidth = title.GetDisplayWidth();
         var remaining = _frameLength - stringWidth - 2;
+        if (remaining < 0)
+        {
+            Console.WriteLine($"╔{title}╗");
+            Console.WriteLine(content);
+            var bottomBorder = '═'.RepeatChar(Math.Max(_frameLength - 2, 0));
+            Console.WriteLine($"╚{bottomBorder}╝");
+            Console.WriteLine();
+            return;
+        }
+
         remaining /= 2;
         var padding = '═'.RepeatChar(remaining);
         // 生成底部边框，使用完整的等号字符填充
@@ -269,7 +285,7 @@ internal sealed class LogConsole
         ArgumentNullException.ThrowIfNull(title, nameof(title));
         var stringWidth = title.GetDisplayWidth();
         // 如果标题过长，使用简单的三等号包围格式
-        if (stringWidth - 4 > _frameLength)
+        if (stringWidth + 4 > _frameLength)
         {
             Console.WriteLine($"═══{title}═══");
         }
