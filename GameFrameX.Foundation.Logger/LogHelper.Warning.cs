@@ -895,9 +895,15 @@ public static partial class LogHelper
     public static void WarningConsole(string message, params object[] args)
     {
         Warning(message, args);
-        System.Console.ForegroundColor = ConsoleColor.Yellow;
-        Console(message, args);
-        System.Console.ResetColor();
+        try
+        {
+            System.Console.ForegroundColor = ConsoleColor.Yellow;
+            Console(message, args);
+        }
+        finally
+        {
+            System.Console.ResetColor();
+        }
     }
 
     /// <summary>
@@ -943,8 +949,14 @@ public static partial class LogHelper
     public static void WarningConsole(string tag, string message, params object[] args)
     {
         Warning(tag, message, args);
-        System.Console.ForegroundColor = ConsoleColor.Yellow;
-        Console($"[{tag}] {message}", args);
-        System.Console.ResetColor();
+        try
+        {
+            System.Console.ForegroundColor = ConsoleColor.Yellow;
+            Console($"[{tag}] {message}", args);
+        }
+        finally
+        {
+            System.Console.ResetColor();
+        }
     }
 }
