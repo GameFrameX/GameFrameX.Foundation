@@ -42,11 +42,18 @@ public class DisposableAction : IDisposable
     /// </summary>
     /// <remarks>
     /// 该方法实现了 <see cref="IDisposable.Dispose"/> 接口，
-    /// 会执行在构造函数中传入的 <see cref="Action"/> 委托
+    /// 会执行在构造函数中传入的 <see cref="Action"/> 委托。
+    /// 多次调用 Dispose() 只会执行一次动作。
     /// </remarks>
     public void Dispose()
     {
-        _action();
+        if (Interlocked.CompareExchange(ref _disposed, 1, 0) == 0)
+        {
+            _action();
+        }
+
         GC.SuppressFinalize(this);
     }
+
+    private int _disposed;
 }
