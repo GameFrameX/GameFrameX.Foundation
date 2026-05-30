@@ -70,15 +70,13 @@ public static partial class LogHelper
     /// <param name="message">要记录的错误消息 / The error message to record</param>
     /// <param name="args">用于格式化消息的参数数组 / The parameter array for formatting the message</param>
     /// <remarks>
-    /// Records error level log information and includes stack trace information.
-    /// Uses the default logger for recording.
+    /// Records error level log information using structured logging.
+    /// Uses the default logger for recording. If call stack information is needed,
+    /// use the Error(Exception) overload which captures the stack trace properly.
     /// </remarks>
     public static void Error(string message, params object[] args)
     {
-        var st = new StackTrace(1, true);
-        var newMessage = new StringBuilder().Append(string.Format(message, args)).Append('\n').Append(st).ToString();
-
-        GetLogger().Error(newMessage);
+        GetLogger().Error(message, args);
     }
 
     /// <summary>
@@ -931,9 +929,15 @@ public static partial class LogHelper
     public static void ErrorConsole(string message, params object[] args)
     {
         GetLogger().Error(message, args);
-        System.Console.ForegroundColor = ConsoleColor.Red;
-        Console(message, args);
-        System.Console.ResetColor();
+        try
+        {
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            Console(message, args);
+        }
+        finally
+        {
+            System.Console.ResetColor();
+        }
     }
 
     /// <summary>
@@ -1016,8 +1020,14 @@ public static partial class LogHelper
     public static void ErrorConsole(string tag, string message, params object[] args)
     {
         Error(tag, message, args);
-        System.Console.ForegroundColor = ConsoleColor.Red;
-        Console($"[{tag}] {message}", args);
-        System.Console.ResetColor();
+        try
+        {
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            Console($"[{tag}] {message}", args);
+        }
+        finally
+        {
+            System.Console.ResetColor();
+        }
     }
 }
