@@ -168,7 +168,7 @@ public static class LogHandler
             logger.Enrich.WithProperty("TagName", logOptions.LogTagName);
             logger.Enrich.WithProperty("LogType", logOptions.LogType);
 
-            if (logOptions.IsGrafanaLoki)
+            if (logOptions.IsGrafanaLoki && logOptions.GrafanaLokiLabels != null)
             {
                 var grafanaLokiLabels = new List<LokiLabel>();
                 foreach (var kv in logOptions.GrafanaLokiLabels)
@@ -309,7 +309,7 @@ public static class LogHandler
         }
         catch (Exception e)
         {
-            Log.Error($"配置日志系统过程中发生错误,异常:{e}");
+            Log.Error(e, "配置日志系统过程中发生错误");
             throw;
         }
     }
