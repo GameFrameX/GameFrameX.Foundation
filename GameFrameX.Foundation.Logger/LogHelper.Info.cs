@@ -935,7 +935,9 @@ public static partial class LogHelper
     /// </remarks>
     public static void Info(ILogger logger, Exception exception)
     {
-        Info(exception.ToString());
+        ArgumentNullException.ThrowIfNull(logger, nameof(logger));
+        ArgumentNullException.ThrowIfNull(exception, nameof(exception));
+        logger.Information(exception.ToString());
     }
 
     /// <summary>
@@ -948,7 +950,9 @@ public static partial class LogHelper
     /// </remarks>
     public static void InfoConsole(ILogger logger, Exception exception)
     {
-        Info(exception.ToString());
+        ArgumentNullException.ThrowIfNull(logger, nameof(logger));
+        ArgumentNullException.ThrowIfNull(exception, nameof(exception));
+        logger.Information(exception.ToString());
         Console(exception.ToString());
     }
 
