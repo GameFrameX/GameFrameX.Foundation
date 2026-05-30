@@ -115,9 +115,22 @@ public class DisposableDictionary<TKey, TValue> : NullableDictionary<TKey, TValu
     /// <param name="disposing">指示是否应释放托管资源 / true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
     protected virtual void Dispose(bool disposing)
     {
+        if (!disposing)
+        {
+            return;
+        }
+
         foreach (var s in Values.Where(v => v != null))
         {
-            s.Dispose();
+            try
+            {
+                s.Dispose();
+            }
+            catch
+            {
+                // 忽略释放过程中的异常，确保所有资源都被释放
+                // Ignore exceptions during disposal to ensure all resources are released
+            }
         }
     }
 }
