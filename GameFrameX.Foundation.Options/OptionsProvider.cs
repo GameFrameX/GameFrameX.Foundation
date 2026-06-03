@@ -86,12 +86,14 @@ public static class OptionsProvider
             {
                 return envValue;
             }
+
             // 支持更多格式
             var normalizedEnvDebug = envDebug.Trim().ToLowerInvariant();
             if (normalizedEnvDebug is "1" or "yes" or "on" or "enable" or "enabled")
             {
                 return true;
             }
+
             if (normalizedEnvDebug is "0" or "no" or "off" or "disable" or "disabled")
             {
                 return false;
@@ -100,8 +102,8 @@ public static class OptionsProvider
 
         // 检查是否在开发环境中（通过常见的开发环境变量）
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
-                         ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
-                         ?? Environment.GetEnvironmentVariable("ENVIRONMENT");
+                          ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
+                          ?? Environment.GetEnvironmentVariable("ENVIRONMENT");
 
         if (!string.IsNullOrEmpty(environment))
         {
@@ -111,6 +113,7 @@ public static class OptionsProvider
             {
                 return true;
             }
+
             // 在生产环境中默认禁用调试
             if (normalizedEnv is "production" or "prod" or "release")
             {

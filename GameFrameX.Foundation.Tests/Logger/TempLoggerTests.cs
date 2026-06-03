@@ -104,8 +104,8 @@ public class TempLoggerTests : IDisposable
 
         var capturedEvents = new ConcurrentQueue<LogEvent>();
         var testLogger = new LoggerConfiguration()
-            .WriteTo.Sink(new TestSink(capturedEvents))
-            .CreateLogger();
+                         .WriteTo.Sink(new TestSink(capturedEvents))
+                         .CreateLogger();
 
         LogHelper.SetLogger(testLogger);
 
@@ -122,8 +122,8 @@ public class TempLoggerTests : IDisposable
         LogHelper.Info("Temp log");
 
         var testLogger = new LoggerConfiguration()
-            .WriteTo.Sink(new NullSink())
-            .CreateLogger();
+                         .WriteTo.Sink(new NullSink())
+                         .CreateLogger();
 
         LogHelper.SetLogger(testLogger);
 
@@ -141,9 +141,9 @@ public class TempLoggerTests : IDisposable
 
         var capturedEvents = new ConcurrentQueue<LogEvent>();
         var testLogger = new LoggerConfiguration()
-            .MinimumLevel.Verbose()
-            .WriteTo.Sink(new TestSink(capturedEvents))
-            .CreateLogger();
+                         .MinimumLevel.Verbose()
+                         .WriteTo.Sink(new TestSink(capturedEvents))
+                         .CreateLogger();
 
         LogHelper.SetLogger(testLogger);
 
@@ -155,8 +155,8 @@ public class TempLoggerTests : IDisposable
     {
         var capturedEvents = new ConcurrentQueue<LogEvent>();
         var testLogger = new LoggerConfiguration()
-            .WriteTo.Sink(new TestSink(capturedEvents))
-            .CreateLogger();
+                         .WriteTo.Sink(new TestSink(capturedEvents))
+                         .CreateLogger();
 
         LogHelper.SetLogger(testLogger);
 
@@ -212,6 +212,7 @@ public class TempLoggerTests : IDisposable
         {
             disposable.Dispose();
         }
+
         tempField?.SetValue(null, null);
 
         var loggerField = typeof(LogHelper).GetField("_logger", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);

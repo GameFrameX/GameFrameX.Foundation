@@ -87,32 +87,32 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine("🔧 方法1: 使用传统的 OptionsBuilder 方式");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                
+
                 // 传统方式
                 var builder = new OptionsBuilder<BasicDemoConfig>(args);
                 var config1 = builder.Build();
-                
+
                 Console.WriteLine("✅ 解析成功！配置信息:");
                 PrintConfig(config1);
                 Console.WriteLine();
 
                 Console.WriteLine("🔧 方法2: 使用新的静态方法");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                
+
                 // 静态方法
                 var config2 = OptionsBuilder.Create<BasicDemoConfig>(args);
-                
+
                 Console.WriteLine("✅ 解析成功！配置信息:");
                 PrintConfig(config2);
                 Console.WriteLine();
 
                 Console.WriteLine("🔧 方法3: 使用 OptionsProvider（推荐）");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                
+
                 // 使用 OptionsProvider
                 OptionsProvider.Initialize(args);
                 var config3 = OptionsProvider.GetOptions<BasicDemoConfig>();
-                
+
                 Console.WriteLine("✅ 解析成功！配置信息:");
                 PrintConfig(config3);
                 Console.WriteLine();
@@ -130,7 +130,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Console.WriteLine("⚠️  演示错误处理");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
                 DemonstrateErrorHandling();
-
             }
             catch (Exception ex)
             {
@@ -170,7 +169,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine($"📋 {testCase.Name}:");
                 Console.WriteLine($"   参数: {string.Join(" ", testCase.Args)}");
-                
+
                 try
                 {
                     var config = OptionsBuilder.Create<BasicDemoConfig>(testCase.Args, skipValidation: true);
@@ -180,6 +179,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 {
                     Console.WriteLine($"   ❌ 解析失败: {ex.Message}");
                 }
+
                 Console.WriteLine();
             }
         }
@@ -211,13 +211,14 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine($"❌ 失败: {ex.Message}");
             }
+
             Console.WriteLine();
 
             // 测试命令行参数覆盖环境变量
             Console.WriteLine("🔧 命令行参数覆盖环境变量:");
             var args = new[] { "--app-name", "EnvTest", "--host", "cmd.example.com" };
             Console.WriteLine($"   参数: {string.Join(" ", args)}");
-            
+
             try
             {
                 var config2 = OptionsBuilder.Create<BasicDemoConfig>(args, skipValidation: true);
@@ -243,7 +244,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("📋 测试缺少必需参数:");
             var invalidArgs1 = new[] { "--host", "test.com", "--port", "8080" }; // 缺少 app-name
             Console.WriteLine($"   参数: {string.Join(" ", invalidArgs1)}");
-            
+
             try
             {
                 var config = OptionsBuilder.Create<BasicDemoConfig>(invalidArgs1);
@@ -253,6 +254,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine($"   ✅ 正确捕获错误: {ex.Message}");
             }
+
             Console.WriteLine();
 
             Console.WriteLine("📋 测试安全创建方法:");

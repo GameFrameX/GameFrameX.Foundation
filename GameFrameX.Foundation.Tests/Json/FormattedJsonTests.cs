@@ -32,7 +32,7 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 反序列化
             var result = JsonHelper.Deserialize<FormattedTestClass>(formattedJson);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(1, result.Id);
@@ -64,7 +64,7 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 反序列化
             var result = JsonHelper.Deserialize<FormattedTestClass>(jsonWithComments);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(2, result.Id);
@@ -95,7 +95,7 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 反序列化
             var result = JsonHelper.Deserialize<FormattedTestClass>(jsonWithTrailingCommas);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(3, result.Id);
@@ -126,7 +126,7 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 反序列化
             var result = JsonHelper.Deserialize<FormattedTestClass>(jsonWithIrregularIndentation);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(4, result.Id);
@@ -153,7 +153,7 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 反序列化
             var result = JsonHelper.Deserialize<FormattedTestClass>(mixedJson);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(5, result.Id);
@@ -184,7 +184,7 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 反序列化
             var result = JsonHelper.Deserialize<FormattedTestClass>(jsonWithSpecialChars);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(6, result.Id);
@@ -218,19 +218,19 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 先反序列化
             var obj = JsonHelper.Deserialize<FormattedTestClass>(formattedJson);
-            
+
             // 再序列化为非格式化JSON
             string nonFormattedJson = JsonHelper.Serialize(obj);
-            
+
             // 验证非格式化JSON不包含换行符和多余空格
             Assert.NotNull(nonFormattedJson);
             Assert.NotEmpty(nonFormattedJson);
             Assert.DoesNotContain("\n", nonFormattedJson);
             Assert.DoesNotContain("  ", nonFormattedJson);
-            
+
             // 再次反序列化非格式化JSON
             var result = JsonHelper.Deserialize<FormattedTestClass>(nonFormattedJson);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(7, result.Id);
@@ -251,19 +251,19 @@ namespace GameFrameX.Foundation.Tests.Json
 
             // 先反序列化
             var obj = JsonHelper.Deserialize<FormattedTestClass>(nonFormattedJson);
-            
+
             // 再序列化为格式化JSON
             string formattedJson = JsonHelper.SerializeFormat(obj);
-            
+
             // 验证格式化JSON包含换行符和缩进
             Assert.NotNull(formattedJson);
             Assert.NotEmpty(formattedJson);
             Assert.Contains("\n", formattedJson);
             Assert.Contains("  ", formattedJson);
-            
+
             // 再次反序列化格式化JSON
             var result = JsonHelper.Deserialize<FormattedTestClass>(formattedJson);
-            
+
             // 验证结果
             Assert.NotNull(result);
             Assert.Equal(8, result.Id);

@@ -19,22 +19,22 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         /// 调试级别
         /// </summary>
         Debug,
-        
+
         /// <summary>
         /// 信息级别
         /// </summary>
         Info,
-        
+
         /// <summary>
         /// 警告级别
         /// </summary>
         Warning,
-        
+
         /// <summary>
         /// 错误级别
         /// </summary>
         Error,
-        
+
         /// <summary>
         /// 致命错误级别
         /// </summary>
@@ -155,8 +155,8 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             if (args.Length == 0)
             {
                 Console.WriteLine("📝 使用默认测试参数...");
-                args = new[] 
-                { 
+                args = new[]
+                {
                     "--app-name", "AdvancedDemo",
                     "--host", "advanced.example.com",
                     "--port", "9090",
@@ -183,7 +183,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
 
                 // 使用调试模式解析配置
                 var config = OptionsBuilder.CreateWithDebug<AdvancedFeaturesDemoConfig>(args);
-                
+
                 Console.WriteLine("✅ 解析成功！详细配置信息:");
                 PrintDetailedConfig(config);
                 Console.WriteLine();
@@ -211,7 +211,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Console.WriteLine("📊 演示特性组合使用");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
                 DemonstrateAttributeCombinations();
-
             }
             catch (Exception ex)
             {
@@ -259,11 +258,11 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine($"📋 {testCase.Name}:");
                 Console.WriteLine($"   参数: {string.Join(" ", testCase.Args)}");
-                
+
                 try
                 {
                     var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(testCase.Args, skipValidation: true);
-                    
+
                     switch (testCase.Name)
                     {
                         case "整数转换":
@@ -290,6 +289,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 {
                     Console.WriteLine($"   ❌ 转换失败: {ex.Message}");
                 }
+
                 Console.WriteLine();
             }
         }
@@ -304,7 +304,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Environment.SetEnvironmentVariable("SERVER_PORT", "7070");
             Environment.SetEnvironmentVariable("LOG_LEVEL", "Error");
             Environment.SetEnvironmentVariable("ENABLE_SSL", "true");
-            
+
             Console.WriteLine("   SERVER_HOST=env.example.com");
             Console.WriteLine("   SERVER_PORT=7070");
             Console.WriteLine("   LOG_LEVEL=Error");
@@ -348,7 +348,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("📋 测试1: 缺少必需参数");
             var invalidArgs1 = new[] { "--host", "test.com", "--port", "8080" }; // 缺少 app-name 和 database-url
             Console.WriteLine($"   参数: {string.Join(" ", invalidArgs1)}");
-            
+
             try
             {
                 var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(invalidArgs1);
@@ -358,12 +358,13 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine($"   ✅ 正确捕获错误: {ex.Message}");
             }
+
             Console.WriteLine();
 
             Console.WriteLine("📋 测试2: 无效的类型转换");
             var invalidArgs2 = new[] { "--app-name", "TypeErrorTest", "--database-url", "test://db", "--port", "invalid_port", "--timeout", "not_a_number" };
             Console.WriteLine($"   参数: {string.Join(" ", invalidArgs2)}");
-            
+
             try
             {
                 var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(invalidArgs2, skipValidation: true);
@@ -374,12 +375,13 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine($"   ❌ 意外错误: {ex.Message}");
             }
+
             Console.WriteLine();
 
             Console.WriteLine("📋 测试3: 无效的枚举值");
             var invalidArgs3 = new[] { "--app-name", "EnumErrorTest", "--database-url", "test://db", "--log-level", "InvalidLevel" };
             Console.WriteLine($"   参数: {string.Join(" ", invalidArgs3)}");
-            
+
             try
             {
                 var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(invalidArgs3, skipValidation: true);
@@ -411,7 +413,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 Console.WriteLine($"📋 {testCase.Name}:");
                 Console.WriteLine($"   参数: {string.Join(" ", testCase.Args)}");
-                
+
                 try
                 {
                     var config = OptionsBuilder.Create<AdvancedFeaturesDemoConfig>(testCase.Args, skipValidation: true);
@@ -421,6 +423,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 {
                     Console.WriteLine($"   ❌ 解析失败: {ex.Message}");
                 }
+
                 Console.WriteLine();
             }
         }
@@ -436,19 +439,19 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             // 设置环境变量
             Environment.SetEnvironmentVariable("SERVER_HOST", "env-host.com");
             Environment.SetEnvironmentVariable("API_KEY", "env-api-key-12345");
-            
+
             Console.WriteLine("🔧 设置的环境变量:");
             Console.WriteLine("   SERVER_HOST=env-host.com");
             Console.WriteLine("   API_KEY=env-api-key-12345");
             Console.WriteLine();
 
-            var args = new[] 
-            { 
+            var args = new[]
+            {
                 "--app-name", "AttributeDemo",
                 "--database-url", "postgresql://localhost:5432/demo",
-                "--port", "9000",  // 覆盖默认值
-                "--ssl",           // 标志选项
-                "--log-level", "Warning"  // 枚举选项
+                "--port", "9000", // 覆盖默认值
+                "--ssl", // 标志选项
+                "--log-level", "Warning" // 枚举选项
                 // 注意：没有提供 host 和 api-key，将使用环境变量
             };
 

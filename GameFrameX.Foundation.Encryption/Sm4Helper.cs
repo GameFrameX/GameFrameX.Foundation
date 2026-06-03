@@ -64,7 +64,7 @@ public static class Sm4Helper
         ArgumentNullException.ThrowIfNull(keyString);
         ArgumentNullException.ThrowIfNull(dataString);
         ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
-        
+
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
@@ -75,7 +75,7 @@ public static class Sm4Helper
             // W-13 修复：补全缩进
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
-        
+
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,
@@ -114,7 +114,7 @@ public static class Sm4Helper
         ArgumentNullException.ThrowIfNull(keyString);
         ArgumentNullException.ThrowIfNull(dataString);
         ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
-        
+
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
@@ -124,7 +124,7 @@ public static class Sm4Helper
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
-        
+
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,
@@ -164,7 +164,7 @@ public static class Sm4Helper
         ArgumentNullException.ThrowIfNull(keyString);
         ArgumentNullException.ThrowIfNull(dataString);
         ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
-        
+
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
@@ -174,7 +174,7 @@ public static class Sm4Helper
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
-        
+
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,
@@ -209,7 +209,7 @@ public static class Sm4Helper
         ArgumentNullException.ThrowIfNull(keyString);
         ArgumentNullException.ThrowIfNull(dataString);
         ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
-        
+
         // Validate key length based on hexString flag
         if (hexString && keyString.Length != 32)
         {
@@ -219,7 +219,7 @@ public static class Sm4Helper
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
         }
-        
+
         Sm4Util sm4Util = new Sm4Util
         {
             secretKey = keyString,

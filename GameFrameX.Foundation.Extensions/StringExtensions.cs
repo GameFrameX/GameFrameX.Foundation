@@ -362,6 +362,7 @@ public static partial class StringExtensions
         {
             if (!char.IsWhiteSpace(c)) sb.Append(c);
         }
+
         return sb.ToString();
     }
 

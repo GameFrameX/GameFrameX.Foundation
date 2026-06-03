@@ -201,6 +201,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// Reflection result cache for caching type property information.
     /// </remarks>
     private static readonly ConcurrentDictionary<Type, PropertyInfo[]> PropertyCache = new();
+
     private static readonly ConcurrentDictionary<Type, Dictionary<string, string>> OptionMappingsCache = new();
 
     /// <summary>
@@ -326,8 +327,8 @@ public sealed class OptionsBuilder<T> where T : class, new()
     private void ApplyDefaultValues(T target)
     {
         var properties = GetCachedProperties(typeof(T))
-                                  .Where(p => p.CanWrite)
-                                  .ToList();
+                         .Where(p => p.CanWrite)
+                         .ToList();
 
         foreach (var property in properties)
         {
@@ -403,6 +404,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                     {
                         optionName = optionAttr.LongName;
                     }
+
                     break;
                 }
             }
@@ -729,8 +731,8 @@ public sealed class OptionsBuilder<T> where T : class, new()
     private void ApplyOptions(T target, Dictionary<string, object> options)
     {
         var properties = GetCachedProperties(typeof(T))
-                                  .Where(p => p.CanWrite)
-                                  .ToList();
+                         .Where(p => p.CanWrite)
+                         .ToList();
 
         // 获取选项映射
         var optionMappings = GetOptionMappings();

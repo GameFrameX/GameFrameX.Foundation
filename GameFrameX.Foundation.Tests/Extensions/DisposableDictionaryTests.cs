@@ -136,7 +136,7 @@ public class DisposableDictionaryTests
     {
         // Arrange
         var value = new TestDisposable("value");
-        
+
         // Act
         CreateAndAbandonDictionary(value);
         GC.Collect();
@@ -226,7 +226,7 @@ public class DisposableDictionaryTests
 
         // Assert
         Assert.False(value1.IsDisposed); // Removed before dispose
-        Assert.True(value2.IsDisposed);  // Still in dictionary when disposed
+        Assert.True(value2.IsDisposed); // Still in dictionary when disposed
     }
 
     #endregion

@@ -18,15 +18,15 @@ namespace GameFrameX.Foundation.Tests.Json
         {
             // 测试序列化null对象
             Assert.Throws<ArgumentNullException>(() => JsonHelper.Serialize(null));
-            
+
             // 测试反序列化null字符串
             Assert.Throws<ArgumentNullException>(() => JsonHelper.Deserialize<ExceptionTestClass>(null));
-            
+
             // 测试使用null选项
             Assert.Throws<ArgumentNullException>(() => JsonHelper.Serialize(new ExceptionTestClass(), null));
-            
+
             // 测试反序列化为null类型
-            Assert.Throws<ArgumentNullException>(() => JsonHelper.Deserialize("{}",  (Type)null));
+            Assert.Throws<ArgumentNullException>(() => JsonHelper.Deserialize("{}", (Type)null));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace GameFrameX.Foundation.Tests.Json
         {
             // 测试反序列化空字符串
             Assert.Throws<ArgumentException>(() => JsonHelper.Deserialize<ExceptionTestClass>(""));
-            
+
             // 测试反序列化空白字符串
             Assert.Throws<ArgumentException>(() => JsonHelper.Deserialize<ExceptionTestClass>("   "));
         }
@@ -52,14 +52,14 @@ namespace GameFrameX.Foundation.Tests.Json
             string invalidJson1 = "{\"Id\":1,\"Name\":\"缺少结束括号\"";
             string invalidJson2 = "{\"Id\":1,\"Name\":缺少引号}";
             string invalidJson3 = "{\"Id\":true,\"Name\":123}"; // 类型不匹配
-            
+
             // 测试TryDeserialize方法对无效JSON的处理
             Assert.False(JsonHelper.TryDeserialize<ExceptionTestClass>(invalidJson1, out var result1));
             Assert.Null(result1);
-            
+
             Assert.False(JsonHelper.TryDeserialize<ExceptionTestClass>(invalidJson2, out var result2));
             Assert.Null(result2);
-            
+
             // 类型不匹配的情况下，System.Text.Json可能会尝试转换，这取决于具体实现
             // 我们只验证方法不会抛出异常
             JsonHelper.TryDeserialize<ExceptionTestClass>(invalidJson3, out var result3);
@@ -82,11 +82,11 @@ namespace GameFrameX.Foundation.Tests.Json
   ""Name"": ""多余逗号"",,,
   ""IsActive"": true
 }";
-            
+
             // 测试TryDeserialize方法对错误格式化JSON的处理
             Assert.False(JsonHelper.TryDeserialize<ExceptionTestClass>(errorJson1, out var result1));
             Assert.Null(result1);
-            
+
             Assert.False(JsonHelper.TryDeserialize<ExceptionTestClass>(errorJson2, out var result2));
             Assert.Null(result2);
         }

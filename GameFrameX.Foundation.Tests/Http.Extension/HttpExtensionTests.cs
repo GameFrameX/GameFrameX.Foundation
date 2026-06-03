@@ -49,6 +49,7 @@ internal sealed class FakeOptionsHttpMessageHandler : HttpMessageHandler
         {
             response.Content.Headers.Allow.Add(method);
         }
+
         return Task.FromResult(response);
     }
 }
@@ -67,14 +68,14 @@ public sealed class HttpClientGetExtensionTests : IDisposable
     [Fact]
     public async Task GetToStringAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).GetToStringAsync("http://test.com"));
+                                                               ((HttpClient)null!).GetToStringAsync("http://test.com"));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task GetToStringAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.GetToStringAsync(url));
+                                                           _client.GetToStringAsync(url));
 
     [Fact]
     public async Task GetToStringAsync_Success_SendsGetMethod()
@@ -100,17 +101,17 @@ public sealed class HttpClientGetExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.NotFound;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.GetToStringAsync("http://test.com"));
+                                                           _client.GetToStringAsync("http://test.com"));
     }
 
     [Fact]
     public async Task GetToStringAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.GetToStringAsync("http://test.com",
-            new Dictionary<string, string> { { "X-Custom", "abc" } });
+                                       new Dictionary<string, string> { { "X-Custom", "abc" } });
 
         Assert.Equal("abc",
-            _handler.CapturedRequest!.Headers.GetValues("X-Custom").Single());
+                     _handler.CapturedRequest!.Headers.GetValues("X-Custom").Single());
     }
 
     // --- GetToByteArrayAsync ---
@@ -118,14 +119,14 @@ public sealed class HttpClientGetExtensionTests : IDisposable
     [Fact]
     public async Task GetToByteArrayAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).GetToByteArrayAsync("http://test.com"));
+                                                               ((HttpClient)null!).GetToByteArrayAsync("http://test.com"));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task GetToByteArrayAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.GetToByteArrayAsync(url));
+                                                           _client.GetToByteArrayAsync(url));
 
     [Fact]
     public async Task GetToByteArrayAsync_Success_ReturnsResponseBytes()
@@ -143,14 +144,14 @@ public sealed class HttpClientGetExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.InternalServerError;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.GetToByteArrayAsync("http://test.com"));
+                                                           _client.GetToByteArrayAsync("http://test.com"));
     }
 
     [Fact]
     public async Task GetToByteArrayAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.GetToByteArrayAsync("http://test.com",
-            new Dictionary<string, string> { { "Accept-Language", "zh-CN" } });
+                                          new Dictionary<string, string> { { "Accept-Language", "zh-CN" } });
 
         Assert.True(_handler.CapturedRequest!.Headers.Contains("Accept-Language"));
     }
@@ -160,7 +161,7 @@ public sealed class HttpClientGetExtensionTests : IDisposable
     [Fact]
     public async Task GetToStreamAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).GetToStreamAsync("http://test.com"));
+                                                               ((HttpClient)null!).GetToStreamAsync("http://test.com"));
 
     [Fact]
     public async Task GetToStreamAsync_Success_ReturnsReadableStream()
@@ -179,7 +180,7 @@ public sealed class HttpClientGetExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.Forbidden;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.GetToStreamAsync("http://test.com"));
+                                                           _client.GetToStreamAsync("http://test.com"));
     }
 
     public void Dispose() => _client.Dispose();
@@ -201,14 +202,14 @@ public sealed class HttpClientPostExtensionTests : IDisposable
     [Fact]
     public async Task PostJsonToStringAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).PostJsonToStringAsync("http://test.com", new Payload("x")));
+                                                               ((HttpClient)null!).PostJsonToStringAsync("http://test.com", new Payload("x")));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task PostJsonToStringAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.PostJsonToStringAsync(url, new Payload("x")));
+                                                           _client.PostJsonToStringAsync(url, new Payload("x")));
 
     [Fact]
     public async Task PostJsonToStringAsync_Success_SendsPostMethod()
@@ -234,14 +235,14 @@ public sealed class HttpClientPostExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.BadRequest;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PostJsonToStringAsync("http://test.com", new Payload("x")));
+                                                           _client.PostJsonToStringAsync("http://test.com", new Payload("x")));
     }
 
     [Fact]
     public async Task PostJsonToStringAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.PostJsonToStringAsync("http://test.com", new Payload("x"),
-            new Dictionary<string, string> { { "Authorization", "Bearer token" } });
+                                            new Dictionary<string, string> { { "Authorization", "Bearer token" } });
 
         Assert.True(_handler.CapturedRequest!.Headers.Contains("Authorization"));
     }
@@ -272,7 +273,7 @@ public sealed class HttpClientPostExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.UnprocessableEntity;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PostJsonToByteArrayAsync("http://test.com", new Payload("x")));
+                                                           _client.PostJsonToByteArrayAsync("http://test.com", new Payload("x")));
     }
 
     // --- PostJsonToStreamAsync ---
@@ -294,7 +295,7 @@ public sealed class HttpClientPostExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.ServiceUnavailable;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PostJsonToStreamAsync("http://test.com", new Payload("x")));
+                                                           _client.PostJsonToStreamAsync("http://test.com", new Payload("x")));
     }
 
     public void Dispose() => _client.Dispose();
@@ -316,14 +317,14 @@ public sealed class HttpClientPutExtensionTests : IDisposable
     [Fact]
     public async Task PutJsonToStringAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).PutJsonToStringAsync("http://test.com", new Payload("v")));
+                                                               ((HttpClient)null!).PutJsonToStringAsync("http://test.com", new Payload("v")));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task PutJsonToStringAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.PutJsonToStringAsync(url, new Payload("v")));
+                                                           _client.PutJsonToStringAsync(url, new Payload("v")));
 
     [Fact]
     public async Task PutJsonToStringAsync_Success_SendsPutMethod()
@@ -349,17 +350,17 @@ public sealed class HttpClientPutExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.NotFound;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PutJsonToStringAsync("http://test.com", new Payload("v")));
+                                                           _client.PutJsonToStringAsync("http://test.com", new Payload("v")));
     }
 
     [Fact]
     public async Task PutJsonToStringAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.PutJsonToStringAsync("http://test.com", new Payload("v"),
-            new Dictionary<string, string> { { "X-Trace-Id", "abc123" } });
+                                           new Dictionary<string, string> { { "X-Trace-Id", "abc123" } });
 
         Assert.Equal("abc123",
-            _handler.CapturedRequest!.Headers.GetValues("X-Trace-Id").Single());
+                     _handler.CapturedRequest!.Headers.GetValues("X-Trace-Id").Single());
     }
 
     // --- PutJsonToByteArrayAsync ---
@@ -388,7 +389,7 @@ public sealed class HttpClientPutExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.Conflict;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PutJsonToByteArrayAsync("http://test.com", new Payload("v")));
+                                                           _client.PutJsonToByteArrayAsync("http://test.com", new Payload("v")));
     }
 
     // --- PutJsonToStreamAsync ---
@@ -418,7 +419,7 @@ public sealed class HttpClientPutExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.BadRequest;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PutJsonToStreamAsync("http://test.com", new Payload("v")));
+                                                           _client.PutJsonToStreamAsync("http://test.com", new Payload("v")));
     }
 
     public void Dispose() => _client.Dispose();
@@ -440,14 +441,14 @@ public sealed class HttpClientPatchExtensionTests : IDisposable
     [Fact]
     public async Task PatchJsonToStringAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).PatchJsonToStringAsync("http://test.com", new Payload("f")));
+                                                               ((HttpClient)null!).PatchJsonToStringAsync("http://test.com", new Payload("f")));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task PatchJsonToStringAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.PatchJsonToStringAsync(url, new Payload("f")));
+                                                           _client.PatchJsonToStringAsync(url, new Payload("f")));
 
     [Fact]
     public async Task PatchJsonToStringAsync_Success_SendsPatchMethod()
@@ -473,14 +474,14 @@ public sealed class HttpClientPatchExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.UnprocessableEntity;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PatchJsonToStringAsync("http://test.com", new Payload("f")));
+                                                           _client.PatchJsonToStringAsync("http://test.com", new Payload("f")));
     }
 
     [Fact]
     public async Task PatchJsonToStringAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.PatchJsonToStringAsync("http://test.com", new Payload("f"),
-            new Dictionary<string, string> { { "If-Match", "\"etag-abc\"" } });
+                                             new Dictionary<string, string> { { "If-Match", "\"etag-abc\"" } });
 
         Assert.True(_handler.CapturedRequest!.Headers.Contains("If-Match"));
     }
@@ -511,7 +512,7 @@ public sealed class HttpClientPatchExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.NotFound;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PatchJsonToByteArrayAsync("http://test.com", new Payload("f")));
+                                                           _client.PatchJsonToByteArrayAsync("http://test.com", new Payload("f")));
     }
 
     // --- PatchJsonToStreamAsync ---
@@ -541,7 +542,7 @@ public sealed class HttpClientPatchExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.Conflict;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.PatchJsonToStreamAsync("http://test.com", new Payload("f")));
+                                                           _client.PatchJsonToStreamAsync("http://test.com", new Payload("f")));
     }
 
     public void Dispose() => _client.Dispose();
@@ -561,14 +562,14 @@ public sealed class HttpClientDeleteExtensionTests : IDisposable
     [Fact]
     public async Task DeleteToStringAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).DeleteToStringAsync("http://test.com"));
+                                                               ((HttpClient)null!).DeleteToStringAsync("http://test.com"));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task DeleteToStringAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.DeleteToStringAsync(url));
+                                                           _client.DeleteToStringAsync(url));
 
     [Fact]
     public async Task DeleteToStringAsync_Success_SendsDeleteMethod()
@@ -594,17 +595,17 @@ public sealed class HttpClientDeleteExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.NotFound;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.DeleteToStringAsync("http://test.com"));
+                                                           _client.DeleteToStringAsync("http://test.com"));
     }
 
     [Fact]
     public async Task DeleteToStringAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.DeleteToStringAsync("http://test.com",
-            new Dictionary<string, string> { { "X-Reason", "cleanup" } });
+                                          new Dictionary<string, string> { { "X-Reason", "cleanup" } });
 
         Assert.Equal("cleanup",
-            _handler.CapturedRequest!.Headers.GetValues("X-Reason").Single());
+                     _handler.CapturedRequest!.Headers.GetValues("X-Reason").Single());
     }
 
     // --- DeleteToByteArrayAsync ---
@@ -633,14 +634,14 @@ public sealed class HttpClientDeleteExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.Forbidden;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.DeleteToByteArrayAsync("http://test.com"));
+                                                           _client.DeleteToByteArrayAsync("http://test.com"));
     }
 
     [Fact]
     public async Task DeleteToByteArrayAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.DeleteToByteArrayAsync("http://test.com",
-            new Dictionary<string, string> { { "X-Cascade", "true" } });
+                                             new Dictionary<string, string> { { "X-Cascade", "true" } });
 
         Assert.True(_handler.CapturedRequest!.Headers.Contains("X-Cascade"));
     }
@@ -660,14 +661,14 @@ public sealed class HttpClientHeadExtensionTests : IDisposable
     [Fact]
     public async Task HeadAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).HeadAsync("http://test.com"));
+                                                               ((HttpClient)null!).HeadAsync("http://test.com"));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task HeadAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.HeadAsync(url));
+                                                           _client.HeadAsync(url));
 
     [Fact]
     public async Task HeadAsync_Success_SendsHeadMethod()
@@ -691,14 +692,14 @@ public sealed class HttpClientHeadExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.NotFound;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.HeadAsync("http://test.com"));
+                                                           _client.HeadAsync("http://test.com"));
     }
 
     [Fact]
     public async Task HeadAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.HeadAsync("http://test.com",
-            new Dictionary<string, string> { { "If-None-Match", "\"v1\"" } });
+                                new Dictionary<string, string> { { "If-None-Match", "\"v1\"" } });
 
         Assert.True(_handler.CapturedRequest!.Headers.Contains("If-None-Match"));
     }
@@ -718,14 +719,14 @@ public sealed class HttpClientOptionsExtensionTests : IDisposable
     [Fact]
     public async Task OptionsAsync_NullClient_ThrowsArgumentNullException()
         => await Assert.ThrowsAsync<ArgumentNullException>(() =>
-            ((HttpClient)null!).OptionsAsync("http://test.com"));
+                                                               ((HttpClient)null!).OptionsAsync("http://test.com"));
 
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
     public async Task OptionsAsync_BlankUrl_ThrowsArgumentException(string url)
         => await Assert.ThrowsAsync<ArgumentException>(() =>
-            _client.OptionsAsync(url));
+                                                           _client.OptionsAsync(url));
 
     [Fact]
     public async Task OptionsAsync_Success_SendsOptionsMethod()
@@ -764,17 +765,17 @@ public sealed class HttpClientOptionsExtensionTests : IDisposable
         _handler.StatusCode = HttpStatusCode.MethodNotAllowed;
 
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.OptionsAsync("http://test.com"));
+                                                           _client.OptionsAsync("http://test.com"));
     }
 
     [Fact]
     public async Task OptionsAsync_WithHeaders_SetsRequestHeaders()
     {
         await _client.OptionsAsync("http://test.com",
-            new Dictionary<string, string> { { "Origin", "http://example.com" } });
+                                   new Dictionary<string, string> { { "Origin", "http://example.com" } });
 
         Assert.Equal("http://example.com",
-            _handler.CapturedRequest!.Headers.GetValues("Origin").Single());
+                     _handler.CapturedRequest!.Headers.GetValues("Origin").Single());
     }
 
     public void Dispose() => _client.Dispose();

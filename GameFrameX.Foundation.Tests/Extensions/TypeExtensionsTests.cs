@@ -182,7 +182,7 @@ public class TypeExtensionsTests
         // Assert
         Assert.False(result);
     }
-    
+
     [Fact]
     public void IsImplWithInterface_IndirectImplementation_CheckIndirectInterfacesTrue_ShouldReturnFalse()
     {
@@ -197,7 +197,7 @@ public class TypeExtensionsTests
         // 移除特殊情况处理后，即使 checkIndirectInterfaces=true，也不会认为 IComparable<T> 实现了 IComparable
         Assert.False(result);
     }
-    
+
     [Fact]
     public void IsImplWithInterface_InterfaceInheritance_CheckIndirectInterfacesFalse_ShouldReturnFalse()
     {
@@ -212,7 +212,7 @@ public class TypeExtensionsTests
         // Assert
         Assert.False(result);
     }
-    
+
     [Fact]
     public void IsImplWithInterface_InterfaceInheritance_CheckIndirectInterfacesTrue_ShouldReturnTrue()
     {
@@ -231,36 +231,49 @@ public class TypeExtensionsTests
     #endregion
 
     // Helper classes for testing
-    private class TestBase<T> { }
+    private class TestBase<T>
+    {
+    }
 
-    private class TestDerived : TestBase<string> { }
+    private class TestDerived : TestBase<string>
+    {
+    }
 
     private abstract class AbstractClass : IDisposable
     {
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
     }
 
     private class TestClass : IDisposable, IComparable<string>
     {
-        public void Dispose() { }
+        public void Dispose()
+        {
+        }
 
         public int CompareTo(string other) => 0;
     }
-    
+
     // 用于测试接口继承关系的接口和类
     private interface IParentInterface
     {
         void ParentMethod();
     }
-    
+
     private interface IChildInterface : IParentInterface
     {
         void ChildMethod();
     }
-    
+
     private class DerivedInterfaceImplementer : IChildInterface
     {
-        public void ParentMethod() { }
-        public void ChildMethod() { }
+        public void ParentMethod()
+        {
+        }
+
+        public void ChildMethod()
+        {
+        }
     }
 }

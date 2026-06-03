@@ -57,8 +57,8 @@ public class ListExtensionsTests
         List<int> list = null;
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => 
-            list.ForEachAsync(async item => await Task.Delay(1)));
+        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() =>
+                                                                            list.ForEachAsync(async item => await Task.Delay(1)));
         Assert.Equal("list", exception.ParamName);
     }
 
@@ -70,8 +70,8 @@ public class ListExtensionsTests
         Func<int, Task> func = null;
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => 
-            list.ForEachAsync(func));
+        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() =>
+                                                                            list.ForEachAsync(func));
         Assert.Equal("func", exception.ParamName);
     }
 
@@ -83,18 +83,18 @@ public class ListExtensionsTests
         var expectedException = new InvalidOperationException("Test exception");
 
         // Act & Assert
-        var actualException = await Assert.ThrowsAsync<InvalidOperationException>(() => 
-            list.ForEachAsync(async item =>
-            {
-                await Task.Delay(1);
-                if (item != 2)
-                {
-                }
-                else
-                {
-                    throw expectedException;
-                }
-            }));
+        var actualException = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                                                                                      list.ForEachAsync(async item =>
+                                                                                      {
+                                                                                          await Task.Delay(1);
+                                                                                          if (item != 2)
+                                                                                          {
+                                                                                          }
+                                                                                          else
+                                                                                          {
+                                                                                              throw expectedException;
+                                                                                          }
+                                                                                      }));
         Assert.Equal(expectedException.Message, actualException.Message);
     }
 
@@ -145,8 +145,8 @@ public class ListExtensionsTests
         IEnumerable<int> source = null;
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => 
-            source.ForEachAsync(async item => await Task.Delay(1)));
+        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() =>
+                                                                            source.ForEachAsync(async item => await Task.Delay(1)));
         Assert.Equal("source", exception.ParamName);
     }
 
@@ -158,8 +158,8 @@ public class ListExtensionsTests
         Func<int, Task> action = null;
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() => 
-            source.ForEachAsync(action));
+        var exception = await Assert.ThrowsAsync<ArgumentNullException>(() =>
+                                                                            source.ForEachAsync(action));
         Assert.Equal("action", exception.ParamName);
     }
 
@@ -171,15 +171,15 @@ public class ListExtensionsTests
         var expectedException = new InvalidOperationException("Test exception");
 
         // Act & Assert
-        var actualException = await Assert.ThrowsAsync<InvalidOperationException>(() => 
-            source.ForEachAsync(async item =>
-            {
-                await Task.Delay(1);
-                if (item == 2)
-                {
-                    throw expectedException;
-                }
-            }));
+        var actualException = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                                                                                      source.ForEachAsync(async item =>
+                                                                                      {
+                                                                                          await Task.Delay(1);
+                                                                                          if (item == 2)
+                                                                                          {
+                                                                                              throw expectedException;
+                                                                                          }
+                                                                                      }));
         Assert.Equal(expectedException.Message, actualException.Message);
     }
 

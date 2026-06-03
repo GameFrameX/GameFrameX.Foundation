@@ -114,7 +114,7 @@ public class ConcurrentLimitedQueueTests
         List<int> list = null;
 
         // Act & Assert
-        var exception = Assert.Throws<ArgumentNullException>(() => 
+        var exception = Assert.Throws<ArgumentNullException>(() =>
         {
             ConcurrentLimitedQueue<int> queue = list;
         });
@@ -166,7 +166,7 @@ public class ConcurrentLimitedQueueTests
 
         // Assert
         Assert.Equal(2, queue.Count);
-        
+
         // Verify that the oldest element (1) was removed
         var items = queue.ToArray();
         Assert.Contains(2, items);
@@ -188,7 +188,7 @@ public class ConcurrentLimitedQueueTests
 
         // Assert
         Assert.Equal(3, queue.Count);
-        
+
         // Verify that only the last 3 elements remain
         var items = queue.ToArray();
         Assert.Contains(8, items);

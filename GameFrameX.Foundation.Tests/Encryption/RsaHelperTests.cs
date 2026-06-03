@@ -44,7 +44,7 @@ public class RsaHelperTests
         Assert.NotNull(encryptedText);
         Assert.NotEmpty(encryptedText);
         Assert.NotEqual(ShortTestData, encryptedText);
-        
+
         // 验证是否为有效的Base64字符串
         try
         {
@@ -151,7 +151,7 @@ public class RsaHelperTests
         // Assert
         Assert.NotNull(signature);
         Assert.NotEmpty(signature);
-        
+
         // 验证是否为有效的Base64字符串
         try
         {
@@ -284,7 +284,7 @@ public class RsaHelperTests
 
         // Act & Assert
         Assert.Throws<System.Security.Cryptography.CryptographicException>(() =>
-            RsaHelper.SignData(dataBytes, invalidPrivateKey));
+                                                                               RsaHelper.SignData(dataBytes, invalidPrivateKey));
     }
 
     [Fact]

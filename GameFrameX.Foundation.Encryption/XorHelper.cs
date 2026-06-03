@@ -77,12 +77,12 @@ public static class XorHelper
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
-        
+
         if (code.Length == 0)
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
-        
+
         // 取最小值以防止数组越界：当输入数据长度小于QuickEncryptLength时使用实际长度，
         // 当输入数据长度大于等于QuickEncryptLength时使用QuickEncryptLength以保持快速加密的性能优势
         var length = Math.Min(bytes.Length, QuickEncryptLength);
@@ -105,12 +105,12 @@ public static class XorHelper
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
-        
+
         if (code.Length == 0)
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
-        
+
         // 取最小值以防止数组越界：当输入数据长度小于QuickEncryptLength时使用实际长度，
         // 当输入数据长度大于等于QuickEncryptLength时使用QuickEncryptLength以保持快速加密的性能优势
         var length = Math.Min(bytes.Length, QuickEncryptLength);
@@ -134,7 +134,7 @@ public static class XorHelper
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
-        
+
         if (code.Length == 0)
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
@@ -159,7 +159,7 @@ public static class XorHelper
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
-        
+
         if (code.Length == 0)
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
@@ -188,15 +188,15 @@ public static class XorHelper
     {
         ArgumentNullException.ThrowIfNull(bytes, nameof(bytes));
         ArgumentNullException.ThrowIfNull(code, nameof(code));
-        
+
         if (code.Length == 0)
         {
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyArrayCannotBeEmpty), nameof(code));
         }
-        
+
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
         ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
-        
+
         if (startIndex + length > bytes.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(length), "Start index and length exceed array bounds");
@@ -236,7 +236,7 @@ public static class XorHelper
 
         ArgumentOutOfRangeException.ThrowIfNegative(startIndex, nameof(startIndex));
         ArgumentOutOfRangeException.ThrowIfNegative(length, nameof(length));
-        
+
         if (startIndex + length > bytes.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(length), "Start index and length exceed array bounds");

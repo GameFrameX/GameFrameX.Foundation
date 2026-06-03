@@ -268,7 +268,7 @@ public class XorHelperTests
         var dataBytes = Encoding.UTF8.GetBytes(TestData);
 
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            XorHelper.GetXorBytes(dataBytes, -1, 4, keyBytes));
+                                                       XorHelper.GetXorBytes(dataBytes, -1, 4, keyBytes));
     }
 
     [Fact]
@@ -278,7 +278,7 @@ public class XorHelperTests
         var dataBytes = Encoding.UTF8.GetBytes(TestData);
 
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            XorHelper.GetXorBytes(dataBytes, 0, -1, keyBytes));
+                                                       XorHelper.GetXorBytes(dataBytes, 0, -1, keyBytes));
     }
 
     [Fact]
@@ -288,7 +288,7 @@ public class XorHelperTests
         var dataBytes = new byte[10];
 
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            XorHelper.GetXorBytes(dataBytes, 5, 10, keyBytes));
+                                                       XorHelper.GetXorBytes(dataBytes, 5, 10, keyBytes));
     }
 
     // ── 参数校验 ────────────────────────────────────────────────────────────

@@ -40,10 +40,10 @@ namespace GameFrameX.Foundation.Tests.Utility
         public void DefaultTimeZone_ShouldBeUtc()
         {
             Assert.Equal(TimeZoneInfo.Utc.Id, TimerHelper.CurrentTimeZone.Id);
-            
+
             var now = TimerHelper.GetNowWithTimeZone();
             var utcNow = DateTime.UtcNow;
-            
+
             // Allow small difference for execution time
             Assert.True((now - utcNow).Duration().TotalSeconds < 1);
         }
@@ -63,7 +63,7 @@ namespace GameFrameX.Foundation.Tests.Utility
 
             var now = TimerHelper.GetNowWithTimeZone();
             var utcNow = DateTime.UtcNow;
-            
+
             // Expected: Now = UtcNow + 8 hours
             var expectedNow = utcNow + offset;
             Assert.True((now - expectedNow).Duration().TotalSeconds < 1);
@@ -173,7 +173,7 @@ namespace GameFrameX.Foundation.Tests.Utility
         public void UnixTimestamp_ShouldBeAbsolute()
         {
             // Timestamp should be the same regardless of timezone setting because it represents absolute time
-            
+
             TimerHelper.SetTimeZone(TimeZoneInfo.Utc);
             var ts1 = TimerHelper.UnixTimeSeconds();
 
@@ -293,7 +293,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             var yearStandard = TimerHelper.GetYearStartTimestamp();
             var yearWithZone = TimerHelper.GetYearStartTimestampWithTimeZone();
             Assert.Equal(offsetSeconds, yearWithZone - yearStandard);
-            
+
             // 5. Test specific date (Month End)
             var now = DateTime.UtcNow;
             var monthEndStandard = TimerHelper.GetEndTimestampOfMonth(now);
@@ -343,3 +343,4 @@ namespace GameFrameX.Foundation.Tests.Utility
     }
 }
 */
+

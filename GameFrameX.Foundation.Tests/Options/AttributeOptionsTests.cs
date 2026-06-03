@@ -17,8 +17,7 @@ public class AttributeOptionsTests
         [Option(LongName = "host", EnvironmentVariable = "TEST_HOST", DefaultValue = "localhost")]
         public string Host { get; set; }
 
-        [FlagOption(LongName = "verbose")]
-        public bool Verbose { get; set; }
+        [FlagOption(LongName = "verbose")] public bool Verbose { get; set; }
 
         [Option(LongName = "api-key", Required = true)]
         public string ApiKey { get; set; }
@@ -70,18 +69,17 @@ public class AttributeOptionsTests
         Assert.Equal("默认值", options.NoAttributeProperty);
     }
 
-    
 
     [Fact]
     public void Build_WithEnvironmentVariables_ShouldApplyValues()
     {
         // 安排
         var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
-        
+
         // 设置环境变量
         Environment.SetEnvironmentVariable("TEST_PORT", "7070");
         Environment.SetEnvironmentVariable("TEST_HOST", "env-host.com");
-        
+
         var builder = new OptionsBuilder<TestOptions>(args);
 
         try
@@ -108,11 +106,11 @@ public class AttributeOptionsTests
     {
         // 安排
         var args = new[] { "--port", "9090", "--api-key", "test-key" }; // 添加必需的api-key
-        
+
         // 设置环境变量
         Environment.SetEnvironmentVariable("TEST_PORT", "7070");
         Environment.SetEnvironmentVariable("TEST_HOST", "env-host.com");
-        
+
         var builder = new OptionsBuilder<TestOptions>(args);
 
         try
@@ -191,10 +189,10 @@ public class AttributeOptionsTests
     {
         // 安排
         var args = Array.Empty<string>();
-        
+
         // 设置环境变量
         Environment.SetEnvironmentVariable("TEST_CONNECTION", "Server=env-server;Database=env-db");
-        
+
         var builder = new OptionsBuilder<TestOptionsWithMultipleAttributes>(args);
 
         try
@@ -217,11 +215,11 @@ public class AttributeOptionsTests
     {
         // 安排 - 测试空环境变量值不会导致IndexOutOfRangeException
         var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
-        
+
         // 设置空的环境变量值
         Environment.SetEnvironmentVariable("TEST_PORT", "");
         Environment.SetEnvironmentVariable("TEST_HOST", "");
-        
+
         var builder = new OptionsBuilder<TestOptions>(args);
 
         try
@@ -247,11 +245,11 @@ public class AttributeOptionsTests
     {
         // 安排 - 测试"undefined"环境变量值不会导致IndexOutOfRangeException
         var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
-        
+
         // 设置"undefined"的环境变量值（模拟某些系统中的情况）
         Environment.SetEnvironmentVariable("TEST_PORT", "undefined");
         Environment.SetEnvironmentVariable("TEST_HOST", "undefined");
-        
+
         var builder = new OptionsBuilder<TestOptions>(args);
 
         try
@@ -273,11 +271,11 @@ public class AttributeOptionsTests
     {
         // 安排 - 测试null环境变量值（通过显式设置为null）
         var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
-        
+
         // 显式设置环境变量为null（清除）
         Environment.SetEnvironmentVariable("TEST_PORT", null);
         Environment.SetEnvironmentVariable("TEST_HOST", null);
-        
+
         var builder = new OptionsBuilder<TestOptions>(args);
 
         // 执行 - 这里不应该抛出任何异常
@@ -294,11 +292,11 @@ public class AttributeOptionsTests
     {
         // 安排 - 测试混合的空值和有效值环境变量
         var args = new[] { "--api-key", "test-key" }; // 添加必需的api-key
-        
+
         // 设置混合的环境变量值
         Environment.SetEnvironmentVariable("TEST_PORT", "9999"); // 有效值
         Environment.SetEnvironmentVariable("TEST_HOST", ""); // 空值
-        
+
         var builder = new OptionsBuilder<TestOptions>(args);
 
         try

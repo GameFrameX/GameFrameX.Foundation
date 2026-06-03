@@ -111,7 +111,7 @@ public static class Sha1Helper
     public static string ComputeFileHash(string filePath)
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-        
+
         if (!File.Exists(filePath))
         {
             return string.Empty;
@@ -184,7 +184,7 @@ public static class Sha1Helper
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
         ArgumentException.ThrowIfNullOrEmpty(hash, nameof(hash));
-        
+
         if (!File.Exists(filePath))
         {
             return false;

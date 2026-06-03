@@ -149,7 +149,7 @@ public class Sha512HelperTests
     {
         // Arrange
         var input = "测试字符串";
-        
+
         // Act
         var hashUtf8 = Sha512Helper.ComputeHash(input, Encoding.UTF8);
         var hashUtf16 = Sha512Helper.ComputeHash(input, Encoding.Unicode);

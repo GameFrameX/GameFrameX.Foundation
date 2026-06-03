@@ -31,8 +31,7 @@ namespace GameFrameX.Foundation.Tests.Options
         /// </summary>
         public class ConfigWithDefaults
         {
-            [Option("timeout", DefaultValue = 30)]
-            public int Timeout { get; set; }
+            [Option("timeout", DefaultValue = 30)] public int Timeout { get; set; }
 
             [Option("retries", DefaultValue = "3")]
             public int Retries { get; set; }
@@ -58,8 +57,7 @@ namespace GameFrameX.Foundation.Tests.Options
         /// </summary>
         public class ConfigWithRequired
         {
-            [Option("api-key", Required = true)]
-            public string ApiKey { get; set; }
+            [Option("api-key", Required = true)] public string ApiKey { get; set; }
 
             public string Host { get; set; } = "localhost";
         }

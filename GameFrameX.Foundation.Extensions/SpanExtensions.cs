@@ -169,7 +169,7 @@ public static partial class SpanExtensions
         if (offset + ConstBaseTypeSize.ByteSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = buffer[offset];
@@ -219,7 +219,7 @@ public static partial class SpanExtensions
         if (offset + ConstBaseTypeSize.BoolSize > buffer.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(offset),
-                LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
+                                                  LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBoundsSimple));
         }
 
         var value = buffer[offset] != 0;

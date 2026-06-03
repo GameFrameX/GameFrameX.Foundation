@@ -719,5 +719,4 @@ public class TimerHelperPairTests : IDisposable
     }
 
     #endregion
-
 }

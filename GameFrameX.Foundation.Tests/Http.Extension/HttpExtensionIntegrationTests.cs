@@ -20,7 +20,6 @@ namespace GameFrameX.Foundation.Tests.Http.Extension;
 /// </summary>
 
 // ── 共享 HttpClient（所有集成测试共用，避免连接泄漏）────────────────────────────
-
 [CollectionDefinition("Integration")]
 public sealed class IntegrationCollection;
 
@@ -53,7 +52,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
     {
         // httpbin.org/status/404 会返回 404，EnsureSuccessStatusCode 应抛出
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.GetToStringAsync("https://httpbin.org/status/404"));
+                                                           _client.GetToStringAsync("https://httpbin.org/status/404"));
     }
 
     [Fact]
@@ -91,7 +90,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
     public async Task GetToByteArrayAsync_HttpBin_With500_ThrowsHttpRequestException()
     {
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.GetToByteArrayAsync("https://httpbin.org/status/500"));
+                                                           _client.GetToByteArrayAsync("https://httpbin.org/status/500"));
     }
 
     // --- GetToStreamAsync ---
@@ -142,7 +141,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
     public async Task PostJsonToStringAsync_HttpBin_ConfirmsPostMethod()
     {
         var result = await _client.PostJsonToStringAsync(
-            "https://httpbin.org/anything", new TestPayload("x", 1));
+                         "https://httpbin.org/anything", new TestPayload("x", 1));
 
         _output.WriteLine(result);
         // httpbin.org/anything 回显请求方法
@@ -158,7 +157,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
         };
 
         var result = await _client.PostJsonToStringAsync(
-            "https://httpbin.org/post", new TestPayload("h", 0), headers);
+                         "https://httpbin.org/post", new TestPayload("h", 0), headers);
 
         _output.WriteLine(result);
         Assert.Contains("X-Request-Source", result);
@@ -171,7 +170,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
     public async Task PostJsonToByteArrayAsync_HttpBin_ReturnsBytesWithEchoedBody()
     {
         var bytes = await _client.PostJsonToByteArrayAsync(
-            "https://httpbin.org/post", new TestPayload("bytes-test", 99));
+                        "https://httpbin.org/post", new TestPayload("bytes-test", 99));
 
         var json = Encoding.UTF8.GetString(bytes);
         _output.WriteLine(json);
@@ -184,7 +183,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
     public async Task PostJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
         await using var stream = await _client.PostJsonToStreamAsync(
-            "https://httpbin.org/post", new TestPayload("stream-test", 7));
+                                     "https://httpbin.org/post", new TestPayload("stream-test", 7));
         using var reader = new StreamReader(stream, Encoding.UTF8);
 
         var text = await reader.ReadToEndAsync();
@@ -211,8 +210,8 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
     public async Task PutJsonToStringAsync_HttpBin_ConfirmsPutMethod()
     {
         var result = await _client.PutJsonToStringAsync(
-            "https://httpbin.org/anything",
-            new UpdatePayload("updated-title", "updated-body"));
+                         "https://httpbin.org/anything",
+                         new UpdatePayload("updated-title", "updated-body"));
 
         _output.WriteLine(result);
         Assert.Contains("\"method\": \"PUT\"", result);
@@ -222,8 +221,8 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
     public async Task PutJsonToStringAsync_HttpBin_EchoesJsonBody()
     {
         var result = await _client.PutJsonToStringAsync(
-            "https://httpbin.org/put",
-            new UpdatePayload("put-title", "put-body"));
+                         "https://httpbin.org/put",
+                         new UpdatePayload("put-title", "put-body"));
 
         _output.WriteLine(result);
         Assert.Contains("put-title", result);
@@ -239,8 +238,8 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
         };
 
         var result = await _client.PutJsonToStringAsync(
-            "https://httpbin.org/put",
-            new UpdatePayload("h", "b"), headers);
+                         "https://httpbin.org/put",
+                         new UpdatePayload("h", "b"), headers);
 
         _output.WriteLine(result);
         Assert.Contains("If-Match", result);
@@ -250,8 +249,8 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
     public async Task PutJsonToByteArrayAsync_HttpBin_ReturnsBytesWithEchoedBody()
     {
         var bytes = await _client.PutJsonToByteArrayAsync(
-            "https://httpbin.org/put",
-            new UpdatePayload("bytes-put", "content"));
+                        "https://httpbin.org/put",
+                        new UpdatePayload("bytes-put", "content"));
 
         var json = Encoding.UTF8.GetString(bytes);
         _output.WriteLine(json);
@@ -262,8 +261,8 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
     public async Task PutJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
         await using var stream = await _client.PutJsonToStreamAsync(
-            "https://httpbin.org/put",
-            new UpdatePayload("stream-put", "data"));
+                                     "https://httpbin.org/put",
+                                     new UpdatePayload("stream-put", "data"));
         using var reader = new StreamReader(stream, Encoding.UTF8);
 
         var text = await reader.ReadToEndAsync();
@@ -290,8 +289,8 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
     public async Task PatchJsonToStringAsync_HttpBin_ConfirmsPatchMethod()
     {
         var result = await _client.PatchJsonToStringAsync(
-            "https://httpbin.org/anything",
-            new PatchPayload("status", "active"));
+                         "https://httpbin.org/anything",
+                         new PatchPayload("status", "active"));
 
         _output.WriteLine(result);
         Assert.Contains("\"method\": \"PATCH\"", result);
@@ -301,8 +300,8 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
     public async Task PatchJsonToStringAsync_HttpBin_EchoesJsonBody()
     {
         var result = await _client.PatchJsonToStringAsync(
-            "https://httpbin.org/patch",
-            new PatchPayload("email", "new@example.com"));
+                         "https://httpbin.org/patch",
+                         new PatchPayload("email", "new@example.com"));
 
         _output.WriteLine(result);
         Assert.Contains("email", result);
@@ -318,8 +317,8 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
         };
 
         var result = await _client.PatchJsonToStringAsync(
-            "https://httpbin.org/patch",
-            new PatchPayload("f", "v"), headers);
+                         "https://httpbin.org/patch",
+                         new PatchPayload("f", "v"), headers);
 
         _output.WriteLine(result);
         Assert.Contains("If-Match", result);
@@ -329,8 +328,8 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
     public async Task PatchJsonToByteArrayAsync_HttpBin_ReturnsBytesWithEchoedBody()
     {
         var bytes = await _client.PatchJsonToByteArrayAsync(
-            "https://httpbin.org/patch",
-            new PatchPayload("bytes-field", "bytes-value"));
+                        "https://httpbin.org/patch",
+                        new PatchPayload("bytes-field", "bytes-value"));
 
         var json = Encoding.UTF8.GetString(bytes);
         _output.WriteLine(json);
@@ -341,8 +340,8 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
     public async Task PatchJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
         await using var stream = await _client.PatchJsonToStreamAsync(
-            "https://httpbin.org/patch",
-            new PatchPayload("stream-field", "stream-value"));
+                                     "https://httpbin.org/patch",
+                                     new PatchPayload("stream-field", "stream-value"));
         using var reader = new StreamReader(stream, Encoding.UTF8);
 
         var text = await reader.ReadToEndAsync();
@@ -391,7 +390,7 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
         };
 
         var result = await _client.DeleteToStringAsync(
-            "https://httpbin.org/delete", headers);
+                         "https://httpbin.org/delete", headers);
 
         _output.WriteLine(result);
         Assert.Contains("X-Delete-Reason", result);
@@ -419,7 +418,7 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
         };
 
         var bytes = await _client.DeleteToByteArrayAsync(
-            "https://httpbin.org/delete", headers);
+                        "https://httpbin.org/delete", headers);
 
         var json = Encoding.UTF8.GetString(bytes);
         _output.WriteLine(json);
@@ -473,7 +472,7 @@ public sealed class HttpClientHeadIntegrationTests : IDisposable
     {
         // 验证自定义头被正确附加（通过不抛异常隐性验证）
         var headers = await _client.HeadAsync("https://httpbin.org/get",
-            new Dictionary<string, string> { { "If-None-Match", "\"some-etag\"" } });
+                                              new Dictionary<string, string> { { "If-None-Match", "\"some-etag\"" } });
 
         Assert.NotNull(headers);
     }
@@ -482,7 +481,7 @@ public sealed class HttpClientHeadIntegrationTests : IDisposable
     public async Task HeadAsync_HttpBin_404Status_ThrowsHttpRequestException()
     {
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.HeadAsync("https://httpbin.org/status/404"));
+                                                           _client.HeadAsync("https://httpbin.org/status/404"));
     }
 
     public void Dispose() => _client.Dispose();
@@ -532,7 +531,7 @@ public sealed class HttpClientOptionsIntegrationTests : IDisposable
         // 返回 200 而非指定状态码。使用 httpbingo.org（Fly.io 镜像）验证非 2xx 行为。
         // httpbingo.org/status/500 对 OPTIONS 返回 500，EnsureSuccessStatusCode 应抛出。
         await Assert.ThrowsAsync<HttpRequestException>(() =>
-            _client.OptionsAsync("https://httpbingo.org/status/500"));
+                                                           _client.OptionsAsync("https://httpbingo.org/status/500"));
     }
 
     public void Dispose() => _client.Dispose();

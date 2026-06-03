@@ -86,7 +86,7 @@ namespace GameFrameX.Foundation.Options
                 {
                     var attributes = property.GetCustomAttributes(true);
                     var optionAttribute = attributes.OfType<Attributes.OptionAttribute>().FirstOrDefault();
-                
+
 
                     string displayName;
                     if (optionAttribute != null)
@@ -130,7 +130,7 @@ namespace GameFrameX.Foundation.Options
                     typeWidth = Math.Max(typeWidth, typeName.Length);
                     descWidth = Math.Max(descWidth, description.Length);
                     defaultWidth = Math.Max(defaultWidth, defaultVal.Length);
-                    
+
                     rows.Add((displayName, displayValue, required, typeName, description, defaultVal));
                 }
 

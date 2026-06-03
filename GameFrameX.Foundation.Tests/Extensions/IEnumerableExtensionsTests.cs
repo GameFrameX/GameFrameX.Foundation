@@ -29,8 +29,6 @@ public class IEnumerableExtensionsTests
         Assert.Equal(new[] { 2, 4 }, result);
     }
 
-
-
     #endregion
 
     #region IntersectAll Tests
@@ -89,10 +87,7 @@ public class IEnumerableExtensionsTests
         Assert.Equal(new[] { 1, 3, 5 }, result);
     }
 
-
-
     #endregion
-
 
 
     #region AddRange Tests
@@ -173,7 +168,7 @@ public class IEnumerableExtensionsTests
         var source = new[] { 1, 2, 3 };
 
         // Act
-        var result = await source.SelectAsync(async x => 
+        var result = await source.SelectAsync(async x =>
         {
             await Task.Delay(10);
             return x * 2;
@@ -190,7 +185,7 @@ public class IEnumerableExtensionsTests
         var source = new[] { 10, 20, 30 };
 
         // Act
-        var result = await source.SelectAsync(async (x, index) => 
+        var result = await source.SelectAsync(async (x, index) =>
         {
             await Task.Delay(10);
             return x + index;

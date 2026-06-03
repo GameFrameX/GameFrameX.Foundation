@@ -109,7 +109,7 @@ internal static class Sm2Util
         {
             return string.Empty;
         }
-        
+
         var privateKey = Hex.Decode(privateKeyString);
         var encryptedData = Hex.Decode(encryptedDataString);
         var deStr = Sm2Util.Decrypt(privateKey, encryptedData);
@@ -175,7 +175,7 @@ internal static class Sm2Util
         {
             data = Array.Empty<byte>();
         }
-        
+
         // 特殊处理空数据
         if (data.Length == 0)
         {
@@ -230,7 +230,7 @@ internal static class Sm2Util
         {
             return Array.Empty<byte>();
         }
-        
+
         if (encryptedData.Length == 0)
         {
             return Array.Empty<byte>();
@@ -239,7 +239,7 @@ internal static class Sm2Util
         // W-12 修复：添加最小长度校验，避免硬编码偏移量导致的越界
         // 未压缩 EC 点 = 65 字节 = 130 hex 字符；C3 = 32 字节 = 64 hex 字符；最小密文 = 65+1+32 = 98 字节
         const int c1HexLen = 130; // 65 字节未压缩点 × 2
-        const int c3HexLen = 64;  // 32 字节 SM3 摘要 × 2
+        const int c3HexLen = 64; // 32 字节 SM3 摘要 × 2
         const int minEncryptedLen = 97; // 65(C1) + 0(C2 最小) + 32(C3)
 
         if (encryptedData.Length < minEncryptedLen)
@@ -254,8 +254,8 @@ internal static class Sm2Util
         byte[] c1Bytes = Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(0, c1HexLen)));
         int c2Len = encryptedData.Length - minEncryptedLen;
         byte[] c2 = c2Len > 0
-            ? Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(c1HexLen, 2 * c2Len)))
-            : Array.Empty<byte>();
+                        ? Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(c1HexLen, 2 * c2Len)))
+                        : Array.Empty<byte>();
         byte[] c3 = Hex.Decode(Encoding.ASCII.GetBytes(data.Substring(c1HexLen + 2 * c2Len, c3HexLen)));
 
         Sm2 sm2 = Sm2.Instance;

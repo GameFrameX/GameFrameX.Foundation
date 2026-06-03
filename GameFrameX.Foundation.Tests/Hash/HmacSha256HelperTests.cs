@@ -232,7 +232,7 @@ public class HmacSha256HelperTests
         // Assert
         Assert.NotNull(hash);
         Assert.NotEmpty(hash);
-        
+
         // 验证是否为有效的Base64字符串
         try
         {
@@ -260,7 +260,7 @@ public class HmacSha256HelperTests
         // Assert
         Assert.NotNull(hash);
         Assert.NotEmpty(hash);
-        
+
         // 验证Base64格式和长度
         var bytes = Convert.FromBase64String(hash);
         Assert.Equal(32, bytes.Length);
@@ -279,7 +279,7 @@ public class HmacSha256HelperTests
         // Assert
         Assert.NotNull(hash);
         Assert.NotEmpty(hash);
-        
+
         // 验证结果是一致的
         var hash2 = HmacSha256Helper.Hash(message, key);
         Assert.Equal(hash, hash2);
@@ -298,7 +298,7 @@ public class HmacSha256HelperTests
         // Assert
         Assert.NotNull(hash);
         Assert.NotEmpty(hash);
-        
+
         var bytes = Convert.FromBase64String(hash);
         Assert.Equal(32, bytes.Length);
     }
@@ -316,7 +316,7 @@ public class HmacSha256HelperTests
         // Assert
         Assert.NotNull(hash);
         Assert.NotEmpty(hash);
-        
+
         var bytes = Convert.FromBase64String(hash);
         Assert.Equal(32, bytes.Length);
     }

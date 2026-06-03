@@ -62,7 +62,7 @@ public static class MurmurHash3Helper
     public static uint Hash(string str, uint seed = 27)
     {
         ArgumentNullException.ThrowIfNull(str, nameof(str));
-        
+
         var data = Encoding.UTF8.GetBytes(str);
         return Hash(data, (uint)data.Length, seed);
     }
@@ -84,7 +84,7 @@ public static class MurmurHash3Helper
     public static uint Hash(byte[] data, uint length, uint seed)
     {
         ArgumentNullException.ThrowIfNull(data, nameof(data));
-        
+
         ArgumentOutOfRangeException.ThrowIfGreaterThan(length, (uint)data.Length, nameof(length));
         // 计算4字节对齐的块数
         var nblocks = length >> 2;

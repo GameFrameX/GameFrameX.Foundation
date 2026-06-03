@@ -30,7 +30,7 @@ public class AesHelperTests
         Assert.NotNull(encryptedText);
         Assert.NotEmpty(encryptedText);
         Assert.NotEqual(plainText, encryptedText);
-        
+
         // 验证是否为有效的Base64字符串
         try
         {

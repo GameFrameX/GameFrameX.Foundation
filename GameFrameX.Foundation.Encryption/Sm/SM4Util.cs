@@ -93,7 +93,7 @@ internal sealed class Sm4Util
     public string Encrypt_ECB(string plainText)
     {
         ArgumentNullException.ThrowIfNull(plainText);
-        
+
         // Validate key length
         if (hexString)
         {
@@ -109,6 +109,7 @@ internal sealed class Sm4Util
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
         }
+
         var ctx = new Sm4Context()
         {
             IsPadding = true,
@@ -177,7 +178,7 @@ internal sealed class Sm4Util
     public string Decrypt_ECB(string cipherText)
     {
         ArgumentNullException.ThrowIfNull(cipherText);
-        
+
         // Validate key length
         if (hexString)
         {
@@ -193,6 +194,7 @@ internal sealed class Sm4Util
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
         }
+
         var ctx = new Sm4Context()
         {
             IsPadding = true,
@@ -234,7 +236,7 @@ internal sealed class Sm4Util
     public string Encrypt_CBC(string plainText)
     {
         ArgumentNullException.ThrowIfNull(plainText);
-        
+
         // Validate key and IV lengths
         if (hexString)
         {
@@ -242,6 +244,7 @@ internal sealed class Sm4Util
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(secretKey));
             }
+
             if (iv?.Length != 32)
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe32Characters), nameof(iv));
@@ -253,11 +256,13 @@ internal sealed class Sm4Util
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
+
             if (iv?.Length != 16)
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe16Characters), nameof(iv));
             }
         }
+
         var ctx = new Sm4Context()
         {
             IsPadding = true,
@@ -301,7 +306,7 @@ internal sealed class Sm4Util
     public string Decrypt_CBC(string cipherText)
     {
         ArgumentNullException.ThrowIfNull(cipherText);
-        
+
         // Validate key and IV lengths
         if (hexString)
         {
@@ -309,6 +314,7 @@ internal sealed class Sm4Util
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(secretKey));
             }
+
             if (iv?.Length != 32)
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe32Characters), nameof(iv));
@@ -320,11 +326,13 @@ internal sealed class Sm4Util
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
             }
+
             if (iv?.Length != 16)
             {
                 throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe16Characters), nameof(iv));
             }
         }
+
         var ctx = new Sm4Context()
         {
             IsPadding = true,

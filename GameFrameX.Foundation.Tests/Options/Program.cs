@@ -186,7 +186,7 @@ namespace GameFrameX.Foundation.Tests.Options
                 Console.WriteLine("按任意键继续...");
                 Console.ReadKey();
                 Console.Clear();
-                
+
                 Console.WriteLine("╔══════════════════════════════════════════════════════════════╗");
                 Console.WriteLine("║            GameFrameX Foundation Options 示例程序             ║");
                 Console.WriteLine("╚══════════════════════════════════════════════════════════════╝");
@@ -212,10 +212,10 @@ namespace GameFrameX.Foundation.Tests.Options
             for (int i = 0; i < demos.Length; i++)
             {
                 var (name, action) = demos[i];
-                
+
                 Console.WriteLine($"🎯 [{i + 1}/{demos.Length}] {name}");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-                
+
                 try
                 {
                     action(args);
@@ -224,7 +224,7 @@ namespace GameFrameX.Foundation.Tests.Options
                 {
                     Console.WriteLine($"❌ {name} 运行失败: {ex.Message}");
                 }
-                
+
                 if (i < demos.Length - 1)
                 {
                     Console.WriteLine();

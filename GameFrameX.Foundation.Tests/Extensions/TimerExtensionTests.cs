@@ -63,7 +63,7 @@ public class TimerExtensionTests : IDisposable
         var timer = CreateTestTimer(50);
         var elapsedCount = 0;
         timer.Elapsed += (sender, e) => Interlocked.Increment(ref elapsedCount);
-        
+
         timer.Start();
         Assert.True(timer.Enabled);
 
@@ -132,8 +132,8 @@ public class TimerExtensionTests : IDisposable
         var timer = CreateTestTimer(200); // 200ms间隔，增加间隔时间
         var elapsedTimes = new List<DateTime>();
         var resetSignal = new ManualResetEventSlim(false);
-        
-        timer.Elapsed += (sender, e) => 
+
+        timer.Elapsed += (sender, e) =>
         {
             lock (elapsedTimes)
             {
@@ -146,7 +146,7 @@ public class TimerExtensionTests : IDisposable
         };
 
         timer.Start();
-        
+
         // 等待一段时间后重置
         await Task.Delay(100); // 增加等待时间
         timer.Reset();
@@ -211,8 +211,8 @@ public class TimerExtensionTests : IDisposable
         var timer = CreateTestTimer(50);
         var elapsedCount = 0;
         var eventFired = new ManualResetEventSlim(false);
-        
-        timer.Elapsed += (sender, e) => 
+
+        timer.Elapsed += (sender, e) =>
         {
             Interlocked.Increment(ref elapsedCount);
             eventFired.Set();
@@ -316,6 +316,7 @@ public class TimerExtensionTests : IDisposable
                 // 忽略清理时的异常
             }
         }
+
         _timers.Clear();
     }
 }

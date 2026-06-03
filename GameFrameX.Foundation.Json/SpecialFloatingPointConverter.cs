@@ -85,6 +85,7 @@ public class SpecialFloatingPointConverter : JsonConverter<double>
         {
             return reader.GetDouble();
         }
+
         throw new JsonException($"Cannot convert JSON token '{reader.TokenType}' to {nameof(Double)}.");
     }
 

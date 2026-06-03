@@ -85,6 +85,7 @@ public class SpecialFloatingPointConverterFloat : JsonConverter<float>
         {
             return reader.GetSingle();
         }
+
         throw new JsonException($"Cannot convert JSON token '{reader.TokenType}' to {nameof(Single)}.");
     }
 

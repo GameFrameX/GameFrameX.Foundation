@@ -236,6 +236,7 @@ public sealed class RsaHelper : IDisposable
     /// RSA algorithm provider instance.
     /// </remarks>
     private readonly RSA _rsa;
+
     private bool _disposed;
 
     /// <summary>

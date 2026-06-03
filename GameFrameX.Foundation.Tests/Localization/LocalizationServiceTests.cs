@@ -235,6 +235,7 @@ public class LocalizationServiceTests
                     var result = LocalizationService.GetString(key);
                     threadResults.Add(result);
                 }
+
                 return threadResults;
             });
 
@@ -278,7 +279,7 @@ public class LocalizationServiceTests
         /// 资源提供者的名称，用于标识资源提供者
         /// </value>
         public string AssemblyName => GetType().Assembly.FullName;
-        
+
         public string GetString(string key)
         {
             return key == "Test.Key" ? _value : key;

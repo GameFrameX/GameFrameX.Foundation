@@ -158,9 +158,6 @@ public class Sm4HelperTests
     }
 
 
-
-
-
     [Fact]
     public void EncryptCbc_WithInvalidKey_ShouldThrowException()
     {
@@ -205,7 +202,7 @@ public class Sm4HelperTests
 
         // Assert
         Assert.NotEqual(encrypted1, encrypted2);
-        
+
         // 但使用相应的IV解密后应该都能得到原始数据
         var decrypted1 = Sm4Helper.DecryptCbc(TestKey, encrypted1, iv1, hexString: true);
         var decrypted2 = Sm4Helper.DecryptCbc(TestKey, encrypted2, iv2, hexString: true);

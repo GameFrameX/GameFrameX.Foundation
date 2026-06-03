@@ -26,7 +26,7 @@ public class Sm2HelperTests
         Assert.NotEmpty(publicKey);
         Assert.NotEmpty(privateKey);
         Assert.NotEqual(publicKey, privateKey);
-        
+
         // 验证密钥长度（SM2公钥通常为130个十六进制字符，私钥为64个十六进制字符）
         Assert.True(publicKey.Length > 0);
         Assert.True(privateKey.Length > 0);
@@ -216,7 +216,7 @@ public class Sm2HelperTests
         // Assert
         // SM2加密由于随机数的存在，相同数据多次加密应该产生不同结果
         Assert.NotEqual(encrypted1, encrypted2);
-        
+
         // 但解密后应该都能得到原始数据
         var decrypted1 = Sm2Helper.Decrypt(privateKey, encrypted1);
         var decrypted2 = Sm2Helper.Decrypt(privateKey, encrypted2);

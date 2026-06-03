@@ -46,12 +46,12 @@ namespace GameFrameX.Foundation.Extensions;
 /// <typeparam name="TValue">值的类型，必须是可以作为字典键的类型 / The type of values, must be a valid dictionary key type.</typeparam>
 public class BidirectionalDictionary<TKey, TValue>
 {
- /// <summary>
+    /// <summary>
     /// 存储键到值的映射关系。
     /// </summary>
     private readonly Dictionary<TKey, TValue> _forwardDictionary;
 
- /// <summary>
+    /// <summary>
     /// 存储值到键的映射关系。
     /// </summary>
     private readonly Dictionary<TValue, TKey> _reverseDictionary;

@@ -149,7 +149,7 @@ public class Sha256HelperTests
     {
         // Arrange
         var input = "测试字符串";
-        
+
         // Act
         var hashUtf8 = Sha256Helper.ComputeHash(input, Encoding.UTF8);
         var hashUtf16 = Sha256Helper.ComputeHash(input, Encoding.Unicode);

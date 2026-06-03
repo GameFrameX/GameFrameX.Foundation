@@ -138,7 +138,7 @@ public class DisposableConcurrentDictionaryTests
         var item1 = new TestDisposable("item1");
         var item2 = new TestDisposable("item2");
         var item3 = new TestDisposable("item3");
-        
+
         dictionary["key1"] = item1;
         dictionary["key2"] = item2;
         dictionary["key3"] = item3;
@@ -158,7 +158,7 @@ public class DisposableConcurrentDictionaryTests
         // Arrange
         var dictionary = new DisposableConcurrentDictionary<string, TestDisposable>();
         var item1 = new TestDisposable("item1");
-        
+
         dictionary["key1"] = item1;
         dictionary["key2"] = null;
 

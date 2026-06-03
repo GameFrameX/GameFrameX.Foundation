@@ -112,7 +112,7 @@ public static class Md5Helper
         var saltedBytes = new byte[inputBytes.Length + salt.Length];
         Buffer.BlockCopy(inputBytes, 0, saltedBytes, 0, inputBytes.Length);
         Buffer.BlockCopy(salt, 0, saltedBytes, inputBytes.Length, salt.Length);
-        
+
         using var md5 = MD5.Create();
         var data = md5.ComputeHash(saltedBytes);
         return ToHash(data, isUpper);

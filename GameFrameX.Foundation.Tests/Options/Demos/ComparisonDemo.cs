@@ -101,7 +101,6 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 Console.WriteLine("🔄 迁移指南");
                 Console.WriteLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
                 MigrationGuide();
-
             }
             catch (Exception ex)
             {
@@ -122,11 +121,11 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("var config = builder.Build();");
             Console.WriteLine("```");
             Console.WriteLine();
-            
+
             // 传统方式
             var builder = new OptionsBuilder<ComparisonDemoConfig>(args);
             var traditionalConfig = builder.Build(skipValidation: true);
-            
+
             Console.WriteLine("✅ 传统方式结果:");
             PrintConfig("传统方式", traditionalConfig);
             Console.WriteLine();
@@ -136,10 +135,10 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("var config = OptionsBuilder<AppConfig>.Create(args);");
             Console.WriteLine("```");
             Console.WriteLine();
-            
+
             // 静态方法
             var staticConfig = OptionsBuilder.Create<ComparisonDemoConfig>(args, skipValidation: true);
-            
+
             Console.WriteLine("✅ 静态方法结果:");
             PrintConfig("静态方法", staticConfig);
             Console.WriteLine();
@@ -150,11 +149,11 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             Console.WriteLine("var config = OptionsProvider.GetOptions<AppConfig>();");
             Console.WriteLine("```");
             Console.WriteLine();
-            
+
             // OptionsProvider 方式
             OptionsProvider.Initialize(args);
             var providerConfig = OptionsProvider.GetOptions<ComparisonDemoConfig>(enableDebugOutput: false, skipValidation: true);
-            
+
             Console.WriteLine("✅ OptionsProvider 结果:");
             PrintConfig("OptionsProvider", providerConfig);
             Console.WriteLine();
@@ -172,7 +171,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
         private static void PerformanceComparison(string[] args)
         {
             const int iterations = 1000;
-            
+
             Console.WriteLine($"📊 执行 {iterations} 次解析的性能对比:");
             Console.WriteLine();
 
@@ -189,6 +188,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
                 var builder = new OptionsBuilder<ComparisonDemoConfig>(args);
                 var config = builder.Build(skipValidation: true);
             }
+
             sw1.Stop();
 
             // 测试静态方法
@@ -197,6 +197,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 var config = OptionsBuilder.Create<ComparisonDemoConfig>(args, skipValidation: true);
             }
+
             sw2.Stop();
 
             // 测试 OptionsProvider（带缓存）
@@ -206,6 +207,7 @@ namespace GameFrameX.Foundation.Options.Examples.Demos
             {
                 var config = OptionsProvider.GetOptions<ComparisonDemoConfig>(enableDebugOutput: false, skipValidation: true);
             }
+
             sw3.Stop();
 
             Console.WriteLine("⏱️  性能测试结果:");

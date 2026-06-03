@@ -28,13 +28,13 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             // 准备测试数据
             var args = new[] { "--host", "example.com", "--port", "9090", "--debug" };
-            
+
             // 初始化选项提供者
             OptionsProvider.Initialize(args);
-            
+
             // 执行测试
             var config = OptionsProvider.GetOptions<TestConfig>();
-            
+
             // 验证结果
             Assert.NotNull(config);
             Assert.Equal("example.com", config.Host);
@@ -50,13 +50,13 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             // 准备测试数据
             string[] args = Array.Empty<string>();
-            
+
             // 初始化选项提供者
             OptionsProvider.Initialize(args);
-            
+
             // 执行测试
             var config = OptionsProvider.GetOptions<TestConfig>();
-            
+
             // 验证结果
             Assert.NotNull(config);
             Assert.Equal("localhost", config.Host); // 默认值
@@ -72,13 +72,13 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             // 准备测试数据
             string[] args = null;
-            
+
             // 初始化选项提供者
             OptionsProvider.Initialize(args);
-            
+
             // 执行测试
             var config = OptionsProvider.GetOptions<TestConfig>();
-            
+
             // 验证结果
             Assert.NotNull(config);
             Assert.Equal("localhost", config.Host); // 默认值
@@ -94,13 +94,13 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             // 准备测试数据
             var args = new[] { "--debug=true" };
-            
+
             // 创建选项构建器
             var builder = new OptionsBuilder<TestConfig>(args, BoolArgumentFormat.KeyValue);
-            
+
             // 执行测试
             var config = builder.Build();
-            
+
             // 验证结果
             Assert.NotNull(config);
             Assert.True(config.Debug);
@@ -114,13 +114,13 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             // 准备测试数据
             var args = new[] { "host", "example.com", "port", "9090" };
-            
+
             // 创建选项构建器
             var builder = new OptionsBuilder<TestConfig>(args, ensurePrefixedKeys: false);
-            
+
             // 执行测试
             var config = builder.Build();
-            
+
             // 验证结果
             Assert.NotNull(config);
             Assert.Equal("localhost", config.Host); // 默认值
@@ -135,19 +135,19 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             // 准备测试数据
             var args = new[] { "--host", "example.com" };
-            
+
             try
             {
                 // 设置环境变量
                 Environment.SetEnvironmentVariable("PORT", "7070");
                 Environment.SetEnvironmentVariable("DEBUG", "true");
-                
+
                 // 初始化选项提供者
                 OptionsProvider.Initialize(args);
-                
+
                 // 执行测试
                 var config = OptionsProvider.GetOptions<TestConfig>();
-                
+
                 // 验证结果
                 Assert.NotNull(config);
                 Assert.Equal("example.com", config.Host); // 来自命令行参数
