@@ -10,12 +10,12 @@ dotnet add package GameFrameX.Foundation.Utility
 
 ## 核心组件
 
-| 组件 | 文件 | 说明 |
-|------|------|------|
-| ConsoleHelper | `ConsoleHelper.cs` | 控制台 Logo 打印和格式化输出 |
-| EnvironmentHelper | `EnvironmentHelper.cs` | 环境变量管理和类型定义 |
-| TimerHelper | `TimerHelper.cs` | Unix 时间戳处理和时间转换 |
-| Snowflake ID | `SnowFlakeIdHelper.cs` | 分布式唯一 ID 生成器（Snowflake 算法） |
+| 组件                | 文件                     | 说明                         |
+|-------------------|------------------------|----------------------------|
+| ConsoleHelper     | `ConsoleHelper.cs`     | 控制台 Logo 打印和格式化输出          |
+| EnvironmentHelper | `EnvironmentHelper.cs` | 环境变量管理和类型定义                |
+| TimerHelper       | `TimerHelper.cs`       | Unix 时间戳处理和时间转换            |
+| Snowflake ID      | `SnowFlakeIdHelper.cs` | 分布式唯一 ID 生成器（Snowflake 算法） |
 
 ## 功能模块
 

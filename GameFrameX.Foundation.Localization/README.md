@@ -224,12 +224,12 @@ GameFrameX.Foundation.Encryption/Localization/Messages/Resources.zh-CN.resx
 
 ## 已集成的模块
 
-| 模块 | 本地化键数量 | 状态 |
-|------|-------------|------|
-| GameFrameX.Foundation.Utility | 4 | 完成 |
-| GameFrameX.Foundation.Encryption | 20+ | 完成 |
-| GameFrameX.Foundation.Extensions | 7 | 完成 |
-| GameFrameX.Foundation.Hash | 2 | 完成 |
+| 模块                               | 本地化键数量 | 状态 |
+|----------------------------------|--------|----|
+| GameFrameX.Foundation.Utility    | 4      | 完成 |
+| GameFrameX.Foundation.Encryption | 20+    | 完成 |
+| GameFrameX.Foundation.Extensions | 7      | 完成 |
+| GameFrameX.Foundation.Hash       | 2      | 完成 |
 
 ## 最佳实践
 
@@ -264,6 +264,7 @@ LocalizationService.EnsureLoaded();
 ### 资源文件没有生效？
 
 检查：
+
 1. 资源文件是否设置为"嵌入的资源"
 2. 文件命名是否正确（`Resources.{文化代码}.resx`）
 3. 项目文件是否包含资源文件配置

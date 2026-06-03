@@ -10,12 +10,12 @@ dotnet add package GameFrameX.Foundation.Orm.Entity
 
 ## 核心组件
 
-| 组件 | 文件 | 说明 |
-|------|------|------|
-| EntityBase | `EntityBase.cs` | 全功能实体基类（ID、审计、软删除、版本控制） |
-| EntityBaseId (Generic) | `EntityBaseId.cs` | 自定义主键类型实体基类 |
-| IEntity | `IEntity.cs` | 基础实体接口 |
-| IAuditableEntity | `IAuditableEntity.cs` | 审计接口（创建/更新时间和用户） |
+| 组件                     | 文件                    | 说明                      |
+|------------------------|-----------------------|-------------------------|
+| EntityBase             | `EntityBase.cs`       | 全功能实体基类（ID、审计、软删除、版本控制） |
+| EntityBaseId (Generic) | `EntityBaseId.cs`     | 自定义主键类型实体基类             |
+| IEntity                | `IEntity.cs`          | 基础实体接口                  |
+| IAuditableEntity       | `IAuditableEntity.cs` | 审计接口（创建/更新时间和用户）        |
 
 ## 功能特性
 
@@ -38,22 +38,26 @@ dotnet add package GameFrameX.Foundation.Orm.Entity
 ### 实体基类
 
 #### EntityBaseId / EntityBaseId<TKey>
+
 - 提供主键字段
 - 支持 long 类型主键和泛型主键
 - 实现 IEntity 接口
 
 #### EntityBase / EntityBase<TKey>
+
 - 继承自 EntityBaseId
 - 实现 `ISafeCreatedFilter`、`ISafeUpdateFilter`、`ISafeDeletedFilter`、`ISafeEnabledFilter`、`IVersionedEntity`
 - 所有字段均为可空类型
 - 支持版本控制（乐观锁）
 
 #### EntityTenantBase / EntityTenantBase<TKey>
+
 - 继承自 EntityBase
 - 实现 `ITenantIdFilter`
 - 支持多租户架构
 
 #### EntitySelectBase
+
 - 继承自 EntityBase
 - 实现 `ISelectFilter` 接口
 - 包含名称和描述字段，适用于需要搜索的实体

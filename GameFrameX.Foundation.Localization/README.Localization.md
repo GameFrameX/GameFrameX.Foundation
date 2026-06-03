@@ -7,21 +7,25 @@ GameFrameX.Foundation.Localization 是 GameFrameX.Foundation 框架的本地化�
 ## 主要特性
 
 ### 🚀 **零配置使用**
+
 - 无需任何初始化配置
 - 自动发现和加载本地化资源
 - 开箱即用的简单API
 
 ### ⚡ **高性能设计**
+
 - 懒加载机制，首次使用时才加载资源
 - 多层缓存优化访问性能
 - 线程安全的并发访问支持
 
 ### 🌍 **多语言支持**
+
 - 内置中文（简体）和英文支持
 - 可扩展的支持更多语言
 - 智能的语言回退机制
 
 ### 🔧 **高度可扩展**
+
 - 支持自定义资源提供者
 - 灵活的优先级管理
 - 模块化的组件设计
@@ -251,9 +255,9 @@ foreach (var provider in providers)
 
 - **模式**：`{模块名}.{类别}.{具体键名}`
 - **示例**：
-  - `Utility.Exceptions.TimestampOutOfRange`
-  - `Encryption.InvalidKeySize`
-  - `Authentication.UserNotFound`
+    - `Utility.Exceptions.TimestampOutOfRange`
+    - `Encryption.InvalidKeySize`
+    - `Authentication.UserNotFound`
 
 ### 2. 参数化消息
 
@@ -300,18 +304,19 @@ var stats = LocalizationService.GetStatistics();
 
 目前以下模块已完成本地化集成：
 
-| 模块 | 本地化键数量 | 状态 |
-|------|-------------|------|
-| GameFrameX.Foundation.Utility | 4 | ✅ 完成 |
-| GameFrameX.Foundation.Encryption | 20+ | ✅ 完成 |
-| GameFrameX.Foundation.Extensions | 7 | ✅ 完成 |
-| GameFrameX.Foundation.Hash | 2 | ✅ 完成 |
+| 模块                               | 本地化键数量 | 状态   |
+|----------------------------------|--------|------|
+| GameFrameX.Foundation.Utility    | 4      | ✅ 完成 |
+| GameFrameX.Foundation.Encryption | 20+    | ✅ 完成 |
+| GameFrameX.Foundation.Extensions | 7      | ✅ 完成 |
+| GameFrameX.Foundation.Hash       | 2      | ✅ 完成 |
 
 ## 常见问题
 
 ### Q: 如何添加新语言支持？
 
 A: 在相应模块的 `Localization/Messages/` 目录下创建 `Resources.{语言代码}.resx` 文件，例如：
+
 - `Resources.fr.resx`（法语）
 - `Resources.ja.resx`（日语）
 - `Resources.de.resx`（德语）
@@ -319,6 +324,7 @@ A: 在相应模块的 `Localization/Messages/` 目录下创建 `Resources.{语�
 ### Q: 资源文件没有生效怎么办？
 
 A: 检查以下几点：
+
 1. 资源文件是否设置为"嵌入的资源"
 2. 文件命名是否正确（`Resources.{文化代码}.resx`）
 3. 项目文件是否包含资源文件配置

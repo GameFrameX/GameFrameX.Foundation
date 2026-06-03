@@ -646,6 +646,7 @@ public class ThrottledHttpClient
 ### 常见问题
 
 #### 1. 超时问题
+
 **问题**: 请求经常超时
 **解决方案**: 适当增加超时时间，使用重试机制
 
@@ -658,6 +659,7 @@ string response = await httpClient.GetWithRetryAsync(url, maxRetries: 3);
 ```
 
 #### 2. 内存泄漏问题
+
 **问题**: HttpClient使用不当导致内存泄漏
 **解决方案**: 使用IHttpClientFactory或正确管理HttpClient生命周期
 
@@ -670,6 +672,7 @@ using var httpClient = new HttpClient();
 ```
 
 #### 3. 序列化问题
+
 **问题**: JSON序列化/反序列化失败
 **解决方案**: 检查数据模型和序列化选项
 

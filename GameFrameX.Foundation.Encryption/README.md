@@ -534,6 +534,7 @@ public class EncryptionTests
 ## 更新日志
 
 ### v1.0.0
+
 - 初始版本发布
 - 实现AES、RSA、SM2、SM4、DSA、XOR加密算法
 - 提供完整的加密解密和数字签名功能

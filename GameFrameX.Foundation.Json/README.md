@@ -81,6 +81,7 @@ Console.WriteLine(formattedJson);
 ### 1. 序列化方法
 
 #### 基本序列化
+
 ```csharp
 // 使用默认配置序列化
 string json = JsonHelper.Serialize(obj);
@@ -94,6 +95,7 @@ string formattedJson = JsonHelper.SerializeFormat(obj);
 ```
 
 #### UTF8 字节数组序列化
+
 ```csharp
 // 序列化为 UTF8 字节数组
 byte[] utf8Bytes = JsonHelper.SerializeToUtf8Bytes(obj);
@@ -105,6 +107,7 @@ byte[] formattedUtf8Bytes = JsonHelper.SerializeToUtf8BytesFormat(obj);
 ### 2. 反序列化方法
 
 #### 基本反序列化
+
 ```csharp
 // 泛型反序列化
 User user = JsonHelper.Deserialize<User>(json);
@@ -117,6 +120,7 @@ User user = JsonHelper.Deserialize<User>(json, customOptions);
 ```
 
 #### UTF8 字节数组反序列化
+
 ```csharp
 // 从 UTF8 字节数组反序列化
 User user = JsonHelper.DeserializeFromUtf8Bytes<User>(utf8Bytes);
@@ -358,18 +362,22 @@ public static class JsonConfigurations
 ### 常见问题
 
 #### 1. 特殊浮点值序列化问题
+
 **问题**: 序列化包含 NaN 或 Infinity 的对象时出错
 **解决方案**: 使用 GameFrameX.Foundation.Json，它内置了特殊浮点值处理
 
 #### 2. 循环引用问题
+
 **问题**: 对象间存在循环引用导致序列化失败
 **解决方案**: 库的默认配置已启用 `ReferenceHandler.IgnoreCycles`
 
 #### 3. 枚举序列化问题
+
 **问题**: 希望枚举序列化为字符串而非数字
 **解决方案**: 库默认包含 `JsonStringEnumConverter`
 
 #### 4. 性能问题
+
 **问题**: 大数据量序列化性能不佳
 **解决方案**: 使用 UTF8 字节数组方法，避免字符串转换开销
 

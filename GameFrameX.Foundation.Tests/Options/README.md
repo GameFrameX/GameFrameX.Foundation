@@ -64,12 +64,14 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- advanced --app-na
 ### 📋 基础使用演示 (BasicUsageDemo)
 
 展示最基本的使用方式：
+
 - 定义配置类
 - 使用 OptionsBuilder 解析参数
 - 处理不同数据类型
 - 基本的错误处理
 
 **运行命令:**
+
 ```bash
 dotnet run --project GameFrameX.Foundation.Options.Examples -- basic
 ```
@@ -77,6 +79,7 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- basic
 ### ⚡ 静态方法演示 (StaticMethodsDemo)
 
 展示新增的静态便捷方法：
+
 - `Create()` - 基本创建
 - `CreateWithDebug()` - 调试模式创建
 - `CreateFromArgsOnly()` - 仅使用命令行参数
@@ -85,6 +88,7 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- basic
 - `TryCreate()` - 安全创建
 
 **运行命令:**
+
 ```bash
 dotnet run --project GameFrameX.Foundation.Options.Examples -- static
 ```
@@ -92,12 +96,14 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- static
 ### 🐛 调试模式演示 (DebugModeDemo)
 
 展示调试功能：
+
 - 默认启用的调试模式
 - 环境变量控制调试输出
 - 结构化参数打印
 - 配置对象详细信息
 
 **运行命令:**
+
 ```bash
 dotnet run --project GameFrameX.Foundation.Options.Examples -- debug
 ```
@@ -105,6 +111,7 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- debug
 ### 🚀 高级特性演示 (AdvancedFeaturesDemo)
 
 展示高级功能和特性：
+
 - 复杂数据类型支持（枚举、日期时间、GUID等）
 - 特性组合使用
 - 环境变量与命令行参数优先级
@@ -112,6 +119,7 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- debug
 - 不同布尔参数格式
 
 **运行命令:**
+
 ```bash
 dotnet run --project GameFrameX.Foundation.Options.Examples -- advanced
 ```
@@ -119,6 +127,7 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- advanced
 ### ⚖️ 对比演示 (ComparisonDemo)
 
 展示不同使用方式的对比：
+
 - 传统方式 vs 静态方法 vs OptionsProvider
 - 性能对比测试
 - 功能特性对比
@@ -126,6 +135,7 @@ dotnet run --project GameFrameX.Foundation.Options.Examples -- advanced
 - 迁移指南
 
 **运行命令:**
+
 ```bash
 dotnet run --project GameFrameX.Foundation.Options.Examples -- comparison
 ```
@@ -216,6 +226,7 @@ export ASPNETCORE_ENVIRONMENT=Production   # 默认禁用调试
 ### 编译错误
 
 如果遇到编译错误，请确保：
+
 1. 已安装 .NET 10.0 SDK
 2. 已正确引用 GameFrameX.Foundation.Options 项目
 3. 所有依赖项都已还原
@@ -227,6 +238,7 @@ dotnet restore GameFrameX.Foundation.Options.Examples
 ### 运行时错误
 
 如果遇到运行时错误：
+
 1. 检查必需参数是否提供
 2. 检查参数格式是否正确
 3. 启用调试模式查看详细信息

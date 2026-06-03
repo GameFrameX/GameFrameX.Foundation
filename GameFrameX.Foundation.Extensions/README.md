@@ -424,6 +424,7 @@ string result = someObject.SafeExecute(x => x.ToString().ToUpper(), "DEFAULT");
 ## 更新日志
 
 ### v1.0.0
+
 - 初始版本发布
 - 提供基础的字符串、集合、对象扩展方法
 - 实现双向字典和并发限制队列

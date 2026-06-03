@@ -7,6 +7,7 @@ GameFrameX ORM 特性库，提供了一套完整的数据库实体标记特性�
 ### 🔧 基础特性
 
 #### ConstAttribute
+
 常量特性，用于标记类、方法、属性等为常量定义。
 
 ```csharp
@@ -18,6 +19,7 @@ public class DatabaseConstants
 ```
 
 #### CustomUnifyResultAttribute
+
 自定义统一结果特性，用于标记需要自定义结果统一处理的类或方法。
 
 ```csharp
@@ -31,6 +33,7 @@ public class UserController
 ### 🗄️ 表类型特性
 
 #### IncrementSeedAttribute
+
 增量种子特性，标记实体类支持自增种子值功能。
 
 ```csharp
@@ -43,6 +46,7 @@ public class User
 ```
 
 #### IncrementTableAttribute
+
 增量表特性，标记实体类对应的数据库表支持增量操作。
 
 ```csharp
@@ -55,6 +59,7 @@ public class UserActivity
 ```
 
 #### LogTableAttribute
+
 日志表特性，标记实体类对应的数据库表为日志表。
 
 ```csharp
@@ -68,6 +73,7 @@ public class UserOperationLog
 ```
 
 #### SystemTableAttribute
+
 系统表特性，标记实体类对应的数据库表为系统表。
 
 ```csharp
@@ -82,6 +88,7 @@ public class SystemConfiguration
 ### 🚀 性能优化特性
 
 #### CacheTableAttribute
+
 缓存表特性，标记实体类对应的数据库表支持缓存策略。
 
 ```csharp
@@ -95,6 +102,7 @@ public class ProductInfo
 ```
 
 #### ReadOnlyTableAttribute
+
 只读表特性，标记实体类对应的数据库表为只读表。
 
 ```csharp
@@ -107,6 +115,7 @@ public class CountryCode
 ```
 
 #### EntityIndexAttribute
+
 索引特性，标记属性或字段需要创建数据库索引。
 
 ```csharp
@@ -121,6 +130,7 @@ public class User
 ```
 
 #### PartitionTableAttribute
+
 分区表特性，标记实体类对应的数据库表支持分区存储。
 
 ```csharp
@@ -135,6 +145,7 @@ public class OrderHistory
 ### 🔒 数据管理特性
 
 #### AuditTableAttribute
+
 审计表特性，标记实体类对应的数据库表需要进行审计跟踪。
 
 ```csharp
@@ -148,6 +159,7 @@ public class UserAccount
 ```
 
 #### SoftDeleteAttribute
+
 软删除特性，标记实体类支持软删除功能。
 
 ```csharp
@@ -162,6 +174,7 @@ public class User
 ```
 
 #### VersionControlAttribute
+
 版本控制特性，标记实体类支持数据版本管理功能。
 
 ```csharp
@@ -177,6 +190,7 @@ public class Document
 ## 🎯 使用场景
 
 ### 高频查询优化
+
 ```csharp
 [CacheTable("Redis", 60)]
 [ReadOnlyTable(EnableCache = true)]
@@ -194,6 +208,7 @@ public class Product
 ```
 
 ### 大数据表管理
+
 ```csharp
 [PartitionTable("CreateDate", PartitionType.Range, PartitionInterval.Monthly)]
 [AuditTable(AuditLevel.ChangesOnly)]
@@ -209,6 +224,7 @@ public class OrderRecord
 ```
 
 ### 系统核心表
+
 ```csharp
 [SystemTable]
 [AuditTable(AuditLevel.Full, IncludeUserInfo = true, IncludeIpAddress = true)]
@@ -227,17 +243,20 @@ public class SystemUser
 ### 按优先级分类
 
 **高优先级**（常用且实用）：
+
 - `CacheTableAttribute` - 缓存策略
-- `AuditTableAttribute` - 审计跟踪  
+- `AuditTableAttribute` - 审计跟踪
 - `SoftDeleteAttribute` - 软删除
 - `ReadOnlyTableAttribute` - 只读优化
 
 **中优先级**（特定场景有用）：
+
 - `EntityIndexAttribute` - 索引管理
 - `PartitionTableAttribute` - 分区表
 - `VersionControlAttribute` - 版本控制
 
 **基础特性**（框架核心）：
+
 - `ConstAttribute` - 常量标记
 - `CustomUnifyResultAttribute` - 结果统一
 - `IncrementSeedAttribute` - 自增种子
@@ -248,23 +267,27 @@ public class SystemUser
 ### 按功能分类
 
 **性能优化类**：
+
 - `CacheTableAttribute`
 - `ReadOnlyTableAttribute`
 - `EntityIndexAttribute`
 - `PartitionTableAttribute`
 
 **数据管理类**：
+
 - `AuditTableAttribute`
 - `SoftDeleteAttribute`
 - `VersionControlAttribute`
 - `LogTableAttribute`
 
 **表类型标识类**：
+
 - `SystemTableAttribute`
 - `IncrementTableAttribute`
 - `IncrementSeedAttribute`
 
 **框架功能类**：
+
 - `ConstAttribute`
 - `CustomUnifyResultAttribute`
 
