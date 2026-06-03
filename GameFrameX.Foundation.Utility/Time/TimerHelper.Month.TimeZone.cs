@@ -62,7 +62,7 @@ public static partial class TimerHelper
     public static long GetMonthStartTimestampWithTimeZone()
     {
         var date = GetMonthStartTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
+        return DateTimeToSecondsWithTimeZone(date);
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public static partial class TimerHelper
     public static long GetMonthEndTimestampWithTimeZone()
     {
         var date = GetMonthEndTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
+        return DateTimeToSecondsWithTimeZone(date);
     }
 
     /// <summary>
@@ -148,6 +148,6 @@ public static partial class TimerHelper
     public static long GetNextMonthEndTimestampWithTimeZone()
     {
         var date = GetNextMonthEndTimeWithTimeZone();
-        return DateTimeToUnixTimeSeconds(date);
+        return DateTimeToSecondsWithTimeZone(date);
     }
 }
