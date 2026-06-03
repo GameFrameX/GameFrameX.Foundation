@@ -66,14 +66,14 @@ public static partial class TimerHelper
     {
         var dayOfWeekKey = date.DayOfWeek switch
         {
-            System.DayOfWeek.Sunday => LocalizationKeys.DayOfWeek.Sunday,
-            System.DayOfWeek.Monday => LocalizationKeys.DayOfWeek.Monday,
-            System.DayOfWeek.Tuesday => LocalizationKeys.DayOfWeek.Tuesday,
+            System.DayOfWeek.Sunday    => LocalizationKeys.DayOfWeek.Sunday,
+            System.DayOfWeek.Monday    => LocalizationKeys.DayOfWeek.Monday,
+            System.DayOfWeek.Tuesday   => LocalizationKeys.DayOfWeek.Tuesday,
             System.DayOfWeek.Wednesday => LocalizationKeys.DayOfWeek.Wednesday,
-            System.DayOfWeek.Thursday => LocalizationKeys.DayOfWeek.Thursday,
-            System.DayOfWeek.Friday => LocalizationKeys.DayOfWeek.Friday,
-            System.DayOfWeek.Saturday => LocalizationKeys.DayOfWeek.Saturday,
-            _ => string.Empty
+            System.DayOfWeek.Thursday  => LocalizationKeys.DayOfWeek.Thursday,
+            System.DayOfWeek.Friday    => LocalizationKeys.DayOfWeek.Friday,
+            System.DayOfWeek.Saturday  => LocalizationKeys.DayOfWeek.Saturday,
+            _                          => string.Empty
         };
         return LocalizationService.GetString(dayOfWeekKey);
     }

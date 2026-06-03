@@ -36,37 +36,37 @@ namespace GameFrameX.Foundation.Utility;
 public static partial class TimerHelper
 {
     /// <summary>
-/// 获取指定时间是否在指定的时间范围内。
-/// </summary>
-/// <remarks>
-/// Gets whether the specified time is within the specified time range.
-/// This method uses closed interval comparison, i.e., returns true when time equals startTime or endTime.
-/// Does not check the order of startTime and endTime, caller must ensure startTime is not later than endTime.
-/// </remarks>
-/// <param name="time">指定时间。例如：2024-01-10 14:30:00 / The specified time. For example: 2024-01-10 14:30:00</param>
-/// <param name="startTime">开始时间。例如：2024-01-10 00:00:00 / The start time. For example: 2024-01-10 00:00:00</param>
-/// <param name="endTime">结束时间。例如：2024-01-10 23:59:59 / The end time. For example: 2024-01-10 23:59:59</param>
-/// <returns>如果指定时间在开始时间和结束时间之间（包含边界），则返回true；否则返回false / Returns true if the specified time is between start time and end time (inclusive); otherwise returns false</returns>
-public static bool IsTimeInRange(DateTime time, DateTime startTime, DateTime endTime)
-{
-    return time >= startTime && time <= endTime;
-}
+    /// 获取指定时间是否在指定的时间范围内。
+    /// </summary>
+    /// <remarks>
+    /// Gets whether the specified time is within the specified time range.
+    /// This method uses closed interval comparison, i.e., returns true when time equals startTime or endTime.
+    /// Does not check the order of startTime and endTime, caller must ensure startTime is not later than endTime.
+    /// </remarks>
+    /// <param name="time">指定时间。例如：2024-01-10 14:30:00 / The specified time. For example: 2024-01-10 14:30:00</param>
+    /// <param name="startTime">开始时间。例如：2024-01-10 00:00:00 / The start time. For example: 2024-01-10 00:00:00</param>
+    /// <param name="endTime">结束时间。例如：2024-01-10 23:59:59 / The end time. For example: 2024-01-10 23:59:59</param>
+    /// <returns>如果指定时间在开始时间和结束时间之间（包含边界），则返回true；否则返回false / Returns true if the specified time is between start time and end time (inclusive); otherwise returns false</returns>
+    public static bool IsTimeInRange(DateTime time, DateTime startTime, DateTime endTime)
+    {
+        return time >= startTime && time <= endTime;
+    }
 
-/// <summary>
-/// 获取指定时间戳是否在指定的时间戳范围内。
-/// </summary>
-/// <remarks>
-/// Gets whether the specified timestamp is within the specified timestamp range.
-/// This method uses closed interval comparison, i.e., returns true when timestamp equals startTimestamp or endTimestamp.
-/// Does not check the order of startTimestamp and endTimestamp, caller must ensure startTimestamp is not greater than endTimestamp.
-/// Timestamps should be Unix second-level timestamps (seconds since January 1, 1970 UTC midnight).
-/// </remarks>
-/// <param name="timestamp">指定时间戳（Unix秒级时间戳）。例如：1704857400 / The specified timestamp (Unix seconds). For example: 1704857400</param>
-/// <param name="startTimestamp">开始时间戳（Unix秒级时间戳）。例如：1704816000 / The start timestamp (Unix seconds). For example: 1704816000</param>
-/// <param name="endTimestamp">结束时间戳（Unix秒级时间戳）。例如：1704902399 / The end timestamp (Unix seconds). For example: 1704902399</param>
-/// <returns>如果指定时间戳在开始时间戳和结束时间戳之间（包含边界），则返回true；否则返回false / Returns true if the specified timestamp is between start timestamp and end timestamp (inclusive); otherwise returns false</returns>
-public static bool IsTimestampInRange(long timestamp, long startTimestamp, long endTimestamp)
-{
-    return timestamp >= startTimestamp && timestamp <= endTimestamp;
-}
+    /// <summary>
+    /// 获取指定时间戳是否在指定的时间戳范围内。
+    /// </summary>
+    /// <remarks>
+    /// Gets whether the specified timestamp is within the specified timestamp range.
+    /// This method uses closed interval comparison, i.e., returns true when timestamp equals startTimestamp or endTimestamp.
+    /// Does not check the order of startTimestamp and endTimestamp, caller must ensure startTimestamp is not greater than endTimestamp.
+    /// Timestamps should be Unix second-level timestamps (seconds since January 1, 1970 UTC midnight).
+    /// </remarks>
+    /// <param name="timestamp">指定时间戳（Unix秒级时间戳）。例如：1704857400 / The specified timestamp (Unix seconds). For example: 1704857400</param>
+    /// <param name="startTimestamp">开始时间戳（Unix秒级时间戳）。例如：1704816000 / The start timestamp (Unix seconds). For example: 1704816000</param>
+    /// <param name="endTimestamp">结束时间戳（Unix秒级时间戳）。例如：1704902399 / The end timestamp (Unix seconds). For example: 1704902399</param>
+    /// <returns>如果指定时间戳在开始时间戳和结束时间戳之间（包含边界），则返回true；否则返回false / Returns true if the specified timestamp is between start timestamp and end timestamp (inclusive); otherwise returns false</returns>
+    public static bool IsTimestampInRange(long timestamp, long startTimestamp, long endTimestamp)
+    {
+        return timestamp >= startTimestamp && timestamp <= endTimestamp;
+    }
 }
