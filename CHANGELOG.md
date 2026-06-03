@@ -1,3 +1,14 @@
+## [2.4.8] - 2026-06-03
+
+### Documentation
+
+- 修复 README 文件 Markdown 格式
+
+### Styling
+
+- 修复 TimerHelper XML 文档注释缩进
+- 批量修复 C# 代码格式问题
+
 ## [2.4.7] - 2026-05-30
 
 ### Bug Fixes
