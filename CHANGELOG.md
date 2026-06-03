@@ -1,3 +1,9 @@
+## [2.4.9] - 2026-06-03
+
+### Bug Fixes
+
+- 月份时区时间戳未应用时区偏移
+
 ## [2.4.8] - 2026-06-03
 
 ### Documentation
@@ -192,6 +198,42 @@
 
 ## [2.2.3] - 2026-03-17
 
+### Refactor
+
+- CreatedTime 改为非空类型
+
+### Ci
+
+- 添加自动打 tag 和发布版本的工作流
+- 升级 GitHub Actions 版本
+
+## [2.3.0.3] - 2026-03-17
+
+### Features
+
+- 添加无长度前缀的字节/字符串读写方法
+- 添加毫秒级时间戳转 TimeSpan 的方法
+
+### Miscellaneous Tasks
+
+- 添加 .claude 和 scripts 到 gitignore
+
+### Testing
+
+- 添加无长度前缀读写方法的单元测试
+
+## [2.3.0.2] - 2026-03-17
+
+### Documentation
+
+- 完善 SpanExtensions 文档注释并拆分文件
+
+### Features
+
+- 添加原始类型读写扩展方法
+
+## [2.3.0.1] - 2026-03-17
+
 ### Bug Fixes
 
 - 修复Unix时间戳计算未包含时间偏移的问题
@@ -255,7 +297,6 @@
 - 添加版权声明头部
 - 完善 BooleanParser.ParseBooleanValue 返回值说明
 - 添加预初始化日志功能使用说明
-- 完善 SpanExtensions 文档注释并拆分文件
 
 ### Features
 
@@ -273,9 +314,6 @@
 - 为 LittleEndian 添加 bytes 和 string 读写方法
 - 添加小时范围和星期名称本地化资源
 - 添加临时日志记录器支持初始化前日志缓冲
-- 添加原始类型读写扩展方法
-- 添加无长度前缀的字节/字符串读写方法
-- 添加毫秒级时间戳转 TimeSpan 的方法
 
 ### Miscellaneous Tasks
 
@@ -283,7 +321,6 @@
 - 添加 CODE_REVIEW 文件到 gitignore 并清理
 - 删除已注释的无用代码
 - 移除CNB仓库引用并添加缺失的using指令
-- 添加 .claude 和 scripts 到 gitignore
 
 ### Performance
 
@@ -351,7 +388,6 @@
 - 添加泛型 notnull 约束增强类型安全
 - 提取布尔值解析逻辑并优化反射性能
 - 代码质量改进
-- CreatedTime 改为非空类型
 
 ### Styling
 
@@ -377,18 +413,12 @@
 - 添加 ConvertToUnderLine 方法的单元测试
 - 添加代码审查修复的单元测试
 - 添加临时日志记录器单元测试
-- 添加无长度前缀读写方法的单元测试
 
 ### Build
 
 - 更新 coverlet.collector 依赖版本至 6.0.4
 - 启用可空引用类型分析
 - 添加 InternalsVisibleTo 支持测试访问内部成员
-
-### Ci
-
-- 添加自动打 tag 和发布版本的工作流
-- 升级 GitHub Actions 版本
 
 ## [2.2.2] - 2026-02-04
 
