@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="../Version.props" Label="版本号定义"/>
     <PropertyGroup>
-        <Description>GameFrameX.Foundation.Utility,GameFrameX 框架的基础设施框架库,提供整套框架的日志写入的统一接口.框架文档主页: https://gameframex.doc.alianblank.com</Description>
+        <Description>GameFrameX.Foundation.Utility,GameFrameX 框架的基础设施框架库,提供时间、运行环境、控制台和分布式 ID 等通用工具.框架文档主页: https://gameframex.doc.alianblank.com</Description>
         <PackageTags>GameFrameX,Lib,Foundation.Utility,Server,GameServer,Utility</PackageTags>
         <AssemblyOriginatorKeyFile>../gameframex.key.snk</AssemblyOriginatorKeyFile>
     </PropertyGroup>

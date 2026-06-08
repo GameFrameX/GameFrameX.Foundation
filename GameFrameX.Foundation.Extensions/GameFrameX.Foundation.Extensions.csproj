@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <Import Project="../Version.props" Label="版本号定义"/>
     <PropertyGroup>
-        <Description>GameFrameX.Foundation.Extensions,GameFrameX 框架的基础设施框架库,提供基础的哈希算法.框架文档主页: https://gameframex.doc.alianblank.com</Description>
-        <PackageTags>GameFrameX,Lib,Foundation,Foundation.HashServer,GameServer</PackageTags>
+        <Description>GameFrameX.Foundation.Extensions,GameFrameX 框架的基础设施框架库,提供常用扩展方法和集合辅助类型.框架文档主页: https://gameframex.doc.alianblank.com</Description>
+        <PackageTags>GameFrameX,Lib,Foundation,Foundation.Extensions,Extensions,Server,GameServer</PackageTags>
         <AssemblyOriginatorKeyFile>../gameframex.key.snk</AssemblyOriginatorKeyFile>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
