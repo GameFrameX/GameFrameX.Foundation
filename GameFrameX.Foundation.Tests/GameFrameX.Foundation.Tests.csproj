@@ -3,6 +3,7 @@
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <!-- 测试项目需要签名以访问被测项目的 internal 成员 -->
     <PublicSign>true</PublicSign>
     <SignAssembly>true</SignAssembly>
