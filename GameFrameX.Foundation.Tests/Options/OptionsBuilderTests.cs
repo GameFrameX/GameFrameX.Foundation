@@ -7,6 +7,7 @@ namespace GameFrameX.Foundation.Tests.Options
     /// <summary>
     /// OptionsBuilder 类的单元测试
     /// </summary>
+    [Collection(OptionsProviderCollection.Name)]
     public class OptionsBuilderTests
     {
         /// <summary>
