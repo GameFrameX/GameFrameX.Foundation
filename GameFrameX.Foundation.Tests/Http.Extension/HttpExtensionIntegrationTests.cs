@@ -16,12 +16,27 @@ namespace GameFrameX.Foundation.Tests.Http.Extension;
 ///   • https://httpbingo.org — httpbin 的社区镜像，用作备用端点。
 ///
 /// 运行前提：可访问公网。
-/// 通过 --filter "Category=Integration" 单独执行本组测试。
+/// 默认跳过；设置 GAMEFRAMEX_RUN_INTEGRATION_TESTS=true 后，通过 --filter "Category=Integration" 单独执行本组测试。
 /// </summary>
 
 // ── 共享 HttpClient（所有集成测试共用，避免连接泄漏）────────────────────────────
 [CollectionDefinition("Integration")]
 public sealed class IntegrationCollection;
+
+internal sealed class IntegrationFactAttribute : FactAttribute
+{
+    private const string RunIntegrationTestsVariable = "GAMEFRAMEX_RUN_INTEGRATION_TESTS";
+
+    public IntegrationFactAttribute()
+    {
+        var value = Environment.GetEnvironmentVariable(RunIntegrationTestsVariable);
+        if (!string.Equals(value, "true", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(value, "1", StringComparison.OrdinalIgnoreCase))
+        {
+            Skip = $"Set {RunIntegrationTestsVariable}=true to run public-network integration tests.";
+        }
+    }
+}
 
 // ── GET ──────────────────────────────────────────────────────────────────────
 
@@ -35,7 +50,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
 
     // --- GetToStringAsync ---
 
-    [Fact]
+    [IntegrationFact]
     public async Task GetToStringAsync_HttpBin_ReturnsNonEmptyJsonBody()
     {
         var result = await _client.GetToStringAsync("https://httpbin.org/get");
@@ -47,7 +62,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
         Assert.Contains("httpbin.org/get", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task GetToStringAsync_HttpBin_With404_ThrowsHttpRequestException()
     {
         // httpbin.org/status/404 会返回 404，EnsureSuccessStatusCode 应抛出
@@ -55,7 +70,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
                                                            _client.GetToStringAsync("https://httpbin.org/status/404"));
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task GetToStringAsync_WithCustomHeader_HeaderAppearsInEchoResponse()
     {
         var headers = new Dictionary<string, string>
@@ -73,7 +88,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
 
     // --- GetToByteArrayAsync ---
 
-    [Fact]
+    [IntegrationFact]
     public async Task GetToByteArrayAsync_HttpBin_ReturnsBytesDecodableAsJson()
     {
         var bytes = await _client.GetToByteArrayAsync("https://httpbin.org/get");
@@ -86,7 +101,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
         Assert.True(doc.RootElement.TryGetProperty("url", out _));
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task GetToByteArrayAsync_HttpBin_With500_ThrowsHttpRequestException()
     {
         await Assert.ThrowsAsync<HttpRequestException>(() =>
@@ -95,7 +110,7 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
 
     // --- GetToStreamAsync ---
 
-    [Fact]
+    [IntegrationFact]
     public async Task GetToStreamAsync_HttpBin_ReturnsReadableStream()
     {
         await using var stream = await _client.GetToStreamAsync("https://httpbin.org/get");
@@ -123,7 +138,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
 
     // --- PostJsonToStringAsync ---
 
-    [Fact]
+    [IntegrationFact]
     public async Task PostJsonToStringAsync_HttpBin_EchoesJsonBody()
     {
         var payload = new TestPayload("integration-test", 42);
@@ -137,7 +152,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
         Assert.Contains("42", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PostJsonToStringAsync_HttpBin_ConfirmsPostMethod()
     {
         var result = await _client.PostJsonToStringAsync(
@@ -148,7 +163,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
         Assert.Contains("\"method\": \"POST\"", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PostJsonToStringAsync_WithCustomHeader_HeaderAppearsInEcho()
     {
         var headers = new Dictionary<string, string>
@@ -166,7 +181,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
 
     // --- PostJsonToByteArrayAsync ---
 
-    [Fact]
+    [IntegrationFact]
     public async Task PostJsonToByteArrayAsync_HttpBin_ReturnsBytesWithEchoedBody()
     {
         var bytes = await _client.PostJsonToByteArrayAsync(
@@ -179,7 +194,7 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
 
     // --- PostJsonToStreamAsync ---
 
-    [Fact]
+    [IntegrationFact]
     public async Task PostJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
         await using var stream = await _client.PostJsonToStreamAsync(
@@ -206,7 +221,7 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
 
     public HttpClientPutIntegrationTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
+    [IntegrationFact]
     public async Task PutJsonToStringAsync_HttpBin_ConfirmsPutMethod()
     {
         var result = await _client.PutJsonToStringAsync(
@@ -217,7 +232,7 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
         Assert.Contains("\"method\": \"PUT\"", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PutJsonToStringAsync_HttpBin_EchoesJsonBody()
     {
         var result = await _client.PutJsonToStringAsync(
@@ -229,7 +244,7 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
         Assert.Contains("put-body", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PutJsonToStringAsync_WithCustomHeader_HeaderAppearsInEcho()
     {
         var headers = new Dictionary<string, string>
@@ -245,7 +260,7 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
         Assert.Contains("If-Match", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PutJsonToByteArrayAsync_HttpBin_ReturnsBytesWithEchoedBody()
     {
         var bytes = await _client.PutJsonToByteArrayAsync(
@@ -257,7 +272,7 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
         Assert.Contains("bytes-put", json);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PutJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
         await using var stream = await _client.PutJsonToStreamAsync(
@@ -285,7 +300,7 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
 
     public HttpClientPatchIntegrationTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
+    [IntegrationFact]
     public async Task PatchJsonToStringAsync_HttpBin_ConfirmsPatchMethod()
     {
         var result = await _client.PatchJsonToStringAsync(
@@ -296,7 +311,7 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
         Assert.Contains("\"method\": \"PATCH\"", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PatchJsonToStringAsync_HttpBin_EchoesJsonBody()
     {
         var result = await _client.PatchJsonToStringAsync(
@@ -308,7 +323,7 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
         Assert.Contains("new@example.com", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PatchJsonToStringAsync_WithIfMatchHeader_HeaderAppearsInEcho()
     {
         var headers = new Dictionary<string, string>
@@ -324,7 +339,7 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
         Assert.Contains("If-Match", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PatchJsonToByteArrayAsync_HttpBin_ReturnsBytesWithEchoedBody()
     {
         var bytes = await _client.PatchJsonToByteArrayAsync(
@@ -336,7 +351,7 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
         Assert.Contains("bytes-field", json);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task PatchJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
         await using var stream = await _client.PatchJsonToStreamAsync(
@@ -362,7 +377,7 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
 
     public HttpClientDeleteIntegrationTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
+    [IntegrationFact]
     public async Task DeleteToStringAsync_HttpBin_ConfirmsDeleteMethod()
     {
         var result = await _client.DeleteToStringAsync("https://httpbin.org/anything");
@@ -371,7 +386,7 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
         Assert.Contains("\"method\": \"DELETE\"", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task DeleteToStringAsync_HttpBin_ReturnsNonEmptyJson()
     {
         var result = await _client.DeleteToStringAsync("https://httpbin.org/delete");
@@ -381,7 +396,7 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
         Assert.Contains("httpbin.org", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task DeleteToStringAsync_WithCustomHeader_HeaderAppearsInEcho()
     {
         var headers = new Dictionary<string, string>
@@ -397,7 +412,7 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
         Assert.Contains("obsolete", result);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task DeleteToByteArrayAsync_HttpBin_ReturnsBytesDecodableAsJson()
     {
         var bytes = await _client.DeleteToByteArrayAsync("https://httpbin.org/delete");
@@ -409,7 +424,7 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
         Assert.True(doc.RootElement.TryGetProperty("url", out _));
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task DeleteToByteArrayAsync_WithCustomHeader_HeaderAppearsInEcho()
     {
         var headers = new Dictionary<string, string>
@@ -438,7 +453,7 @@ public sealed class HttpClientHeadIntegrationTests : IDisposable
 
     public HttpClientHeadIntegrationTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
+    [IntegrationFact]
     public async Task HeadAsync_HttpBin_ReturnsNonNullHeaders()
     {
         var headers = await _client.HeadAsync("https://httpbin.org/get");
@@ -451,7 +466,7 @@ public sealed class HttpClientHeadIntegrationTests : IDisposable
         }
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task HeadAsync_HttpBin_ContentTypeHeaderIsPresent()
     {
         // HEAD 响应应包含与 GET 相同的响应头，但无响应体
@@ -467,7 +482,7 @@ public sealed class HttpClientHeadIntegrationTests : IDisposable
         Assert.True(headerList.Count >= 0); // 至少不会崩溃
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task HeadAsync_WithIfNoneMatchHeader_RequestIsSent()
     {
         // 验证自定义头被正确附加（通过不抛异常隐性验证）
@@ -477,7 +492,7 @@ public sealed class HttpClientHeadIntegrationTests : IDisposable
         Assert.NotNull(headers);
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task HeadAsync_HttpBin_404Status_ThrowsHttpRequestException()
     {
         await Assert.ThrowsAsync<HttpRequestException>(() =>
@@ -497,7 +512,7 @@ public sealed class HttpClientOptionsIntegrationTests : IDisposable
 
     public HttpClientOptionsIntegrationTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
+    [IntegrationFact]
     public async Task OptionsAsync_HttpBin_DoesNotThrow()
     {
         // OPTIONS 请求本身正确发出且服务器返回 2xx 即可
@@ -508,7 +523,7 @@ public sealed class HttpClientOptionsIntegrationTests : IDisposable
                           string.Join(", ", allowedMethods));
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task OptionsAsync_HttpBinWithOriginHeader_CorsHeadersReturned()
     {
         // 带 Origin 头的 OPTIONS 是标准 CORS 预检请求
@@ -524,7 +539,7 @@ public sealed class HttpClientOptionsIntegrationTests : IDisposable
         _output.WriteLine($"Allow 列表: [{string.Join(", ", allowedMethods)}]");
     }
 
-    [Fact]
+    [IntegrationFact]
     public async Task OptionsAsync_HttpBin_500Status_ThrowsHttpRequestException()
     {
         // 注意：httpbin.org 对 OPTIONS 请求的 /status/N 端点会做 CORS 预检特殊处理，
