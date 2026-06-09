@@ -69,6 +69,20 @@ public sealed class HttpJsonResultTests
 
         Assert.False(result.IsSuccess);
         Assert.Equal(-1, result.Code);
+        Assert.Null(result.Message);
+        Assert.Null(result.Data);
+    }
+
+    [Fact]
+    public void ToHttpJsonResultData_WithDataTypeMismatch_ReturnsDefaultFailure()
+    {
+        var json = HttpJsonResult.Success("{\"Name\":123,\"Count\":\"bad\"}").ToString();
+
+        var result = json.ToHttpJsonResultData<Payload>();
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
+        Assert.Null(result.Message);
         Assert.Null(result.Data);
     }
 

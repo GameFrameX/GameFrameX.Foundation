@@ -59,7 +59,16 @@ public static class HttpJsonResultHelper
     /// <returns>返回转换后的HttpJsonResultData对象，包含反序列化结果和状态信息 / The converted HttpJsonResultData object containing the deserialized result and status information</returns>
     public static HttpJsonResultData<T> ToHttpJsonResultData<T>(this string jsonResult)
     {
-        return jsonResult.TryToHttpJsonResultData<T>().Result;
+        var conversion = jsonResult.TryToHttpJsonResultData<T>();
+        if (conversion.Succeeded)
+        {
+            return conversion.Result;
+        }
+
+        return new HttpJsonResultData<T>
+        {
+            Code = HttpJsonResultConstants.FailCode,
+        };
     }
 
     /// <summary>
