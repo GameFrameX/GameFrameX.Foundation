@@ -99,6 +99,11 @@ public static partial class TimerHelper
     /// <returns>当前UTC时间 / The current UTC time</returns>
     public static DateTime GetNowWithUtc()
     {
+        var provider = _timeProvider;
+        if (provider != null)
+        {
+            return provider.GetUtcNow().DateTime;
+        }
         return DateTime.UtcNow;
     }
 }

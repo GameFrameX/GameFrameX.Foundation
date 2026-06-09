@@ -47,6 +47,7 @@ public static partial class TimerHelper
     /// Mainly used for scenarios requiring UTC timestamps, such as cross-timezone business.
     /// </remarks>
     /// <returns>返回自1970年1月1日 00:00:00 UTC以来经过的秒数,加上时区偏移量 / Returns the number of seconds elapsed since 1970-01-01 00:00:00 UTC, plus time zone offset</returns>
+    [Obsolete("此方法是 UnixTimeSeconds() 的别名，请直接使用 UnixTimeSeconds()。/ This method is an alias for UnixTimeSeconds(), use UnixTimeSeconds() directly.")]
     public static long UnixTimeSecondsWithOffset()
     {
         return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeSeconds() + TimeOffsetSeconds;
@@ -64,6 +65,7 @@ public static partial class TimerHelper
     /// Provides higher precision than second-level timestamps, suitable for scenarios requiring precise time calculations.
     /// </remarks>
     /// <returns>返回自1970年1月1日 00:00:00 UTC以来经过的毫秒数,加上时区偏移量 / Returns the number of milliseconds elapsed since 1970-01-01 00:00:00 UTC, plus time zone offset</returns>
+    [Obsolete("此方法是 UnixTimeMilliseconds() 的别名，请直接使用 UnixTimeMilliseconds()。/ This method is an alias for UnixTimeMilliseconds(), use UnixTimeMilliseconds() directly.")]
     public static long UnixTimeMillisecondsWithOffset()
     {
         return new DateTimeOffset(GetNowWithUtc()).ToUnixTimeMilliseconds() + TimeOffsetMilliseconds;

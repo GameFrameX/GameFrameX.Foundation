@@ -38,9 +38,26 @@ namespace GameFrameX.Foundation.Utility;
 /// </summary>
 /// <remarks>
 /// Time helper utility class.
+/// <para>=== 命名约定 / Naming Convention ===</para>
+/// <list type="bullet">
+/// <item>(无后缀 / No suffix): 基础方法，通常返回 UTC 时间 / Base method, usually returns UTC time.</item>
+/// <item><c>WithUtc</c>: 基于 UTC 时间计算 / Calculated based on UTC time.</item>
+/// <item><c>WithTimeZone</c>: 基于当前设置的时区 (<see cref="CurrentTimeZone"/>) 计算 / Calculated based on the currently set time zone.</item>
+/// <item><c>WithTimeZoneOffset</c>: UTC 时间戳 + 时区偏移量 / UTC timestamp + time zone offset.</item>
+/// </list>
+/// <para>设置 <see cref="SetTimeProvider"/> 后，所有 WithUtc 和 WithTimeZone 方法都将使用 TimeProvider / After setting TimeProvider, all WithUtc and WithTimeZone methods use TimeProvider.</para>
 /// </remarks>
 public static partial class TimerHelper
 {
+    /// <summary>
+    /// 可选的 TimeProvider 实例。当设置后，GetNowWithUtc() 将使用此提供者获取时间。
+    /// </summary>
+    /// <remarks>
+    /// Optional TimeProvider instance. When set, GetNowWithUtc() will use this provider for time.
+    /// When null (default), the original DateTime.UtcNow behavior is preserved.
+    /// </remarks>
+    private static volatile TimeProvider _timeProvider;
+
     /// <summary>
     /// 当前时区，默认为 UTC。
     /// </summary>
@@ -397,5 +414,29 @@ public static partial class TimerHelper
         }
 
         return (long)(time - TimeZoneInfo.ConvertTime(EpochUtc, CurrentTimeZone)).TotalSeconds;
+    }
+
+    /// <summary>
+    /// 设置 TimeProvider 实例。传入 null 恢复默认行为（DateTime.UtcNow）。
+    /// </summary>
+    /// <remarks>
+    /// Sets the TimeProvider instance. Pass null to restore default behavior (DateTime.UtcNow).
+    /// </remarks>
+    /// <param name="timeProvider">TimeProvider 实例或 null / TimeProvider instance or null</param>
+    public static void SetTimeProvider(TimeProvider timeProvider)
+    {
+        _timeProvider = timeProvider;
+    }
+
+    /// <summary>
+    /// 获取当前设置的 TimeProvider 实例。
+    /// </summary>
+    /// <remarks>
+    /// Gets the currently set TimeProvider instance, or null if using default behavior.
+    /// </remarks>
+    /// <returns>当前的 TimeProvider 实例，如果使用默认行为则返回 null / The current TimeProvider instance, or null if using default behavior</returns>
+    public static TimeProvider GetTimeProvider()
+    {
+        return _timeProvider;
     }
 }

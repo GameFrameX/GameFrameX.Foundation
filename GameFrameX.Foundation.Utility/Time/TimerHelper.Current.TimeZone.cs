@@ -99,7 +99,7 @@ public static partial class TimerHelper
     /// <returns>当前时间 / The current time</returns>
     public static DateTime GetNowWithTimeZone()
     {
-        return TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, CurrentTimeZone);
+        return TimeZoneInfo.ConvertTimeFromUtc(GetNowWithUtc(), CurrentTimeZone);
     }
 
     /// <summary>
