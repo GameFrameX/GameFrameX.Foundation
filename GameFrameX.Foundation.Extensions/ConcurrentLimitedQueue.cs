@@ -37,6 +37,37 @@ using System.Collections.Concurrent;
 namespace GameFrameX.Foundation.Extensions;
 
 /// <summary>
+/// 限长队列达到容量时采用的策略。
+/// </summary>
+public enum LimitedQueueOverflowStrategy
+{
+    /// <summary>移除最旧元素并加入新元素。</summary>
+    DropOldest,
+    /// <summary>丢弃新元素。</summary>
+    DropNewest,
+    /// <summary>拒绝新元素，不触发丢弃通知。</summary>
+    RejectNewItem,
+    /// <summary>队列已满时抛出异常。</summary>
+    Throw
+}
+
+/// <summary>
+/// 队列元素被丢弃的原因。
+/// </summary>
+public enum LimitedQueueDiscardReason
+{
+    /// <summary>元素因队列溢出被丢弃。</summary>
+    Overflow,
+    /// <summary>元素因队列缩容被丢弃。</summary>
+    LimitReduced
+}
+
+/// <summary>
+/// 描述被限长队列丢弃的元素。
+/// </summary>
+public readonly record struct QueueDiscardedItem<T>(T Item, LimitedQueueDiscardReason Reason);
+
+/// <summary>
 /// 定长队列，当队列达到指定长度时，新元素入队会自动移除最旧的元素。
 /// </summary>
 /// <remarks>
@@ -58,10 +89,24 @@ public class ConcurrentLimitedQueue<T> : IProducerConsumerCollection<T>, IReadOn
     /// <param name="limit">队列的最大长度，必须大于0 / The maximum number of elements the queue can hold, must be greater than 0.</param>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="limit"/> 小于或等于0时抛出 / Thrown when <paramref name="limit"/> is less than or equal to 0.</exception>
     public ConcurrentLimitedQueue(int limit)
+        : this(limit, LimitedQueueOverflowStrategy.DropOldest)
+    {
+    }
+
+    /// <summary>
+    /// 使用指定最大长度和溢出策略初始化队列。
+    /// </summary>
+    public ConcurrentLimitedQueue(int limit, LimitedQueueOverflowStrategy overflowStrategy)
     {
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(limit, 0, nameof(limit));
+        if (!Enum.IsDefined(overflowStrategy))
+        {
+            throw new ArgumentOutOfRangeException(nameof(overflowStrategy));
+        }
+
         _queue = new ConcurrentQueue<T>();
         _limit = limit;
+        OverflowStrategy = overflowStrategy;
     }
 
     /// <summary>
@@ -81,7 +126,18 @@ public class ConcurrentLimitedQueue<T> : IProducerConsumerCollection<T>, IReadOn
 
         _queue = new ConcurrentQueue<T>(items);
         _limit = items.Count;
+        OverflowStrategy = LimitedQueueOverflowStrategy.DropOldest;
     }
+
+    /// <summary>
+    /// 获取队列溢出策略。
+    /// </summary>
+    public LimitedQueueOverflowStrategy OverflowStrategy { get; }
+
+    /// <summary>
+    /// 获取或设置元素因溢出或缩容被丢弃时调用的回调。
+    /// </summary>
+    public Action<QueueDiscardedItem<T>> ItemDiscarded { get; set; }
 
     /// <summary>
     /// 队列的最大长度。
@@ -102,12 +158,7 @@ public class ConcurrentLimitedQueue<T> : IProducerConsumerCollection<T>, IReadOn
         set
         {
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(value, 0, nameof(value));
-
-            lock (_syncRoot)
-            {
-                _limit = value;
-                TrimToLimit();
-            }
+            SetLimit(value);
         }
     }
 
@@ -152,18 +203,83 @@ public class ConcurrentLimitedQueue<T> : IProducerConsumerCollection<T>, IReadOn
     /// <param name="item">要添加的元素 / The element to add to the queue.</param>
     public void Enqueue(T item)
     {
-        lock (_syncRoot)
-        {
-            TrimToLimit(extraItemCount: 1);
-            _queue.Enqueue(item);
-        }
+        TryEnqueue(item, out _);
     }
 
     /// <inheritdoc />
     public bool TryAdd(T item)
     {
-        Enqueue(item);
-        return true;
+        return TryEnqueue(item, out _);
+    }
+
+    /// <summary>
+    /// 尝试将元素加入队列，并返回因溢出被丢弃的元素。
+    /// </summary>
+    public bool TryEnqueue(T item, out T discardedItem)
+    {
+        QueueDiscardedItem<T>? discarded = null;
+        var added = false;
+
+        lock (_syncRoot)
+        {
+            discardedItem = default;
+            if (_queue.Count < _limit)
+            {
+                _queue.Enqueue(item);
+                return true;
+            }
+
+            switch (OverflowStrategy)
+            {
+                case LimitedQueueOverflowStrategy.DropOldest:
+                    if (_queue.TryDequeue(out discardedItem))
+                    {
+                        discarded = new QueueDiscardedItem<T>(discardedItem, LimitedQueueDiscardReason.Overflow);
+                    }
+
+                    _queue.Enqueue(item);
+                    added = true;
+                    break;
+                case LimitedQueueOverflowStrategy.DropNewest:
+                    discardedItem = item;
+                    discarded = new QueueDiscardedItem<T>(item, LimitedQueueDiscardReason.Overflow);
+                    break;
+                case LimitedQueueOverflowStrategy.RejectNewItem:
+                    break;
+                case LimitedQueueOverflowStrategy.Throw:
+                    throw new InvalidOperationException("The limited queue has reached its capacity.");
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        NotifyDiscarded(discarded);
+        return added;
+    }
+
+    /// <summary>
+    /// 设置新的最大长度，并返回因缩容被移除的元素。
+    /// </summary>
+    public IReadOnlyList<T> SetLimit(int limit)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(limit, 0, nameof(limit));
+        var discardedItems = new List<T>();
+
+        lock (_syncRoot)
+        {
+            _limit = limit;
+            while (_queue.Count > _limit && _queue.TryDequeue(out var discardedItem))
+            {
+                discardedItems.Add(discardedItem);
+            }
+        }
+
+        foreach (var discardedItem in discardedItems)
+        {
+            NotifyDiscarded(new QueueDiscardedItem<T>(discardedItem, LimitedQueueDiscardReason.LimitReduced));
+        }
+
+        return discardedItems;
     }
 
     /// <summary>
@@ -239,14 +355,20 @@ public class ConcurrentLimitedQueue<T> : IProducerConsumerCollection<T>, IReadOn
         return GetEnumerator();
     }
 
-    private void TrimToLimit(int extraItemCount = 0)
+    private void NotifyDiscarded(QueueDiscardedItem<T>? discarded)
     {
-        while (_queue.Count + extraItemCount > _limit)
+        if (!discarded.HasValue)
         {
-            if (!_queue.TryDequeue(out _))
-            {
-                break;
-            }
+            return;
+        }
+
+        try
+        {
+            ItemDiscarded?.Invoke(discarded.Value);
+        }
+        catch
+        {
+            // A notification failure must not corrupt queue state.
         }
     }
 }
