@@ -1,3 +1,59 @@
+## [2.5.0] - 2026-06-09
+
+### Bug Fixes
+
+- SM4 兼容 C# 10.0 无符号右移
+- 修复 GetNowWithUtc 返回非 UTC Kind
+- 修复 ToHttpJsonResultData 转换失败时返回值
+
+### Features
+
+- 新增异步释放字典和异步集合扩展
+- 增强 BidirectionalDictionary
+- ConcurrentLimitedQueue 溢出策略和丢弃通知
+- 新增 HashHelper 统一入口和 HashAlgorithmKind
+- 各哈希 Helper 新增流式和异步重载
+- HMAC Helper 新增重载和验证方法
+- 新增类型化 JSON 请求扩展
+- 新增源生成、流式异步及错误详情重载
+- 文化回退链、格式化错误策略及缺失键追踪
+- 新增领域事件、租户组织基类和契约验证器
+- 新增 ID 解析、WorkerId 提供者和统计指标
+- TimerHelper 支持 TimeProvider 注入
+- 新增 TryToHttpJsonResultData 转换诊断
+- 新增日志敏感字段脱敏
+- 新增 Sensitive 属性脱敏
+- 新增 WorkerId 冲突检测与稳定哈希
+
+### Refactor
+
+- Disposable 字典增加错误处理，移除终结器
+
+### Styling
+
+- 测试代码适配 C# 10.0 语法
+
+### Testing
+
+- 集成测试默认跳过，需环境变量启用
+- 修复 OptionsBuilder 集合隔离，添加 HttpJsonResult 单元测试
+- 新增异步释放字典和异步集合扩展测试
+- BidirectionalDictionary 和 ConcurrentLimitedQueue 增强测试
+- Disposable 字典错误处理测试
+- 新增流式、异步和统一入口测试
+- 新增源生成、流式异步和错误详情测试
+- 新增高优先级功能测试
+- 新增 ID 解析和 Worker 测试
+- 新增 TimeProvider 注入测试
+
+### Build
+
+- 更新各模块包描述和标签
+- 测试项目禁用文档文件生成
+- 降级 LangVersion 至 10.0
+- 目标框架切换为 net10.0 单目标
+- 升级 Localization.Abstractions 至 10.0.0
+
 ## [2.4.9] - 2026-06-03
 
 ### Bug Fixes
