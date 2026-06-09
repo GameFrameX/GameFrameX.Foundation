@@ -29,6 +29,11 @@ public class DisposableDictionaryTests
         }
     }
 
+    private sealed class ThrowingDisposable : IDisposable
+    {
+        public void Dispose() => throw new InvalidOperationException("dispose failed");
+    }
+
     #region Constructor Tests
 
     [Fact]
@@ -129,6 +134,23 @@ public class DisposableDictionaryTests
         dictionary.Dispose();
         dictionary.Dispose(); // Should not throw
         Assert.True(value.IsDisposed);
+    }
+
+    [Fact]
+    public void Dispose_WhenOneValueThrows_ShouldContinueAndReportError()
+    {
+        var dictionary = new DisposableDictionary<string, IDisposable>();
+        var remaining = new TestDisposable("remaining");
+        Exception captured = null;
+        dictionary["throwing"] = new ThrowingDisposable();
+        dictionary["remaining"] = remaining;
+        dictionary.DisposalErrorHandler = (_, exception) => captured = exception;
+
+        dictionary.Dispose();
+
+        Assert.True(dictionary.IsDisposed);
+        Assert.True(remaining.IsDisposed);
+        Assert.IsType<InvalidOperationException>(captured);
     }
 
     [Fact]
