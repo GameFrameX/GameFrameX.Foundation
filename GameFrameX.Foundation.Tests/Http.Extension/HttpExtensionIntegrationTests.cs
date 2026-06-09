@@ -21,7 +21,9 @@ namespace GameFrameX.Foundation.Tests.Http.Extension;
 
 // ── 共享 HttpClient（所有集成测试共用，避免连接泄漏）────────────────────────────
 [CollectionDefinition("Integration")]
-public sealed class IntegrationCollection;
+public sealed class IntegrationCollection
+{
+}
 
 internal sealed class IntegrationFactAttribute : FactAttribute
 {

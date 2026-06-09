@@ -34,7 +34,7 @@ internal sealed class FakeHttpMessageHandler : HttpMessageHandler
 internal sealed class FakeOptionsHttpMessageHandler : HttpMessageHandler
 {
     public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.OK;
-    public string[] AllowedMethods { get; set; } = [];
+    public string[] AllowedMethods { get; set; } = Array.Empty<string>();
     public HttpRequestMessage? CapturedRequest { get; private set; }
 
     protected override Task<HttpResponseMessage> SendAsync(
@@ -739,7 +739,7 @@ public sealed class HttpClientOptionsExtensionTests : IDisposable
     [Fact]
     public async Task OptionsAsync_Success_ReturnsAllowedMethodsFromHeader()
     {
-        _handler.AllowedMethods = ["GET", "POST", "PUT"];
+        _handler.AllowedMethods = new[] { "GET", "POST", "PUT" };
 
         var result = await _client.OptionsAsync("http://test.com");
 
@@ -752,7 +752,7 @@ public sealed class HttpClientOptionsExtensionTests : IDisposable
     [Fact]
     public async Task OptionsAsync_EmptyAllowHeader_ReturnsEmptyCollection()
     {
-        _handler.AllowedMethods = [];
+        _handler.AllowedMethods = Array.Empty<string>();
 
         var result = await _client.OptionsAsync("http://test.com");
 
