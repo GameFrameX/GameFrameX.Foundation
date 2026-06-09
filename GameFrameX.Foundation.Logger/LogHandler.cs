@@ -81,6 +81,8 @@ public static class LogHandler
         return new LoggerConfiguration()
                // 启用上下文丰富，自动附加 LogContext 中的属性到日志事件
                .Enrich.FromLogContext()
+               // 在进入输出 sink 前统一处理敏感结构化属性
+               .Enrich.With(new SensitiveLogEventEnricher())
                // 降低框架日志噪声：Microsoft 组件默认输出为 Information
                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                // ASP.NET Core 默认仅记录 Warning 及以上级别

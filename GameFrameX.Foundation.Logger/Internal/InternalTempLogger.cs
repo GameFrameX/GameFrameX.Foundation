@@ -81,6 +81,8 @@ internal sealed class InternalTempLogger : IDisposable
         _buffer = new LoggerMemorySink(OnLogEvent);
         _logger = new LoggerConfiguration()
                   .MinimumLevel.Verbose()
+                  .Enrich.FromLogContext()
+                  .Enrich.With(new SensitiveLogEventEnricher())
                   .WriteTo.Sink(_buffer)
                   .CreateLogger();
     }
