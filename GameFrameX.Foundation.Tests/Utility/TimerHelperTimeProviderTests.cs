@@ -3,6 +3,7 @@ using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Utility;
 
+[Collection("TimerHelper")]
 public sealed class TimerHelperTimeProviderTests : IDisposable
 {
     private sealed class FakeTimeProvider : TimeProvider

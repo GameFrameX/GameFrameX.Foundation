@@ -69,11 +69,30 @@ public sealed class AsyncEnumerableExtensionsTests
     [Fact]
     public async Task SelectParallelAsync_CompletionOrder_ShouldReturnCompletionOrder()
     {
-        var results = await new[] { 3, 1, 2 }.SelectParallelAsync(async (item, token) =>
+        var started = Enumerable.Range(1, 3)
+                                .ToDictionary(
+                                    item => item,
+                                    _ => new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously));
+        var release = Enumerable.Range(1, 3)
+                                .ToDictionary(
+                                    item => item,
+                                    _ => new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously));
+
+        var operation = new[] { 3, 1, 2 }.SelectParallelAsync(async (item, token) =>
         {
-            await Task.Delay(item * 20, token);
+            started[item].SetResult();
+            await release[item].Task.WaitAsync(token);
             return item;
         }, 3, preserveOrder: false);
+
+        await Task.WhenAll(started.Values.Select(source => source.Task));
+        release[1].SetResult();
+        await Task.Delay(50, TestContext.Current.CancellationToken);
+        release[2].SetResult();
+        await Task.Delay(50, TestContext.Current.CancellationToken);
+        release[3].SetResult();
+
+        var results = await operation;
 
         Assert.Equal(new[] { 1, 2, 3 }, results);
     }

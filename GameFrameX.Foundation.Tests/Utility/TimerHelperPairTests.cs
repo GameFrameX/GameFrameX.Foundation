@@ -37,6 +37,12 @@ namespace GameFrameX.Foundation.Tests.Utility;
 /// <summary>
 /// TimerHelper UTC 和 TimeZone 成对函数的完整单元测试
 /// </summary>
+[CollectionDefinition("TimerHelper", DisableParallelization = true)]
+public sealed class TimerHelperCollectionDefinition
+{
+}
+
+[Collection("TimerHelper")]
 public class TimerHelperPairTests : IDisposable
 {
     private readonly TimeZoneInfo _testTimeZone;
