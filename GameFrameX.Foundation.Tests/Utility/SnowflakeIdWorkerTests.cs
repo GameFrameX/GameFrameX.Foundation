@@ -37,6 +37,16 @@ public sealed class SnowflakeIdWorkerTests
     }
 
     [Fact]
+    public void HostNameWorkerIdProvider_ComputeWorkerId_ShouldBeStable()
+    {
+        var first = HostNameWorkerIdProvider.ComputeWorkerId("gameframex-node-01");
+        var second = HostNameWorkerIdProvider.ComputeWorkerId("gameframex-node-01");
+
+        Assert.Equal(first, second);
+        Assert.InRange(first, 0, 31);
+    }
+
+    [Fact]
     public void ProcessIdWorkerIdProvider_ShouldReturn0To31()
     {
         var provider = new ProcessIdWorkerIdProvider();
@@ -148,5 +158,77 @@ public sealed class SnowflakeIdWorkerTests
         Assert.Equal(count, worker.TotalIdsGenerated);
         Assert.True(worker.LastGeneratedId > 0);
         Assert.Equal(0, worker.ClockBackwardCount);
+    }
+
+    [Fact]
+    public void WorkerIdConflictDetector_RegisterDuplicateNode_ShouldReportConflict()
+    {
+        var detector = new WorkerIdConflictDetector();
+
+        var first = detector.Register("node-a", 1, 2);
+        var second = detector.Register("node-b", 1, 2);
+
+        Assert.False(first.HasConflict);
+        Assert.True(second.HasConflict);
+        Assert.Equal("node-a", second.ConflictingNodeId);
+        Assert.Equal(1, second.DataCenterId);
+        Assert.Equal(2, second.WorkerId);
+    }
+
+    [Fact]
+    public void WorkerIdConflictDetector_RegisterSameNodeAgain_ShouldNotReportConflict()
+    {
+        var detector = new WorkerIdConflictDetector();
+
+        detector.Register("node-a", 1, 2);
+        var result = detector.Register("node-a", 1, 2);
+
+        Assert.False(result.HasConflict);
+        Assert.Equal("node-a", result.NodeId);
+    }
+
+    [Fact]
+    public void WorkerIdConflictDetector_Check_ShouldNotMutateRegistry()
+    {
+        var detector = new WorkerIdConflictDetector();
+
+        var firstCheck = detector.Check("node-a", 1, 2);
+        var secondCheck = detector.Check("node-b", 1, 2);
+
+        Assert.False(firstCheck.HasConflict);
+        Assert.False(secondCheck.HasConflict);
+        Assert.Empty(detector.GetRegistrations());
+    }
+
+    [Fact]
+    public void SnowFlakeIdHelper_CheckWorkerIdConflict_ShouldReportRegisteredDuplicate()
+    {
+        var originalWorkId = SnowFlakeIdHelper.WorkId;
+        var originalDataCenterId = SnowFlakeIdHelper.DataCenterId;
+        var detector = new WorkerIdConflictDetector();
+
+        try
+        {
+            SnowFlakeIdHelper.SetWorkerIdProvider(null);
+            SnowFlakeIdHelper.SetWorkerIdConflictDetector(detector);
+            SnowFlakeIdHelper.WorkId = 2;
+            SnowFlakeIdHelper.DataCenterId = 1;
+
+            detector.Register("node-a", 1, 2, "Manual");
+            var result = SnowFlakeIdHelper.CheckWorkerIdConflict("node-b");
+
+            Assert.True(result.HasConflict);
+            Assert.Equal("node-a", result.ConflictingNodeId);
+            Assert.Equal(1, result.DataCenterId);
+            Assert.Equal(2, result.WorkerId);
+            Assert.Equal("Manual", result.ProviderName);
+        }
+        finally
+        {
+            SnowFlakeIdHelper.WorkId = originalWorkId;
+            SnowFlakeIdHelper.DataCenterId = originalDataCenterId;
+            SnowFlakeIdHelper.SetWorkerIdProvider(null);
+            SnowFlakeIdHelper.SetWorkerIdConflictDetector(null);
+        }
     }
 }

@@ -67,7 +67,7 @@ public class IpAddressWorkerIdProvider : IWorkerIdProvider
             // DNS resolution failed, fall back to hostname hash
         }
 
-        return (uint)Environment.MachineName.GetHashCode() % 32;
+        return HostNameWorkerIdProvider.ComputeWorkerId(Environment.MachineName);
     }
 
     /// <inheritdoc />

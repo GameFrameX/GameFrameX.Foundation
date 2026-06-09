@@ -78,6 +78,16 @@ public static class SnowFlakeIdHelper
     private static IWorkerIdProvider _workerIdProvider;
 
     /// <summary>
+    /// WorkerId 冲突检测器。
+    /// </summary>
+    private static WorkerIdConflictDetector _workerIdConflictDetector = new WorkerIdConflictDetector();
+
+    /// <summary>
+    /// 最近一次 WorkerId 注册冲突检测结果。
+    /// </summary>
+    public static WorkerIdConflictResult LastWorkerIdConflict { get; private set; }
+
+    /// <summary>
     /// 设置工作节点ID提供者。必须在首次访问 <see cref="Instance"/> 之前调用。
     /// </summary>
     /// <remarks>
@@ -87,6 +97,27 @@ public static class SnowFlakeIdHelper
     public static void SetWorkerIdProvider(IWorkerIdProvider provider)
     {
         _workerIdProvider = provider;
+    }
+
+    /// <summary>
+    /// 设置 WorkerId 冲突检测器。传入 null 将恢复默认进程内检测器。
+    /// </summary>
+    /// <param name="detector">冲突检测器 / Conflict detector</param>
+    public static void SetWorkerIdConflictDetector(WorkerIdConflictDetector detector)
+    {
+        _workerIdConflictDetector = detector ?? new WorkerIdConflictDetector();
+        LastWorkerIdConflict = null;
+    }
+
+    /// <summary>
+    /// 检查当前 Snowflake 配置是否与已注册节点冲突，不修改注册表。
+    /// </summary>
+    /// <param name="nodeId">节点标识，默认使用机器名 / Node id, machine name by default</param>
+    /// <returns>冲突检测结果 / Conflict detection result</returns>
+    public static WorkerIdConflictResult CheckWorkerIdConflict(string nodeId = null)
+    {
+        nodeId ??= Environment.MachineName;
+        return _workerIdConflictDetector.Check(nodeId, DataCenterId, WorkId, _workerIdProvider?.Name ?? "Manual");
     }
 
     /// <summary>
@@ -146,6 +177,8 @@ public static class SnowFlakeIdHelper
                         {
                             WorkId = (int)_workerIdProvider.GetWorkerId();
                         }
+
+                        LastWorkerIdConflict = _workerIdConflictDetector.Register(Environment.MachineName, DataCenterId, WorkId, _workerIdProvider?.Name ?? "Manual");
                         _worker = new IdWorker(WorkId, DataCenterId, BaseTime);
                     }
                 }

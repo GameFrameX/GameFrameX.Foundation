@@ -31,6 +31,9 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Security.Cryptography;
+using System.Text;
+
 namespace GameFrameX.Foundation.Utility.DistributedSystem.Snowflake.WorkerIdProviders;
 
 /// <summary>
@@ -45,7 +48,23 @@ public class HostNameWorkerIdProvider : IWorkerIdProvider
     /// <inheritdoc />
     public long GetWorkerId()
     {
-        var hash = (uint)Environment.MachineName.GetHashCode();
+        return ComputeWorkerId(Environment.MachineName);
+    }
+
+    /// <summary>
+    /// 使用稳定哈希计算 WorkerId。
+    /// </summary>
+    /// <param name="hostName">主机名 / Host name</param>
+    /// <returns>0-31 范围内的 WorkerId</returns>
+    public static long ComputeWorkerId(string hostName)
+    {
+        if (string.IsNullOrWhiteSpace(hostName))
+        {
+            throw new ArgumentException("Host name cannot be null, empty, or whitespace.", nameof(hostName));
+        }
+
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(hostName));
+        var hash = BitConverter.ToUInt32(bytes, 0);
         return hash % 32;
     }
 
