@@ -44,7 +44,7 @@ namespace GameFrameX.Foundation.Extensions;
 /// </remarks>
 /// <typeparam name="TKey">键的类型，必须是可以作为字典键的类型 / The type of keys, must be a valid dictionary key type.</typeparam>
 /// <typeparam name="TValue">值的类型，必须是可以作为字典键的类型 / The type of values, must be a valid dictionary key type.</typeparam>
-public class BidirectionalDictionary<TKey, TValue>
+public class BidirectionalDictionary<TKey, TValue> : IReadOnlyCollection<KeyValuePair<TKey, TValue>>
 {
     /// <summary>
     /// 存储键到值的映射关系。
@@ -66,10 +66,57 @@ public class BidirectionalDictionary<TKey, TValue>
     /// <param name="initialCapacity">初始容量，用于预分配内部字典的空间，默认值为 8，必须大于等于 0 / The initial capacity used to pre-allocate space for the internal dictionaries, defaults to 8, must be greater than or equal to 0.</param>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="initialCapacity"/> 小于 0 时抛出 / Thrown when <paramref name="initialCapacity"/> is less than 0.</exception>
     public BidirectionalDictionary(int initialCapacity = 8)
+        : this(initialCapacity, null, null)
+    {
+    }
+
+    /// <summary>
+    /// 使用指定容量和双向比较器初始化双向字典。
+    /// </summary>
+    /// <param name="initialCapacity">初始容量 / Initial capacity.</param>
+    /// <param name="keyComparer">键比较器 / Key comparer.</param>
+    /// <param name="valueComparer">值比较器 / Value comparer.</param>
+    public BidirectionalDictionary(
+        int initialCapacity,
+        IEqualityComparer<TKey> keyComparer,
+        IEqualityComparer<TValue> valueComparer)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(initialCapacity, nameof(initialCapacity));
-        _forwardDictionary = new Dictionary<TKey, TValue>(initialCapacity);
-        _reverseDictionary = new Dictionary<TValue, TKey>(initialCapacity);
+        _forwardDictionary = new Dictionary<TKey, TValue>(initialCapacity, keyComparer);
+        _reverseDictionary = new Dictionary<TValue, TKey>(initialCapacity, valueComparer);
+    }
+
+    /// <summary>
+    /// 获取映射数量。
+    /// </summary>
+    public int Count => _forwardDictionary.Count;
+
+    /// <summary>
+    /// 获取键的只读集合。
+    /// </summary>
+    public IEnumerable<TKey> Keys => _forwardDictionary.Keys;
+
+    /// <summary>
+    /// 获取值的只读集合。
+    /// </summary>
+    public IEnumerable<TValue> Values => _reverseDictionary.Keys;
+
+    /// <summary>
+    /// 判断是否包含指定键。
+    /// </summary>
+    public bool ContainsKey(TKey key)
+    {
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        return _forwardDictionary.ContainsKey(key);
+    }
+
+    /// <summary>
+    /// 判断是否包含指定值。
+    /// </summary>
+    public bool ContainsValue(TValue value)
+    {
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        return _reverseDictionary.ContainsKey(value);
     }
 
     /// <summary>
@@ -138,13 +185,88 @@ public class BidirectionalDictionary<TKey, TValue>
         ArgumentNullException.ThrowIfNull(key, nameof(key));
         ArgumentNullException.ThrowIfNull(value, nameof(value));
 
-        if (_forwardDictionary.TryAdd(key, value))
+        if (_forwardDictionary.ContainsKey(key) || _reverseDictionary.ContainsKey(value))
+        {
+            return false;
+        }
+
+        _forwardDictionary.Add(key, value);
+        try
         {
             _reverseDictionary.Add(value, key);
             return true;
         }
+        catch
+        {
+            _forwardDictionary.Remove(key);
+            throw;
+        }
+    }
 
-        return false;
+    /// <summary>
+    /// 尝试根据键更新对应值，并保持双向映射一致。
+    /// </summary>
+    public bool TryUpdateByKey(TKey key, TValue newValue)
+    {
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        ArgumentNullException.ThrowIfNull(newValue, nameof(newValue));
+
+        if (!_forwardDictionary.TryGetValue(key, out var oldValue))
+        {
+            return false;
+        }
+
+        if (_reverseDictionary.ContainsKey(newValue))
+        {
+            return _reverseDictionary.Comparer.Equals(oldValue, newValue);
+        }
+
+        _reverseDictionary.Remove(oldValue);
+        _forwardDictionary[key] = newValue;
+        try
+        {
+            _reverseDictionary.Add(newValue, key);
+            return true;
+        }
+        catch
+        {
+            _forwardDictionary[key] = oldValue;
+            _reverseDictionary.Add(oldValue, key);
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// 尝试根据值更新对应键，并保持双向映射一致。
+    /// </summary>
+    public bool TryUpdateByValue(TValue value, TKey newKey)
+    {
+        ArgumentNullException.ThrowIfNull(value, nameof(value));
+        ArgumentNullException.ThrowIfNull(newKey, nameof(newKey));
+
+        if (!_reverseDictionary.TryGetValue(value, out var oldKey))
+        {
+            return false;
+        }
+
+        if (_forwardDictionary.ContainsKey(newKey))
+        {
+            return _forwardDictionary.Comparer.Equals(oldKey, newKey);
+        }
+
+        _forwardDictionary.Remove(oldKey);
+        _reverseDictionary[value] = newKey;
+        try
+        {
+            _forwardDictionary.Add(newKey, value);
+            return true;
+        }
+        catch
+        {
+            _reverseDictionary[value] = oldKey;
+            _forwardDictionary.Add(oldKey, value);
+            throw;
+        }
     }
 
     /// <summary>
@@ -187,5 +309,17 @@ public class BidirectionalDictionary<TKey, TValue>
         }
 
         return false;
+    }
+
+    /// <inheritdoc />
+    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+    {
+        return _forwardDictionary.GetEnumerator();
+    }
+
+    /// <inheritdoc />
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
