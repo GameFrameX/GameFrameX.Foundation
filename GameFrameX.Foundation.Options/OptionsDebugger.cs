@@ -118,11 +118,12 @@ namespace GameFrameX.Foundation.Options
                 foreach (var (property, displayName, optionAttribute) in optionInfos)
                 {
                     var value = property.GetValue(options);
-                    var displayValue = FormatPropertyValue(value) ?? string.Empty;
+                    var isSensitive = optionAttribute?.Sensitive == true;
+                    var displayValue = FormatPropertyValue(value, isSensitive) ?? string.Empty;
                     var typeName = GetFriendlyTypeName(property.PropertyType) ?? string.Empty;
                     var required = optionAttribute != null ? (optionAttribute.Required ? RequiredYesLabel : RequiredNoLabel) : string.Empty;
                     var description = optionAttribute != null ? (optionAttribute.Description ?? NoDescriptionLabel) : NoOptionAttributeLabel;
-                    var defaultVal = optionAttribute?.DefaultValue?.ToString() ?? string.Empty;
+                    var defaultVal = optionAttribute?.DefaultValue == null ? string.Empty : FormatPropertyValue(optionAttribute.DefaultValue, isSensitive);
 
                     nameWidth = Math.Max(nameWidth, displayName.Length);
                     valueWidth = Math.Max(valueWidth, displayValue.Length);
@@ -508,12 +509,18 @@ namespace GameFrameX.Foundation.Options
         /// Formats the property value for display in the console.
         /// </remarks>
         /// <param name="value">属性值 / Property value</param>
+        /// <param name="isSensitive">是否为敏感值 / Whether the value is sensitive</param>
         /// <returns>格式化后的字符串 / Formatted string</returns>
-        private static string FormatPropertyValue(object value)
+        private static string FormatPropertyValue(object value, bool isSensitive = false)
         {
             if (value == null)
             {
                 return "<null>";
+            }
+
+            if (isSensitive)
+            {
+                return "[REDACTED]";
             }
 
             if (value is string str)

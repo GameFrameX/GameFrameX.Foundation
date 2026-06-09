@@ -102,6 +102,16 @@ public class OptionAttribute : Attribute
     public string EnvironmentVariable { get; set; }
 
     /// <summary>
+    /// 获取或设置选项值是否为敏感信息。
+    /// </summary>
+    /// <remarks>
+    /// Gets or sets whether the option value contains sensitive information.
+    /// Sensitive values are redacted from debug output and diagnostics.
+    /// </remarks>
+    /// <value>如果为 <c>true</c> 则在诊断输出中脱敏 / <c>true</c> to redact the value in diagnostic output</value>
+    public bool Sensitive { get; set; }
+
+    /// <summary>
     /// 初始化 <see cref="OptionAttribute"/> 类的新实例。
     /// </summary>
     /// <remarks>
