@@ -31,6 +31,8 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Globalization;
+
 namespace GameFrameX.Foundation.Localization.Core;
 
 /// <summary>
@@ -72,6 +74,21 @@ public static class LocalizationService
     }
 
     /// <summary>
+    /// Occurs when a resource key cannot be resolved.
+    /// </summary>
+    public static event EventHandler<MissingResourceEventArgs> MissingKey
+    {
+        add { Instance.MissingKey += value; }
+        remove
+        {
+            if (_instance.IsValueCreated)
+            {
+                _instance.Value.MissingKey -= value;
+            }
+        }
+    }
+
+    /// <summary>
     /// 获取本地化字符串
     /// </summary>
     /// <param name="key">资源键，用于标识特定的本地化字符串</param>
@@ -105,6 +122,22 @@ public static class LocalizationService
     }
 
     /// <summary>
+    /// 获取指定区域性的本地化字符串
+    /// </summary>
+    /// <param name="key">资源键，用于标识特定的本地化字符串</param>
+    /// <param name="culture">区域性</param>
+    /// <returns>本地化字符串；未找到时返回资源键</returns>
+    public static string GetString(string key, CultureInfo culture)
+    {
+        if (string.IsNullOrEmpty(key))
+        {
+            return key;
+        }
+
+        return Instance.GetString(key, culture);
+    }
+
+    /// <summary>
     /// 获取格式化的本地化字符串
     /// </summary>
     /// <param name="key">资源键</param>
@@ -127,8 +160,30 @@ public static class LocalizationService
     /// </example>
     public static string GetString(string key, params object[] args)
     {
-        var template = GetString(key);
-        return args?.Length > 0 ? string.Format(template, args) : template;
+        return FormatString(key, args);
+    }
+
+    /// <summary>
+    /// 获取格式化的本地化字符串
+    /// </summary>
+    /// <param name="key">资源键</param>
+    /// <param name="args">格式化参数</param>
+    /// <returns>格式化后的本地化字符串；格式化失败时默认返回模板</returns>
+    public static string FormatString(string key, params object[] args)
+    {
+        return Instance.FormatString(key, args);
+    }
+
+    /// <summary>
+    /// 获取指定区域性的格式化本地化字符串
+    /// </summary>
+    /// <param name="key">资源键</param>
+    /// <param name="culture">区域性</param>
+    /// <param name="args">格式化参数</param>
+    /// <returns>格式化后的本地化字符串；格式化失败时默认返回模板</returns>
+    public static string FormatString(string key, CultureInfo culture, params object[] args)
+    {
+        return Instance.FormatString(key, culture, args);
     }
 
     /// <summary>

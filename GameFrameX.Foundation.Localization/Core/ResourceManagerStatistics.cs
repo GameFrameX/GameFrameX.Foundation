@@ -68,4 +68,19 @@ public class ResourceManagerStatistics
     /// 获取或设置程序集提供者的详细信息
     /// </summary>
     public List<AssemblyResourceProviderStatistics> AssemblyProviders { get; set; } = new List<AssemblyResourceProviderStatistics>();
+
+    /// <summary>
+    /// Gets or sets the total number of missing key lookups.
+    /// </summary>
+    public long MissingKeyCount { get; set; }
+
+    /// <summary>
+    /// Gets or sets missing keys and their lookup counts.
+    /// </summary>
+    public Dictionary<string, long> MissingKeys { get; set; } = new Dictionary<string, long>();
+
+    /// <summary>
+    /// Gets or sets the total number of formatting failures.
+    /// </summary>
+    public long FormatFailureCount { get; set; }
 }

@@ -32,6 +32,8 @@
 // ==========================================================================================
 
 using System.Collections.Concurrent;
+using System.Globalization;
+using System.Threading;
 using GameFrameX.Foundation.Localization.Providers;
 
 namespace GameFrameX.Foundation.Localization.Core;
@@ -57,6 +59,9 @@ public class ResourceManager
     private volatile bool _providersLoaded;
     private readonly object _loadLock;
     private readonly object _providersLock;
+    private readonly ConcurrentDictionary<string, long> _missingKeys;
+    private long _missingKeyCount;
+    private long _formatFailureCount;
 
     /// <summary>
     /// 初始化 ResourceManager 的新实例
@@ -69,6 +74,7 @@ public class ResourceManager
     {
         _providers = new List<IResourceProvider>();
         _assemblyProviders = new Lazy<ConcurrentDictionary<string, AssemblyResourceProvider>>();
+        _missingKeys = new ConcurrentDictionary<string, long>();
         _providersLock = new object();
         var kvs = DiscoverAssemblyProviders();
         foreach (var kv in kvs)
@@ -78,6 +84,26 @@ public class ResourceManager
 
         _loadLock = new object();
     }
+
+    /// <summary>
+    /// Occurs when a resource key cannot be resolved by any provider or fallback culture.
+    /// </summary>
+    public event EventHandler<MissingResourceEventArgs> MissingKey;
+
+    /// <summary>
+    /// Gets or sets the fallback default culture. The invariant culture represents default resources.
+    /// </summary>
+    public CultureInfo DefaultCulture { get; set; } = CultureInfo.InvariantCulture;
+
+    /// <summary>
+    /// Gets or sets whether parent culture fallback is enabled.
+    /// </summary>
+    public bool CultureFallbackEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Gets or sets the behavior used when parameter formatting fails.
+    /// </summary>
+    public LocalizationFormatErrorBehavior FormatErrorBehavior { get; set; } = LocalizationFormatErrorBehavior.ReturnTemplate;
 
     /// <summary>
     /// 获取本地化字符串
@@ -102,12 +128,24 @@ public class ResourceManager
     /// </example>
     public string GetString(string key)
     {
+        return GetString(key, CultureInfo.CurrentUICulture);
+    }
+
+    /// <summary>
+    /// 获取指定区域性的本地化字符串
+    /// </summary>
+    /// <param name="key">资源键</param>
+    /// <param name="culture">区域性</param>
+    /// <returns>本地化字符串；未找到时返回资源键</returns>
+    public string GetString(string key, CultureInfo culture)
+    {
         if (string.IsNullOrEmpty(key))
         {
             return key;
         }
 
         EnsureProvidersLoaded();
+        culture ??= CultureInfo.CurrentUICulture;
 
         IResourceProvider[] providers;
         lock (_providersLock)
@@ -115,24 +153,138 @@ public class ResourceManager
             providers = _providers.ToArray();
         }
 
-        foreach (var provider in providers)
+        var fallbackChain = GetCultureFallbackChain(culture);
+        foreach (var fallbackCulture in fallbackChain)
         {
-            try
+            foreach (var provider in providers)
             {
-                var value = provider.GetString(key);
-                if (value != key) // 找到了有效的本地化值
+                try
                 {
-                    return value;
+                    if (TryGetProviderString(provider, key, fallbackCulture, out var value))
+                    {
+                        return value;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                // 记录错误但不中断查询过程，继续尝试下一个提供者
-                System.Diagnostics.Debug.WriteLine($"Provider {provider.GetType().Name} failed: {ex.Message}");
+                catch (Exception ex)
+                {
+                    // 记录错误但不中断查询过程，继续尝试下一个提供者
+                    System.Diagnostics.Debug.WriteLine($"Provider {provider.GetType().Name} failed: {ex.Message}");
+                }
             }
         }
 
+        RecordMissingKey(key, culture, fallbackChain, providers);
         return key; // 所有提供者都没有找到，返回键名
+    }
+
+    /// <summary>
+    /// Gets the fallback cultures queried for the specified culture.
+    /// </summary>
+    /// <param name="culture">The starting culture.</param>
+    /// <returns>The ordered fallback chain.</returns>
+    public IReadOnlyList<CultureInfo> GetCultureFallbackChain(CultureInfo culture)
+    {
+        culture ??= CultureInfo.CurrentUICulture;
+
+        var cultures = new List<CultureInfo>();
+        if (!CultureFallbackEnabled)
+        {
+            cultures.Add(culture);
+            return cultures.AsReadOnly();
+        }
+
+        var current = culture;
+        while (current != null)
+        {
+            AddCultureIfMissing(cultures, current);
+            if (Equals(current, CultureInfo.InvariantCulture))
+            {
+                break;
+            }
+
+            current = current.Parent;
+        }
+
+        if (DefaultCulture != null)
+        {
+            AddCultureIfMissing(cultures, DefaultCulture);
+        }
+
+        AddCultureIfMissing(cultures, CultureInfo.InvariantCulture);
+        return cultures.AsReadOnly();
+    }
+
+    /// <summary>
+    /// Gets and formats a localized string using the current UI culture.
+    /// </summary>
+    public string FormatString(string key, params object[] args)
+    {
+        return FormatString(key, CultureInfo.CurrentUICulture, args);
+    }
+
+    /// <summary>
+    /// Gets and formats a localized string using an explicit culture.
+    /// </summary>
+    public string FormatString(string key, CultureInfo culture, params object[] args)
+    {
+        var template = GetString(key, culture);
+        if (args == null || args.Length == 0)
+        {
+            return template;
+        }
+
+        try
+        {
+            return string.Format(culture ?? CultureInfo.CurrentUICulture, template, args);
+        }
+        catch (FormatException)
+        {
+            Interlocked.Increment(ref _formatFailureCount);
+            if (FormatErrorBehavior == LocalizationFormatErrorBehavior.Throw)
+            {
+                throw;
+            }
+
+            return FormatErrorBehavior switch
+            {
+                LocalizationFormatErrorBehavior.ReturnKey => key,
+                _ => template
+            };
+        }
+    }
+
+    private static void AddCultureIfMissing(ICollection<CultureInfo> cultures, CultureInfo culture)
+    {
+        if (!cultures.Any(item => string.Equals(item.Name, culture.Name, StringComparison.OrdinalIgnoreCase)))
+        {
+            cultures.Add(culture);
+        }
+    }
+
+    private static bool TryGetProviderString(IResourceProvider provider, string key, CultureInfo culture, out string value)
+    {
+        value = provider is ICultureResourceProvider cultureProvider
+                    ? cultureProvider.GetString(key, culture)
+                    : string.Equals(culture.Name, CultureInfo.CurrentUICulture.Name, StringComparison.OrdinalIgnoreCase)
+                        ? provider.GetString(key)
+                        : key;
+
+        return !string.IsNullOrEmpty(value) && value != key;
+    }
+
+    private void RecordMissingKey(string key, CultureInfo culture, IReadOnlyList<CultureInfo> fallbackChain, IReadOnlyList<IResourceProvider> providers)
+    {
+        Interlocked.Increment(ref _missingKeyCount);
+        _missingKeys.AddOrUpdate(key, 1, (_, count) => count + 1);
+
+        var handler = MissingKey;
+        if (handler == null)
+        {
+            return;
+        }
+
+        var providerNames = providers.Select(provider => provider.AssemblyName).ToList().AsReadOnly();
+        handler(this, new MissingResourceEventArgs(key, culture, fallbackChain, providerNames));
     }
 
     /// <summary>
@@ -343,7 +495,10 @@ public class ResourceManager
             TotalProviderCount = providers.Length,
             DefaultProviderExists = assemblyProviders.Count > 0,
             AssemblyProviderCount = assemblyProviders.Count,
-            AssemblyProviders = assemblyProviders.Select(p => p.GetStatistics()).ToList()
+            AssemblyProviders = assemblyProviders.Select(p => p.GetStatistics()).ToList(),
+            MissingKeyCount = Interlocked.Read(ref _missingKeyCount),
+            MissingKeys = _missingKeys.ToDictionary(item => item.Key, item => item.Value),
+            FormatFailureCount = Interlocked.Read(ref _formatFailureCount)
         };
     }
 

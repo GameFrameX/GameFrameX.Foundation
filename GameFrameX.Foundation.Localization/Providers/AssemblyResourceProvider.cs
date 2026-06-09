@@ -60,7 +60,7 @@ namespace GameFrameX.Foundation.Localization.Providers;
 /// var message = provider.GetString("MyApp.Exceptions.InvalidArgument");
 /// </code>
 /// </example>
-public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
+public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceProvider, IDisposable
 {
     /// <summary>
     /// 获取当前程序集的完整名称
@@ -134,35 +134,33 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
     /// </example>
     public string GetString(string key)
     {
+        return GetString(key, CultureInfo.CurrentUICulture);
+    }
+
+    /// <summary>
+    /// 获取指定区域性的本地化字符串
+    /// </summary>
+    /// <param name="key">资源键，格式通常为 "模块名.类别.具体键名"</param>
+    /// <param name="culture">区域性</param>
+    /// <returns>如果找到对应的本地化字符串，返回该字符串；如果未找到，返回传入的资源键</returns>
+    public string GetString(string key, CultureInfo culture)
+    {
         if (string.IsNullOrEmpty(key))
         {
             return key;
         }
 
         EnsureLoaded();
+        culture ??= CultureInfo.CurrentUICulture;
 
-        if (TryGetResourceManager(key, out var resourceManager))
+        foreach (var resourceManager in _resourceManagers)
         {
             try
             {
-                var culture = CultureInfo.CurrentUICulture;
-                var value = resourceManager.GetString(key, culture);
-
-
-                if (!string.IsNullOrEmpty(value))
+                var value = GetExactString(resourceManager, key, culture);
+                if (!string.IsNullOrEmpty(value) && value != key)
                 {
                     return value;
-                }
-
-                // 尝试使用非特定文化作为后备
-                if (!Equals(culture, CultureInfo.InvariantCulture))
-                {
-                    value = resourceManager.GetString(key, CultureInfo.InvariantCulture);
-
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        return value;
-                    }
                 }
             }
             catch (MissingManifestResourceException)
@@ -366,6 +364,17 @@ public class AssemblyResourceProvider : ILazyResourceProvider, IDisposable
 
         resourceManager = null;
         return false;
+    }
+
+    private static string GetExactString(System.Resources.ResourceManager resourceManager, string key, CultureInfo culture)
+    {
+        var resourceSet = resourceManager.GetResourceSet(culture, true, false);
+        if (resourceSet == null)
+        {
+            return null;
+        }
+
+        return resourceSet.GetString(key);
     }
 
     /// <summary>
