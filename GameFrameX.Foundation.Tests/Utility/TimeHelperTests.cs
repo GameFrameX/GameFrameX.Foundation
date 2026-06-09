@@ -485,4 +485,3 @@ public class TimeHelperTests
         Assert.Equal(expectedTicks, actualTicks);
     }
 }*/
-
