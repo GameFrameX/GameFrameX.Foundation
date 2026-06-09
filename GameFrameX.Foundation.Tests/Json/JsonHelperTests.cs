@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
+using System.Threading;
+using System.Threading.Tasks;
 using GameFrameX.Foundation.Json;
 using Xunit;
 
@@ -434,6 +439,126 @@ namespace GameFrameX.Foundation.Tests.Json
 
             Assert.Throws<JsonException>(() => JsonHelper.Deserialize<TestDoubleClass>(json));
         }
+
+        [Fact]
+        public async Task SerializeAsyncDeserializeAsync_Stream_ShouldRoundTripLargeObject()
+        {
+            var testObject = new TestClass
+            {
+                Id = 10,
+                Name = "Stream测试",
+                IsActive = true,
+                CreatedDate = new DateTime(2023, 10, 10),
+                Tags = new List<string>()
+            };
+
+            for (int i = 0; i < 4096; i++)
+            {
+                testObject.Tags.Add("标签-" + i);
+            }
+
+            using var stream = new MemoryStream();
+            using var cancellationTokenSource = new CancellationTokenSource();
+
+            await JsonHelper.SerializeAsync(stream, testObject, cancellationToken: cancellationTokenSource.Token);
+            Assert.True(stream.Length > 1024);
+
+            stream.Position = 0;
+            var result = await JsonHelper.DeserializeAsync<TestClass>(stream, cancellationToken: cancellationTokenSource.Token);
+
+            Assert.NotNull(result);
+            Assert.Equal(testObject.Id, result.Id);
+            Assert.Equal(testObject.Name, result.Name);
+            Assert.Equal(testObject.Tags.Count, result.Tags.Count);
+            Assert.Equal("标签-4095", result.Tags[4095]);
+        }
+
+        [Fact]
+        public async Task SerializeAsyncDeserializeAsync_Stream_ShouldObserveCancellation()
+        {
+            var testObject = new TestClass
+            {
+                Id = 12,
+                Name = "Cancellation测试",
+                IsActive = true,
+                CreatedDate = new DateTime(2023, 12, 12)
+            };
+            using var stream = new MemoryStream();
+            using var cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.Cancel();
+
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => JsonHelper.SerializeAsync(stream, testObject, cancellationToken: cancellationTokenSource.Token));
+
+            stream.Position = 0;
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await JsonHelper.DeserializeAsync<TestClass>(stream, cancellationToken: cancellationTokenSource.Token));
+        }
+
+        [Fact]
+        public async Task JsonTypeInfoOverloads_ShouldUseSourceGeneratedMetadata()
+        {
+            JsonTypeInfo<SourceGeneratedJsonModel> jsonTypeInfo = JsonHelperTestsJsonContext.Default.SourceGeneratedJsonModel;
+            var model = new SourceGeneratedJsonModel { Id = 11, Name = "SourceGen" };
+
+            string json = JsonHelper.Serialize(model, jsonTypeInfo);
+            SourceGeneratedJsonModel fromString = JsonHelper.Deserialize(json, jsonTypeInfo);
+            byte[] utf8Bytes = JsonHelper.SerializeToUtf8Bytes(model, jsonTypeInfo);
+            SourceGeneratedJsonModel fromBytes = JsonHelper.DeserializeFromUtf8Bytes(utf8Bytes, jsonTypeInfo);
+
+            using var stream = new MemoryStream();
+            await JsonHelper.SerializeAsync(stream, model, jsonTypeInfo);
+            stream.Position = 0;
+            SourceGeneratedJsonModel fromStream = await JsonHelper.DeserializeAsync(stream, jsonTypeInfo);
+
+            Assert.Equal(model.Id, fromString.Id);
+            Assert.Equal(model.Name, fromBytes.Name);
+            Assert.Equal(model.Id, fromStream.Id);
+        }
+
+        [Fact]
+        public void TryDeserialize_WithError_ShouldReturnJsonPathAndExceptionType()
+        {
+            const string invalidJson = "{\"Id\":12,\"Name\":\"Broken,\"IsActive\":true}";
+
+            bool result = JsonHelper.TryDeserialize<TestClass>(invalidJson, out var value, out var error);
+
+            Assert.False(result);
+            Assert.Null(value);
+            Assert.NotNull(error);
+            Assert.Equal(typeof(JsonException), error.ExceptionType);
+            Assert.Equal(JsonHelperErrorKind.InvalidInput, error.Kind);
+            Assert.NotEmpty(error.Message);
+            Assert.NotNull(error.Path);
+        }
+
+        [Fact]
+        public void TryDeserialize_WithError_ShouldDistinguishTypeMismatch()
+        {
+            const string mismatchedJson = "{\"Value\":\"not-a-number\"}";
+
+            bool result = JsonHelper.TryDeserialize<TestDoubleClass>(mismatchedJson, out var value, out var error);
+
+            Assert.False(result);
+            Assert.Null(value);
+            Assert.NotNull(error);
+            Assert.Equal(typeof(JsonException), error.ExceptionType);
+            Assert.Equal(JsonHelperErrorKind.TypeMismatch, error.Kind);
+            Assert.Equal("$.Value", error.Path);
+            Assert.Contains("not-a-number", error.Message);
+        }
+
+        [Fact]
+        public void DefaultOptions_ShouldBeReadOnlyAndCopiesShouldBeMutable()
+        {
+            Assert.True(JsonHelper.DefaultOptions.IsReadOnly);
+            Assert.Throws<InvalidOperationException>(() => JsonHelper.DefaultOptions.WriteIndented = true);
+
+            JsonSerializerOptions copy = JsonHelper.CreateDefaultOptions();
+            copy.WriteIndented = true;
+
+            Assert.False(copy.IsReadOnly);
+            Assert.True(copy.WriteIndented);
+            Assert.False(JsonHelper.DefaultOptions.WriteIndented);
+        }
     }
 
     public class TestDoubleClass
@@ -483,5 +608,16 @@ namespace GameFrameX.Foundation.Tests.Json
         public int Id { get; set; }
         public string Name { get; set; }
         public TestStatus Status { get; set; }
+    }
+
+    public class SourceGeneratedJsonModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
+    [JsonSerializable(typeof(SourceGeneratedJsonModel))]
+    public partial class JsonHelperTestsJsonContext : JsonSerializerContext
+    {
     }
 }
