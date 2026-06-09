@@ -13,6 +13,16 @@ public class DisposableConcurrentDictionary<TKey, TValue> : NullableConcurrentDi
     private bool _isDisposed;
 
     /// <summary>
+    /// 获取集合是否已经释放。
+    /// </summary>
+    public bool IsDisposed => _isDisposed;
+
+    /// <summary>
+    /// 获取或设置单个值释放失败时调用的处理器。
+    /// </summary>
+    public Action<TValue, Exception> DisposalErrorHandler { get; set; }
+
+    /// <summary>
     /// 初始化一个新的 <see cref="DisposableConcurrentDictionary{TKey, TValue}" /> 实例。
     /// </summary>
     /// <remarks>
@@ -74,20 +84,8 @@ public class DisposableConcurrentDictionary<TKey, TValue> : NullableConcurrentDi
             return;
         }
 
-        Dispose(true);
         _isDisposed = true;
-        GC.SuppressFinalize(this);
-    }
-
-    /// <summary>
-    /// 终结器，确保未释放的资源在对象被垃圾回收时被释放。
-    /// </summary>
-    /// <remarks>
-    /// Finalizer to ensure unmanaged resources are released when the object is garbage collected.
-    /// </remarks>
-    ~DisposableConcurrentDictionary()
-    {
-        Dispose(false);
+        Dispose(true);
     }
 
     /// <summary>
@@ -101,17 +99,29 @@ public class DisposableConcurrentDictionary<TKey, TValue> : NullableConcurrentDi
     {
         if (disposing)
         {
-            try
+            foreach (var value in Values.Where(v => v != null))
             {
-                foreach (var s in Values.Where(v => v != null))
+                try
                 {
-                    s.Dispose();
+                    value.Dispose();
+                }
+                catch (Exception exception)
+                {
+                    TryHandleDisposalError(value, exception);
                 }
             }
-            catch
-            {
-                // 忽略释放过程中的异常
-            }
+        }
+    }
+
+    private void TryHandleDisposalError(TValue value, Exception exception)
+    {
+        try
+        {
+            DisposalErrorHandler?.Invoke(value, exception);
+        }
+        catch
+        {
+            // Error handlers must not prevent the remaining values from being disposed.
         }
     }
 }

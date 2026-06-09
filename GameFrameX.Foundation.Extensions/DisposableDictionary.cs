@@ -13,6 +13,16 @@ public class DisposableDictionary<TKey, TValue> : NullableDictionary<TKey, TValu
     private bool _isDisposed;
 
     /// <summary>
+    /// 获取集合是否已经释放。
+    /// </summary>
+    public bool IsDisposed => _isDisposed;
+
+    /// <summary>
+    /// 获取或设置单个值释放失败时调用的处理器。
+    /// </summary>
+    public Action<TValue, Exception> DisposalErrorHandler { get; set; }
+
+    /// <summary>
     /// 初始化一个新的 <see cref="DisposableDictionary{TKey, TValue}" /> 实例。
     /// </summary>
     /// <remarks>
@@ -90,20 +100,8 @@ public class DisposableDictionary<TKey, TValue> : NullableDictionary<TKey, TValu
             return;
         }
 
-        Dispose(true);
         _isDisposed = true;
-        GC.SuppressFinalize(this);
-    }
-
-    /// <summary>
-    /// 终结器，确保未释放的资源在对象被垃圾回收时被释放。
-    /// </summary>
-    /// <remarks>
-    /// Finalizer to ensure unmanaged resources are released when the object is garbage collected.
-    /// </remarks>
-    ~DisposableDictionary()
-    {
-        Dispose(false);
+        Dispose(true);
     }
 
     /// <summary>
@@ -120,17 +118,28 @@ public class DisposableDictionary<TKey, TValue> : NullableDictionary<TKey, TValu
             return;
         }
 
-        foreach (var s in Values.Where(v => v != null))
+        foreach (var value in Values.Where(v => v != null))
         {
             try
             {
-                s.Dispose();
+                value.Dispose();
             }
-            catch
+            catch (Exception exception)
             {
-                // 忽略释放过程中的异常，确保所有资源都被释放
-                // Ignore exceptions during disposal to ensure all resources are released
+                TryHandleDisposalError(value, exception);
             }
+        }
+    }
+
+    private void TryHandleDisposalError(TValue value, Exception exception)
+    {
+        try
+        {
+            DisposalErrorHandler?.Invoke(value, exception);
+        }
+        catch
+        {
+            // Error handlers must not prevent the remaining values from being disposed.
         }
     }
 }
