@@ -134,6 +134,21 @@ public class IdWorker
     private long _lastTimestamp = -1L;
 
     /// <summary>
+    /// 已生成的ID总数。
+    /// </summary>
+    private long _totalIdsGenerated;
+
+    /// <summary>
+    /// 最后一次生成的ID。
+    /// </summary>
+    private long _lastGeneratedId;
+
+    /// <summary>
+    /// 时钟回退检测次数。
+    /// </summary>
+    private int _clockBackwardCount;
+
+    /// <summary>
     /// 初始化 <see cref="IdWorker"/> 类的新实例
     /// </summary>
     /// <param name="workerId">工作节点ID，取值范围为 0 到 31</param>
@@ -221,6 +236,30 @@ public class IdWorker
     }
 
     /// <summary>
+    /// 获取已生成的ID总数。
+    /// </summary>
+    public long TotalIdsGenerated
+    {
+        get { return Interlocked.Read(ref _totalIdsGenerated); }
+    }
+
+    /// <summary>
+    /// 获取最后一次生成的ID。
+    /// </summary>
+    public long LastGeneratedId
+    {
+        get { return Interlocked.Read(ref _lastGeneratedId); }
+    }
+
+    /// <summary>
+    /// 获取时钟回退检测次数。
+    /// </summary>
+    public int ClockBackwardCount
+    {
+        get { return Volatile.Read(ref _clockBackwardCount); }
+    }
+
+    /// <summary>
     /// 用于线程同步的锁对象
     /// </summary>
     readonly object _lock = new Object();
@@ -265,8 +304,7 @@ public class IdWorker
 
             if (timestamp < _lastTimestamp)
             {
-                //exceptionCounter.incr(1);
-                //log.Error("clock is moving backwards.  Rejecting requests until %d.", _lastTimestamp);
+                Interlocked.Increment(ref _clockBackwardCount);
                 throw new InvalidSystemClock(LocalizationService.GetString(LocalizationKeys.Exceptions.ClockMovedBackwards, _lastTimestamp - timestamp));
             }
 
@@ -287,6 +325,9 @@ public class IdWorker
             var id = ((timestamp - BaseTime) << TimestampLeftShift) |
                      (DataCenterId << DatacenterIdShift) |
                      (WorkerId << WorkerIdShift) | _sequence;
+
+            Interlocked.Increment(ref _totalIdsGenerated);
+            Interlocked.Exchange(ref _lastGeneratedId, id);
 
             return id;
         }
@@ -324,5 +365,19 @@ public class IdWorker
     protected virtual long TimeGenerator()
     {
         return TimeSystem.CurrentTimeMillis();
+    }
+
+    /// <summary>
+    /// 解析已生成的ID，提取时间戳、WorkerId、DataCenterId 和序列号。
+    /// </summary>
+    /// <remarks>
+    /// Parses a generated ID to extract the timestamp, WorkerId, DataCenterId, and sequence number.
+    /// Uses this instance's BaseTime for timestamp conversion.
+    /// </remarks>
+    /// <param name="id">要解析的ID / The ID to parse</param>
+    /// <returns>解析结果 / The parsed result</returns>
+    public SnowFlakeIdInfo ParseId(long id)
+    {
+        return SnowFlakeIdParser.Parse(id, BaseTime);
     }
 }

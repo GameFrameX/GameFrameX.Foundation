@@ -69,6 +69,27 @@ public static class SnowFlakeIdHelper
     private static IdWorker _worker;
 
     /// <summary>
+    /// 工作节点ID提供者。设置后将在首次访问 Instance 时自动解析 WorkerId。
+    /// </summary>
+    /// <remarks>
+    /// Worker ID provider. When set, WorkerId is resolved automatically before Instance creation.
+    /// Must be set before the first access to <see cref="Instance"/>.
+    /// </remarks>
+    private static IWorkerIdProvider _workerIdProvider;
+
+    /// <summary>
+    /// 设置工作节点ID提供者。必须在首次访问 <see cref="Instance"/> 之前调用。
+    /// </summary>
+    /// <remarks>
+    /// Sets the worker ID provider. Must be called before the first access to <see cref="Instance"/>.
+    /// </remarks>
+    /// <param name="provider">工作节点ID提供者 / Worker ID provider</param>
+    public static void SetWorkerIdProvider(IWorkerIdProvider provider)
+    {
+        _workerIdProvider = provider;
+    }
+
+    /// <summary>
     /// 工作节点ID，默认值为 1
     /// </summary>
     /// <value>
@@ -121,6 +142,10 @@ public static class SnowFlakeIdHelper
                 {
                     if (_worker == null)
                     {
+                        if (_workerIdProvider != null)
+                        {
+                            WorkId = (int)_workerIdProvider.GetWorkerId();
+                        }
                         _worker = new IdWorker(WorkId, DataCenterId, BaseTime);
                     }
                 }
