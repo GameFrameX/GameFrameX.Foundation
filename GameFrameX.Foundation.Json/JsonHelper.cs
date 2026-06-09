@@ -34,6 +34,7 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Text.Unicode;
 
 namespace GameFrameX.Foundation.Json;
@@ -48,6 +49,12 @@ namespace GameFrameX.Foundation.Json;
 /// </remarks>
 public static class JsonHelper
 {
+    static JsonHelper()
+    {
+        DefaultOptions.MakeReadOnly(true);
+        FormatOptions.MakeReadOnly(true);
+    }
+
     /// <summary>
     /// 默认序列化配置。
     /// 包含以下特性:
@@ -177,6 +184,30 @@ public static class JsonHelper
     };
 
     /// <summary>
+    /// 创建默认配置的可变副本。
+    /// </summary>
+    /// <remarks>
+    /// Creates a mutable copy of the default options.
+    /// </remarks>
+    /// <returns>默认配置副本 / A copy of the default options</returns>
+    public static JsonSerializerOptions CreateDefaultOptions()
+    {
+        return new JsonSerializerOptions(DefaultOptions);
+    }
+
+    /// <summary>
+    /// 创建格式化配置的可变副本。
+    /// </summary>
+    /// <remarks>
+    /// Creates a mutable copy of the formatted options.
+    /// </remarks>
+    /// <returns>格式化配置副本 / A copy of the formatted options</returns>
+    public static JsonSerializerOptions CreateFormatOptions()
+    {
+        return new JsonSerializerOptions(FormatOptions);
+    }
+
+    /// <summary>
     /// 将对象序列化为JSON字符串。
     /// 使用默认序列化配置(DefaultOptions)。
     /// </summary>
@@ -212,6 +243,62 @@ public static class JsonHelper
         ArgumentNullException.ThrowIfNull(options, nameof(options));
         var json = JsonSerializer.Serialize(obj, options);
         return json;
+    }
+
+    /// <summary>
+    /// 使用源生成元数据将对象序列化为JSON字符串。
+    /// </summary>
+    /// <remarks>
+    /// Serializes an object to a JSON string using source-generated metadata.
+    /// </remarks>
+    /// <param name="obj">需要序列化的对象 / The object to serialize</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>序列化后的JSON字符串 / The serialized JSON string</returns>
+    public static string Serialize<T>(T obj, JsonTypeInfo<T> jsonTypeInfo)
+    {
+        ArgumentNullException.ThrowIfNull(obj, nameof(obj));
+        ArgumentNullException.ThrowIfNull(jsonTypeInfo, nameof(jsonTypeInfo));
+        return JsonSerializer.Serialize(obj, jsonTypeInfo);
+    }
+
+    /// <summary>
+    /// 将对象异步序列化到UTF8 JSON流。
+    /// </summary>
+    /// <remarks>
+    /// Asynchronously serializes an object to a UTF-8 JSON stream.
+    /// </remarks>
+    /// <param name="stream">目标流 / Target stream</param>
+    /// <param name="obj">需要序列化的对象 / The object to serialize</param>
+    /// <param name="options">序列化配置 / Serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / Cancellation token</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>异步任务 / Async task</returns>
+    public static Task SerializeAsync<T>(Stream stream, T obj, JsonSerializerOptions options = null, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+        ArgumentNullException.ThrowIfNull(obj, nameof(obj));
+        return JsonSerializer.SerializeAsync(stream, obj, options ?? DefaultOptions, cancellationToken);
+    }
+
+    /// <summary>
+    /// 使用源生成元数据将对象异步序列化到UTF8 JSON流。
+    /// </summary>
+    /// <remarks>
+    /// Asynchronously serializes an object to a UTF-8 JSON stream using source-generated metadata.
+    /// </remarks>
+    /// <param name="stream">目标流 / Target stream</param>
+    /// <param name="obj">需要序列化的对象 / The object to serialize</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <param name="cancellationToken">取消令牌 / Cancellation token</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>异步任务 / Async task</returns>
+    public static Task SerializeAsync<T>(Stream stream, T obj, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+        ArgumentNullException.ThrowIfNull(obj, nameof(obj));
+        ArgumentNullException.ThrowIfNull(jsonTypeInfo, nameof(jsonTypeInfo));
+        return JsonSerializer.SerializeAsync(stream, obj, jsonTypeInfo, cancellationToken);
     }
 
     /// <summary>
@@ -269,6 +356,23 @@ public static class JsonHelper
     }
 
     /// <summary>
+    /// 使用源生成元数据将对象序列化为UTF8编码的字节数组。
+    /// </summary>
+    /// <remarks>
+    /// Serializes an object to a UTF-8 encoded byte array using source-generated metadata.
+    /// </remarks>
+    /// <param name="obj">需要序列化的对象 / The object to serialize</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>序列化后的UTF8字节数组 / The serialized UTF-8 byte array</returns>
+    public static byte[] SerializeToUtf8Bytes<T>(T obj, JsonTypeInfo<T> jsonTypeInfo)
+    {
+        ArgumentNullException.ThrowIfNull(obj, nameof(obj));
+        ArgumentNullException.ThrowIfNull(jsonTypeInfo, nameof(jsonTypeInfo));
+        return JsonSerializer.SerializeToUtf8Bytes(obj, jsonTypeInfo);
+    }
+
+    /// <summary>
     /// 将对象序列化为格式化的UTF8编码字节数组。
     /// 使用格式化序列化配置(FormatOptions)。
     /// </summary>
@@ -314,6 +418,68 @@ public static class JsonHelper
             string processedJson = PreprocessSpecialFloatingPointValues(json);
             return JsonSerializer.Deserialize<T>(processedJson, DefaultOptions);
         }
+    }
+
+    /// <summary>
+    /// 使用源生成元数据反序列化JSON字符串。
+    /// </summary>
+    /// <remarks>
+    /// Deserializes a JSON string using source-generated metadata.
+    /// </remarks>
+    /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
+    public static T Deserialize<T>(string json, JsonTypeInfo<T> jsonTypeInfo)
+    {
+        ArgumentNullException.ThrowIfNull(json, nameof(json));
+        ArgumentException.ThrowIfNullOrEmpty(json, nameof(json));
+        ArgumentException.ThrowIfNullOrWhiteSpace(json, nameof(json));
+        ArgumentNullException.ThrowIfNull(jsonTypeInfo, nameof(jsonTypeInfo));
+        try
+        {
+            return JsonSerializer.Deserialize(json, jsonTypeInfo);
+        }
+        catch (JsonException) when (json.Contains("NaN") || json.Contains("Infinity"))
+        {
+            string processedJson = PreprocessSpecialFloatingPointValues(json);
+            return JsonSerializer.Deserialize(processedJson, jsonTypeInfo);
+        }
+    }
+
+    /// <summary>
+    /// 从UTF8 JSON流异步反序列化为指定类型的对象。
+    /// </summary>
+    /// <remarks>
+    /// Asynchronously deserializes a UTF-8 JSON stream to an object of the specified type.
+    /// </remarks>
+    /// <param name="stream">源流 / Source stream</param>
+    /// <param name="options">序列化配置 / Serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / Cancellation token</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
+    public static ValueTask<T> DeserializeAsync<T>(Stream stream, JsonSerializerOptions options = null, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+        return JsonSerializer.DeserializeAsync<T>(stream, options ?? DefaultOptions, cancellationToken);
+    }
+
+    /// <summary>
+    /// 使用源生成元数据从UTF8 JSON流异步反序列化为指定类型的对象。
+    /// </summary>
+    /// <remarks>
+    /// Asynchronously deserializes a UTF-8 JSON stream using source-generated metadata.
+    /// </remarks>
+    /// <param name="stream">源流 / Source stream</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <param name="cancellationToken">取消令牌 / Cancellation token</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
+    public static ValueTask<T> DeserializeAsync<T>(Stream stream, JsonTypeInfo<T> jsonTypeInfo, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+        ArgumentNullException.ThrowIfNull(jsonTypeInfo, nameof(jsonTypeInfo));
+        return JsonSerializer.DeserializeAsync(stream, jsonTypeInfo, cancellationToken);
     }
 
     /// <summary>
@@ -485,6 +651,23 @@ public static class JsonHelper
     }
 
     /// <summary>
+    /// 使用源生成元数据从UTF8编码的字节数组反序列化为指定类型的对象。
+    /// </summary>
+    /// <remarks>
+    /// Deserializes from a UTF-8 encoded byte array using source-generated metadata.
+    /// </remarks>
+    /// <param name="utf8Bytes">UTF8编码的JSON字节数组 / The UTF-8 encoded JSON byte array</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>反序列化后的对象实例 / The deserialized object instance</returns>
+    public static T DeserializeFromUtf8Bytes<T>(byte[] utf8Bytes, JsonTypeInfo<T> jsonTypeInfo)
+    {
+        ArgumentNullException.ThrowIfNull(utf8Bytes, nameof(utf8Bytes));
+        ArgumentNullException.ThrowIfNull(jsonTypeInfo, nameof(jsonTypeInfo));
+        return JsonSerializer.Deserialize(utf8Bytes, jsonTypeInfo);
+    }
+
+    /// <summary>
     /// 尝试将JSON字符串反序列化为指定类型的对象。
     /// 如果反序列化失败，返回false并将result设置为null。
     /// 使用默认序列化配置(DefaultOptions)。
@@ -552,6 +735,104 @@ public static class JsonHelper
     }
 
     /// <summary>
+    /// 尝试反序列化JSON字符串，失败时返回错误详情。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to deserialize a JSON string and returns error details on failure.
+    /// </remarks>
+    /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
+    /// <param name="result">反序列化结果 / Deserialization result</param>
+    /// <param name="error">错误详情 / Error details</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>反序列化是否成功 / Whether deserialization succeeded</returns>
+    public static bool TryDeserialize<T>(string json, out T result, out JsonHelperError error)
+    {
+        return TryDeserialize(json, out result, DefaultOptions, out error);
+    }
+
+    /// <summary>
+    /// 使用自定义配置尝试反序列化JSON字符串，失败时返回错误详情。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to deserialize a JSON string with custom options and returns error details on failure.
+    /// </remarks>
+    /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
+    /// <param name="result">反序列化结果 / Deserialization result</param>
+    /// <param name="options">自定义序列化配置 / Custom serialization options</param>
+    /// <param name="error">错误详情 / Error details</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>反序列化是否成功 / Whether deserialization succeeded</returns>
+    public static bool TryDeserialize<T>(string json, out T result, JsonSerializerOptions options, out JsonHelperError error)
+    {
+        result = default;
+        error = null;
+
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentException), "JSON input cannot be null, empty, or whitespace.");
+            return false;
+        }
+
+        if (options == null)
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentNullException), "Serialization options cannot be null.");
+            return false;
+        }
+
+        try
+        {
+            result = Deserialize<T>(json, options);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            error = CreateError(exception, JsonHelperErrorKind.InvalidInput);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 使用源生成元数据尝试反序列化JSON字符串，失败时返回错误详情。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to deserialize a JSON string using source-generated metadata and returns error details on failure.
+    /// </remarks>
+    /// <param name="json">需要反序列化的JSON字符串 / The JSON string to deserialize</param>
+    /// <param name="result">反序列化结果 / Deserialization result</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <param name="error">错误详情 / Error details</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>反序列化是否成功 / Whether deserialization succeeded</returns>
+    public static bool TryDeserialize<T>(string json, out T result, JsonTypeInfo<T> jsonTypeInfo, out JsonHelperError error)
+    {
+        result = default;
+        error = null;
+
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentException), "JSON input cannot be null, empty, or whitespace.");
+            return false;
+        }
+
+        if (jsonTypeInfo == null)
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentNullException), "JSON type info cannot be null.");
+            return false;
+        }
+
+        try
+        {
+            result = Deserialize(json, jsonTypeInfo);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            error = CreateError(exception, JsonHelperErrorKind.InvalidInput);
+            return false;
+        }
+    }
+
+    /// <summary>
     /// 尝试将对象序列化为JSON字符串。
     /// 如果序列化失败，返回false并将result设置为null。
     /// 使用默认序列化配置(DefaultOptions)。
@@ -614,5 +895,122 @@ public static class JsonHelper
         {
             return false;
         }
+    }
+
+    /// <summary>
+    /// 尝试将对象序列化为JSON字符串，失败时返回错误详情。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to serialize an object to a JSON string and returns error details on failure.
+    /// </remarks>
+    /// <param name="obj">需要序列化的对象 / The object to serialize</param>
+    /// <param name="result">序列化结果 / Serialization result</param>
+    /// <param name="error">错误详情 / Error details</param>
+    /// <returns>序列化是否成功 / Whether serialization succeeded</returns>
+    public static bool TrySerialize(object obj, out string result, out JsonHelperError error)
+    {
+        return TrySerialize(obj, out result, DefaultOptions, out error);
+    }
+
+    /// <summary>
+    /// 使用自定义配置尝试将对象序列化为JSON字符串，失败时返回错误详情。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to serialize an object to a JSON string with custom options and returns error details on failure.
+    /// </remarks>
+    /// <param name="obj">需要序列化的对象 / The object to serialize</param>
+    /// <param name="result">序列化结果 / Serialization result</param>
+    /// <param name="options">自定义序列化配置 / Custom serialization options</param>
+    /// <param name="error">错误详情 / Error details</param>
+    /// <returns>序列化是否成功 / Whether serialization succeeded</returns>
+    public static bool TrySerialize(object obj, out string result, JsonSerializerOptions options, out JsonHelperError error)
+    {
+        result = null;
+        error = null;
+
+        if (obj == null)
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentNullException), "Object to serialize cannot be null.");
+            return false;
+        }
+
+        if (options == null)
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentNullException), "Serialization options cannot be null.");
+            return false;
+        }
+
+        try
+        {
+            result = Serialize(obj, options);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            error = CreateError(exception, JsonHelperErrorKind.Serialization);
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 使用源生成元数据尝试将对象序列化为JSON字符串，失败时返回错误详情。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to serialize an object to a JSON string using source-generated metadata and returns error details on failure.
+    /// </remarks>
+    /// <param name="obj">需要序列化的对象 / The object to serialize</param>
+    /// <param name="result">序列化结果 / Serialization result</param>
+    /// <param name="jsonTypeInfo">源生成类型元数据 / Source-generated type metadata</param>
+    /// <param name="error">错误详情 / Error details</param>
+    /// <typeparam name="T">目标类型 / Target type</typeparam>
+    /// <returns>序列化是否成功 / Whether serialization succeeded</returns>
+    public static bool TrySerialize<T>(T obj, out string result, JsonTypeInfo<T> jsonTypeInfo, out JsonHelperError error)
+    {
+        result = null;
+        error = null;
+
+        if (obj == null)
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentNullException), "Object to serialize cannot be null.");
+            return false;
+        }
+
+        if (jsonTypeInfo == null)
+        {
+            error = new JsonHelperError(JsonHelperErrorKind.InvalidInput, typeof(ArgumentNullException), "JSON type info cannot be null.");
+            return false;
+        }
+
+        try
+        {
+            result = Serialize(obj, jsonTypeInfo);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            error = CreateError(exception, JsonHelperErrorKind.Serialization);
+            return false;
+        }
+    }
+
+    private static JsonHelperError CreateError(Exception exception, JsonHelperErrorKind fallbackKind)
+    {
+        if (exception is JsonException jsonException)
+        {
+            var kind = IsTypeMismatch(jsonException) ? JsonHelperErrorKind.TypeMismatch : fallbackKind;
+            return new JsonHelperError(kind, exception.GetType(), jsonException.Message, jsonException.Path, jsonException.LineNumber, jsonException.BytePositionInLine);
+        }
+
+        return new JsonHelperError(fallbackKind == JsonHelperErrorKind.None ? JsonHelperErrorKind.Unknown : fallbackKind, exception.GetType(), exception.Message);
+    }
+
+    private static bool IsTypeMismatch(JsonException exception)
+    {
+        if (string.IsNullOrWhiteSpace(exception.Path))
+        {
+            return false;
+        }
+
+        return exception.Message.Contains("convert", StringComparison.OrdinalIgnoreCase);
     }
 }
