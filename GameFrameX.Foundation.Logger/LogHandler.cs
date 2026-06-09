@@ -32,11 +32,11 @@
 // ==========================================================================================
 
 using System.IO.Compression;
+using System.Net.Http.Headers;
 using GameFrameX.Foundation.Extensions;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Grafana.Loki;
-using Serilog.Sinks.Grafana.Loki.HttpClients;
 
 namespace GameFrameX.Foundation.Logger;
 
@@ -49,6 +49,38 @@ namespace GameFrameX.Foundation.Logger;
 public static class LogHandler
 {
     private static bool _isInitSerilogDiagnosis;
+
+    private sealed class LokiGzipHandler : DelegatingHandler
+    {
+        private readonly CompressionLevel _compressionLevel;
+
+        public LokiGzipHandler(CompressionLevel compressionLevel) : base(new HttpClientHandler())
+        {
+            _compressionLevel = compressionLevel;
+        }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            if (request.Content != null)
+            {
+                var bytes = await request.Content.ReadAsByteArrayAsync(cancellationToken);
+                using var stream = new MemoryStream();
+                await using (var gzipStream = new GZipStream(stream, _compressionLevel, leaveOpen: true))
+                {
+                    await gzipStream.WriteAsync(bytes, cancellationToken);
+                }
+
+                request.Content = new ByteArrayContent(stream.ToArray());
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json")
+                {
+                    CharSet = "utf-8",
+                };
+                request.Content.Headers.ContentEncoding.Add("gzip");
+            }
+
+            return await base.SendAsync(request, cancellationToken);
+        }
+    }
 
     /// <summary>
     /// 启用 Serilog 的自动诊断
@@ -214,16 +246,21 @@ public static class LogHandler
                 // 判断是否启用压缩
                 if (logOptions.GrafanaLokiCompressionEnabled)
                 {
-                    // 使用默认压缩数据客户端
-                    var lokiGzipHttpClient = new LokiGzipHttpClient(null, CompressionLevel.Optimal);
-                    lokiGzipHttpClient.SetCredentials(lokiCredentials);
-                    lokiGzipHttpClient.SetTenant(null);
-                    // 根据源码的实际参数配置 GrafanaLoki
-                    logger.WriteTo.GrafanaLoki(logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials, null, LogEventLevel.Verbose, 1000, null, TimeSpan.FromSeconds(2), null, lokiGzipHttpClient);
+                    logger.WriteTo.GrafanaLoki(
+                        logOptions.GrafanaLokiUrl,
+                        labels: grafanaLokiLabels.ToArray(),
+                        credentials: lokiCredentials,
+                        batchSizeLimit: 1000,
+                        period: TimeSpan.FromSeconds(2),
+                        httpMessageHandler: new LokiGzipHandler(CompressionLevel.Optimal),
+                        restrictedToMinimumLevel: LogEventLevel.Verbose);
                 }
                 else
                 {
-                    logger.WriteTo.GrafanaLoki(logOptions.GrafanaLokiUrl, grafanaLokiLabels, null, lokiCredentials);
+                    logger.WriteTo.GrafanaLoki(
+                        logOptions.GrafanaLokiUrl,
+                        labels: grafanaLokiLabels.ToArray(),
+                        credentials: lokiCredentials);
                 }
             }
 
