@@ -1,9 +1,9 @@
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using GameFrameX.Foundation.Http.Extension;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace GameFrameX.Foundation.Tests.Http.Extension;
 
@@ -29,7 +29,10 @@ internal sealed class IntegrationFactAttribute : FactAttribute
 {
     private const string RunIntegrationTestsVariable = "GAMEFRAMEX_RUN_INTEGRATION_TESTS";
 
-    public IntegrationFactAttribute()
+    public IntegrationFactAttribute(
+        [CallerFilePath] string sourceFilePath = null,
+        [CallerLineNumber] int sourceLineNumber = -1)
+        : base(sourceFilePath, sourceLineNumber)
     {
         var value = Environment.GetEnvironmentVariable(RunIntegrationTestsVariable);
         if (!string.Equals(value, "true", StringComparison.OrdinalIgnoreCase) &&
