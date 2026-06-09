@@ -90,8 +90,8 @@ internal sealed class Sm4
     /// <returns>循环左移后的结果</returns>
     private static long Rotl(long x, int n)
     {
-        // W-08 修复：使用无符号右移 >>> (C# 11+) 避免有符号算术右移污染高 32 位
-        return Shl(x, n) | (x >>> (32 - n)) & 0xFFFFFFFFL;
+        // Mask to 32 bits before shifting to avoid sign extension on C# 10.
+        return Shl(x, n) | (long)((ulong)(x & 0xFFFFFFFFL) >> (32 - n)) & 0xFFFFFFFFL;
     }
 
     /// <summary>
