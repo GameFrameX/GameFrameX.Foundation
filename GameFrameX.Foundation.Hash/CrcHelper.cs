@@ -91,6 +91,25 @@ public static partial class CrcHelper
     }
 
     /// <summary>
+    /// 异步计算流的 CRC64 值 / Asynchronously calculates the CRC64 checksum of a stream.
+    /// </summary>
+    public static async Task<ulong> GetCrc64Async(Stream stream, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var cachedBytes = new byte[CachedBytesLength];
+        var algorithm = new Crc64();
+        int bytesRead;
+        while ((bytesRead = await stream.ReadAsync(cachedBytes.AsMemory(), cancellationToken).ConfigureAwait(false)) > 0)
+        {
+            algorithm.Append(cachedBytes.AsSpan(0, bytesRead));
+        }
+
+        return algorithm.GetCurrentHashAsUInt64();
+    }
+
+    /// <summary>
     /// 计算二进制流的CRC32值。
     /// </summary>
     /// <remarks>
@@ -158,6 +177,25 @@ public static partial class CrcHelper
             {
                 break;
             }
+        }
+
+        return (int)algorithm.HashFinal();
+    }
+
+    /// <summary>
+    /// 异步计算流的 CRC32 值 / Asynchronously calculates the CRC32 checksum of a stream.
+    /// </summary>
+    public static async Task<int> GetCrc32Async(Stream stream, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream, nameof(stream));
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var cachedBytes = new byte[CachedBytesLength];
+        var algorithm = new Crc32();
+        int bytesRead;
+        while ((bytesRead = await stream.ReadAsync(cachedBytes.AsMemory(), cancellationToken).ConfigureAwait(false)) > 0)
+        {
+            algorithm.HashCore(cachedBytes, 0, bytesRead);
         }
 
         return (int)algorithm.HashFinal();

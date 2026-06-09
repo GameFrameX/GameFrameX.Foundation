@@ -88,6 +88,27 @@ public static class Sha256Helper
     }
 
     /// <summary>
+    /// 计算流的 SHA-256 哈希值 / Computes the SHA-256 hash of a stream.
+    /// </summary>
+    public static string ComputeHash(Stream input)
+    {
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        using var sha256 = SHA256.Create();
+        return Convert.ToHexString(sha256.ComputeHash(input)).ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// 异步计算流的 SHA-256 哈希值 / Asynchronously computes the SHA-256 hash of a stream.
+    /// </summary>
+    public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        using var sha256 = SHA256.Create();
+        var hash = await sha256.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+        return Convert.ToHexString(hash).ToLowerInvariant();
+    }
+
+    /// <summary>
     /// 计算文件的 SHA-256 哈希值。
     /// </summary>
     /// <remarks>

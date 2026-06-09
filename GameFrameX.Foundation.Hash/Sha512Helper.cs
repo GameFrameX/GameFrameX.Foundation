@@ -81,6 +81,27 @@ public static class Sha512Helper
     }
 
     /// <summary>
+    /// 计算流的 SHA-512 哈希值 / Computes the SHA-512 hash of a stream.
+    /// </summary>
+    public static string ComputeHash(Stream input)
+    {
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        using var sha512 = SHA512.Create();
+        return Convert.ToHexString(sha512.ComputeHash(input)).ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// 异步计算流的 SHA-512 哈希值 / Asynchronously computes the SHA-512 hash of a stream.
+    /// </summary>
+    public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        using var sha512 = SHA512.Create();
+        var hash = await sha512.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+        return Convert.ToHexString(hash).ToLowerInvariant();
+    }
+
+    /// <summary>
     /// 计算文件的 SHA-512 哈希值。
     /// </summary>
     /// <remarks>

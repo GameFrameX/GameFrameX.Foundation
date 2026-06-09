@@ -158,6 +158,20 @@ public static class Md5Helper
     }
 
     /// <summary>
+    /// 异步获取流的 MD5 哈希值 / Asynchronously gets the MD5 hash of a stream.
+    /// </summary>
+    /// <param name="input">要计算哈希值的流 / The stream to compute the hash for</param>
+    /// <param name="cancellationToken">用于取消异步操作的令牌 / Token used to cancel the asynchronous operation</param>
+    /// <returns>小写十六进制字符串形式的哈希值 / The lowercase hexadecimal hash value</returns>
+    public static async Task<string> HashAsync(Stream input, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        using var md5 = MD5.Create();
+        var data = await md5.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+        return ToHash(data);
+    }
+
+    /// <summary>
     /// 验证输入字符串的 MD5 哈希值是否与给定的哈希值一致。
     /// 比较时忽略大小写。
     /// </summary>

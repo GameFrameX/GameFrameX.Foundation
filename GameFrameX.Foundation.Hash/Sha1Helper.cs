@@ -98,6 +98,27 @@ public static class Sha1Helper
     }
 
     /// <summary>
+    /// 计算流的 SHA-1 哈希值 / Computes the SHA-1 hash of a stream.
+    /// </summary>
+    public static string ComputeHash(Stream input)
+    {
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        using var sha1 = SHA1.Create();
+        return Convert.ToHexString(sha1.ComputeHash(input)).ToLowerInvariant();
+    }
+
+    /// <summary>
+    /// 异步计算流的 SHA-1 哈希值 / Asynchronously computes the SHA-1 hash of a stream.
+    /// </summary>
+    public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(input, nameof(input));
+        using var sha1 = SHA1.Create();
+        var hash = await sha1.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+        return Convert.ToHexString(hash).ToLowerInvariant();
+    }
+
+    /// <summary>
     /// 计算文件的 SHA-1 哈希值。
     /// 通过文件流读取文件内容并计算其哈希值。
     /// </summary>
