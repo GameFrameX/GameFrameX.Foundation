@@ -102,7 +102,7 @@ public static partial class TimerHelper
         var provider = _timeProvider;
         if (provider != null)
         {
-            return provider.GetUtcNow().DateTime;
+            return provider.GetUtcNow().UtcDateTime;
         }
         return DateTime.UtcNow;
     }

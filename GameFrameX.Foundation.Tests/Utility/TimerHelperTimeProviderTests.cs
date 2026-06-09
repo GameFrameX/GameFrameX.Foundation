@@ -51,12 +51,22 @@ public sealed class TimerHelperTimeProviderTests : IDisposable
     }
 
     [Fact]
+    public void SetTimeProvider_GetNowWithUtc_ReturnsUtcKind()
+    {
+        TimerHelper.SetTimeProvider(_fakeProvider);
+
+        var result = TimerHelper.GetNowWithUtc();
+
+        Assert.Equal(DateTimeKind.Utc, result.Kind);
+    }
+
+    [Fact]
     public void SetTimeProvider_UnixTimeSeconds_ReturnsExpectedTimestamp()
     {
         TimerHelper.SetTimeProvider(_fakeProvider);
 
         var result = TimerHelper.UnixTimeSeconds();
-        var expected = new DateTimeOffset(_fixedTime.DateTime).ToUnixTimeSeconds();
+        var expected = _fixedTime.ToUnixTimeSeconds();
 
         Assert.Equal(expected, result);
     }
@@ -67,7 +77,7 @@ public sealed class TimerHelperTimeProviderTests : IDisposable
         TimerHelper.SetTimeProvider(_fakeProvider);
 
         var result = TimerHelper.UnixTimeMilliseconds();
-        var expected = new DateTimeOffset(_fixedTime.DateTime).ToUnixTimeMilliseconds();
+        var expected = _fixedTime.ToUnixTimeMilliseconds();
 
         Assert.Equal(expected, result);
     }
@@ -104,7 +114,7 @@ public sealed class TimerHelperTimeProviderTests : IDisposable
         TimerHelper.SetTimeOffset(100, 100000);
 
         var seconds = TimerHelper.UnixTimeSeconds();
-        var expected = new DateTimeOffset(_fixedTime.DateTime).ToUnixTimeSeconds() + 100;
+        var expected = _fixedTime.ToUnixTimeSeconds() + 100;
 
         Assert.Equal(expected, seconds);
     }
