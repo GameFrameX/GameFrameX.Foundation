@@ -62,13 +62,72 @@ public static class HmacSha256Helper
         ArgumentNullException.ThrowIfNull(message, nameof(message));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
 
-        var keyBytes = Encoding.UTF8.GetBytes(key);
-        var messageBytes = Encoding.UTF8.GetBytes(message);
+        return Hash(Encoding.UTF8.GetBytes(message), Encoding.UTF8.GetBytes(key));
+    }
 
-        using (var hmac = new HMACSHA256(keyBytes))
-        {
-            var hashBytes = hmac.ComputeHash(messageBytes);
-            return Convert.ToBase64String(hashBytes);
-        }
+    /// <summary>
+    /// 计算字节数组的 Base64 格式 HMAC-SHA256 / Computes a Base64 HMAC-SHA256 for a byte array.
+    /// </summary>
+    public static string Hash(byte[] message, byte[] key)
+    {
+        ArgumentNullException.ThrowIfNull(message, nameof(message));
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        return Convert.ToBase64String(HMACSHA256.HashData(key, message));
+    }
+
+    /// <summary>
+    /// 计算流的 Base64 格式 HMAC-SHA256 / Computes a Base64 HMAC-SHA256 for a stream.
+    /// </summary>
+    public static string Hash(Stream message, byte[] key)
+    {
+        ArgumentNullException.ThrowIfNull(message, nameof(message));
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        using var hmac = new HMACSHA256(key);
+        return Convert.ToBase64String(hmac.ComputeHash(message));
+    }
+
+    /// <summary>
+    /// 异步计算流的 Base64 格式 HMAC-SHA256 / Asynchronously computes a Base64 HMAC-SHA256 for a stream.
+    /// </summary>
+    public static async Task<string> HashAsync(Stream message, byte[] key, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(message, nameof(message));
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        using var hmac = new HMACSHA256(key);
+        var hash = await hmac.ComputeHashAsync(message, cancellationToken).ConfigureAwait(false);
+        return Convert.ToBase64String(hash);
+    }
+
+    /// <summary>
+    /// 使用固定时间比较验证 HMAC-SHA256 / Verifies an HMAC-SHA256 using fixed-time comparison.
+    /// </summary>
+    public static bool Verify(byte[] message, byte[] key, string expectedHash)
+    {
+        ArgumentNullException.ThrowIfNull(message, nameof(message));
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        ArgumentNullException.ThrowIfNull(expectedHash, nameof(expectedHash));
+        return HashHelper.FixedTimeEqualsBase64(Hash(message, key), expectedHash);
+    }
+
+    /// <summary>
+    /// 使用固定时间比较验证 UTF-8 字符串的 HMAC-SHA256 / Verifies an HMAC-SHA256 for UTF-8 strings using fixed-time comparison.
+    /// </summary>
+    public static bool Verify(string message, string key, string expectedHash)
+    {
+        ArgumentNullException.ThrowIfNull(message, nameof(message));
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        ArgumentNullException.ThrowIfNull(expectedHash, nameof(expectedHash));
+        return HashHelper.FixedTimeEqualsBase64(Hash(message, key), expectedHash);
+    }
+
+    /// <summary>
+    /// 使用固定时间比较验证流的 HMAC-SHA256 / Verifies an HMAC-SHA256 for a stream using fixed-time comparison.
+    /// </summary>
+    public static bool Verify(Stream message, byte[] key, string expectedHash)
+    {
+        ArgumentNullException.ThrowIfNull(message, nameof(message));
+        ArgumentNullException.ThrowIfNull(key, nameof(key));
+        ArgumentNullException.ThrowIfNull(expectedHash, nameof(expectedHash));
+        return HashHelper.FixedTimeEqualsBase64(Hash(message, key), expectedHash);
     }
 }
