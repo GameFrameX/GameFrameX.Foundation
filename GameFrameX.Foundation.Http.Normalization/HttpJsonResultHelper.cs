@@ -32,7 +32,6 @@
 // ==========================================================================================
 
 using GameFrameX.Foundation.Json;
-using GameFrameX.Foundation.Logger;
 
 namespace GameFrameX.Foundation.Http.Normalization;
 
@@ -60,34 +59,98 @@ public static class HttpJsonResultHelper
     /// <returns>返回转换后的HttpJsonResultData对象，包含反序列化结果和状态信息 / The converted HttpJsonResultData object containing the deserialized result and status information</returns>
     public static HttpJsonResultData<T> ToHttpJsonResultData<T>(this string jsonResult)
     {
-        // 创建默认结果对象，Code初始化为失败状态
-        HttpJsonResultData<T> resultData = new()
-        {
-            Code = HttpJsonResultConstants.FailCode,
-        };
+        return jsonResult.TryToHttpJsonResultData<T>().Result;
+    }
+
+    /// <summary>
+    /// 尝试将JSON字符串转换为HttpJsonResultData对象，并返回可直接消费的转换诊断信息。
+    /// </summary>
+    /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型 / Generic parameter T representing the target type to deserialize</typeparam>
+    /// <param name="jsonResult">需要转换的JSON字符串 / The JSON string to convert</param>
+    /// <returns>转换结果与诊断信息 / Conversion result and diagnostics</returns>
+    public static HttpJsonResultConversionResult<T> TryToHttpJsonResultData<T>(this string jsonResult)
+    {
+        HttpJsonResult httpJsonResult;
         try
         {
-            // 反序列化JSON字符串为HttpJsonResult对象
-            var httpJsonResult = JsonHelper.Deserialize<HttpJsonResult>(jsonResult);
-            // 检查响应码是否表示成功
-            if (httpJsonResult.Code != HttpJsonResultConstants.SuccessCode)
-            {
-                resultData.Code = httpJsonResult.Code;
-                resultData.Message = httpJsonResult.Message;
-                return resultData; // 返回失败结果
-            }
-
-            // 设置成功状态（IsSuccess会自动根据Code==0返回true）
-            resultData.Code = HttpJsonResultConstants.SuccessCode;
-            // 反序列化数据部分，如果数据为空则返回类型T的默认实例
-            resultData.Data = string.IsNullOrEmpty(httpJsonResult.Data) ? default : JsonHelper.Deserialize<T>(httpJsonResult.Data);
+            httpJsonResult = JsonHelper.Deserialize<HttpJsonResult>(jsonResult);
         }
         catch (Exception e)
         {
-            // 捕获并输出异常信息
-            LogHelper.Error(e, "JSON Deserialize Error: {ErrorMessage}", e.Message);
+            return CreateFailure<T>(
+                HttpJsonResultConversionFailureStage.ResultDeserialization,
+                "Failed to deserialize HTTP JSON result.",
+                e);
         }
 
-        return resultData; // 返回结果数据
+        if (httpJsonResult == null)
+        {
+            return CreateFailure<T>(
+                HttpJsonResultConversionFailureStage.ResultDeserialization,
+                "Failed to deserialize HTTP JSON result.",
+                null);
+        }
+
+        if (httpJsonResult.Code != HttpJsonResultConstants.SuccessCode)
+        {
+            var failureResult = new HttpJsonResultData<T>
+            {
+                Code = httpJsonResult.Code,
+                Message = httpJsonResult.Message,
+            };
+
+            return new HttpJsonResultConversionResult<T>(
+                true,
+                failureResult,
+                failureResult.Code,
+                failureResult.Message,
+                HttpJsonResultConversionFailureStage.None,
+                string.Empty);
+        }
+
+        try
+        {
+            var successResult = new HttpJsonResultData<T>
+            {
+                Code = HttpJsonResultConstants.SuccessCode,
+                Message = httpJsonResult.Message ?? string.Empty,
+                Data = string.IsNullOrEmpty(httpJsonResult.Data) ? default : JsonHelper.Deserialize<T>(httpJsonResult.Data),
+            };
+
+            return new HttpJsonResultConversionResult<T>(
+                true,
+                successResult,
+                successResult.Code,
+                successResult.Message,
+                HttpJsonResultConversionFailureStage.None,
+                string.Empty);
+        }
+        catch (Exception e)
+        {
+            return CreateFailure<T>(
+                HttpJsonResultConversionFailureStage.DataDeserialization,
+                "Failed to deserialize HTTP JSON result data.",
+                e);
+        }
+    }
+
+    private static HttpJsonResultConversionResult<T> CreateFailure<T>(
+        HttpJsonResultConversionFailureStage failureStage,
+        string errorMessage,
+        Exception exception)
+    {
+        var result = new HttpJsonResultData<T>
+        {
+            Code = HttpJsonResultConstants.FailCode,
+            Message = errorMessage,
+        };
+
+        return new HttpJsonResultConversionResult<T>(
+            false,
+            result,
+            result.Code,
+            errorMessage,
+            failureStage,
+            exception?.GetType().Name ?? string.Empty);
     }
 }
