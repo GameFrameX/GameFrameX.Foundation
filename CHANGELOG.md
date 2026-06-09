@@ -1,3 +1,19 @@
+## [2.5.1] - 2026-06-09
+
+### Bug Fixes
+
+- 修复测试并行冲突和异步时序问题
+
+### Styling
+
+- 移除测试文件尾部空行
+
+### Build
+
+- 升级 Localization.Abstractions 至 10.0.8
+- 升级 Grafana.Loki 并适配压缩 API
+- 升级测试框架至 xunit v3
+
 ## [2.5.0] - 2026-06-09
 
 ### Bug Fixes
