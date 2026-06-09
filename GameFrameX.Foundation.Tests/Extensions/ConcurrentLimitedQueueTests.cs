@@ -231,6 +231,63 @@ public class ConcurrentLimitedQueueTests
         Assert.Contains(3, items);
     }
 
+    [Theory]
+    [InlineData(LimitedQueueOverflowStrategy.DropNewest)]
+    [InlineData(LimitedQueueOverflowStrategy.RejectNewItem)]
+    public void TryEnqueue_WhenStrategyRejectsNewItem_ShouldKeepExistingItems(
+        LimitedQueueOverflowStrategy strategy)
+    {
+        var queue = new ConcurrentLimitedQueue<int>(2, strategy);
+        queue.Enqueue(1);
+        queue.Enqueue(2);
+
+        var added = queue.TryEnqueue(3, out var discarded);
+
+        Assert.False(added);
+        Assert.Equal(new[] { 1, 2 }, queue.ToArray());
+        Assert.Equal(strategy == LimitedQueueOverflowStrategy.DropNewest ? 3 : 0, discarded);
+    }
+
+    [Fact]
+    public void TryEnqueue_DropOldest_ShouldReturnDiscardedItemAndNotify()
+    {
+        var queue = new ConcurrentLimitedQueue<int>(2);
+        QueueDiscardedItem<int>? notification = null;
+        queue.ItemDiscarded = item => notification = item;
+        queue.Enqueue(1);
+        queue.Enqueue(2);
+
+        var added = queue.TryEnqueue(3, out var discarded);
+
+        Assert.True(added);
+        Assert.Equal(1, discarded);
+        Assert.Equal(new[] { 2, 3 }, queue.ToArray());
+        Assert.Equal(1, notification?.Item);
+        Assert.Equal(LimitedQueueDiscardReason.Overflow, notification?.Reason);
+    }
+
+    [Fact]
+    public void Enqueue_ThrowStrategy_WhenFull_ShouldThrowWithoutChangingQueue()
+    {
+        var queue = new ConcurrentLimitedQueue<int>(1, LimitedQueueOverflowStrategy.Throw);
+        queue.Enqueue(1);
+
+        Assert.Throws<InvalidOperationException>(() => queue.Enqueue(2));
+        Assert.Equal(new[] { 1 }, queue.ToArray());
+    }
+
+    [Fact]
+    public void ItemDiscarded_CallbackThrows_ShouldNotCorruptQueue()
+    {
+        var queue = new ConcurrentLimitedQueue<int>(1);
+        queue.ItemDiscarded = _ => throw new InvalidOperationException();
+        queue.Enqueue(1);
+
+        queue.Enqueue(2);
+
+        Assert.Equal(new[] { 2 }, queue.ToArray());
+    }
+
     #endregion
 
     #region Limit Property Tests
@@ -265,6 +322,34 @@ public class ConcurrentLimitedQueueTests
         Assert.Equal(2, queue.Limit);
         Assert.Equal(2, queue.Count);
         Assert.Equal(new[] { 2, 3 }, queue.ToArray());
+    }
+
+    [Fact]
+    public void SetLimit_WhenReduced_ShouldReturnAndNotifyDiscardedItems()
+    {
+        var queue = new ConcurrentLimitedQueue<int>(4);
+        var notifications = new List<QueueDiscardedItem<int>>();
+        queue.ItemDiscarded = notifications.Add;
+        queue.Enqueue(1);
+        queue.Enqueue(2);
+        queue.Enqueue(3);
+        queue.Enqueue(4);
+
+        var discarded = queue.SetLimit(2);
+
+        Assert.Equal(new[] { 1, 2 }, discarded);
+        Assert.Equal(new[] { 3, 4 }, queue.ToArray());
+        Assert.All(notifications, item => Assert.Equal(LimitedQueueDiscardReason.LimitReduced, item.Reason));
+    }
+
+    [Fact]
+    public async Task ConcurrentEnqueue_ShouldNeverExceedLimit()
+    {
+        var queue = new ConcurrentLimitedQueue<int>(25);
+
+        await Task.WhenAll(Enumerable.Range(0, 500).Select(i => Task.Run(() => queue.Enqueue(i))));
+
+        Assert.Equal(25, queue.Count);
     }
 
     [Fact]

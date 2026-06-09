@@ -124,6 +124,78 @@ public class BidirectionalDictionaryTests
     }
 
     [Fact]
+    public void TryAdd_DuplicateValue_ShouldReturnFalseAndKeepMappingsConsistent()
+    {
+        var dictionary = new BidirectionalDictionary<string, string>();
+        dictionary.TryAdd("key1", "value1");
+
+        var result = dictionary.TryAdd("key2", "value1");
+
+        Assert.False(result);
+        Assert.False(dictionary.ContainsKey("key2"));
+        Assert.True(dictionary.TryGetKey("value1", out var key));
+        Assert.Equal("key1", key);
+        Assert.Single(dictionary);
+    }
+
+    [Fact]
+    public void TryUpdateByKey_ShouldUpdateBothMappings()
+    {
+        var dictionary = new BidirectionalDictionary<string, string>();
+        dictionary.TryAdd("key1", "value1");
+
+        Assert.True(dictionary.TryUpdateByKey("key1", "value2"));
+
+        Assert.False(dictionary.ContainsValue("value1"));
+        Assert.True(dictionary.TryGetValue("key1", out var value));
+        Assert.Equal("value2", value);
+        Assert.True(dictionary.TryGetKey("value2", out var key));
+        Assert.Equal("key1", key);
+    }
+
+    [Fact]
+    public void TryUpdateByValue_ShouldUpdateBothMappings()
+    {
+        var dictionary = new BidirectionalDictionary<string, string>();
+        dictionary.TryAdd("key1", "value1");
+
+        Assert.True(dictionary.TryUpdateByValue("value1", "key2"));
+
+        Assert.False(dictionary.ContainsKey("key1"));
+        Assert.True(dictionary.TryGetValue("key2", out var value));
+        Assert.Equal("value1", value);
+    }
+
+    [Fact]
+    public void TryUpdate_ToExistingMapping_ShouldFailWithoutChangingState()
+    {
+        var dictionary = new BidirectionalDictionary<string, string>();
+        dictionary.TryAdd("key1", "value1");
+        dictionary.TryAdd("key2", "value2");
+
+        Assert.False(dictionary.TryUpdateByKey("key1", "value2"));
+        Assert.False(dictionary.TryUpdateByValue("value1", "key2"));
+
+        Assert.Equal("value1", Assert.Single(dictionary.Where(x => x.Key == "key1")).Value);
+        Assert.Equal(2, dictionary.Count);
+    }
+
+    [Fact]
+    public void Constructor_WithComparers_ShouldUseComparerInBothDirections()
+    {
+        var dictionary = new BidirectionalDictionary<string, string>(
+            0,
+            StringComparer.OrdinalIgnoreCase,
+            StringComparer.OrdinalIgnoreCase);
+
+        Assert.True(dictionary.TryAdd("Key", "Value"));
+        Assert.False(dictionary.TryAdd("KEY", "Other"));
+        Assert.False(dictionary.TryAdd("Other", "VALUE"));
+        Assert.True(dictionary.ContainsKey("key"));
+        Assert.True(dictionary.ContainsValue("value"));
+    }
+
+    [Fact]
     public void Clear_ShouldRemoveAllEntries()
     {
         // Arrange
