@@ -150,7 +150,9 @@ public static class Sha256Helper
         ArgumentException.ThrowIfNullOrEmpty(hash, nameof(hash));
 
         var computedHash = ComputeHash(input, encoding);
-        return string.Equals(computedHash, hash, StringComparison.OrdinalIgnoreCase);
+        return CryptographicOperations.FixedTimeEquals(
+            Encoding.ASCII.GetBytes(computedHash),
+            Encoding.ASCII.GetBytes(hash.ToLowerInvariant()));
     }
 
     /// <summary>
@@ -170,7 +172,9 @@ public static class Sha256Helper
         ArgumentException.ThrowIfNullOrEmpty(hash, nameof(hash));
 
         var computedHash = ComputeHash(buffer);
-        return string.Equals(computedHash, hash, StringComparison.OrdinalIgnoreCase);
+        return CryptographicOperations.FixedTimeEquals(
+            Encoding.ASCII.GetBytes(computedHash),
+            Encoding.ASCII.GetBytes(hash.ToLowerInvariant()));
     }
 
     /// <summary>
@@ -194,6 +198,8 @@ public static class Sha256Helper
         }
 
         var computedHash = ComputeFileHash(filePath);
-        return string.Equals(computedHash, hash, StringComparison.OrdinalIgnoreCase);
+        return CryptographicOperations.FixedTimeEquals(
+            Encoding.ASCII.GetBytes(computedHash),
+            Encoding.ASCII.GetBytes(hash.ToLowerInvariant()));
     }
 }
