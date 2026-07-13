@@ -3,11 +3,15 @@
 [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash.svg)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/GameFrameX/GameFrameX/blob/main/LICENSE)
 
-GameFrameX.Foundation.Hash 是 GameFrameX 框架的基础设施库，提供了多种高性能哈希算法的统一接口。该库支持常用的加密哈希算法（MD5、SHA系列）和高性能非加密哈希算法（xxHash、MurmurHash3、CRC等）。
+GameFrameX.Foundation.Hash 是 GameFrameX 框架的基础设施库，提供了多种哈希算法的统一接口。该库覆盖两类用途：**通用哈希**（MD5、SHA 系列、xxHash、MurmurHash3、CRC、HMAC）用于校验/签名/缓存键，以及**密码哈希（KDF）**（PBKDF2、bcrypt、scrypt、Argon2id）用于用户密码存储。
 
 ## 🎯 核心特性
 
-- **多种哈希算法支持** - MD5、SHA-1、SHA-256、SHA-512、xxHash、MurmurHash3、CRC32/64、HMAC-SHA256
+- **通用哈希算法** - MD5、SHA-1、SHA-256、SHA-512、xxHash、MurmurHash3、CRC32/64、HMAC-SHA256
+- **密码哈希（KDF）** - PBKDF2-HMAC-SHA256、bcrypt、scrypt、Argon2id，遵循 OWASP 2023 推荐参数
+- **PHC 自描述格式** - 密码哈希串自带算法/参数/盐，`Verify` 按前缀自动识别算法
+- **常量时间比较** - 密码哈希 `Verify` 使用 `CryptographicOperations.FixedTimeEquals`，抗计时攻击
+- **fail-closed 校验** - 密码哈希对畸形/未知前缀/跨算法前缀统一返回 `false`，仅 `null` 抛异常
 - **高性能实现** - 基于.NET原生算法和优化的第三方库
 - **统一API设计** - 所有算法提供一致的调用接口
 - **多种输入格式** - 支持字符串、字节数组、流和文件路径
@@ -76,6 +80,98 @@ uint128 hash128 = XxHashHelper.Hash128("Hello World");
 // 类型哈希
 uint typeHash = XxHashHelper.Hash32<MyClass>();
 ```
+
+## 🔐 密码哈希（KDF）
+
+> ⚠️ **重要区分**：通用哈希（MD5/SHA/xxHash）追求"快"，即使加盐也无法抵抗 GPU/ASIC 暴力破解，**绝不应用于用户密码存储**。密码哈希（KDF）刻意"慢"且消耗内存，专门用于口令存储。本库提供 OWASP 2023 推荐的四种 KDF。
+
+### 推荐用法（统一门面）
+
+`PasswordHashHelper` 是统一入口，`Verify` 会按 PHC 前缀**自动识别算法**，无需关心存储串是哪种算法：
+
+```csharp
+using GameFrameX.Foundation.Hash;
+
+// 推荐算法：Argon2id（PasswordHashHelper.IsRecommended 仅对 Argon2id 返回 true）
+string stored = PasswordHashHelper.Hash(PasswordHashAlgorithmKind.Argon2id, "user-password");
+
+// 验证时无需传算法种类——按存储串前缀自动识别
+bool ok = PasswordHashHelper.Verify("user-password", stored);   // true
+bool bad = PasswordHashHelper.Verify("wrong-password", stored); // false
+
+// 探测存储串使用的算法（未知前缀返回 null）
+PasswordHashAlgorithmKind? kind = PasswordHashHelper.DetectAlgorithm(stored); // Argon2id
+```
+
+### 四种算法单独使用
+
+每种 KDF 都有独立的 Helper，提供各自参数的重载：
+
+```csharp
+// PBKDF2-HMAC-SHA256（默认 600000 次迭代，输出 32 字节）
+string pbkdf2 = Pbkdf2Helper.Hash("password");
+bool pbkdf2Ok = Pbkdf2Helper.Verify("password", pbkdf2);
+
+// bcrypt（默认 work factor 12；密码 UTF-8 超过 72 字节：Hash 抛 ArgumentException，Verify 返回 false）
+string bcrypt = BcryptHelper.Hash("password");
+bool bcryptOk = BcryptHelper.Verify("password", bcrypt);
+
+// scrypt（默认 N=32768, r=8, p=1，输出 32 字节）
+string scrypt = ScryptHelper.Hash("password");
+bool scryptOk = ScryptHelper.Verify("password", scrypt);
+
+// Argon2id（默认 m=65536 KB, t=3, p=1，输出 32 字节）
+string argon2 = Argon2idHelper.Hash("password");
+bool argon2Ok = Argon2idHelper.Verify("password", argon2);
+```
+
+### 自定义参数
+
+```csharp
+// PBKDF2：自定义迭代次数与输出长度
+string h1 = Pbkdf2Helper.Hash("password", iterations: 100000, outputBytes: 32);
+
+// bcrypt：自定义 work factor（4-31）
+string h2 = BcryptHelper.Hash("password", workFactor: 14);
+
+// scrypt：自定义 N/r/p（N 必须是 2 的幂）
+string h3 = ScryptHelper.Hash("password", n: 65536, r: 8, p: 1);
+
+// Argon2id：自定义内存/迭代/并行度
+string h4 = Argon2idHelper.Hash("password", memoryKB: 65536, iterations: 3, parallelism: 1);
+
+// 指定盐与参数的确定性重载（用于交叉验证或受控测试）
+byte[] salt = new byte[16];
+string h5 = Pbkdf2Helper.Hash(
+    Encoding.UTF8.GetBytes("password"), salt, iterations: 600000, outputBytes: 32);
+```
+
+### PHC 自描述格式
+
+每种 KDF 的存储串都遵循 PHC（Password Hashing Competition）格式，自带算法、参数、盐与哈希：
+
+| 算法 | PHC 前缀 | 示例结构 |
+|------|---------|---------|
+| PBKDF2 | `$pbkdf2-sha256$` | `$pbkdf2-sha256$600000$<base64-salt>$<base64-hash>` |
+| bcrypt | `$2a$` | `$2a$12$<22-char-salt><31-char-hash>` |
+| scrypt | `$scrypt$` | `$scrypt$32768$8$1$<base64-salt>$<base64-hash>` |
+| Argon2id | `$argon2id$` | `$argon2id$v=19$m=65536,t=3,p=1$<base64-salt>$<base64-hash>` |
+
+### 默认参数（OWASP 2023 推荐）
+
+| 算法 | 默认参数 |
+|------|---------|
+| PBKDF2 | 迭代 600000 次，输出 32 字节，盐 16 字节 |
+| bcrypt | work factor 12 |
+| scrypt | N=32768, r=8, p=1，输出 32 字节，盐 16 字节 |
+| Argon2id | m=65536 KB(64MB), t=3, p=1，输出 32 字节，盐 16 字节，版本 0x13 |
+
+### 安全行为
+
+- **常量时间比较**：所有 KDF 的 `Verify` 内部派生后用 `CryptographicOperations.FixedTimeEquals` 比较，抗计时攻击。
+- **fail-closed**：存储串为 `null` 抛 `ArgumentNullException`；空串、畸形、未知前缀、跨算法前缀统一返回 `false`，不抛异常。
+- **bcrypt 72 字节限制**：UTF-8 字节数超过 72 时，`Hash` 抛 `ArgumentException`（`paramName=password`），`Verify` 返回 `false`。
+- **参数越界**：迭代次数 < 1、bcrypt work factor 越界（<4 或 >31）、scrypt N 非 2 的幂、r/p < 1、输出长度 < 1 等，抛 `ArgumentOutOfRangeException` 且 `ParamName` 正确。
 
 ## 📖 详细使用指南
 
@@ -275,40 +371,24 @@ public class FileIntegrityChecker
 
 ### 密码哈希最佳实践
 
+存储用户密码应使用本库的 KDF，而非自行拼接盐与通用哈希。推荐 Argon2id，`Verify` 会按 PHC 前缀自动识别算法：
+
 ```csharp
-public class PasswordHasher
+// 注册：哈希密码（推荐 Argon2id，IsRecommended 仅对它返回 true）
+string stored = PasswordHashHelper.Hash(PasswordHashAlgorithmKind.Argon2id, password);
+
+// 登录：按存储串前缀自动识别算法并常量时间校验
+bool valid = PasswordHashHelper.Verify(password, stored);
+
+// 透明升级：检测旧存储串算法，验证通过后用 Argon2id 重新哈希
+PasswordHashAlgorithmKind? algo = PasswordHashHelper.DetectAlgorithm(stored);
+if (valid && algo != PasswordHashAlgorithmKind.Argon2id)
 {
-    private static readonly Random Random = new Random();
-    
-    public static string HashPassword(string password)
-    {
-        // 生成随机盐
-        var salt = GenerateRandomSalt();
-        var hash = Md5Helper.HashWithSalt(password, salt);
-        
-        // 返回盐和哈希的组合
-        return $"{salt}:{hash}";
-    }
-    
-    public static bool VerifyPassword(string password, string storedHash)
-    {
-        var parts = storedHash.Split(':');
-        if (parts.Length != 2) return false;
-        
-        var salt = parts[0];
-        var hash = parts[1];
-        
-        return Md5Helper.IsVerifyWithSalt(password, salt, hash);
-    }
-    
-    private static string GenerateRandomSalt()
-    {
-        var bytes = new byte[16];
-        Random.NextBytes(bytes);
-        return Convert.ToBase64String(bytes);
-    }
+    stored = PasswordHashHelper.Hash(PasswordHashAlgorithmKind.Argon2id, password);
 }
 ```
+
+> ❌ 不要用 `Md5Helper.HashWithSalt` 或 `Sha256Helper.ComputeHash(password + salt)` 存密码——通用哈希太快，无法抵抗 GPU 暴力破解。
 
 ### 性能基准测试
 
@@ -358,32 +438,34 @@ public class HashPerformanceTest
 
 ### 算法选择指南
 
-1. **加密安全场景**
-    - 密码存储：使用 SHA-256 或更高强度算法
-    - 数字签名：使用 SHA-256 或 SHA-512
+1. **密码存储场景（KDF）**
+    - 新系统首选：Argon2id（推荐）；其次 scrypt、bcrypt、PBKDF2
+    - 通过 `PasswordHashHelper` 统一调用，`Verify` 自动识别算法
+    - 通用哈希（MD5/SHA）即使加盐也不适合存密码
+
+2. **加密哈希场景**
+    - 数字签名/完整性校验：使用 SHA-256 或 SHA-512
     - 避免使用 MD5 和 SHA-1（已不安全）
 
-2. **高性能场景**
+3. **高性能场景**
     - 哈希表：使用 xxHash32 或 xxHash64
     - 数据完整性校验：使用 CRC32 或 CRC64
     - 缓存键生成：使用 xxHash 系列
 
-3. **兼容性场景**
+4. **兼容性场景**
     - 与旧系统兼容：可能需要使用 MD5
     - 标准协议：根据协议要求选择算法
 
 ### 安全注意事项
 
 ```csharp
-// ❌ 不安全：直接哈希密码
+// ❌ 不安全：直接或加盐用通用哈希存密码（太快，可被 GPU 暴力破解）
 string unsafeHash = Md5Helper.Hash(password);
+string alsoUnsafe = Sha256Helper.ComputeHash(password + salt);
 
-// ✅ 安全：使用盐值
-string salt = GenerateRandomSalt();
-string safeHash = Sha256Helper.ComputeHash(password + salt);
-
-// ✅ 更安全：使用专门的密码哈希算法（如 bcrypt、scrypt、Argon2）
-// 注意：本库主要提供通用哈希算法，密码存储建议使用专门的密码哈希库
+// ✅ 正确：使用本库的 KDF（Argon2id 推荐），自带随机盐与参数
+string stored = PasswordHashHelper.Hash(PasswordHashAlgorithmKind.Argon2id, password);
+bool valid = PasswordHashHelper.Verify(password, stored);
 ```
 
 ### 性能优化建议
@@ -523,6 +605,10 @@ public static class HashDebugHelper
 | xxHash64    | ❌ 无  | ⭐⭐⭐⭐⭐ | 16字符  | 高性能场景 |
 | CRC32       | ❌ 无  | ⭐⭐⭐⭐  | 8字符   | 数据校验  |
 | HMAC-SHA256 | ✅ 高  | ⭐⭐    | 64字符  | 消息认证  |
+| Argon2id    | ✅ 高  | 🐢 极慢 | PHC 串  | 密码存储（推荐） |
+| scrypt      | ✅ 高  | 🐢 慢  | PHC 串  | 密码存储  |
+| bcrypt      | ✅ 高  | 🐢 慢  | PHC 串  | 密码存储  |
+| PBKDF2      | ✅ 中高 | 🐢 慢  | PHC 串  | 密码存储/合规 |
 
 ## 📄 许可证
 
