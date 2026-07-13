@@ -29,5 +29,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Standart.Hash.xxHash" Version="4.0.5"/>
+        <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2"/>
+        <PackageReference Include="BCrypt.Net-Next.StrongName" Version="4.2.0"/>
     </ItemGroup>
 </Project>
