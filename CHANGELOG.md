@@ -1,3 +1,9 @@
+## [2.7.0] - 2026-07-15
+
+### Features
+
+- 重命名 Version 为 RowVersion
+
 ## [2.6.0] - 2026-07-13
 
 ### Documentation
