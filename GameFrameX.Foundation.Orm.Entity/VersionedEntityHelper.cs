@@ -44,48 +44,48 @@ namespace GameFrameX.Foundation.Orm.Entity
     public static class VersionedEntityHelper
     {
         /// <summary>
-        /// 递增版本号并返回新值。
+        /// 递增行版本号并返回新值。
         /// </summary>
         /// <remarks>
-        /// Increments the version number and returns the new value.
+        /// Increments the row version number and returns the new value.
         /// </remarks>
         /// <param name="entity">版本控制实体 / The versioned entity</param>
-        /// <returns>递增后的版本号 / The incremented version number</returns>
-        public static long IncrementVersion(this IVersionedEntity entity)
+        /// <returns>递增后的行版本号 / The incremented row version number</returns>
+        public static long IncrementRowVersion(this IVersionedEntity entity)
         {
-            entity.Version = (entity.Version ?? 0) + 1;
-            return entity.Version.Value;
+            entity.RowVersion = (entity.RowVersion ?? 0) + 1;
+            return entity.RowVersion.Value;
         }
 
         /// <summary>
-        /// 检查当前版本号是否与期望版本号冲突。
+        /// 检查当前行版本号是否与期望行版本号冲突。
         /// </summary>
         /// <remarks>
-        /// Checks if the current version conflicts with the expected version.
+        /// Checks if the current row version conflicts with the expected row version.
         /// </remarks>
         /// <param name="entity">版本控制实体 / The versioned entity</param>
-        /// <param name="expectedVersion">期望的版本号 / The expected version number</param>
-        /// <returns>若版本冲突则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if a conflict exists; otherwise <c>false</c></returns>
-        public static bool HasVersionConflict(this IVersionedEntity entity, long expectedVersion)
+        /// <param name="expectedRowVersion">期望的行版本号 / The expected row version number</param>
+        /// <returns>若行版本冲突则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if a row version conflict exists; otherwise <c>false</c></returns>
+        public static bool HasRowVersionConflict(this IVersionedEntity entity, long expectedRowVersion)
         {
-            return entity.Version != expectedVersion;
+            return entity.RowVersion != expectedRowVersion;
         }
 
         /// <summary>
-        /// 确保无版本冲突，若冲突则抛出异常。
+        /// 确保无行版本冲突，若冲突则抛出异常。
         /// </summary>
         /// <remarks>
-        /// Ensures no version conflict; throws if a conflict is detected.
+        /// Ensures no row version conflict; throws if a conflict is detected.
         /// </remarks>
         /// <param name="entity">版本控制实体 / The versioned entity</param>
-        /// <param name="expectedVersion">期望的版本号 / The expected version number</param>
-        /// <exception cref="InvalidOperationException">版本冲突时抛出 / Thrown when a version conflict is detected</exception>
-        public static void EnsureNoVersionConflict(this IVersionedEntity entity, long expectedVersion)
+        /// <param name="expectedRowVersion">期望的行版本号 / The expected row version number</param>
+        /// <exception cref="InvalidOperationException">行版本冲突时抛出 / Thrown when a row version conflict is detected</exception>
+        public static void EnsureNoRowVersionConflict(this IVersionedEntity entity, long expectedRowVersion)
         {
-            if (entity.Version != expectedVersion)
+            if (entity.RowVersion != expectedRowVersion)
             {
                 throw new InvalidOperationException(
-                    $"版本冲突：期望版本 {expectedVersion}，实际版本 {entity.Version}。/ Version conflict: expected {expectedVersion}, actual {entity.Version}.");
+                    $"行版本冲突：期望行版本 {expectedRowVersion}，实际行版本 {entity.RowVersion}。/ Row version conflict: expected {expectedRowVersion}, actual {entity.RowVersion}.");
             }
         }
     }

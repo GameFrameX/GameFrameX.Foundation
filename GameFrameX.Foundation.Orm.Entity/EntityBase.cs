@@ -159,14 +159,14 @@ public abstract class EntityBase : EntityBaseId, ISafeDeletedFilter, IVersionedE
     public virtual string? DeletedName { get; set; }
 
     /// <summary>
-    /// 获取或设置版本号（用于乐观锁）。
+    /// 获取或设置行版本号（用于乐观锁）。
     /// </summary>
     /// <remarks>
-    /// Gets or sets the version number (used for optimistic locking).
+    /// Gets or sets the row version number (used for optimistic locking).
     /// </remarks>
-    /// <value>版本号（用于乐观锁） / Version number (for optimistic locking)</value>
-    [Description("版本号（用于乐观锁）")]
-    public virtual long? Version { get; set; } = 0;
+    /// <value>行版本号（用于乐观锁） / Row version number (for optimistic locking)</value>
+    [Description("行版本号（用于乐观锁）")]
+    public virtual long? RowVersion { get; set; } = 0;
 
     /// <summary>
     /// 获取或设置是否启用该实体或功能的标识。
@@ -303,14 +303,14 @@ public abstract class EntityBase<TKey> : EntityBaseId<TKey>, ISafeDeletedFilter,
     public virtual string? DeletedName { get; set; }
 
     /// <summary>
-    /// 获取或设置版本号（用于乐观锁）。
+    /// 获取或设置行版本号（用于乐观锁）。
     /// </summary>
     /// <remarks>
-    /// Gets or sets the version number (used for optimistic locking).
+    /// Gets or sets the row version number (used for optimistic locking).
     /// </remarks>
-    /// <value>版本号（用于乐观锁） / Version number (for optimistic locking)</value>
-    [Description("版本号（用于乐观锁）")]
-    public virtual long? Version { get; set; } = 0;
+    /// <value>行版本号（用于乐观锁） / Row version number (for optimistic locking)</value>
+    [Description("行版本号（用于乐观锁）")]
+    public virtual long? RowVersion { get; set; } = 0;
 
     /// <summary>
     /// 获取或设置是否启用该实体或功能的标识。

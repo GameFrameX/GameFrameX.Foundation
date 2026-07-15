@@ -17,7 +17,7 @@ namespace GameFrameX.Foundation.Tests.Orm
 
             Assert.Equal(0, entity.Id);
             Assert.False(entity.IsDeleted);
-            Assert.Equal(0, entity.Version);
+            Assert.Equal(0, entity.RowVersion);
             Assert.Null(entity.IsEnabled);
         }
 
@@ -65,75 +65,75 @@ namespace GameFrameX.Foundation.Tests.Orm
         #region 版本并发辅助方法测试
 
         [Fact]
-        public void IncrementVersion_ShouldIncrementFromNull()
+        public void IncrementRowVersion_ShouldIncrementFromNull()
         {
             var entity = new TestEntity();
-            entity.Version = null;
+            entity.RowVersion = null;
 
-            var newVersion = entity.IncrementVersion();
+            var newRowVersion = entity.IncrementRowVersion();
 
-            Assert.Equal(1, newVersion);
-            Assert.Equal(1, entity.Version);
+            Assert.Equal(1, newRowVersion);
+            Assert.Equal(1, entity.RowVersion);
         }
 
         [Fact]
-        public void IncrementVersion_ShouldIncrementFromZero()
+        public void IncrementRowVersion_ShouldIncrementFromZero()
         {
             var entity = new TestEntity();
 
-            var newVersion = entity.IncrementVersion();
+            var newRowVersion = entity.IncrementRowVersion();
 
-            Assert.Equal(1, newVersion);
-            Assert.Equal(1, entity.Version);
+            Assert.Equal(1, newRowVersion);
+            Assert.Equal(1, entity.RowVersion);
         }
 
         [Fact]
-        public void IncrementVersion_ShouldIncrementSequentially()
+        public void IncrementRowVersion_ShouldIncrementSequentially()
         {
             var entity = new TestEntity();
 
-            entity.IncrementVersion();
-            entity.IncrementVersion();
-            var newVersion = entity.IncrementVersion();
+            entity.IncrementRowVersion();
+            entity.IncrementRowVersion();
+            var newRowVersion = entity.IncrementRowVersion();
 
-            Assert.Equal(3, newVersion);
-            Assert.Equal(3, entity.Version);
+            Assert.Equal(3, newRowVersion);
+            Assert.Equal(3, entity.RowVersion);
         }
 
         [Fact]
-        public void HasVersionConflict_ShouldReturnTrueWhenMismatched()
+        public void HasRowVersionConflict_ShouldReturnTrueWhenMismatched()
         {
             var entity = new TestEntity();
-            entity.Version = 5;
+            entity.RowVersion = 5;
 
-            Assert.True(entity.HasVersionConflict(3));
+            Assert.True(entity.HasRowVersionConflict(3));
         }
 
         [Fact]
-        public void HasVersionConflict_ShouldReturnFalseWhenMatched()
+        public void HasRowVersionConflict_ShouldReturnFalseWhenMatched()
         {
             var entity = new TestEntity();
-            entity.Version = 5;
+            entity.RowVersion = 5;
 
-            Assert.False(entity.HasVersionConflict(5));
+            Assert.False(entity.HasRowVersionConflict(5));
         }
 
         [Fact]
-        public void EnsureNoVersionConflict_ShouldNotThrowWhenMatched()
+        public void EnsureNoRowVersionConflict_ShouldNotThrowWhenMatched()
         {
             var entity = new TestEntity();
-            entity.Version = 5;
+            entity.RowVersion = 5;
 
-            entity.EnsureNoVersionConflict(5);
+            entity.EnsureNoRowVersionConflict(5);
         }
 
         [Fact]
-        public void EnsureNoVersionConflict_ShouldThrowWhenMismatched()
+        public void EnsureNoRowVersionConflict_ShouldThrowWhenMismatched()
         {
             var entity = new TestEntity();
-            entity.Version = 5;
+            entity.RowVersion = 5;
 
-            Assert.Throws<InvalidOperationException>(() => entity.EnsureNoVersionConflict(3));
+            Assert.Throws<InvalidOperationException>(() => entity.EnsureNoRowVersionConflict(3));
         }
 
         #endregion
@@ -203,7 +203,7 @@ namespace GameFrameX.Foundation.Tests.Orm
             var violations = EntityContractValidator.Validate<BadEntityShadowedProperty>();
 
             Assert.NotEmpty(violations);
-            Assert.Contains(violations, v => v.PropertyName == nameof(IVersionedEntity.Version));
+            Assert.Contains(violations, v => v.PropertyName == nameof(IVersionedEntity.RowVersion));
         }
 
         [Fact]
@@ -225,11 +225,11 @@ namespace GameFrameX.Foundation.Tests.Orm
         {
             var violation = new EntityContractViolation(
                 typeof(IVersionedEntity),
-                "Version",
+                "RowVersion",
                 "test reason");
 
             Assert.Equal(typeof(IVersionedEntity), violation.InterfaceType);
-            Assert.Equal("Version", violation.PropertyName);
+            Assert.Equal("RowVersion", violation.PropertyName);
             Assert.Equal("test reason", violation.Reason);
         }
 
@@ -267,11 +267,11 @@ namespace GameFrameX.Foundation.Tests.Orm
         }
 
         /// <summary>
-        /// 使用 new 关键字遮蔽 Version 属性为错误类型，用于测试契约验证器。
+        /// 使用 new 关键字遮蔽 RowVersion 属性为错误类型，用于测试契约验证器。
         /// </summary>
         private class BadEntityShadowedProperty : EntityBase
         {
-            public new string? Version { get; set; }
+            public new string? RowVersion { get; set; }
         }
 
         #endregion

@@ -44,12 +44,12 @@ namespace GameFrameX.Foundation.Orm.Entity;
 public interface IVersionedEntity
 {
     /// <summary>
-    /// 获取或设置版本号（用于乐观锁）。
+    /// 获取或设置行版本号（用于乐观锁）。
     /// </summary>
     /// <remarks>
-    /// Gets or sets the version number (used for optimistic locking).
+    /// Gets or sets the row version number (used for optimistic locking).
     /// </remarks>
-    /// <value>版本号（用于乐观锁） / Version number (for optimistic locking)</value>
-    [Description("版本号（用于乐观锁）")]
-    long? Version { get; set; }
+    /// <value>行版本号（用于乐观锁） / Row version number (for optimistic locking)</value>
+    [Description("行版本号（用于乐观锁）")]
+    long? RowVersion { get; set; }
 }
