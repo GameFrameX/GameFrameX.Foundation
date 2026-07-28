@@ -1,0 +1,41 @@
+name: Sonar Issues
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  analyze:
+    uses: GameFrameX/public-github-actions/.github/workflows/quality-dotnet.yml@main
+    with:
+      dotnet_version: |
+        8.0.x
+        9.0.x
+        10.0.x
+      solution_path: GameFrameX.Foundation.slnx
+      build_configuration: Release
+      run_tests: false
+      sonar_project_key: ${{ github.event.repository.name }}
+      sonar_host_url: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+      sonar_organization: ${{ vars.SONAR_ORGANIZATION || 'gameframex' }}
+    secrets: inherit
+
+  sync:
+    needs: analyze
+    uses: GameFrameX/public-github-actions/.github/workflows/sonar-issue-sync.yml@main
+    with:
+      sonar_project_key: ${{ github.event.repository.name }}
+      sonar_host_url: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+      sonar_organization: ${{ vars.SONAR_ORGANIZATION || 'gameframex' }}
+      sonar_branch: main
+      github_repository: ${{ github.repository }}
+    secrets: inherit
