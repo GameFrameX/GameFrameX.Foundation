@@ -123,8 +123,11 @@ public class LocalizationServiceTests
     [Fact]
     public void EnsureLoaded_ShouldNotThrow()
     {
-        // Act & Assert (should not throw)
-        LocalizationService.EnsureLoaded();
+        // Act
+        var exception = Record.Exception(() => LocalizationService.EnsureLoaded());
+
+        // Assert
+        Assert.Null(exception);
     }
 
     [Fact]
