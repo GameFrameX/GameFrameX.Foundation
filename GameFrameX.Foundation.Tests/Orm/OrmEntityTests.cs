@@ -124,7 +124,9 @@ namespace GameFrameX.Foundation.Tests.Orm
             var entity = new TestEntity();
             entity.RowVersion = 5;
 
-            entity.EnsureNoRowVersionConflict(5);
+            var exception = Record.Exception(() => entity.EnsureNoRowVersionConflict(5));
+
+            Assert.Null(exception);
         }
 
         [Fact]
