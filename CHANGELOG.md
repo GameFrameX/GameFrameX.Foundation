@@ -1,3 +1,9 @@
+## [2.8.1] - 2026-07-29
+
+### Styling
+
+- 消除 OrmAttributeTests 的 Sonar S2701 布尔字面量断言违规 (#88)
+
 ## [2.7.0] - 2026-07-15
 
 ### Features
