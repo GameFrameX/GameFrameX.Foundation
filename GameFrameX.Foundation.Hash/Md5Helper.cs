@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -130,6 +131,7 @@ public static class Md5Helper
     /// <param name="isUpper">是否返回大写形式的哈希值，默认为false返回小写 / Whether to return uppercase hash, defaults to false for lowercase</param>
     /// <returns>32个字符的十六进制字符串形式的哈希值 / A 32-character hexadecimal string hash value</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="input"/> 为 null 时抛出 / Thrown when <paramref name="input"/> is null</exception>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "MD5 is intentionally used here for non-cryptographic checksum / fingerprint / cache-key scenarios; for security-sensitive use cases call Sha256Helper instead.")]
     public static string Hash(byte[] input, bool isUpper = false)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
