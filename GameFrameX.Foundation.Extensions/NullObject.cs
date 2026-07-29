@@ -83,17 +83,17 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
     /// <remarks>
     /// Compares the current object with another object.
     /// </remarks>
-    /// <param name="value">要比较的对象 / The object to compare with.</param>
-    /// <returns>一个整数，指示当前对象与 <paramref name="value" /> 的相对顺序 / An integer indicating the relative order of the current object and <paramref name="value" />.</returns>
+    /// <param name="obj">要比较的对象 / The object to compare with.</param>
+    /// <returns>一个整数，指示当前对象与 <paramref name="obj" /> 的相对顺序 / An integer indicating the relative order of the current object and <paramref name="obj" />.</returns>
     /// <exception cref="ArgumentException">当 Item 为 null 且无法进行比较时抛出 / Thrown when Item is null and cannot be compared.</exception>
-    public int CompareTo(object value)
+    public int CompareTo(object obj)
     {
-        if (value is null)
+        if (obj is null)
         {
             return Item is null ? 0 : 1;
         }
 
-        if (value is NullObject<T> nullObject)
+        if (obj is NullObject<T> nullObject)
         {
             if (Item is null && nullObject.Item is null)
             {
@@ -118,12 +118,12 @@ public readonly record struct NullObject<T> : IComparable, IComparable<T>, IEqua
             return string.Compare(Item?.ToString(), nullObject.Item?.ToString(), StringComparison.Ordinal);
         }
 
-        if (value is T directValue)
+        if (obj is T directValue)
         {
             return CompareTo(directValue);
         }
 
-        throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ObjectTypeMismatch), nameof(value));
+        throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ObjectTypeMismatch), nameof(obj));
     }
 
     /// <summary>
