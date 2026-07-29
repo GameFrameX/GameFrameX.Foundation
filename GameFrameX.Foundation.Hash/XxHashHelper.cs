@@ -503,7 +503,7 @@ public static class XxHashHelper
         /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Hash32(string text)
+        public static uint Hash32Core(string text)
         {
             ArgumentNullException.ThrowIfNull(text, nameof(text));
             return Hash32(Encoding.UTF8.GetBytes(text));
@@ -522,7 +522,7 @@ public static class XxHashHelper
         public static uint Hash32(Type type)
         {
             ArgumentNullException.ThrowIfNull(type, nameof(type));
-            return Hash32(type.FullName);
+            return Hash32Core(type.FullName);
         }
 
         /// <summary>
