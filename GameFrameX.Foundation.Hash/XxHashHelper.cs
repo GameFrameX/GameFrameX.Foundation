@@ -265,7 +265,7 @@ public static class XxHashHelper
         /// Directly operates on memory pointers for optimal performance.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe uint Hash32(byte* input, int length, uint seed = 0)
+        private static unsafe uint ComputeHash32(byte* input, int length, uint seed = 0)
         {
             unchecked
             {
@@ -488,7 +488,7 @@ public static class XxHashHelper
             {
                 fixed (byte* pointer = buffer)
                 {
-                    return Hash32(pointer, length);
+                    return ComputeHash32(pointer, length);
                 }
             }
         }
