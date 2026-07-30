@@ -96,7 +96,7 @@ public static class XxHashHelper
     public static uint Hash32(Type type)
     {
         ArgumentNullException.ThrowIfNull(type, nameof(type));
-        return InternalXxHashHelper.Hash32(type);
+        return InternalXxHashHelper.ComputeHash32(type);
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public static class XxHashHelper
     /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
     public static uint Hash32<T>()
     {
-        return InternalXxHashHelper.Hash32<T>();
+        return InternalXxHashHelper.ComputeHash32<T>();
     }
 
     /// <summary>
@@ -160,7 +160,7 @@ public static class XxHashHelper
     public static ulong Hash64(Type type)
     {
         ArgumentNullException.ThrowIfNull(type, nameof(type));
-        return InternalXxHashHelper.Hash64(type);
+        return InternalXxHashHelper.ComputeHash64(type);
     }
 
     /// <summary>
@@ -175,7 +175,7 @@ public static class XxHashHelper
     /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
     public static ulong Hash64<T>()
     {
-        return InternalXxHashHelper.Hash64<T>();
+        return InternalXxHashHelper.ComputeHash64<T>();
     }
 
     /// <summary>
@@ -480,7 +480,7 @@ public static class XxHashHelper
         /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Hash32(byte[] buffer)
+        public static uint ComputeHash32(byte[] buffer)
         {
             ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
             var length = buffer.Length;
@@ -503,10 +503,10 @@ public static class XxHashHelper
         /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Hash32(string text)
+        public static uint ComputeHash32(string text)
         {
             ArgumentNullException.ThrowIfNull(text, nameof(text));
-            return Hash32(Encoding.UTF8.GetBytes(text));
+            return ComputeHash32(Encoding.UTF8.GetBytes(text));
         }
 
         /// <summary>
@@ -519,10 +519,10 @@ public static class XxHashHelper
         /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 为 null 时抛出 / Thrown when <paramref name="type"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Hash32(Type type)
+        public static uint ComputeHash32(Type type)
         {
             ArgumentNullException.ThrowIfNull(type, nameof(type));
-            return Hash32(type.FullName);
+            return ComputeHash32(type.FullName);
         }
 
         /// <summary>
@@ -532,9 +532,9 @@ public static class XxHashHelper
         /// Computes a 32-bit hash value for a generic type.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Hash32<T>()
+        public static uint ComputeHash32<T>()
         {
-            return Hash32(typeof(T));
+            return ComputeHash32(typeof(T));
         }
 
         /// <summary>
@@ -547,7 +547,7 @@ public static class XxHashHelper
         /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong Hash64(byte[] buffer)
+        public static ulong ComputeHash64(byte[] buffer)
         {
             ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
             var length = buffer.Length;
@@ -570,10 +570,10 @@ public static class XxHashHelper
         /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="text"/> 为 null 时抛出 / Thrown when <paramref name="text"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong Hash64(string text)
+        public static ulong ComputeHash64(string text)
         {
             ArgumentNullException.ThrowIfNull(text, nameof(text));
-            return Hash64(Encoding.UTF8.GetBytes(text));
+            return ComputeHash64(Encoding.UTF8.GetBytes(text));
         }
 
         /// <summary>
@@ -586,10 +586,10 @@ public static class XxHashHelper
         /// <returns>64位无符号整数形式的哈希值 / The 64-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 为 null 时抛出 / Thrown when <paramref name="type"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong Hash64(Type type)
+        public static ulong ComputeHash64(Type type)
         {
             ArgumentNullException.ThrowIfNull(type, nameof(type));
-            return Hash64(type.FullName);
+            return ComputeHash64(type.FullName);
         }
 
         /// <summary>
@@ -599,9 +599,9 @@ public static class XxHashHelper
         /// Computes a 64-bit hash value for a generic type.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong Hash64<T>()
+        public static ulong ComputeHash64<T>()
         {
-            return Hash64(typeof(T));
+            return ComputeHash64(typeof(T));
         }
     }
 }
