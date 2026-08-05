@@ -1329,26 +1329,65 @@ public static class IEnumerableExtensions
 
         if (first is ICollection<T1> source1 && second is ICollection<T2> source2)
         {
-            if (source1.Count != source2.Count)
-            {
-                return false;
-            }
-
-            if (source1 is IList<T1> list1 && source2 is IList<T2> list2)
-            {
-                var count = source1.Count;
-                for (var index = 0; index < count; ++index)
-                {
-                    if (!condition(list1[index], list2[index]))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
+            return EqualAsCollection(source1, source2, condition);
         }
 
+        return EqualByEnumerator(first, second, condition);
+    }
+
+    /// <summary>
+    /// 当双方都已实现 <see cref="ICollection{T}"/> 时走集合快路径：长度不一致直接 <c>false</c>；只要一方同时实现 <see cref="IList{T}"/> 就以 <see cref="IList{T}"/> 索引方式逐元素比较，否则回退到枚举器比较。
+    /// </summary>
+    /// <remarks>
+    /// Compares two <see cref="ICollection{T}"/> with a custom condition.
+    /// Returns <c>false</c> immediately when the counts differ;
+    /// if both sides also implement <see cref="IList{T}"/> the indexed access path is used,
+    /// otherwise the enumerator fallback is used.
+    /// Splitting this branch out of <see cref="SequenceEqual{T1, T2}"/> keeps that method's cognitive complexity within Sonar S3776's 15.
+    /// </remarks>
+    /// <param name="first">第一个序列 / The first sequence</param>
+    /// <param name="second">第二个序列 / The second sequence</param>
+    /// <param name="condition">用于比较两个元素的条件 / The condition to compare two elements</param>
+    /// <returns>长度相等且所有对应元素满足条件时返回 <c>true</c> / Returns <c>true</c> if lengths match and all pairs satisfy <paramref name="condition"/></returns>
+    private static bool EqualAsCollection<T1, T2>(ICollection<T1> first, ICollection<T2> second, Func<T1, T2, bool> condition)
+    {
+        if (first.Count != second.Count)
+        {
+            return false;
+        }
+
+        if (first is IList<T1> list1 && second is IList<T2> list2)
+        {
+            var count = list1.Count;
+            for (var index = 0; index < count; ++index)
+            {
+                if (!condition(list1[index], list2[index]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return EqualByEnumerator(first, second, condition);
+    }
+
+    /// <summary>
+    /// 通过并行枚举两个 <see cref="IEnumerable{T}"/> 序列并以 <paramref name="condition"/> 逐元素比较，确认二者长度相等且每个对应位置的元素都满足条件。
+    /// </summary>
+    /// <remarks>
+    /// Compares two sequences element-by-element via parallel enumeration.
+    /// Used by <see cref="SequenceEqual{T1, T2}"/> when no <see cref="ICollection{T}"/> fast path is available,
+    /// and by the collection fast path when at least one side is not an <see cref="IList{T}"/>.
+    /// Splitting this branch out of <see cref="SequenceEqual{T1, T2}"/> keeps that method's cognitive complexity within Sonar S3776's 15.
+    /// </remarks>
+    /// <param name="first">第一个序列 / The first sequence</param>
+    /// <param name="second">第二个序列 / The second sequence</param>
+    /// <param name="condition">用于比较两个元素的条件 / The condition to compare two elements</param>
+    /// <returns>长度相等且所有对应元素满足条件时返回 <c>true</c> / Returns <c>true</c> if lengths match and all pairs satisfy <paramref name="condition"/></returns>
+    private static bool EqualByEnumerator<T1, T2>(IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, bool> condition)
+    {
         using var enumerator1 = first.GetEnumerator();
         using var enumerator2 = second.GetEnumerator();
         while (enumerator1.MoveNext())

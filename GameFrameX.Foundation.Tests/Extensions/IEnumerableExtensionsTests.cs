@@ -361,6 +361,68 @@ public class IEnumerableExtensionsTests
         Assert.True(result);
     }
 
+
+    [Fact]
+    public void SequenceEqual_ICollectionLengthMismatch_ShouldReturnFalse()
+    {
+        // Arrange: both sides are IList<T> (also ICollection<T>) with differing lengths.
+        var first = new[] { 1, 2, 3 };
+        var second = new[] { 1, 2 };
+
+        // Act
+        var result = first.SequenceEqual(second, (x, y) => x == y);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void SequenceEqual_PredicateFailure_ShouldReturnFalse()
+    {
+        // Arrange: identical lengths but predicate rejects the second element.
+        var first = new[] { 1, 2, 3 };
+        var second = new[] { 1, 9, 3 };
+
+        // Act
+        var result = first.SequenceEqual(second, (x, y) => x == y);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    public void SequenceEqual_CollectionNotList_ShouldReturnTrue()
+    {
+        // Arrange: LinkedList<T> implements ICollection<T> but not IList<T>, so the
+        // helper must fall back to the enumerator path while still returning true.
+        var first = new LinkedList<int>(new[] { 1, 2, 3 });
+        var second = new LinkedList<int>(new[] { 1, 2, 3 });
+
+        // Act
+        var result = first.SequenceEqual(second, (x, y) => x == y);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void SequenceEqual_LazyEnumerable_ShouldReturnTrue()
+    {
+        // Arrange: pure IEnumerable<T> with no collection optimisation available.
+        static IEnumerable<int> Range(int from, int count)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                yield return from + i;
+            }
+        }
+
+        // Act
+        var result = Range(10, 3).SequenceEqual(Range(10, 3), (x, y) => x == y);
+
+        // Assert
+        Assert.True(result);
+    }
     #endregion
 
     #region CompareChanges Tests
