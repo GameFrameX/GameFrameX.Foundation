@@ -355,7 +355,7 @@ public static class XxHashHelper
         /// Directly operates on memory pointers for optimal performance.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe ulong Hash64(byte* input, int length, uint seed = 0)
+        private static unsafe ulong Hash64Core(byte* input, int length, uint seed = 0)
         {
             unchecked
             {
@@ -555,7 +555,7 @@ public static class XxHashHelper
             {
                 fixed (byte* pointer = buffer)
                 {
-                    return Hash64(pointer, length);
+                    return Hash64Core(pointer, length);
                 }
             }
         }
