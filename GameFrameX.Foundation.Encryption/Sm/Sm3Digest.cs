@@ -202,7 +202,7 @@ internal sealed class Sm3Digest : GeneralDigest
         }
 
         X[14] = (int)(SupportClass.URShift(bitLength, 32));
-        X[15] = (int)(bitLength & unchecked((int)0xffffffff));
+        X[15] = (int)bitLength;
     }
 
     /// <summary>
