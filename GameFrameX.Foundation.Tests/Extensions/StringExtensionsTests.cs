@@ -745,6 +745,21 @@ public class StringExtensionsTests
         Assert.Equal("Hello World", result);
     }
 
+    [Fact]
+    public void TrimZhCn_CnReg_ShouldHaveOneSecondMatchTimeout()
+    {
+        // Arrange — 反射读取 CnReg 私有静态字段，验证 Sonar S6444 fix 实际生效。
+        var field = typeof(StringExtensions).GetField("CnReg", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+        Assert.NotNull(field);
+
+        // Act
+        var regex = (Regex)field.GetValue(null);
+
+        // Assert
+        Assert.NotNull(regex);
+        Assert.Equal(TimeSpan.FromSeconds(1), regex.MatchTimeout);
+    }
+
     #endregion
 
     #region EqualsFast Tests

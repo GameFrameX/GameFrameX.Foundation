@@ -200,8 +200,11 @@ public class ResourceManagerTests : IDisposable
         // Arrange
         var manager = new ResourceManager();
 
-        // Act & Assert (should not throw)
-        manager.Dispose();
+        // Act
+        var exception = Record.Exception(() => manager.Dispose());
+
+        // Assert (should not throw)
+        Assert.Null(exception);
     }
 
     [Fact]

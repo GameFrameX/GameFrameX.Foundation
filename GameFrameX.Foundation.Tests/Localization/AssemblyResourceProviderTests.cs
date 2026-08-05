@@ -186,7 +186,10 @@ public class AssemblyResourceProviderTests : IDisposable
         // Arrange
         var provider = new AssemblyResourceProvider(Assembly.GetExecutingAssembly());
 
-        // Act & Assert (should not throw)
-        provider.Dispose();
+        // Act
+        var exception = Record.Exception(() => provider.Dispose());
+
+        // Assert
+        Assert.Null(exception);
     }
 }

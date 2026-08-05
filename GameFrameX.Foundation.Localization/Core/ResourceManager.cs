@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System;
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Threading;
@@ -52,7 +53,7 @@ namespace GameFrameX.Foundation.Localization.Core;
 /// var message = manager.GetString("Utility.Exceptions.TimestampOutOfRange");
 /// </code>
 /// </example>
-public class ResourceManager
+public class ResourceManager : IDisposable
 {
     private readonly List<IResourceProvider> _providers;
     private readonly Lazy<ConcurrentDictionary<string, AssemblyResourceProvider>> _assemblyProviders;

@@ -26,7 +26,7 @@
 //  Gitee  仓库：https://gitee.com/GameFrameX
 //  Gitee Repository:  https://gitee.com/GameFrameX
 //  CNB  仓库：https://cnb.cool/GameFrameX
-//  CNB Repository:  https://cnb.cool/GameFrameX
+//  CNB Repository: https://cnb.cool/GameFrameX
 //  官方文档：https://gameframex.doc.alianblank.com/
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
@@ -172,170 +172,20 @@ public static class LogHandler
         SerilogDiagnosis();
         try
         {
-            // 文件名
-            var logFileName = logOptions.LogFileName.IsNotNullOrEmptyOrWhiteSpace() ? logOptions.LogFileName : $"{logOptions.LogTagName ?? logOptions.LogType}_.log";
-
-            // 日志文件存储的路径，默认在应用程序运行目录下的子目录/logs
-            var logSavePath = logOptions.LogSavePath ?? "./logs/";
-            if (!logSavePath.EndsWith(Path.DirectorySeparatorChar))
-            {
-                logSavePath += Path.DirectorySeparatorChar;
-            }
-
-            logSavePath += logOptions.LogType + Path.DirectorySeparatorChar;
-
-            // 计算最终日志文件路径
-            var logPath = Path.Combine(logSavePath, logFileName);
-            // 兼容可能的层级目录：始终创建文件所在的目录
-            var logFolderPath = Path.GetDirectoryName(logPath) ?? logSavePath;
-            if (!Directory.Exists(logFolderPath))
-            {
-                Directory.CreateDirectory(logFolderPath);
-            }
-
-            if (isDefault)
-            {
-                LogHelper.ShowOption("log configuration information", logOptions);
-            }
+            var logPath = ResolveLogPath(logOptions, isDefault);
 
             var logger = CreateLoggerConfiguration();
             logger.Enrich.WithProperty("TagName", logOptions.LogTagName);
             logger.Enrich.WithProperty("LogType", logOptions.LogType);
 
-            if (logOptions.IsGrafanaLoki && logOptions.GrafanaLokiLabels != null)
-            {
-                var grafanaLokiLabels = new List<LokiLabel>();
-                foreach (var kv in logOptions.GrafanaLokiLabels)
-                {
-                    var lokiLabel = new LokiLabel
-                    {
-                        Key = kv.Key,
-                        Value = kv.Value,
-                    };
-                    grafanaLokiLabels.Add(lokiLabel);
-                }
-
-                if (logOptions.GrafanaLokiProperty != null)
-                {
-                    foreach (var property in logOptions.GrafanaLokiProperty)
-                    {
-                        if (string.IsNullOrWhiteSpace(property.Key))
-                        {
-                            continue;
-                        }
-
-                        if (string.IsNullOrWhiteSpace(property.Value))
-                        {
-                            continue;
-                        }
-
-                        logger.Enrich.WithProperty(property.Key, property.Value);
-                    }
-                }
-
-                LokiCredentials lokiCredentials = null;
-                if (!string.IsNullOrWhiteSpace(logOptions.GrafanaLokiUserName) && !string.IsNullOrWhiteSpace(logOptions.GrafanaLokiPassword))
-                {
-                    lokiCredentials = new LokiCredentials
-                    {
-                        Login = logOptions.GrafanaLokiUserName,
-                        Password = logOptions.GrafanaLokiPassword,
-                    };
-                }
-
-                // 判断是否启用压缩
-                if (logOptions.GrafanaLokiCompressionEnabled)
-                {
-                    logger.WriteTo.GrafanaLoki(
-                        logOptions.GrafanaLokiUrl,
-                        labels: grafanaLokiLabels.ToArray(),
-                        credentials: lokiCredentials,
-                        batchSizeLimit: 1000,
-                        period: TimeSpan.FromSeconds(2),
-                        httpMessageHandler: new LokiGzipHandler(CompressionLevel.Optimal),
-                        restrictedToMinimumLevel: LogEventLevel.Verbose);
-                }
-                else
-                {
-                    logger.WriteTo.GrafanaLoki(
-                        logOptions.GrafanaLokiUrl,
-                        labels: grafanaLokiLabels.ToArray(),
-                        credentials: lokiCredentials);
-                }
-            }
-
+            ApplyLoki(logger, logOptions);
             configurationAction?.Invoke(logger);
-            var consoleOutputTemplate = ConsoleOutputTemplate;
-            var fileOutputTemplate = FileOutputTemplate;
-            if (logOptions.LogTagName.IsNotNullOrEmptyOrWhiteSpace())
-            {
-                consoleOutputTemplate = ConsoleOutputTagNameTemplate;
-                fileOutputTemplate = FileOutputTagNameTemplate;
-            }
 
-            if (logOptions.IsWriteToMongoDb)
-            {
-                logger.WriteTo.MongoDBBson(
-                    logOptions.MongoDbDatabaseUrl,
-                    logOptions.LogSavePath,
-                    cappedMaxSizeMb: logOptions.MongoDbCappedMaxSizeMb,
-                    cappedMaxDocuments: logOptions.MongoDbCappedMaxDocuments,
-                    rollingInterval: (Serilog.Sinks.MongoDB.RollingInterval)logOptions.RollingInterval,
-                    restrictedToMinimumLevel: logOptions.LogEventLevel);
-            }
-
-            if (logOptions.IsWriteToFile)
-            {
-                logger.WriteTo.File(logPath,
-                                    shared: true,
-                                    restrictedToMinimumLevel: logOptions.LogEventLevel,
-                                    outputTemplate: fileOutputTemplate,
-                                    rollingInterval: logOptions.RollingInterval,
-                                    rollOnFileSizeLimit: logOptions.FileSizeLimitBytes > 0,
-                                    fileSizeLimitBytes: logOptions.FileSizeLimitBytes
-                );
-            }
-
-            switch (logOptions.LogEventLevel)
-            {
-                case LogEventLevel.Verbose:
-                {
-                    logger.MinimumLevel.Verbose();
-                }
-                    break;
-                case LogEventLevel.Debug:
-                {
-                    logger.MinimumLevel.Debug();
-                }
-                    break;
-                case LogEventLevel.Information:
-                {
-                    logger.MinimumLevel.Information();
-                }
-                    break;
-                case LogEventLevel.Warning:
-                {
-                    logger.MinimumLevel.Warning();
-                }
-                    break;
-                case LogEventLevel.Error:
-                {
-                    logger.MinimumLevel.Error();
-                }
-                    break;
-                case LogEventLevel.Fatal:
-                {
-                    logger.MinimumLevel.Fatal();
-                }
-                    break;
-            }
-
-            if (logOptions.IsConsole)
-            {
-                logger.WriteTo.Console(outputTemplate: consoleOutputTemplate,
-                                       restrictedToMinimumLevel: logOptions.LogEventLevel,
-                                       theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Literate);
-            }
+            var templates = SelectOutputTemplates(logOptions);
+            ApplyMongoDb(logger, logOptions);
+            ApplyFile(logger, logOptions, logPath, templates.File);
+            ApplyMinimumLevel(logger, logOptions);
+            ApplyConsole(logger, logOptions, templates.Console);
 
             var serilog = logger.CreateLogger();
             if (isDefault)
@@ -350,6 +200,275 @@ public static class LogHandler
         {
             Log.Error(e, "配置日志系统过程中发生错误");
             throw;
+        }
+    }
+
+    /// <summary>
+    /// 计算最终日志文件路径，必要时创建目录。
+    /// </summary>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    /// <param name="isDefault">是否为默认配置（用于触发展示调用） / Whether this is the default configuration</param>
+    /// <returns>最终日志文件路径 / Final log file path</returns>
+    private static string ResolveLogPath(LogOptions logOptions, bool isDefault)
+    {
+        // 文件名
+        var logFileName = logOptions.LogFileName.IsNotNullOrEmptyOrWhiteSpace() ? logOptions.LogFileName : $"{logOptions.LogTagName ?? logOptions.LogType}_.log";
+
+        // 日志文件存储的路径，默认在应用程序运行目录下的子目录/logs
+        var logSavePath = logOptions.LogSavePath ?? "./logs/";
+        if (!logSavePath.EndsWith(Path.DirectorySeparatorChar))
+        {
+            logSavePath += Path.DirectorySeparatorChar;
+        }
+
+        logSavePath += logOptions.LogType + Path.DirectorySeparatorChar;
+
+        // 计算最终日志文件路径
+        var logPath = Path.Combine(logSavePath, logFileName);
+        // 兼容可能的层级目录：始终创建文件所在的目录
+        var logFolderPath = Path.GetDirectoryName(logPath) ?? logSavePath;
+        if (!Directory.Exists(logFolderPath))
+        {
+            Directory.CreateDirectory(logFolderPath);
+        }
+
+        if (isDefault)
+        {
+            LogHelper.ShowOption("log configuration information", logOptions);
+        }
+
+        return logPath;
+    }
+
+    /// <summary>
+    /// 选择控制台与文件的输出模板（根据 LogTagName 是否非空切换）。
+    /// </summary>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    /// <returns>控制台 / 文件输出模板二元组 / Console and file output template tuple</returns>
+    private static (string Console, string File) SelectOutputTemplates(LogOptions logOptions)
+    {
+        if (logOptions.LogTagName.IsNotNullOrEmptyOrWhiteSpace())
+        {
+            return (ConsoleOutputTagNameTemplate, FileOutputTagNameTemplate);
+        }
+
+        return (ConsoleOutputTemplate, FileOutputTemplate);
+    }
+
+    /// <summary>
+    /// 装配 Grafana Loki sink（按需启用，含 label / property / 凭证 / 压缩）。
+    /// </summary>
+    /// <param name="logger">Logger 配置 / Logger configuration</param>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    private static void ApplyLoki(LoggerConfiguration logger, LogOptions logOptions)
+    {
+        if (!logOptions.IsGrafanaLoki || logOptions.GrafanaLokiLabels == null)
+        {
+            return;
+        }
+
+        ApplyLokiProperties(logger, logOptions);
+        var labels = BuildLokiLabels(logOptions);
+        WriteLokiSink(logger, logOptions, labels);
+    }
+
+    /// <summary>
+    /// 将 LogOptions.GrafanaLokiLabels 转换为 Serilog Loki 所需的标签数组。
+    /// </summary>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    /// <returns>Loki 标签数组 / Loki label array</returns>
+    private static LokiLabel[] BuildLokiLabels(LogOptions logOptions)
+    {
+        var grafanaLokiLabels = new List<LokiLabel>(logOptions.GrafanaLokiLabels.Count);
+        foreach (var kv in logOptions.GrafanaLokiLabels)
+        {
+            grafanaLokiLabels.Add(new LokiLabel
+            {
+                Key = kv.Key,
+                Value = kv.Value,
+            });
+        }
+
+        return grafanaLokiLabels.ToArray();
+    }
+
+    /// <summary>
+    /// 将 LogOptions.GrafanaLokiProperty 中的非空属性 Enrich 到日志事件。
+    /// </summary>
+    /// <param name="logger">Logger 配置 / Logger configuration</param>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    private static void ApplyLokiProperties(LoggerConfiguration logger, LogOptions logOptions)
+    {
+        if (logOptions.GrafanaLokiProperty == null)
+        {
+            return;
+        }
+
+        foreach (var property in logOptions.GrafanaLokiProperty)
+        {
+            if (string.IsNullOrWhiteSpace(property.Key))
+            {
+                continue;
+            }
+
+            if (string.IsNullOrWhiteSpace(property.Value))
+            {
+                continue;
+            }
+
+            logger.Enrich.WithProperty(property.Key, property.Value);
+        }
+    }
+
+    /// <summary>
+    /// 写入 Grafana Loki sink；按压缩开关选择是否启用 Gzip 处理器。
+    /// </summary>
+    /// <param name="logger">Logger 配置 / Logger configuration</param>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    /// <param name="labels">Loki 标签数组 / Loki label array</param>
+    private static void WriteLokiSink(LoggerConfiguration logger, LogOptions logOptions, LokiLabel[] labels)
+    {
+        var credentials = BuildLokiCredentials(logOptions);
+        if (logOptions.GrafanaLokiCompressionEnabled)
+        {
+            logger.WriteTo.GrafanaLoki(
+                logOptions.GrafanaLokiUrl,
+                labels: labels,
+                credentials: credentials,
+                batchSizeLimit: 1000,
+                period: TimeSpan.FromSeconds(2),
+                httpMessageHandler: new LokiGzipHandler(CompressionLevel.Optimal),
+                restrictedToMinimumLevel: LogEventLevel.Verbose);
+        }
+        else
+        {
+            logger.WriteTo.GrafanaLoki(
+                logOptions.GrafanaLokiUrl,
+                labels: labels,
+                credentials: credentials);
+        }
+    }
+
+    /// <summary>
+    /// 根据用户名/密码构造 LokiCredentials；任一为空返回 null。
+    /// </summary>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    /// <returns>Loki 凭证或 null / Loki credentials or null</returns>
+    private static LokiCredentials BuildLokiCredentials(LogOptions logOptions)
+    {
+        if (string.IsNullOrWhiteSpace(logOptions.GrafanaLokiUserName) || string.IsNullOrWhiteSpace(logOptions.GrafanaLokiPassword))
+        {
+            return null;
+        }
+
+        return new LokiCredentials
+        {
+            Login = logOptions.GrafanaLokiUserName,
+            Password = logOptions.GrafanaLokiPassword,
+        };
+    }
+
+    /// <summary>
+    /// 装配 MongoDB sink（按 IsWriteToMongoDb 开关）。
+    /// </summary>
+    /// <param name="logger">Logger 配置 / Logger configuration</param>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    private static void ApplyMongoDb(LoggerConfiguration logger, LogOptions logOptions)
+    {
+        if (!logOptions.IsWriteToMongoDb)
+        {
+            return;
+        }
+
+        logger.WriteTo.MongoDBBson(
+            logOptions.MongoDbDatabaseUrl,
+            logOptions.LogSavePath,
+            cappedMaxSizeMb: logOptions.MongoDbCappedMaxSizeMb,
+            cappedMaxDocuments: logOptions.MongoDbCappedMaxDocuments,
+            rollingInterval: (Serilog.Sinks.MongoDB.RollingInterval)logOptions.RollingInterval,
+            restrictedToMinimumLevel: logOptions.LogEventLevel);
+    }
+
+    /// <summary>
+    /// 装配文件 sink（按 IsWriteToFile 开关）。
+    /// </summary>
+    /// <param name="logger">Logger 配置 / Logger configuration</param>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    /// <param name="logPath">日志文件路径 / Log file path</param>
+    /// <param name="fileOutputTemplate">文件输出模板 / File output template</param>
+    private static void ApplyFile(LoggerConfiguration logger, LogOptions logOptions, string logPath, string fileOutputTemplate)
+    {
+        if (!logOptions.IsWriteToFile)
+        {
+            return;
+        }
+
+        logger.WriteTo.File(logPath,
+                            shared: true,
+                            restrictedToMinimumLevel: logOptions.LogEventLevel,
+                            outputTemplate: fileOutputTemplate,
+                            rollingInterval: logOptions.RollingInterval,
+                            rollOnFileSizeLimit: logOptions.FileSizeLimitBytes > 0,
+                            fileSizeLimitBytes: logOptions.FileSizeLimitBytes);
+    }
+
+    /// <summary>
+    /// 装配控制台 sink（按 IsConsole 开关）。
+    /// </summary>
+    /// <param name="logger">Logger 配置 / Logger configuration</param>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    /// <param name="consoleOutputTemplate">控制台输出模板 / Console output template</param>
+    private static void ApplyConsole(LoggerConfiguration logger, LogOptions logOptions, string consoleOutputTemplate)
+    {
+        if (!logOptions.IsConsole)
+        {
+            return;
+        }
+
+        logger.WriteTo.Console(outputTemplate: consoleOutputTemplate,
+                               restrictedToMinimumLevel: logOptions.LogEventLevel,
+                               theme: Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme.Literate);
+    }
+
+    /// <summary>
+    /// 根据 LogOptions.LogEventLevel 设置最低日志级别。
+    /// </summary>
+    /// <param name="logger">Logger 配置 / Logger configuration</param>
+    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
+    private static void ApplyMinimumLevel(LoggerConfiguration logger, LogOptions logOptions)
+    {
+        switch (logOptions.LogEventLevel)
+        {
+            case LogEventLevel.Verbose:
+            {
+                logger.MinimumLevel.Verbose();
+            }
+                break;
+            case LogEventLevel.Debug:
+            {
+                logger.MinimumLevel.Debug();
+            }
+                break;
+            case LogEventLevel.Information:
+            {
+                logger.MinimumLevel.Information();
+            }
+                break;
+            case LogEventLevel.Warning:
+            {
+                logger.MinimumLevel.Warning();
+            }
+                break;
+            case LogEventLevel.Error:
+            {
+                logger.MinimumLevel.Error();
+            }
+                break;
+            case LogEventLevel.Fatal:
+            {
+                logger.MinimumLevel.Fatal();
+            }
+                break;
         }
     }
 }

@@ -34,6 +34,7 @@
 using System.Buffers;
 using System.Buffers.Binary;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace GameFrameX.Foundation.Hash;
 
@@ -675,7 +676,7 @@ public static partial class CrcHelper
         public override int GetHashCode()
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
-            throw new NotSupportedException();
+            throw new UnreachableException();
         }
     }
 }

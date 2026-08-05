@@ -295,30 +295,37 @@ public static partial class CrcHelper
         var cachedBytes = new byte[CachedBytesLength];
         var algorithm = new Crc32();
         var codeIndex = 0;
-        while (true)
+        int bytesRead;
+        while ((bytesRead = stream.Read(cachedBytes, 0, CachedBytesLength)) > 0)
         {
-            var bytesRead = stream.Read(cachedBytes, 0, CachedBytesLength);
-            if (bytesRead > 0)
+            if (length > 0)
             {
-                if (length > 0)
-                {
-                    for (var i = 0; i < bytesRead && i < length; i++)
-                    {
-                        cachedBytes[i] ^= code[codeIndex++];
-                        codeIndex %= codeLength;
-                    }
-
-                    length -= bytesRead;
-                }
-
-                algorithm.HashCore(cachedBytes, 0, bytesRead);
+                XorWithCode(cachedBytes, bytesRead, length, code, codeLength, ref codeIndex);
+                length -= bytesRead;
             }
-            else
-            {
-                break;
-            }
+
+            algorithm.HashCore(cachedBytes, 0, bytesRead);
         }
 
         return (int)algorithm.HashFinal();
+    }
+
+    /// <summary>
+    /// 将 <paramref name="code"/> 循环异或到 <paramref name="buffer"/> 的前 <c>min(bytesRead, length)</c> 个字节，并通过 <paramref name="codeIndex"/> 维护回绕位置。
+    /// </summary>
+    /// <param name="buffer">目标缓冲区 / The target buffer to XOR into</param>
+    /// <param name="bytesRead">本次从流读到的字节数 / Bytes read from the stream in this iteration</param>
+    /// <param name="length">剩余可异或字节数（<= 0 时调用方应跳过） / Remaining bytes available to XOR</param>
+    /// <param name="code">用于异或的字节码 / The code byte array to XOR with</param>
+    /// <param name="codeLength"><paramref name="code"/> 的长度 / Length of the code</param>
+    /// <param name="codeIndex">循环异或的当前游标（按引用传递，调用方负责初始化为 0） / Current rotation index, passed by ref</param>
+    private static void XorWithCode(byte[] buffer, int bytesRead, int length, byte[] code, int codeLength, ref int codeIndex)
+    {
+        var count = Math.Min(bytesRead, length);
+        for (var i = 0; i < count; i++)
+        {
+            buffer[i] ^= code[codeIndex];
+            codeIndex = (codeIndex + 1) % codeLength;
+        }
     }
 }

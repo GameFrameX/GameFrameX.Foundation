@@ -155,7 +155,7 @@ public class NullObjectTests
         // 验证异常消息不为空且包含参数名（支持中英文本地化）
         Assert.NotNull(exception.Message);
         Assert.True(exception.Message.Length > 0);
-        Assert.Equal("value", exception.ParamName);
+        Assert.Equal("obj", exception.ParamName);
     }
 
     [Fact]

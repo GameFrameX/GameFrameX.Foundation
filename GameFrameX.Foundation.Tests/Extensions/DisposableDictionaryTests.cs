@@ -115,11 +115,16 @@ public class DisposableDictionaryTests
     {
         // Arrange
         var dictionary = new DisposableDictionary<string, TestDisposable>();
-        dictionary["key1"] = new TestDisposable("value1");
+        var value1 = new TestDisposable("value1");
+        dictionary["key1"] = value1;
         dictionary["key2"] = null;
 
-        // Act & Assert
-        dictionary.Dispose(); // Should not throw
+        // Act
+        var exception = Record.Exception(() => dictionary.Dispose());
+
+        // Assert
+        Assert.Null(exception);
+        Assert.True(value1.IsDisposed);
     }
 
     [Fact]
