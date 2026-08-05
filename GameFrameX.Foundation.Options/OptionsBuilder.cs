@@ -405,33 +405,11 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         foreach (var property in properties)
         {
-            bool isRequired = false;
-            string optionName = property.Name.ToLowerInvariant().Replace("_", "-");
-
-            // 仅基于 OptionAttribute 的 Required 标志进行校验
-            var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
-            foreach (var optionAttr in optionAttrs)
+            // 必需属性且值缺失时，收集用于错误提示的选项名
+            if (TryGetRequiredOptionName(property, out var optionName)
+                && IsOptionValueMissing(property, target))
             {
-                if (optionAttr.Required)
-                {
-                    isRequired = true;
-                    if (!string.IsNullOrEmpty(optionAttr.LongName))
-                    {
-                        optionName = optionAttr.LongName;
-                    }
-
-                    break;
-                }
-            }
-
-            // 如果是必需的，检查值
-            if (isRequired)
-            {
-                var value = property.GetValue(target);
-                if (value == null || (value is string strValue && string.IsNullOrEmpty(strValue)))
-                {
-                    missingOptions.Add(optionName);
-                }
+                missingOptions.Add(optionName);
             }
         }
 
@@ -439,6 +417,65 @@ public sealed class OptionsBuilder<T> where T : class, new()
         {
             throw new ArgumentException($"缺少必需的选项 (Missing required options): {string.Join(", ", missingOptions)}");
         }
+    }
+
+    /// <summary>
+    /// 尝试获取必需属性的选项名。
+    /// </summary>
+    /// <remarks>
+    /// Locates the first <see cref="OptionAttribute"/> whose <c>Required</c> flag is set on the property.
+    /// Returns <c>true</c> with the option name (the attribute's <c>LongName</c> when non-empty, otherwise
+    /// the lowercased, hyphen-normalized property name) when the property is required; otherwise <c>false</c>.
+    /// </remarks>
+    /// <param name="property">目标属性 / Target property</param>
+    /// <param name="optionName">命中时为选项名（LongName 非空用 LongName，否则属性名标准化默认值）/ Option name when required (LongName if non-empty, otherwise normalized property name)</param>
+    /// <returns>属性被标记为必需返回 true；否则 false / true if the property is required; otherwise false</returns>
+    private bool TryGetRequiredOptionName(PropertyInfo property, out string optionName)
+    {
+        optionName = property.Name.ToLowerInvariant().Replace("_", "-");
+
+        // 仅基于 OptionAttribute 的 Required 标志进行校验
+        var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
+        foreach (var optionAttr in optionAttrs)
+        {
+            if (optionAttr.Required)
+            {
+                if (!string.IsNullOrEmpty(optionAttr.LongName))
+                {
+                    optionName = optionAttr.LongName;
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 判断必需属性的值是否缺失。
+    /// </summary>
+    /// <remarks>
+    /// Returns <c>true</c> when the property value is <c>null</c>, or when it is an empty string.
+    /// Non-null, non-string values are considered present.
+    /// </remarks>
+    /// <param name="property">目标属性 / Target property</param>
+    /// <param name="target">目标对象 / Target object</param>
+    /// <returns>值为 null 或空字符串返回 true；否则 false / true if the value is null or an empty string; otherwise false</returns>
+    private static bool IsOptionValueMissing(PropertyInfo property, T target)
+    {
+        var value = property.GetValue(target);
+        if (value == null)
+        {
+            return true;
+        }
+
+        if (value is string strValue)
+        {
+            return string.IsNullOrEmpty(strValue);
+        }
+
+        return false;
     }
 
     /// <summary>
