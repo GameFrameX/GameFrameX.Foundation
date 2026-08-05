@@ -91,39 +91,74 @@ public sealed class CommandLineArgumentConverter
             {
                 result.Add(arg);
 
-                // 如果不是最后一个参数，且下一个参数不是选项
-                if (i < args.Count - 1 && !IsOptionToken(args[i + 1]))
-                {
-                    var value = args[i + 1];
-
-                    // 如果值包含空格，添加引号
-                    if (value.Contains(" "))
-                    {
-                        result.Add($"\"{value}\"");
-                    }
-                    else
-                    {
-                        result.Add(value);
-                    }
-
-                    i++; // 跳过已处理的值
-                }
+                // 如果不是最后一个参数，且下一个参数不是选项，则消耗它作为值
+                i = ConsumeOptionValueIfPresent(result, args, i);
             }
             else
             {
-                // 如果值包含空格，添加引号
-                if (arg.Contains(" "))
-                {
-                    result.Add($"\"{arg}\"");
-                }
-                else
-                {
-                    result.Add(arg);
-                }
+                // 非选项 token：含空格时用双引号包裹
+                AppendTokenWithQuotingIfNeeded(result, arg);
             }
         }
 
         return string.Join(" ", result);
+    }
+
+    /// <summary>
+    /// 若当前选项 token 后紧跟一个非选项 token，则把它作为值追加并返回新的索引；否则返回原索引。
+    /// </summary>
+    /// <remarks>
+    /// Inspects <c>args[currentIndex + 1]</c>: when the token exists and is not
+    /// another option token, appends it via
+    /// <see cref="AppendTokenWithQuotingIfNeeded"/> and returns
+    /// <c>currentIndex + 1</c> so the caller's <c>for</c> increment lands past
+    /// the consumed value. When no token follows, or the next token is itself
+    /// an option token, returns <c>currentIndex</c> unchanged.
+    /// </remarks>
+    /// <param name="result">累积结果列表 / Accumulated result list</param>
+    /// <param name="args">完整参数列表 / Full argument list</param>
+    /// <param name="currentIndex">当前选项 token 的索引 / Index of the current option token</param>
+    /// <returns>消耗下一参数后的索引 / Index after possibly consuming the next argument</returns>
+    private int ConsumeOptionValueIfPresent(List<string> result, IReadOnlyList<string> args, int currentIndex)
+    {
+        if (currentIndex >= args.Count - 1)
+        {
+            return currentIndex;
+        }
+
+        var nextArg = args[currentIndex + 1];
+
+        // 下一个参数是选项时不作为值消耗
+        if (IsOptionToken(nextArg))
+        {
+            return currentIndex;
+        }
+
+        AppendTokenWithQuotingIfNeeded(result, nextArg);
+        return currentIndex + 1;
+    }
+
+    /// <summary>
+    /// 将 token 追加到结果列表：含空格的 token 用双引号包裹，否则原样追加。
+    /// </summary>
+    /// <remarks>
+    /// Appends <paramref name="value"/> to <paramref name="result"/>. When
+    /// the value contains a space, it is wrapped in double quotes to preserve
+    /// the original argument boundary on the rebuilt command line.
+    /// </remarks>
+    /// <param name="result">累积结果列表 / Accumulated result list</param>
+    /// <param name="value">待追加的 token / Token to append</param>
+    private static void AppendTokenWithQuotingIfNeeded(List<string> result, string value)
+    {
+        // 如果值包含空格，添加引号
+        if (value.Contains(" "))
+        {
+            result.Add($"\"{value}\"");
+        }
+        else
+        {
+            result.Add(value);
+        }
     }
 
     /// <summary>
