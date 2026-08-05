@@ -919,19 +919,47 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         if (targetType == typeof(bool))
         {
-            if (value is bool boolValue)
-            {
-                return boolValue;
-            }
-
-            if (BooleanParser.IsBooleanValue(stringValue))
-            {
-                return BooleanParser.ParseBooleanValue(stringValue);
-            }
-
-            throw new FormatException("布尔值必须是 true/false、1/0、yes/no 或 on/off。");
+            return ConvertBoolOptionValue(value, stringValue);
         }
 
+        return ConvertToTargetType(targetType, stringValue);
+    }
+
+    /// <summary>
+    /// 将值转换为布尔类型。优先识别已是 <see cref="bool"/> 的原值，其次通过 <see cref="BooleanParser"/> 解析字面量。
+    /// </summary>
+    /// <remarks>
+    /// Converts a value to <see cref="bool"/>. Prefers an existing <see cref="bool"/> value, then falls back to <see cref="BooleanParser"/> literal parsing.
+    /// </remarks>
+    /// <param name="value">原始值 / Raw value</param>
+    /// <param name="stringValue">原始值的字符串形式 / String form of the raw value</param>
+    /// <returns>布尔结果 / Boolean result</returns>
+    private static object ConvertBoolOptionValue(object value, string stringValue)
+    {
+        if (value is bool boolValue)
+        {
+            return boolValue;
+        }
+
+        if (BooleanParser.IsBooleanValue(stringValue))
+        {
+            return BooleanParser.ParseBooleanValue(stringValue);
+        }
+
+        throw new FormatException("布尔值必须是 true/false、1/0、yes/no 或 on/off。");
+    }
+
+    /// <summary>
+    /// 将字符串值转换为目标类型。按枚举、<see cref="Guid"/> 顺序优先匹配，兜底走 <see cref="Convert.ChangeType(string,System.Type,System.IFormatProvider)"/>。
+    /// </summary>
+    /// <remarks>
+    /// Converts a string value to the target type. Matches <see cref="Enum"/> and <see cref="Guid"/> first, falling back to <see cref="Convert.ChangeType(string,System.Type,System.IFormatProvider)"/>.
+    /// </remarks>
+    /// <param name="targetType">目标类型 / Target type</param>
+    /// <param name="stringValue">字符串值 / String value</param>
+    /// <returns>转换后的值 / Converted value</returns>
+    private static object ConvertToTargetType(Type targetType, string stringValue)
+    {
         if (targetType.IsEnum)
         {
             return Enum.Parse(targetType, stringValue, true);
