@@ -167,6 +167,7 @@ public static class Md5Helper
     /// <param name="input">要计算哈希值的流 / The stream to compute the hash for</param>
     /// <param name="cancellationToken">用于取消异步操作的令牌 / Token used to cancel the asynchronous operation</param>
     /// <returns>小写十六进制字符串形式的哈希值 / The lowercase hexadecimal hash value</returns>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "MD5 is intentionally used here for non-cryptographic checksum / fingerprint / cache-key scenarios; for security-sensitive use cases call Sha256Helper instead.")]
     public static async Task<string> HashAsync(Stream input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
