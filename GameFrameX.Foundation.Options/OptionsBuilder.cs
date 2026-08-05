@@ -219,7 +219,6 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
     private readonly string[] _args;
     private readonly bool _useEnvironmentVariables;
-    private readonly bool _ensurePrefixedKeys;
     private readonly BoolArgumentFormat _boolFormat;
     private readonly CommandLineArgumentConverter _converter;
 
@@ -238,7 +237,6 @@ public sealed class OptionsBuilder<T> where T : class, new()
         _args = args ?? Array.Empty<string>();
         _boolFormat = boolFormat;
         _useEnvironmentVariables = useEnvironmentVariables;
-        _ensurePrefixedKeys = ensurePrefixedKeys;
         _converter = new CommandLineArgumentConverter
         {
             BoolFormat = boolFormat,
