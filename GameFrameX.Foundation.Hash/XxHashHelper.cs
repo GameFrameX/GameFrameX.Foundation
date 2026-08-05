@@ -96,7 +96,7 @@ public static class XxHashHelper
     public static uint Hash32(Type type)
     {
         ArgumentNullException.ThrowIfNull(type, nameof(type));
-        return InternalXxHashHelper.Hash32(type);
+        return InternalXxHashHelper.Hash32ForType(type);
     }
 
     /// <summary>
@@ -519,7 +519,7 @@ public static class XxHashHelper
         /// <returns>32位无符号整数形式的哈希值 / The 32-bit hash value as an unsigned integer</returns>
         /// <exception cref="ArgumentNullException">当 <paramref name="type"/> 为 null 时抛出 / Thrown when <paramref name="type"/> is null</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint Hash32(Type type)
+        public static uint Hash32ForType(Type type)
         {
             ArgumentNullException.ThrowIfNull(type, nameof(type));
             return Hash32Core(type.FullName);
@@ -534,7 +534,7 @@ public static class XxHashHelper
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Hash32<T>()
         {
-            return Hash32(typeof(T));
+            return Hash32ForType(typeof(T));
         }
 
         /// <summary>
