@@ -228,16 +228,16 @@ internal sealed class Sm3Digest : GeneralDigest
     /// <remarks>
     /// Completes the digest calculation and writes the result to the output array.
     /// </remarks>
-    /// <param name="out_Renamed">输出字节数组 / Output byte array</param>
+    /// <param name="output">输出字节数组 / Output byte array</param>
     /// <param name="outOff">输出数组的起始偏移量 / Starting offset in the output array</param>
     /// <returns>写入的字节数 / Number of bytes written</returns>
-    public override int DoFinal(byte[] out_Renamed, int outOff)
+    public override int DoFinal(byte[] output, int outOff)
     {
         Finish();
 
         for (int i = 0; i < 8; i++)
         {
-            IntToBigEndian(v[i], out_Renamed, outOff + i * 4);
+            IntToBigEndian(v[i], output, outOff + i * 4);
         }
 
         Reset();
