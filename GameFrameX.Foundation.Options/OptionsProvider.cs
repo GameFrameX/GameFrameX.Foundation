@@ -78,51 +78,84 @@ public static class OptionsProvider
             return enableDebugOutput.Value;
         }
 
-        // 检查环境变量 GAMEFRAMEX_OPTIONS_DEBUG
+        // 依次尝试 GAMEFRAMEX_OPTIONS_DEBUG 环境变量与运行时环境，均未决时默认禁用调试输出，
+        // 避免库代码在生产或测试环境产生意外控制台输出。
+        return TryGetDebugFromOptionsEnvVar()
+               ?? TryGetDebugFromRuntimeEnvironment()
+               ?? false;
+    }
+
+    /// <summary>
+    /// 从环境变量 <c>GAMEFRAMEX_OPTIONS_DEBUG</c> 解析调试输出设置。
+    /// </summary>
+    /// <remarks>
+    /// Parses the debug output setting from the <c>GAMEFRAMEX_OPTIONS_DEBUG</c> environment variable.
+    /// Returns <c>null</c> when the variable is unset or holds an unrecognized value so the caller can fall through.
+    /// </remarks>
+    /// <returns>三态：命中返回 <c>true</c>/<c>false</c>，未决返回 <c>null</c>（向下兜底） / Tri-state: <c>true</c>/<c>false</c> when matched, <c>null</c> when undecided (fall through)</returns>
+    private static bool? TryGetDebugFromOptionsEnvVar()
+    {
         var envDebug = Environment.GetEnvironmentVariable("GAMEFRAMEX_OPTIONS_DEBUG");
-        if (!string.IsNullOrEmpty(envDebug))
+        if (string.IsNullOrEmpty(envDebug))
         {
-            if (bool.TryParse(envDebug, out bool envValue))
-            {
-                return envValue;
-            }
-
-            // 支持更多格式
-            var normalizedEnvDebug = envDebug.Trim().ToLowerInvariant();
-            if (normalizedEnvDebug is "1" or "yes" or "on" or "enable" or "enabled")
-            {
-                return true;
-            }
-
-            if (normalizedEnvDebug is "0" or "no" or "off" or "disable" or "disabled")
-            {
-                return false;
-            }
+            return null;
         }
 
+        if (bool.TryParse(envDebug, out bool envValue))
+        {
+            return envValue;
+        }
+
+        // 支持更多格式
+        var normalizedEnvDebug = envDebug.Trim().ToLowerInvariant();
+        if (normalizedEnvDebug is "1" or "yes" or "on" or "enable" or "enabled")
+        {
+            return true;
+        }
+
+        if (normalizedEnvDebug is "0" or "no" or "off" or "disable" or "disabled")
+        {
+            return false;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 从运行时环境推断调试输出设置。
+    /// </summary>
+    /// <remarks>
+    /// Infers the debug output setting from the runtime environment — the first non-empty value among
+    /// <c>ASPNETCORE_ENVIRONMENT</c> / <c>DOTNET_ENVIRONMENT</c> / <c>ENVIRONMENT</c>. Returns <c>null</c> when
+    /// unset or unrecognized so the caller can fall through.
+    /// </remarks>
+    /// <returns>三态：命中返回 <c>true</c>/<c>false</c>，未决返回 <c>null</c>（向下兜底） / Tri-state: <c>true</c>/<c>false</c> when matched, <c>null</c> when undecided (fall through)</returns>
+    private static bool? TryGetDebugFromRuntimeEnvironment()
+    {
         // 检查是否在开发环境中（通过常见的开发环境变量）
         var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")
                           ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")
                           ?? Environment.GetEnvironmentVariable("ENVIRONMENT");
 
-        if (!string.IsNullOrEmpty(environment))
+        if (string.IsNullOrEmpty(environment))
         {
-            var normalizedEnv = environment.Trim().ToLowerInvariant();
-            // 在开发和测试环境中默认启用调试
-            if (normalizedEnv is "development" or "dev" or "test" or "testing" or "debug")
-            {
-                return true;
-            }
-
-            // 在生产环境中默认禁用调试
-            if (normalizedEnv is "production" or "prod" or "release")
-            {
-                return false;
-            }
+            return null;
         }
 
-        // 默认禁用调试输出，避免库代码在生产或测试环境产生意外控制台输出。
-        return false;
+        var normalizedEnv = environment.Trim().ToLowerInvariant();
+        // 在开发和测试环境中默认启用调试
+        if (normalizedEnv is "development" or "dev" or "test" or "testing" or "debug")
+        {
+            return true;
+        }
+
+        // 在生产环境中默认禁用调试
+        if (normalizedEnv is "production" or "prod" or "release")
+        {
+            return false;
+        }
+
+        return null;
     }
 
     /// <summary>
