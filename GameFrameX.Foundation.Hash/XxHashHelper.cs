@@ -259,14 +259,14 @@ public static class XxHashHelper
     {
         /// <summary>
         /// 计算32位xxHash值的核心算法。
-        /// 直接操作内存指针以获得最佳性能。
+        /// 通过 <see cref="ReadOnlySpan{T}"/> 与 <see cref="BinaryPrimitives"/> 安全地读取输入数据。
         /// </summary>
         /// <remarks>
         /// Core algorithm for computing 32-bit xxHash values.
-        /// Directly operates on memory pointers for optimal performance.
+        /// Reads input data safely via <see cref="ReadOnlySpan{T}"/> and <see cref="BinaryPrimitives"/>.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe uint ComputeHash32(byte* input, int length, uint seed = 0)
+        private static uint Hash32Core(ReadOnlySpan<byte> input, uint seed = 0)
         {
             unchecked
             {
@@ -277,21 +277,22 @@ public static class XxHashHelper
                 const uint prime5 = 0374761393u;
 
                 var hash = seed + prime5;
+                var offset = 0;
 
-                if (length >= 16)
+                if (input.Length >= 16)
                 {
                     var val0 = seed + prime1 + prime2;
                     var val1 = seed + prime2;
                     var val2 = seed + 0;
                     var val3 = seed - prime1;
 
-                    var count = length >> 4;
+                    var count = input.Length >> 4;
                     for (var i = 0; i < count; i++)
                     {
-                        var pos0 = *(uint*)(input + 0);
-                        var pos1 = *(uint*)(input + 4);
-                        var pos2 = *(uint*)(input + 8);
-                        var pos3 = *(uint*)(input + 12);
+                        var pos0 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 0, 4));
+                        var pos1 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 4, 4));
+                        var pos2 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 8, 4));
+                        var pos3 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 12, 4));
 
                         val0 += pos0 * prime2;
                         val0 = (val0 << 13) | (val0 >> (32 - 13));
@@ -309,7 +310,7 @@ public static class XxHashHelper
                         val3 = (val3 << 13) | (val3 >> (32 - 13));
                         val3 *= prime1;
 
-                        input += 16;
+                        offset += 16;
                     }
 
                     hash = ((val0 << 01) | (val0 >> (32 - 01))) +
@@ -318,22 +319,22 @@ public static class XxHashHelper
                            ((val3 << 18) | (val3 >> (32 - 18)));
                 }
 
-                hash += (uint)length;
+                hash += (uint)input.Length;
 
-                length &= 15;
+                var length = input.Length & 15;
                 while (length >= 4)
                 {
-                    hash += *(uint*)input * prime3;
+                    hash += BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset, 4)) * prime3;
                     hash = ((hash << 17) | (hash >> (32 - 17))) * prime4;
-                    input += 4;
+                    offset += 4;
                     length -= 4;
                 }
 
                 while (length > 0)
                 {
-                    hash += *input * prime5;
+                    hash += (uint)input[offset] * prime5;
                     hash = ((hash << 11) | (hash >> (32 - 11))) * prime1;
-                    ++input;
+                    ++offset;
                     --length;
                 }
 
@@ -485,14 +486,7 @@ public static class XxHashHelper
         public static uint ComputeHash32(byte[] buffer)
         {
             ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-            var length = buffer.Length;
-            unsafe
-            {
-                fixed (byte* pointer = buffer)
-                {
-                    return ComputeHash32(pointer, length);
-                }
-            }
+            return Hash32Core(buffer);
         }
 
         /// <summary>
