@@ -644,46 +644,78 @@ public sealed class OptionsBuilder<T> where T : class, new()
             // 处理键值对格式 (--key=value)
             if (arg.Contains("="))
             {
-                var parts = arg.Split(new[] { '=' }, 2);
-                var key = NormalizeKey(parts[0]);
-                var value = parts[1];
-
-                result[key] = value;
+                ApplyKeyValuePair(result, arg);
                 continue;
             }
 
             // 处理分离格式 (--key value)
             if (IsOptionToken(arg))
             {
-                var key = NormalizeKey(arg);
-
-                // 检查是否有值
-                if (i < standardArgs.Count - 1 && !IsOptionToken(standardArgs[i + 1]))
-                {
-                    var value = standardArgs[i + 1];
-                    // 如果值为null，不添加到字典中，这样会使用默认值
-                    if (value != null)
-                    {
-                        result[key] = value;
-                    }
-
-                    // 如果值为null，不添加键值对，让属性保持默认值
-                    i++; // 跳过已处理的值
-                }
-                else
-                {
-                    // 检查这个键是否对应布尔属性
-                    if (IsBooleanProperty(key))
-                    {
-                        // 布尔标志，没有值
-                        result[key] = true;
-                    }
-                    // 对于非布尔属性，如果没有值就不添加到字典中，使用默认值
-                }
+                i = ApplySeparatedOption(result, standardArgs, arg, i);
             }
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// 应用键值对格式参数 (--key=value)。
+    /// </summary>
+    /// <remarks>
+    /// Applies a key-value pair argument (<c>--key=value</c>) by splitting on the first <c>=</c>,
+    /// normalizing the key, and writing the value as-is.
+    /// </remarks>
+    /// <param name="result">结果字典 / Result dictionary</param>
+    /// <param name="arg">键值对参数 / Key-value pair argument</param>
+    private void ApplyKeyValuePair(Dictionary<string, object> result, string arg)
+    {
+        var parts = arg.Split(new[] { '=' }, 2);
+        var key = NormalizeKey(parts[0]);
+        var value = parts[1];
+
+        result[key] = value;
+    }
+
+    /// <summary>
+    /// 应用分离格式参数 (--key value 或布尔标志)。
+    /// </summary>
+    /// <remarks>
+    /// Applies a separated-format argument (<c>--key value</c>) or a boolean flag.
+    /// When the next token is a value, advances the index past it; otherwise treats the
+    /// argument as a boolean flag when the key maps to a boolean property.
+    /// </remarks>
+    /// <param name="result">结果字典 / Result dictionary</param>
+    /// <param name="standardArgs">标准格式参数列表 / Standard format argument list</param>
+    /// <param name="arg">分离格式参数 / Separated-format argument</param>
+    /// <param name="i">当前索引 / Current index</param>
+    /// <returns>消费后的新索引 / Index after consumption</returns>
+    private int ApplySeparatedOption(Dictionary<string, object> result, IReadOnlyList<string> standardArgs, string arg, int i)
+    {
+        var key = NormalizeKey(arg);
+
+        // 检查是否有值
+        if (i < standardArgs.Count - 1 && !IsOptionToken(standardArgs[i + 1]))
+        {
+            var value = standardArgs[i + 1];
+            // 如果值为null，不添加到字典中，这样会使用默认值
+            if (value != null)
+            {
+                result[key] = value;
+            }
+
+            // 如果值为null，不添加键值对，让属性保持默认值
+            return i + 1; // 跳过已处理的值
+        }
+
+        // 检查这个键是否对应布尔属性
+        if (IsBooleanProperty(key))
+        {
+            // 布尔标志，没有值
+            result[key] = true;
+        }
+        // 对于非布尔属性，如果没有值就不添加到字典中，使用默认值
+
+        return i;
     }
 
     private static bool IsOptionToken(string value)
