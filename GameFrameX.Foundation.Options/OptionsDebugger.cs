@@ -421,6 +421,76 @@ namespace GameFrameX.Foundation.Options
             return w;
         }
 
+        // 基于 Unicode 标准的宽字符范围表（中文 / 全角 / 部分符号 / emoji 等按终端双列宽处理）
+        // Wide character range table based on Unicode standard (CJK / fullwidth / some symbols / emoji treated as double-width in terminal)
+        private static readonly (int Min, int Max)[] WideCharacterRanges = new (int Min, int Max)[]
+        {
+            // CJK 统一汉字 / CJK Unified Ideographs
+            (0x4E00, 0x9FFF),
+            // CJK 扩展 A / CJK Extension A
+            (0x3400, 0x4DBF),
+            // CJK 扩展 B-F / CJK Extensions B-F
+            (0x20000, 0x2CEAF),
+            // CJK 扩展 G / CJK Extension G
+            (0x30000, 0x3134F),
+            // CJK 兼容汉字 / CJK Compatibility Ideographs
+            (0xF900, 0xFAFF),
+            // CJK 兼容补充 / CJK Compatibility Supplement
+            (0x2F800, 0x2FA1F),
+            // CJK 符号和标点 / CJK Symbols & Punctuation
+            (0x3000, 0x303F),
+            // 平假名 / Hiragana
+            (0x3040, 0x309F),
+            // 片假名 / Katakana
+            (0x30A0, 0x30FF),
+            // 日文兼容片假名 / Katakana Phonetic Extensions
+            (0x31F0, 0x31FF),
+            // 韩文字母 / Hangul
+            (0xAC00, 0xD7AF),
+            // 韩文兼容字母 / Hangul Jamo
+            (0x1100, 0x11FF),
+            // 全角 ASCII 变体 / Fullwidth ASCII variants
+            (0xFF01, 0xFF60),
+            // 全角符号 / Fullwidth symbols
+            (0xFFE0, 0xFFE6),
+            // 箭头符号 / Arrows
+            (0x2190, 0x21FF),
+            // 数学运算符 / Mathematical Operators
+            (0x2200, 0x22FF),
+            // 制表符 / Box Drawing
+            (0x2500, 0x257F),
+            // 方块元素 / Block Elements
+            (0x2580, 0x259F),
+            // 几何图形 / Geometric Shapes
+            (0x25A0, 0x25FF),
+            // 杂项符号 / Miscellaneous Symbols
+            (0x2600, 0x26FF),
+            // 丁贝符 / Dingbats
+            (0x2700, 0x27BF),
+            // 表情符号 / Emoji & Symbols
+            (0x1F000, 0x1FAFF),
+            // 音乐符号 / Musical Symbols
+            (0x1D000, 0x1D24F),
+            // 古代符号 / Ancient Symbols
+            (0x10100, 0x1013F),
+            // 货币符号 / Currency Symbols (部分为宽字符)
+            (0x20A0, 0x20CF),
+            // 字母式符号 / Letterlike Symbols
+            (0x2100, 0x214F),
+            // 数字形式 / Number Forms
+            (0x2150, 0x218F),
+            // 泰文 / Thai (部分为宽字符)
+            (0x0E01, 0x0E7F),
+            // 藏文 / Tibetan
+            (0x0F00, 0x0FFF),
+            // 蒙古文 / Mongolian
+            (0x1800, 0x18AF),
+            // 彝文 / Yi
+            (0xA000, 0xA48F),
+            // 傈僳文 / Lisu
+            (0xA4D0, 0xA4FF)
+        };
+
         /// <summary>
         /// 判断字符是否为宽字符（在终端中占用两个字符宽度）
         /// Determines if a character is wide (occupies two character widths in terminal)
@@ -429,77 +499,16 @@ namespace GameFrameX.Foundation.Options
         /// <returns>是否为宽字符 / Whether the character is wide</returns>
         static bool IsWideCharacter(int codePoint)
         {
-            // 基于 Unicode 标准的宽字符范围判断
-            // Based on Unicode standard wide character ranges
-            return codePoint switch
+            foreach (var range in WideCharacterRanges)
             {
-                // CJK 统一汉字 / CJK Unified Ideographs
-                >= 0x4E00 and <= 0x9FFF => true,
-                // CJK 扩展 A / CJK Extension A
-                >= 0x3400 and <= 0x4DBF => true,
-                // CJK 扩展 B-F / CJK Extensions B-F
-                >= 0x20000 and <= 0x2CEAF => true,
-                // CJK 扩展 G / CJK Extension G
-                >= 0x30000 and <= 0x3134F => true,
-                // CJK 兼容汉字 / CJK Compatibility Ideographs
-                >= 0xF900 and <= 0xFAFF => true,
-                // CJK 兼容补充 / CJK Compatibility Supplement
-                >= 0x2F800 and <= 0x2FA1F => true,
-                // CJK 符号和标点 / CJK Symbols & Punctuation
-                >= 0x3000 and <= 0x303F => true,
-                // 平假名 / Hiragana
-                >= 0x3040 and <= 0x309F => true,
-                // 片假名 / Katakana
-                >= 0x30A0 and <= 0x30FF => true,
-                // 日文兼容片假名 / Katakana Phonetic Extensions
-                >= 0x31F0 and <= 0x31FF => true,
-                // 韩文字母 / Hangul
-                >= 0xAC00 and <= 0xD7AF => true,
-                // 韩文兼容字母 / Hangul Jamo
-                >= 0x1100 and <= 0x11FF => true,
-                // 全角 ASCII 变体 / Fullwidth ASCII variants
-                >= 0xFF01 and <= 0xFF60 => true,
-                // 全角符号 / Fullwidth symbols
-                >= 0xFFE0 and <= 0xFFE6 => true,
-                // 箭头符号 / Arrows
-                >= 0x2190 and <= 0x21FF => true,
-                // 数学运算符 / Mathematical Operators
-                >= 0x2200 and <= 0x22FF => true,
-                // 制表符 / Box Drawing
-                >= 0x2500 and <= 0x257F => true,
-                // 方块元素 / Block Elements
-                >= 0x2580 and <= 0x259F => true,
-                // 几何图形 / Geometric Shapes
-                >= 0x25A0 and <= 0x25FF => true,
-                // 杂项符号 / Miscellaneous Symbols
-                >= 0x2600 and <= 0x26FF => true,
-                // 丁贝符 / Dingbats
-                >= 0x2700 and <= 0x27BF => true,
-                // 表情符号 / Emoji & Symbols
-                >= 0x1F000 and <= 0x1FAFF => true,
-                // 音乐符号 / Musical Symbols
-                >= 0x1D000 and <= 0x1D24F => true,
-                // 古代符号 / Ancient Symbols
-                >= 0x10100 and <= 0x1013F => true,
-                // 货币符号 / Currency Symbols (部分为宽字符)
-                >= 0x20A0 and <= 0x20CF => true,
-                // 字母式符号 / Letterlike Symbols
-                >= 0x2100 and <= 0x214F => true,
-                // 数字形式 / Number Forms
-                >= 0x2150 and <= 0x218F => true,
-                // 泰文 / Thai (部分为宽字符)
-                >= 0x0E01 and <= 0x0E7F => true,
-                // 藏文 / Tibetan
-                >= 0x0F00 and <= 0x0FFF => true,
-                // 蒙古文 / Mongolian
-                >= 0x1800 and <= 0x18AF => true,
-                // 彝文 / Yi
-                >= 0xA000 and <= 0xA48F => true,
-                // 傈僳文 / Lisu
-                >= 0xA4D0 and <= 0xA4FF => true,
-                // 预设：窄字符 / Default: narrow character
-                _ => false
-            };
+                if (codePoint >= range.Min && codePoint <= range.Max)
+                {
+                    return true;
+                }
+            }
+
+            // 预设：窄字符 / Default: narrow character
+            return false;
         }
 
         /// <summary>
