@@ -195,8 +195,11 @@ public class LocalizationServiceTests
     [Fact]
     public void Dispose_ShouldNotThrow()
     {
-        // Act & Assert (should not throw)
-        LocalizationService.Dispose();
+        // Act
+        var exception = Record.Exception(() => LocalizationService.Dispose());
+
+        // Assert (should not throw)
+        Assert.Null(exception);
     }
 
     [Fact]
