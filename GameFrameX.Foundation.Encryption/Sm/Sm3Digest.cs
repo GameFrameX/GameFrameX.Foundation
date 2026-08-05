@@ -171,14 +171,14 @@ internal sealed class Sm3Digest : GeneralDigest
     /// <remarks>
     /// Processes a word from the input byte array.
     /// </remarks>
-    /// <param name="in_Renamed">输入字节数组 / Input byte array</param>
+    /// <param name="input">输入字节数组 / Input byte array</param>
     /// <param name="inOff">输入数组的起始偏移量 / Starting offset in the input array</param>
-    internal override void ProcessWord(byte[] in_Renamed, int inOff)
+    internal override void ProcessWord(byte[] input, int inOff)
     {
-        int n = in_Renamed[inOff] << 24;
-        n |= (in_Renamed[++inOff] & 0xff) << 16;
-        n |= (in_Renamed[++inOff] & 0xff) << 8;
-        n |= (in_Renamed[++inOff] & 0xff);
+        int n = input[inOff] << 24;
+        n |= (input[++inOff] & 0xff) << 16;
+        n |= (input[++inOff] & 0xff) << 8;
+        n |= (input[++inOff] & 0xff);
         X[xOff] = n;
 
         if (++xOff == 16)
