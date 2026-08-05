@@ -1,3 +1,9 @@
+## [2.8.3] - 2026-08-05
+
+### Testing
+
+- 消除 OrmAttributeTests Sonar S2701 残存的平凡断言 (#92)
+
 ## [2.8.2] - 2026-07-29
 
 ### Bug Fixes
