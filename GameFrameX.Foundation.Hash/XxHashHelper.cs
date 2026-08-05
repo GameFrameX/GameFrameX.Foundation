@@ -32,6 +32,7 @@
 // ==========================================================================================
 
 using System;
+using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Standart.Hash.xxHash;
@@ -348,14 +349,14 @@ public static class XxHashHelper
 
         /// <summary>
         /// 计算64位xxHash值的核心算法。
-        /// 直接操作内存指针以获得最佳性能。
+        /// 通过 <see cref="ReadOnlySpan{T}"/> 与 <see cref="BinaryPrimitives"/> 安全地读取输入数据。
         /// </summary>
         /// <remarks>
         /// Core algorithm for computing 64-bit xxHash values.
-        /// Directly operates on memory pointers for optimal performance.
+        /// Reads input data safely via <see cref="ReadOnlySpan{T}"/> and <see cref="BinaryPrimitives"/>.
         /// </remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static unsafe ulong Hash64Core(byte* input, int length, uint seed = 0)
+        private static ulong Hash64Core(ReadOnlySpan<byte> input, uint seed = 0)
         {
             unchecked
             {
@@ -366,21 +367,22 @@ public static class XxHashHelper
                 const ulong prime5 = 02870177450012600261ul;
 
                 var hash = seed + prime5;
+                var offset = 0;
 
-                if (length >= 32)
+                if (input.Length >= 32)
                 {
                     var val0 = seed + prime1 + prime2;
                     var val1 = seed + prime2;
                     ulong val2 = seed + 0;
                     var val3 = seed - prime1;
 
-                    var count = length >> 5;
+                    var count = input.Length >> 5;
                     for (var i = 0; i < count; i++)
                     {
-                        var pos0 = *(ulong*)(input + 0);
-                        var pos1 = *(ulong*)(input + 8);
-                        var pos2 = *(ulong*)(input + 16);
-                        var pos3 = *(ulong*)(input + 24);
+                        var pos0 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 0, 8));
+                        var pos1 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 8, 8));
+                        var pos2 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 16, 8));
+                        var pos3 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 24, 8));
 
                         val0 += pos0 * prime2;
                         val0 = (val0 << 31) | (val0 >> (64 - 31));
@@ -398,7 +400,7 @@ public static class XxHashHelper
                         val3 = (val3 << 31) | (val3 >> (64 - 31));
                         val3 *= prime1;
 
-                        input += 32;
+                        offset += 32;
                     }
 
                     hash = ((val0 << 01) | (val0 >> (64 - 01))) +
@@ -431,32 +433,32 @@ public static class XxHashHelper
                     hash = hash * prime1 + prime4;
                 }
 
-                hash += (ulong)length;
+                hash += (ulong)input.Length;
 
-                length &= 31;
+                var length = input.Length & 31;
                 while (length >= 8)
                 {
-                    var lane = *(ulong*)input * prime2;
+                    var lane = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset, 8)) * prime2;
                     lane = ((lane << 31) | (lane >> (64 - 31))) * prime1;
                     hash ^= lane;
                     hash = ((hash << 27) | (hash >> (64 - 27))) * prime1 + prime4;
-                    input += 8;
+                    offset += 8;
                     length -= 8;
                 }
 
                 if (length >= 4)
                 {
-                    hash ^= *(uint*)input * prime1;
+                    hash ^= BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset, 4)) * prime1;
                     hash = ((hash << 23) | (hash >> (64 - 23))) * prime2 + prime3;
-                    input += 4;
+                    offset += 4;
                     length -= 4;
                 }
 
                 while (length > 0)
                 {
-                    hash ^= *input * prime5;
+                    hash ^= (ulong)input[offset] * prime5;
                     hash = ((hash << 11) | (hash >> (64 - 11))) * prime1;
-                    ++input;
+                    ++offset;
                     --length;
                 }
 
@@ -550,14 +552,7 @@ public static class XxHashHelper
         public static ulong ComputeHash64(byte[] buffer)
         {
             ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-            var length = buffer.Length;
-            unsafe
-            {
-                fixed (byte* pointer = buffer)
-                {
-                    return Hash64Core(pointer, length);
-                }
-            }
+            return Hash64Core(buffer);
         }
 
         /// <summary>
