@@ -336,33 +336,10 @@ public sealed class OptionsBuilder<T> where T : class, new()
             var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
             foreach (var optionAttr in optionAttrs)
             {
-                if (optionAttr.DefaultValue != null)
+                // 命中默认值且成功设置后，只应用第一个找到的默认值即跳出
+                if (optionAttr.DefaultValue != null && TrySetPropertyValue(property, target, optionAttr.DefaultValue))
                 {
-                    try
-                    {
-                        // 转换并设置默认值
-                        var convertedValue = Convert.ChangeType(optionAttr.DefaultValue, property.PropertyType);
-                        property.SetValue(target, convertedValue);
-                        break; // 只应用第一个找到的默认值
-                    }
-                    catch (InvalidCastException ex)
-                    {
-                        // 类型转换失败，保持属性的默认状态
-                        // Type conversion failed, keep the property's default state
-                        System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生类型转换错误: {ex.Message}");
-                    }
-                    catch (FormatException ex)
-                    {
-                        // 格式转换失败，保持属性的默认状态
-                        // Format conversion failed, keep the property's default state
-                        System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生格式错误: {ex.Message}");
-                    }
-                    catch (OverflowException ex)
-                    {
-                        // 数值溢出，保持属性的默认状态
-                        // Numeric overflow, keep the property's default state
-                        System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生溢出错误: {ex.Message}");
-                    }
+                    break;
                 }
             }
 
@@ -374,6 +351,48 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 property.SetValue(target, false);
             }
         }
+    }
+
+    /// <summary>
+    /// 尝试将默认值转换并设置到目标属性。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to convert and set the default value to the target property.
+    /// Returns false (and keeps the property's default state) when the conversion fails.
+    /// </remarks>
+    /// <param name="property">目标属性 / Target property</param>
+    /// <param name="target">目标对象 / Target object</param>
+    /// <param name="defaultValue">默认值 / Default value</param>
+    /// <returns>成功设置返回 true；转换失败返回 false / true if set successfully; false if conversion failed</returns>
+    private bool TrySetPropertyValue(PropertyInfo property, T target, object defaultValue)
+    {
+        try
+        {
+            // 转换并设置默认值
+            var convertedValue = Convert.ChangeType(defaultValue, property.PropertyType);
+            property.SetValue(target, convertedValue);
+            return true;
+        }
+        catch (InvalidCastException ex)
+        {
+            // 类型转换失败，保持属性的默认状态
+            // Type conversion failed, keep the property's default state
+            System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生类型转换错误: {ex.Message}");
+        }
+        catch (FormatException ex)
+        {
+            // 格式转换失败，保持属性的默认状态
+            // Format conversion failed, keep the property's default state
+            System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生格式错误: {ex.Message}");
+        }
+        catch (OverflowException ex)
+        {
+            // 数值溢出，保持属性的默认状态
+            // Numeric overflow, keep the property's default state
+            System.Diagnostics.Debug.WriteLine($"设置属性 {property.Name} 的默认值时发生溢出错误: {ex.Message}");
+        }
+
+        return false;
     }
 
     /// <summary>
