@@ -257,48 +257,9 @@ public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceP
             {
                 try
                 {
-                    var parts = resourceName.Split('.');
-
-                    // 尝试从不同命名约定中提取类别和基础名称
-                    // 策略1：标准Resources.resx命名约定
-                    // 例如：MyAssembly.Localization.Messages.Resources.resources 或 MyAssembly.Localization.Messages.Resources.zh-CN.resources
-                    if (parts.Length < 3)
+                    if (!TryGetBaseName(resourceName, out var baseName))
                     {
                         continue;
-                    }
-
-                    // 寻找文化标识符（如 zh-CN, en-US 等）
-                    var secondLastPart = parts[^2]; // 可能是文化名或"Resources"
-                    string baseName;
-
-                    if (secondLastPart.Equals("Resources", StringComparison.OrdinalIgnoreCase))
-                    {
-                        // 格式：程序集名.[路径].Resources.resources (默认资源)
-                        // 例如：GameFrameX.Foundation.Utility.Localization.Messages.Resources.resources
-                        var pathParts = parts.Take(parts.Length - 1).ToList(); // 移除resources
-                        baseName = string.Join(".", pathParts);
-                    }
-                    else if (secondLastPart.Contains('-') && secondLastPart.Length >= 2) // 文化名 (zh-CN, en-US等)
-                    {
-                        // 格式：程序集名.[路径].Resources.文化名.resources
-                        // 例如：GameFrameX.Foundation.Utility.Localization.Messages.Resources.zh-CN.resources
-                        var pathParts = parts.Take(parts.Length - 2).ToList(); // 移除文化名和resources
-
-                        // 确保倒数第二部分是Resources
-                        if (pathParts.Count >= 1 && pathParts.Last().Equals("Resources", StringComparison.OrdinalIgnoreCase))
-                        {
-                            baseName = string.Join(".", pathParts);
-                        }
-                        else
-                        {
-                            // 如果格式不匹配，跳过这个资源
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        // 其他格式：程序集名.类别.resources (保持向后兼容)
-                        baseName = string.Join(".", parts.Take(parts.Length - 1));
                     }
 
                     if (_resourceManagers.All(x => x.BaseName != baseName))
@@ -316,6 +277,61 @@ public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceP
         {
             System.Diagnostics.Debug.WriteLine($"Failed to scan assembly resources: {ex.Message}");
         }
+    }
+
+    /// <summary>
+    /// 尝试从清单资源名解析出 <see cref="System.Resources.ResourceManager"/> 所需的基础名称。
+    /// </summary>
+    /// <remarks>
+    /// 支持以下命名约定（与历史实现完全等价）：
+    /// - [程序集名].[路径].Resources.resources（默认资源，倒数第二段为 "Resources"）
+    /// - [程序集名].[路径].Resources.[文化名].resources（文化资源，倒数第二段为形如 zh-CN 的文化名）
+    /// - [程序集名].[类别].resources（其他向后兼容格式）
+    /// </remarks>
+    /// <param name="resourceName">清单资源名，预期以 ".resources" 结尾。</param>
+    /// <param name="baseName">解析成功时输出的基础名称；失败时为 <c>null</c>。</param>
+    /// <returns>资源名符合已知命名约定则返回 <c>true</c>；否则（段数不足或文化名分支格式不匹配）返回 <c>false</c>。</returns>
+    private bool TryGetBaseName(string resourceName, out string baseName)
+    {
+        var parts = resourceName.Split('.');
+
+        // 段数不足，无法构成 "程序集名.类别.resources" 三段最小格式
+        if (parts.Length < 3)
+        {
+            baseName = null;
+            return false;
+        }
+
+        // 倒数第二段可能是 "Resources" 或文化名（如 zh-CN）
+        var secondLastPart = parts[^2];
+        if (secondLastPart.Equals("Resources", StringComparison.OrdinalIgnoreCase))
+        {
+            // 格式：[程序集名].[路径].Resources.resources（默认资源）
+            baseName = string.Join(".", parts.Take(parts.Length - 1));
+            return true;
+        }
+
+        if (secondLastPart.Contains('-') && secondLastPart.Length >= 2)
+        {
+            // 格式：[程序集名].[路径].Resources.[文化名].resources
+            var pathParts = parts.Take(parts.Length - 2).ToList(); // 移除文化名与 resources
+            if (pathParts.Count >= 1 && pathParts.Last().Equals("Resources", StringComparison.OrdinalIgnoreCase))
+            {
+                baseName = string.Join(".", pathParts);
+                return true;
+            }
+
+            // 倒数第二段形似文化名但前缀并非 Resources，格式不匹配，跳过
+        }
+        else
+        {
+            // 其他格式：[程序集名].[类别].resources（保持向后兼容）
+            baseName = string.Join(".", parts.Take(parts.Length - 1));
+            return true;
+        }
+
+        baseName = null;
+        return false;
     }
 
     /// <summary>
