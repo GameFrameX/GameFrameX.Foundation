@@ -1223,28 +1223,74 @@ public static class IEnumerableExtensions
         ArgumentNullException.ThrowIfNull(second, nameof(second));
         ArgumentNullException.ThrowIfNull(condition, nameof(condition));
 
-        if (first is ICollection<T> source1 && second is ICollection<T> source2)
+        if (TryCompareAsCollection(first, second, condition, out var collectionEqual))
         {
-            if (source1.Count != source2.Count)
-            {
-                return false;
-            }
+            return collectionEqual;
+        }
 
-            if (source1 is IList<T> list1 && source2 is IList<T> list2)
-            {
-                var count = source1.Count;
-                for (var index = 0; index < count; ++index)
-                {
-                    if (!condition(list1[index], list2[index]))
-                    {
-                        return false;
-                    }
-                }
+        return CompareByEnumerator(first, second, condition);
+    }
 
+    /// <summary>
+    /// 尝试使用集合/列表优化路径比较两个相同类型的序列。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to compare two same-typed sequences via the collection/list fast path.
+    /// Returns <c>true</c> when a collection-based decision was reached (caller must read
+    /// <paramref name="isEqual"/>); returns <c>false</c> when the caller must fall back to
+    /// the enumerator path.
+    /// </remarks>
+    /// <typeparam name="T">序列中元素的类型 / The element type of the sequences</typeparam>
+    /// <param name="first">第一个序列 / The first sequence</param>
+    /// <param name="second">第二个序列 / The second sequence</param>
+    /// <param name="condition">用于比较两个元素的条件 / The condition to compare two elements</param>
+    /// <param name="isEqual">当方法返回 <c>true</c> 时，输出基于集合路径的比较结果 / The comparison result when the method returns <c>true</c></param>
+    /// <returns>如果集合路径能给出明确结论则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the collection path yields a verdict; otherwise <c>false</c></returns>
+    private static bool TryCompareAsCollection<T>(IEnumerable<T> first, IEnumerable<T> second, Func<T, T, bool> condition, out bool isEqual)
+    {
+        isEqual = false;
+
+        if (first is not ICollection<T> source1 || second is not ICollection<T> source2)
+        {
+            return false;
+        }
+
+        if (source1.Count != source2.Count)
+        {
+            return true;
+        }
+
+        if (source1 is not IList<T> list1 || source2 is not IList<T> list2)
+        {
+            return false;
+        }
+
+        var count = source1.Count;
+        for (var index = 0; index < count; ++index)
+        {
+            if (!condition(list1[index], list2[index]))
+            {
                 return true;
             }
         }
 
+        isEqual = true;
+        return true;
+    }
+
+    /// <summary>
+    /// 使用枚举器逐个比较两个相同类型的序列。
+    /// </summary>
+    /// <remarks>
+    /// Compares two same-typed sequences element-by-element via <see cref="IEnumerator{T}"/>.
+    /// </remarks>
+    /// <typeparam name="T">序列中元素的类型 / The element type of the sequences</typeparam>
+    /// <param name="first">第一个序列 / The first sequence</param>
+    /// <param name="second">第二个序列 / The second sequence</param>
+    /// <param name="condition">用于比较两个元素的条件 / The condition to compare two elements</param>
+    /// <returns>如果两个序列长度相等且对应位置的元素都满足比较条件，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if sequences have equal length and corresponding elements satisfy the comparison condition; otherwise <c>false</c></returns>
+    private static bool CompareByEnumerator<T>(IEnumerable<T> first, IEnumerable<T> second, Func<T, T, bool> condition)
+    {
         using var enumerator1 = first.GetEnumerator();
         using var enumerator2 = second.GetEnumerator();
         while (enumerator1.MoveNext())
