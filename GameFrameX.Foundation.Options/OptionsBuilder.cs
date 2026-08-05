@@ -849,57 +849,117 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         foreach (var kvp in options)
         {
-            PropertyInfo property = null;
-
-            // 首先尝试通过选项映射查找属性
-            if (optionMappings.TryGetValue(kvp.Key, out var propertyName))
-            {
-                property = properties.FirstOrDefault(p =>
-                                                         string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
-            }
-
-            // 如果没有找到，尝试标准化键名查找
-            if (property == null)
-            {
-                string normalizedKey = NormalizePropertyName(kvp.Key);
-                property = properties.FirstOrDefault(p =>
-                                                         string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
-            }
+            var property = ResolveOptionProperty(kvp.Key, properties, optionMappings);
 
             if (property != null)
             {
-                try
-                {
-                    if (kvp.Value == null)
-                    {
-                        continue;
-                    }
-
-                    var convertedValue = ConvertOptionValue(property, kvp.Value);
-                    property.SetValue(target, convertedValue);
-                }
-                catch (ArgumentException ex)
-                {
-                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.Message}", ex);
-                }
-                catch (TargetInvocationException ex)
-                {
-                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.InnerException?.Message ?? ex.Message}", ex);
-                }
-                catch (FormatException ex)
-                {
-                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
-                }
-                catch (InvalidCastException ex)
-                {
-                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
-                }
-                catch (OverflowException ex)
-                {
-                    throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 超出 {property.PropertyType.Name} 的范围: {ex.Message}", ex);
-                }
+                ApplyOptionValue(target, property, kvp);
             }
         }
+    }
+
+    /// <summary>
+    /// 解析选项键对应的可写属性（先按选项映射，再按标准化属性名兜底）。
+    /// </summary>
+    /// <remarks>
+    /// Resolves the writable property for the given key: first by the option mapping
+    /// (via <c>TryGetValue</c> + ordinal-ignore-case name match), falling back to the
+    /// normalized property name when no mapping is found or the mapped lookup misses.
+    /// </remarks>
+    /// <param name="key">选项键 / Option key</param>
+    /// <param name="properties">可写属性集合 / Writable properties</param>
+    /// <param name="optionMappings">选项映射字典 / Option mapping dictionary</param>
+    /// <returns>匹配到的属性；未匹配返回 null / Matched property, or null if not matched</returns>
+    private PropertyInfo ResolveOptionProperty(string key, IReadOnlyList<PropertyInfo> properties, IReadOnlyDictionary<string, string> optionMappings)
+    {
+        if (optionMappings.TryGetValue(key, out var propertyName))
+        {
+            var property = properties.FirstOrDefault(p =>
+                                                         string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+            if (property != null)
+            {
+                return property;
+            }
+        }
+
+        string normalizedKey = NormalizePropertyName(key);
+        return properties.FirstOrDefault(p =>
+                                            string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// 将单个选项键值对的值转换并写入目标对象的对应属性。
+    /// </summary>
+    /// <remarks>
+    /// Converts and writes a single option value to the target property. 5 exception
+    /// types raised by <see cref="ConvertOptionValue"/> or <see cref="PropertyInfo.SetValue"/>
+    /// (<c>ArgumentException</c>, <c>TargetInvocationException</c>, <c>FormatException</c>,
+    /// <c>InvalidCastException</c>, <c>OverflowException</c>) are aggregated via a single
+    /// <c>catch (Exception)</c> and rewrapped by <see cref="WrapOptionValueException"/>.
+    /// </remarks>
+    /// <param name="target">目标配置对象 / Target configuration object</param>
+    /// <param name="property">目标属性 / Target property</param>
+    /// <param name="kvp">选项键值对 / Option key-value pair</param>
+    private void ApplyOptionValue(T target, PropertyInfo property, KeyValuePair<string, object> kvp)
+    {
+        try
+        {
+            if (kvp.Value == null)
+            {
+                return;
+            }
+
+            var convertedValue = ConvertOptionValue(property, kvp.Value);
+            property.SetValue(target, convertedValue);
+        }
+        catch (Exception ex)
+        {
+            throw WrapOptionValueException(ex, kvp, property);
+        }
+    }
+
+    /// <summary>
+    /// 将 <see cref="ApplyOptionValue"/> 抛出的异常统一包装为带本地化文案的 <see cref="ArgumentException"/>。
+    /// </summary>
+    /// <remarks>
+    /// Wraps the exception thrown from <see cref="ApplyOptionValue"/> into an
+    /// <see cref="ArgumentException"/> with a localized message that includes the
+    /// option key, value, and target property name. Each branch preserves the
+    /// original wording and inner-exception unwrapping rule (e.g.
+    /// <c>TargetInvocationException</c> prefers <c>InnerException.Message</c>).
+    /// </remarks>
+    /// <param name="ex">捕获到的异常 / Captured exception</param>
+    /// <param name="kvp">选项键值对 / Option key-value pair</param>
+    /// <param name="property">目标属性 / Target property</param>
+    /// <returns>包装后的 ArgumentException / Wrapped ArgumentException</returns>
+    private static ArgumentException WrapOptionValueException(Exception ex, KeyValuePair<string, object> kvp, PropertyInfo property)
+    {
+        if (ex is ArgumentException)
+        {
+            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.Message}", ex);
+        }
+
+        if (ex is TargetInvocationException)
+        {
+            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.InnerException?.Message ?? ex.Message}", ex);
+        }
+
+        if (ex is FormatException)
+        {
+            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
+        }
+
+        if (ex is InvalidCastException)
+        {
+            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
+        }
+
+        if (ex is OverflowException)
+        {
+            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 超出 {property.PropertyType.Name} 的范围: {ex.Message}", ex);
+        }
+
+        throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 应用失败: {ex.Message}", ex);
     }
 
     private static object ConvertOptionValue(PropertyInfo property, object value)
