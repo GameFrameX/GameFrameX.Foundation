@@ -135,7 +135,7 @@ public static partial class SpanExtensions
     /// <param name="offset">读写操作的起始位置，写入后会自动增加相应字节数 / The starting position for read/write, automatically increments by the corresponding number of bytes after writing.</param>
     /// <exception cref="ArgumentNullException">当 <paramref name="value"/> 为 null 时抛出 / Thrown when <paramref name="value"/> is null.</exception>
     /// <exception cref="ArgumentOutOfRangeException">当 <paramref name="offset"/> 为负数或超出缓冲区边界时抛出 / Thrown when <paramref name="offset"/> is negative or exceeds buffer bounds.</exception>
-    public static unsafe void WriteBytesWithoutLength(this Span<byte> buffer, byte[] value, ref int offset)
+    public static void WriteBytesWithoutLength(this Span<byte> buffer, byte[] value, ref int offset)
     {
         ArgumentNullException.ThrowIfNull(value);
         ArgumentOutOfRangeException.ThrowIfNegative(offset, nameof(offset));
@@ -145,11 +145,8 @@ public static partial class SpanExtensions
             throw new ArgumentOutOfRangeException(nameof(offset), LocalizationService.GetString(LocalizationKeys.Exceptions.OffsetOutsideBufferBounds, offset, value.Length, buffer.Length));
         }
 
-        fixed (byte* ptr = buffer, valPtr = value)
-        {
-            Buffer.MemoryCopy(valPtr, ptr + offset, value.Length, value.Length);
-            offset += value.Length;
-        }
+        value.AsSpan().CopyTo(buffer[offset..]);
+        offset += value.Length;
     }
 
     /// <summary>
