@@ -57,6 +57,7 @@ namespace GameFrameX.Foundation.Options
         private const string NoOptionAttributeLabel = "无选项特性 (No Option Attribute)";
         private const int MaxDisplayElements = 5;
         private const int DefaultConsoleWidth = 120;
+        private const int TableColumnsCount = 6;
 
         /// <summary>
         /// 打印解析完成后的选项对象。
@@ -74,232 +75,11 @@ namespace GameFrameX.Foundation.Options
             Console.WriteLine();
             try
             {
-                // 使用反射获取所有属性
-                var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-
-
-                // 计算最大显示宽度
-                int maxWidth = 0;
-                var optionInfos = new List<(PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute)>();
-
-                foreach (var property in properties.OrderBy(p => p.Name))
-                {
-                    var attributes = property.GetCustomAttributes(true);
-                    var optionAttribute = attributes.OfType<Attributes.OptionAttribute>().FirstOrDefault();
-
-
-                    string displayName;
-                    if (optionAttribute != null)
-                    {
-                        var longName = !string.IsNullOrEmpty(optionAttribute.LongName) ? optionAttribute.LongName : property.Name.ToLower();
-                        displayName = $"--{longName}";
-                    }
-                    else
-                    {
-                        displayName = property.Name;
-                    }
-
-                    maxWidth = Math.Max(maxWidth, displayName.Length);
-                    optionInfos.Add((property, displayName, optionAttribute));
-                }
-
-                // 添加2个字符的缓冲空间
-                maxWidth += 2;
-
-                // 使用计算出的最大宽度进行格式化输出（表格样式）
-                var rows = new List<(string Name, string Value, string Required, string TypeName, string Description, string DefaultValue)>();
-                int nameWidth = Math.Max(OptionHeader.Length, maxWidth);
-                int valueWidth = ValueHeader.Length;
-                int requiredWidth = RequiredHeader.Length;
-                int typeWidth = TypeNameHeader.Length;
-                int descWidth = DescriptionHeader.Length;
-                int defaultWidth = DefaultValueHeader.Length;
-
-                foreach (var (property, displayName, optionAttribute) in optionInfos)
-                {
-                    var value = property.GetValue(options);
-                    var isSensitive = optionAttribute?.Sensitive == true;
-                    var displayValue = FormatPropertyValue(value, isSensitive) ?? string.Empty;
-                    var typeName = GetFriendlyTypeName(property.PropertyType) ?? string.Empty;
-                    var required = optionAttribute != null ? (optionAttribute.Required ? RequiredYesLabel : RequiredNoLabel) : string.Empty;
-                    var description = optionAttribute != null ? (optionAttribute.Description ?? NoDescriptionLabel) : NoOptionAttributeLabel;
-                    var defaultVal = optionAttribute?.DefaultValue == null ? string.Empty : FormatPropertyValue(optionAttribute.DefaultValue, isSensitive);
-
-                    nameWidth = Math.Max(nameWidth, displayName.Length);
-                    valueWidth = Math.Max(valueWidth, displayValue.Length);
-                    requiredWidth = Math.Max(requiredWidth, required.Length);
-                    typeWidth = Math.Max(typeWidth, typeName.Length);
-                    descWidth = Math.Max(descWidth, description.Length);
-                    defaultWidth = Math.Max(defaultWidth, defaultVal.Length);
-
-                    rows.Add((displayName, displayValue, required, typeName, description, defaultVal));
-                }
-
-                // 重新基于“显示宽度”计算各列宽度，中文字符按双列宽
-                int hdName = GetDisplayWidth(OptionHeader);
-                int hdValue = GetDisplayWidth(ValueHeader);
-                int hdRequired = GetDisplayWidth(RequiredHeader);
-                int hdType = GetDisplayWidth(TypeNameHeader);
-                int hdDesc = GetDisplayWidth(DescriptionHeader);
-                int hdDefault = GetDisplayWidth(DefaultValueHeader);
-
-                nameWidth = Math.Max(hdName, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Name)) : 0);
-                valueWidth = Math.Max(hdValue, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Value)) : 0);
-                requiredWidth = Math.Max(hdRequired, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Required)) : 0);
-                typeWidth = Math.Max(hdType, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.TypeName)) : 0);
-                descWidth = Math.Max(hdDesc, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.Description)) : 0);
-                defaultWidth = Math.Max(hdDefault, rows.Count > 0 ? rows.Max(r => GetDisplayWidth(r.DefaultValue)) : 0);
-
-                // 限制每列最大宽度，但不得小于表头显示宽度
-                int Limit(int width, int max) => Math.Min(width, max);
-                int nameMax = Math.Max(24, hdName);
-                int valueMax = Math.Max(30, hdValue);
-                int requiredMax = Math.Max(2, hdRequired);
-                int typeMax = Math.Max(18, hdType);
-                int descMax = Math.Max(40, hdDesc);
-                int defaultMax = Math.Max(20, hdDefault);
-
-                nameWidth = Limit(nameWidth, nameMax);
-                valueWidth = Limit(valueWidth, valueMax);
-                requiredWidth = Limit(requiredWidth, requiredMax);
-                typeWidth = Limit(typeWidth, typeMax);
-                descWidth = Limit(descWidth, descMax);
-                defaultWidth = Limit(defaultWidth, defaultMax);
-
-                // 记录各列最小宽度（不得压缩到小于表头显示宽度）
-                int minNameWidth = hdName;
-                int minValueWidth = hdValue;
-                int minRequiredWidth = hdRequired;
-                int minTypeWidth = hdType;
-                int minDescWidth = hdDesc;
-                int minDefaultWidth = hdDefault;
-
-                // 根据控制台宽度自适应整体表格宽度，确保整齐对齐
-                int columnsCount = 6;
-                int CalculateTotalWidth() => nameWidth + valueWidth + requiredWidth + typeWidth + descWidth + defaultWidth + (2 * columnsCount) + (columnsCount + 1);
-                int consoleWidth = 0;
-                try
-                {
-                    consoleWidth = Math.Max(60, Math.Min(Console.BufferWidth, Console.WindowWidth));
-                }
-                catch
-                {
-                    consoleWidth = DefaultConsoleWidth;
-                }
-
-                int maxTableWidth = Math.Max(60, consoleWidth - 1);
-                while (CalculateTotalWidth() > maxTableWidth)
-                {
-                    if (descWidth > minDescWidth)
-                    {
-                        descWidth--;
-                        continue;
-                    }
-
-
-                    if (valueWidth > minValueWidth)
-                    {
-                        valueWidth--;
-                        continue;
-                    }
-
-                    if (nameWidth > minNameWidth)
-                    {
-                        nameWidth--;
-                        continue;
-                    }
-
-                    if (typeWidth > minTypeWidth)
-                    {
-                        typeWidth--;
-                        continue;
-                    }
-
-                    if (defaultWidth > minDefaultWidth)
-                    {
-                        defaultWidth--;
-                        continue;
-                    }
-
-                    // 已无法继续压缩而不破坏表头完整展示，退出
-                    break;
-                }
-
-                string BuildBorder(char left, char sep, char right, char fill)
-                {
-                    // 使用 string.Create 优化：单次分配创建边框字符串
-                    // Use string.Create for optimization: create border string with single allocation
-                    int totalLength = 1 + (nameWidth + 2) + 1 + (valueWidth + 2) + 1 + (requiredWidth + 2) + 1 + (typeWidth + 2) + 1 + (descWidth + 2) + 1 + (defaultWidth + 2) + 1;
-                    return string.Create(totalLength, (left, sep, right, fill, nameWidth, valueWidth, requiredWidth, typeWidth, descWidth, defaultWidth), static (span, state) =>
-                    {
-                        int pos = 0;
-                        var (l, s, r, f, nw, vw, rw, tw, dw, dfw) = state;
-
-                        span[pos++] = l;
-                        span.Slice(pos, nw + 2).Fill(f);
-                        pos += nw + 2;
-                        span[pos++] = s;
-                        span.Slice(pos, vw + 2).Fill(f);
-                        pos += vw + 2;
-                        span[pos++] = s;
-                        span.Slice(pos, rw + 2).Fill(f);
-                        pos += rw + 2;
-                        span[pos++] = s;
-                        span.Slice(pos, tw + 2).Fill(f);
-                        pos += tw + 2;
-                        span[pos++] = s;
-                        span.Slice(pos, dw + 2).Fill(f);
-                        pos += dw + 2;
-                        span[pos++] = s;
-                        span.Slice(pos, dfw + 2).Fill(f);
-                        pos += dfw + 2;
-                        span[pos] = r;
-                    });
-                }
-
-
-                // 打印表头
-                Console.WriteLine(BuildBorder('┌', '┬', '┐', '─'));
-                Console.WriteLine($"│ {TruncPadDisplay(OptionHeader, nameWidth)} │ {TruncPadDisplay(ValueHeader, valueWidth)} │ {CenterPadDisplay(RequiredHeader, requiredWidth)} │ {TruncPadDisplay(TypeNameHeader, typeWidth)} │ {TruncPadDisplay(DescriptionHeader, descWidth)} │ {TruncPadDisplay(DefaultValueHeader, defaultWidth)} │");
-                Console.WriteLine(BuildBorder('├', '┼', '┤', '─'));
-
-                // 打印数据行
-                foreach (var row in rows)
-                {
-                    var nameLines = WrapToDisplayLines(row.Name, nameWidth);
-                    var valueLines = WrapToDisplayLines(row.Value, valueWidth);
-                    var reqText = CenterPadDisplay(row.Required, requiredWidth);
-                    var typeLines = WrapToDisplayLines(row.TypeName, typeWidth);
-                    var descLines = WrapToDisplayLines(row.Description, descWidth);
-                    var defLines = WrapToDisplayLines(row.DefaultValue, defaultWidth);
-
-                    int lineCount = new[]
-                    {
-                        nameLines.Count,
-                        valueLines.Count,
-                        1,
-                        typeLines.Count,
-                        descLines.Count,
-                        defLines.Count
-                    }.Max();
-
-                    for (int i = 0; i < lineCount; i++)
-                    {
-                        string nameLine = i < nameLines.Count ? nameLines[i] : new string(' ', nameWidth);
-                        string valueLine = i < valueLines.Count ? valueLines[i] : new string(' ', valueWidth);
-                        string reqLine = i == 0 ? reqText : new string(' ', requiredWidth);
-                        string typeLine = i < typeLines.Count ? typeLines[i] : new string(' ', typeWidth);
-                        string descLine = i < descLines.Count ? descLines[i] : new string(' ', descWidth);
-                        string defLine = i < defLines.Count ? defLines[i] : new string(' ', defaultWidth);
-
-                        Console.WriteLine($"│ {nameLine} │ {valueLine} │ {reqLine} │ {typeLine} │ {descLine} │ {defLine} │");
-                    }
-                }
-
-                // 底部边框
-                Console.WriteLine(BuildBorder('└', '┴', '┘', '─'));
-
-                Console.WriteLine();
+                var (optionInfos, maxNameWidth) = CollectOptionInfos<T>();
+                var layout = BuildTableLayout(options, optionInfos, maxNameWidth);
+                ApplyDisplayWidths(layout);
+                FitLayoutToConsole(layout);
+                PrintTable(layout);
             }
             catch (Exception ex)
             {
@@ -308,6 +88,303 @@ namespace GameFrameX.Foundation.Options
             }
 
             Console.WriteLine();
+        }
+
+        /// <summary>
+        /// 使用反射收集选项类型的属性元数据，并计算最长显示名宽度（含 2 字符缓冲）。
+        /// </summary>
+        private static (List<(PropertyInfo Property, string DisplayName, Attributes.OptionAttribute OptionAttribute)> Infos, int MaxNameWidth) CollectOptionInfos<T>()
+        {
+            // 使用反射获取所有属性
+            var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            var optionInfos = new List<(PropertyInfo Property, string DisplayName, Attributes.OptionAttribute OptionAttribute)>();
+            int maxWidth = 0;
+
+            foreach (var property in properties.OrderBy(p => p.Name))
+            {
+                var attributes = property.GetCustomAttributes(true);
+                var optionAttribute = attributes.OfType<Attributes.OptionAttribute>().FirstOrDefault();
+
+                string displayName;
+                if (optionAttribute != null)
+                {
+                    var longName = !string.IsNullOrEmpty(optionAttribute.LongName) ? optionAttribute.LongName : property.Name.ToLower();
+                    displayName = $"--{longName}";
+                }
+                else
+                {
+                    displayName = property.Name;
+                }
+
+                maxWidth = Math.Max(maxWidth, displayName.Length);
+                optionInfos.Add((property, displayName, optionAttribute));
+            }
+
+            // 添加2个字符的缓冲空间
+            maxWidth += 2;
+            return (optionInfos, maxWidth);
+        }
+
+        /// <summary>
+        /// 构建表格数据行并初始化各列字符宽度初值。
+        /// </summary>
+        private static TableLayout BuildTableLayout<T>(T options, IReadOnlyList<(PropertyInfo Property, string DisplayName, Attributes.OptionAttribute OptionAttribute)> optionInfos, int maxNameWidth)
+        {
+            var layout = new TableLayout
+            {
+                NameWidth = Math.Max(OptionHeader.Length, maxNameWidth),
+                ValueWidth = ValueHeader.Length,
+                RequiredWidth = RequiredHeader.Length,
+                TypeWidth = TypeNameHeader.Length,
+                DescWidth = DescriptionHeader.Length,
+                DefaultWidth = DefaultValueHeader.Length
+            };
+
+            foreach (var (property, displayName, optionAttribute) in optionInfos)
+            {
+                var row = BuildRow(options, property, displayName, optionAttribute);
+                layout.NameWidth = Math.Max(layout.NameWidth, row.Name.Length);
+                layout.ValueWidth = Math.Max(layout.ValueWidth, row.Value.Length);
+                layout.RequiredWidth = Math.Max(layout.RequiredWidth, row.Required.Length);
+                layout.TypeWidth = Math.Max(layout.TypeWidth, row.TypeName.Length);
+                layout.DescWidth = Math.Max(layout.DescWidth, row.Description.Length);
+                layout.DefaultWidth = Math.Max(layout.DefaultWidth, row.DefaultValue.Length);
+                layout.Rows.Add(row);
+            }
+
+            return layout;
+        }
+
+        /// <summary>
+        /// 格式化单个属性对应的表格行字段值。
+        /// </summary>
+        private static (string Name, string Value, string Required, string TypeName, string Description, string DefaultValue) BuildRow<T>(T options, PropertyInfo property, string displayName, Attributes.OptionAttribute optionAttribute)
+        {
+            var value = property.GetValue(options);
+            var isSensitive = optionAttribute?.Sensitive == true;
+            var displayValue = FormatPropertyValue(value, isSensitive) ?? string.Empty;
+            var typeName = GetFriendlyTypeName(property.PropertyType) ?? string.Empty;
+            var required = optionAttribute != null ? (optionAttribute.Required ? RequiredYesLabel : RequiredNoLabel) : string.Empty;
+            var description = optionAttribute != null ? (optionAttribute.Description ?? NoDescriptionLabel) : NoOptionAttributeLabel;
+            var defaultVal = optionAttribute?.DefaultValue == null ? string.Empty : FormatPropertyValue(optionAttribute.DefaultValue, isSensitive);
+
+            return (displayName, displayValue, required, typeName, description, defaultVal);
+        }
+
+        /// <summary>
+        /// 重新基于“显示宽度”计算各列宽度（中文字符按双列宽），并施加列宽上限。
+        /// </summary>
+        private static void ApplyDisplayWidths(TableLayout layout)
+        {
+            int hdName = GetDisplayWidth(OptionHeader);
+            int hdValue = GetDisplayWidth(ValueHeader);
+            int hdRequired = GetDisplayWidth(RequiredHeader);
+            int hdType = GetDisplayWidth(TypeNameHeader);
+            int hdDesc = GetDisplayWidth(DescriptionHeader);
+            int hdDefault = GetDisplayWidth(DefaultValueHeader);
+
+            layout.NameWidth = Math.Max(hdName, layout.Rows.Count > 0 ? layout.Rows.Max(r => GetDisplayWidth(r.Name)) : 0);
+            layout.ValueWidth = Math.Max(hdValue, layout.Rows.Count > 0 ? layout.Rows.Max(r => GetDisplayWidth(r.Value)) : 0);
+            layout.RequiredWidth = Math.Max(hdRequired, layout.Rows.Count > 0 ? layout.Rows.Max(r => GetDisplayWidth(r.Required)) : 0);
+            layout.TypeWidth = Math.Max(hdType, layout.Rows.Count > 0 ? layout.Rows.Max(r => GetDisplayWidth(r.TypeName)) : 0);
+            layout.DescWidth = Math.Max(hdDesc, layout.Rows.Count > 0 ? layout.Rows.Max(r => GetDisplayWidth(r.Description)) : 0);
+            layout.DefaultWidth = Math.Max(hdDefault, layout.Rows.Count > 0 ? layout.Rows.Max(r => GetDisplayWidth(r.DefaultValue)) : 0);
+
+            // 限制每列最大宽度，但不得小于表头显示宽度
+            layout.NameWidth = Math.Min(layout.NameWidth, Math.Max(24, hdName));
+            layout.ValueWidth = Math.Min(layout.ValueWidth, Math.Max(30, hdValue));
+            layout.RequiredWidth = Math.Min(layout.RequiredWidth, Math.Max(2, hdRequired));
+            layout.TypeWidth = Math.Min(layout.TypeWidth, Math.Max(18, hdType));
+            layout.DescWidth = Math.Min(layout.DescWidth, Math.Max(40, hdDesc));
+            layout.DefaultWidth = Math.Min(layout.DefaultWidth, Math.Max(20, hdDefault));
+        }
+
+        /// <summary>
+        /// 根据控制台宽度自适应整体表格宽度，按优先级逐列收缩直到塞入或全部触底。
+        /// </summary>
+        private static void FitLayoutToConsole(TableLayout layout)
+        {
+            int consoleWidth = GetConsoleWidth();
+            int maxTableWidth = Math.Max(60, consoleWidth - 1);
+            int descFloor = GetDisplayWidth(DescriptionHeader);
+            int valueFloor = GetDisplayWidth(ValueHeader);
+            int nameFloor = GetDisplayWidth(OptionHeader);
+            int typeFloor = GetDisplayWidth(TypeNameHeader);
+            int defaultFloor = GetDisplayWidth(DefaultValueHeader);
+
+            while (layout.TotalWidth > maxTableWidth)
+            {
+                if (!TryShrinkOneColumn(layout, descFloor, valueFloor, nameFloor, typeFloor, defaultFloor))
+                {
+                    // 已无法继续压缩而不破坏表头完整展示，退出
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 读取当前控制台宽度，异常时回退默认宽度。
+        /// </summary>
+        private static int GetConsoleWidth()
+        {
+            try
+            {
+                return Math.Max(60, Math.Min(Console.BufferWidth, Console.WindowWidth));
+            }
+            catch
+            {
+                return DefaultConsoleWidth;
+            }
+        }
+
+        /// <summary>
+        /// 按 desc → value → name → type → default 优先级尝试收缩一列；成功返回 true，全部触底返回 false。
+        /// </summary>
+        private static bool TryShrinkOneColumn(TableLayout layout, int descFloor, int valueFloor, int nameFloor, int typeFloor, int defaultFloor)
+        {
+            if (layout.DescWidth > descFloor)
+            {
+                layout.DescWidth--;
+                return true;
+            }
+
+            if (layout.ValueWidth > valueFloor)
+            {
+                layout.ValueWidth--;
+                return true;
+            }
+
+            if (layout.NameWidth > nameFloor)
+            {
+                layout.NameWidth--;
+                return true;
+            }
+
+            if (layout.TypeWidth > typeFloor)
+            {
+                layout.TypeWidth--;
+                return true;
+            }
+
+            if (layout.DefaultWidth > defaultFloor)
+            {
+                layout.DefaultWidth--;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 按计算好的列宽打印表头、数据行与底部边框。
+        /// </summary>
+        private static void PrintTable(TableLayout layout)
+        {
+            // 打印表头
+            Console.WriteLine(BuildBorder('┌', '┬', '┐', '─', layout));
+            Console.WriteLine($"│ {TruncPadDisplay(OptionHeader, layout.NameWidth)} │ {TruncPadDisplay(ValueHeader, layout.ValueWidth)} │ {CenterPadDisplay(RequiredHeader, layout.RequiredWidth)} │ {TruncPadDisplay(TypeNameHeader, layout.TypeWidth)} │ {TruncPadDisplay(DescriptionHeader, layout.DescWidth)} │ {TruncPadDisplay(DefaultValueHeader, layout.DefaultWidth)} │");
+            Console.WriteLine(BuildBorder('├', '┼', '┤', '─', layout));
+
+            // 打印数据行
+            foreach (var row in layout.Rows)
+            {
+                var nameLines = WrapToDisplayLines(row.Name, layout.NameWidth);
+                var valueLines = WrapToDisplayLines(row.Value, layout.ValueWidth);
+                var reqText = CenterPadDisplay(row.Required, layout.RequiredWidth);
+                var typeLines = WrapToDisplayLines(row.TypeName, layout.TypeWidth);
+                var descLines = WrapToDisplayLines(row.Description, layout.DescWidth);
+                var defLines = WrapToDisplayLines(row.DefaultValue, layout.DefaultWidth);
+
+                int lineCount = new[]
+                {
+                    nameLines.Count,
+                    valueLines.Count,
+                    1,
+                    typeLines.Count,
+                    descLines.Count,
+                    defLines.Count
+                }.Max();
+
+                for (int i = 0; i < lineCount; i++)
+                {
+                    string nameLine = LineOrBlank(nameLines, i, layout.NameWidth);
+                    string valueLine = LineOrBlank(valueLines, i, layout.ValueWidth);
+                    string reqLine = i == 0 ? reqText : new string(' ', layout.RequiredWidth);
+                    string typeLine = LineOrBlank(typeLines, i, layout.TypeWidth);
+                    string descLine = LineOrBlank(descLines, i, layout.DescWidth);
+                    string defLine = LineOrBlank(defLines, i, layout.DefaultWidth);
+
+                    Console.WriteLine($"│ {nameLine} │ {valueLine} │ {reqLine} │ {typeLine} │ {descLine} │ {defLine} │");
+                }
+            }
+
+            // 底部边框
+            Console.WriteLine(BuildBorder('└', '┴', '┘', '─', layout));
+
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// 返回多行折叠后的第 index 行，越界则返回指定宽度的空格填充。
+        /// </summary>
+        private static string LineOrBlank(List<string> lines, int index, int width)
+        {
+            return index < lines.Count ? lines[index] : new string(' ', width);
+        }
+
+        /// <summary>
+        /// 使用 string.Create 优化：单次分配创建边框字符串。
+        /// Use string.Create for optimization: create border string with single allocation
+        /// </summary>
+        private static string BuildBorder(char left, char sep, char right, char fill, TableLayout layout)
+        {
+            int totalLength = 1 + (layout.NameWidth + 2) + 1 + (layout.ValueWidth + 2) + 1 + (layout.RequiredWidth + 2) + 1 + (layout.TypeWidth + 2) + 1 + (layout.DescWidth + 2) + 1 + (layout.DefaultWidth + 2) + 1;
+            return string.Create(totalLength, (left, sep, right, fill, layout.NameWidth, layout.ValueWidth, layout.RequiredWidth, layout.TypeWidth, layout.DescWidth, layout.DefaultWidth), static (span, state) =>
+            {
+                int pos = 0;
+                var (l, s, r, f, nw, vw, rw, tw, dw, dfw) = state;
+
+                span[pos++] = l;
+                span.Slice(pos, nw + 2).Fill(f);
+                pos += nw + 2;
+                span[pos++] = s;
+                span.Slice(pos, vw + 2).Fill(f);
+                pos += vw + 2;
+                span[pos++] = s;
+                span.Slice(pos, rw + 2).Fill(f);
+                pos += rw + 2;
+                span[pos++] = s;
+                span.Slice(pos, tw + 2).Fill(f);
+                pos += tw + 2;
+                span[pos++] = s;
+                span.Slice(pos, dw + 2).Fill(f);
+                pos += dw + 2;
+                span[pos++] = s;
+                span.Slice(pos, dfw + 2).Fill(f);
+                pos += dfw + 2;
+                span[pos] = r;
+            });
+        }
+
+        /// <summary>
+        /// 解析结果表格的排版布局：6 列显示宽度 + 数据行集合，在排版各阶段逐步修正 / 收缩。
+        /// </summary>
+        private sealed class TableLayout
+        {
+            public List<(string Name, string Value, string Required, string TypeName, string Description, string DefaultValue)> Rows
+                = new List<(string Name, string Value, string Required, string TypeName, string Description, string DefaultValue)>();
+
+            public int NameWidth;
+            public int ValueWidth;
+            public int RequiredWidth;
+            public int TypeWidth;
+            public int DescWidth;
+            public int DefaultWidth;
+
+            /// <summary>
+            /// 表格整体渲染宽度：6 列宽度之和 + 列内边距（每列 2）+ 列分隔符（列数 + 1）。
+            /// </summary>
+            public int TotalWidth => NameWidth + ValueWidth + RequiredWidth + TypeWidth + DescWidth + DefaultWidth + (2 * TableColumnsCount) + (TableColumnsCount + 1);
         }
 
         static string CenterPadDisplay(string s, int width)
