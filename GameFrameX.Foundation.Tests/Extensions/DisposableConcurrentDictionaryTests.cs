@@ -192,8 +192,12 @@ public class DisposableConcurrentDictionaryTests
         // Arrange
         var dictionary = new DisposableConcurrentDictionary<string, TestDisposable>();
 
-        // Act & Assert
-        dictionary.Dispose(); // Should not throw
+        // Act
+        var exception = Record.Exception(() => dictionary.Dispose());
+
+        // Assert
+        Assert.Null(exception); // Should not throw
+        Assert.True(dictionary.IsDisposed);
     }
 
     [Fact]
