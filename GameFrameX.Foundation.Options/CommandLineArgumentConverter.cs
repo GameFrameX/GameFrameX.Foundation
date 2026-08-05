@@ -145,7 +145,6 @@ public sealed class CommandLineArgumentConverter
 
             var result = new List<string>();
 
-            // 处理命令行参数
             for (int i = 0; i < args.Length; i++)
             {
                 var arg = args[i];
@@ -159,83 +158,22 @@ public sealed class CommandLineArgumentConverter
                 // 处理键值对格式 (--key=value)
                 if (arg.Contains("="))
                 {
-                    var parts = arg.Split(new[] { '=' }, 2);
-                    var key = parts[0];
-                    // 如果值部分为空（如 --key=），则使用空字符串
-                    var value = parts.Length > 1 ? parts[1] : string.Empty;
-
-                    // 根据EnsurePrefixedKeys设置处理键
-                    if (!key.StartsWith("-") && EnsurePrefixedKeys)
-                    {
-                        key = "--" + key;
-                    }
-
-                    result.Add(key + "=" + value);
+                    result.Add(ApplyKeyValuePair(arg));
                     continue;
                 }
 
                 // 如果是空字符串，需要特殊处理
                 if (string.IsNullOrEmpty(arg))
                 {
-                    // 如果前一个参数是键，这个空字符串就是它的值
-                    if (result.Count > 0 && result[result.Count - 1].StartsWith("-") && !result[result.Count - 1].Contains("="))
-                    {
-                        result.Add(""); // 添加空字符串作为值
-                    }
-
+                    AppendEmptyStringAsValueIfPrecededByKey(result);
                     continue;
                 }
 
                 // 根据EnsurePrefixedKeys设置处理参数键
-                string argKey;
-                if (!IsOptionToken(arg))
-                {
-                    if (EnsurePrefixedKeys)
-                    {
-                        argKey = "--" + arg;
-                    }
-                    else
-                    {
-                        argKey = arg;
-                    }
-                }
-                else
-                {
-                    argKey = arg;
-                }
+                result.Add(NormalizeKey(arg));
 
-                result.Add(argKey);
-
-                // 检查下一个参数
-                if (i < args.Length - 1)
-                {
-                    var nextArg = args[i + 1];
-
-                    // 如果下一个参数是null，则当前参数被视为布尔标志（没有值）
-                    if (nextArg == null)
-                    {
-                        i++; // 跳过null参数
-                        // 不添加值，当前参数将被视为布尔标志
-                        continue;
-                    }
-
-                    // 如果下一个参数不是选项（不以-开头），则作为当前参数的值
-                    if (!IsOptionToken(nextArg))
-                    {
-                        // 对于布尔标志格式，检查是否为布尔值
-                        if (BoolFormat == BoolArgumentFormat.Flag && BooleanParser.IsBooleanValue(nextArg))
-                        {
-                            // 跳过布尔值，因为标志格式不需要显式值
-                            i++;
-                        }
-                        else
-                        {
-                            // 添加为普通值（包括空字符串）
-                            result.Add(nextArg);
-                            i++;
-                        }
-                    }
-                }
+                // 检查并消耗下一个参数作为值
+                i = AttachValueIfPresent(args, i, result);
             }
 
             return result;
@@ -244,6 +182,123 @@ public sealed class CommandLineArgumentConverter
         {
             throw new ArgumentException($"处理命令行参数时发生错误 (An error occurred while processing command-line arguments): {ex.Message}", ex);
         }
+    }
+
+    /// <summary>
+    /// 处理 \`--key=value\` 形式的参数，自动按 <see cref="EnsurePrefixedKeys"/> 修复键前缀。
+    /// </summary>
+    /// <remarks>
+    /// Handles a \`--key=value\` token: splits at the first <c>=</c>, keeps the
+    /// value part intact (empty when missing, e.g. <c>--key=</c>), and prefixes
+    /// the key with <c>--</c> when <see cref="EnsurePrefixedKeys"/> is true
+    /// and the key has no <c>-</c> prefix yet.
+    /// </remarks>
+    /// <param name="arg">原始键值对参数 / Raw key-value argument</param>
+    /// <returns>规范化后的键值对字符串 / Normalized key-value string</returns>
+    private string ApplyKeyValuePair(string arg)
+    {
+        var parts = arg.Split(new[] { '=' }, 2);
+        var key = parts[0];
+        // 如果值部分为空（如 --key=），则使用空字符串
+        var value = parts.Length > 1 ? parts[1] : string.Empty;
+
+        // 根据EnsurePrefixedKeys设置处理键
+        if (!key.StartsWith("-") && EnsurePrefixedKeys)
+        {
+            key = "--" + key;
+        }
+
+        return key + "=" + value;
+    }
+
+    /// <summary>
+    /// 若当前空字符串前一项是未取值的键（<c>--xxx</c> 且不含 <c>=</c>），则把空串作为它的值追加。
+    /// </summary>
+    /// <remarks>
+    /// When the current token is an empty string and the previously emitted
+    /// result is a bare option token (starts with <c>-</c> and contains no
+    /// <c>=</c>), appends the empty string as that option's value.
+    /// </remarks>
+    /// <param name="result">累积结果列表 / Accumulated result list</param>
+    private static void AppendEmptyStringAsValueIfPrecededByKey(List<string> result)
+    {
+        if (result.Count == 0)
+        {
+            return;
+        }
+
+        var last = result[result.Count - 1];
+        if (last.StartsWith("-") && !last.Contains("="))
+        {
+            result.Add(""); // 添加空字符串作为值
+        }
+    }
+
+    /// <summary>
+    /// 根据 <see cref="IsOptionToken"/> 与 <see cref="EnsurePrefixedKeys"/> 生成统一的键字符串。
+    /// </summary>
+    /// <remarks>
+    /// Produces the canonical form of an option key: tokens already starting
+    /// with <c>-</c> are returned as-is; non-option tokens get a <c>--</c>
+    /// prefix only when <see cref="EnsurePrefixedKeys"/> is true.
+    /// </remarks>
+    /// <param name="arg">原始参数 / Raw argument</param>
+    /// <returns>规范化后的键 / Normalized key</returns>
+    private string NormalizeKey(string arg)
+    {
+        if (IsOptionToken(arg))
+        {
+            return arg;
+        }
+
+        return EnsurePrefixedKeys ? "--" + arg : arg;
+    }
+
+    /// <summary>
+    /// 若下一个参数存在且适合作为当前键的值，则消耗它并返回新的索引；否则返回原索引。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to consume <c>args[currentIndex + 1]</c> as the value of the
+    /// current key. The next token is treated as a value when it is non-null,
+    /// not another option token, and (under <see cref="BoolArgumentFormat.Flag"/>)
+    /// not a recognized boolean value — in which case the boolean is skipped
+    /// instead of being appended. Returns the new <c>currentIndex</c> so the
+    /// caller's <c>for</c> increment lands past the consumed token.
+    /// </remarks>
+    /// <param name="args">完整参数数组 / Full argument array</param>
+    /// <param name="currentIndex">当前索引 / Current index</param>
+    /// <param name="result">累积结果列表 / Accumulated result list</param>
+    /// <returns>消耗下一参数后的索引 / Index after possibly consuming the next argument</returns>
+    private int AttachValueIfPresent(string[] args, int currentIndex, List<string> result)
+    {
+        if (currentIndex >= args.Length - 1)
+        {
+            return currentIndex;
+        }
+
+        var nextArg = args[currentIndex + 1];
+
+        // 如果下一个参数是null，则当前参数被视为布尔标志（没有值）
+        if (nextArg == null)
+        {
+            return currentIndex + 1;
+        }
+
+        // 如果下一个参数是选项（以-开头），不作为值消耗
+        if (IsOptionToken(nextArg))
+        {
+            return currentIndex;
+        }
+
+        // 对于布尔标志格式，跳过被识别为布尔字面量的值
+        if (BoolFormat == BoolArgumentFormat.Flag && BooleanParser.IsBooleanValue(nextArg))
+        {
+            return currentIndex + 1;
+        }
+
+        // 添加为普通值（包括空字符串）
+        result.Add(nextArg);
+        return currentIndex + 1;
     }
 
     private static bool IsOptionToken(string value)
