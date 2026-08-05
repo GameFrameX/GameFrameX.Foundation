@@ -113,6 +113,7 @@ public static class Sha1Helper
     /// <summary>
     /// 异步计算流的 SHA-1 哈希值 / Asynchronously computes the SHA-1 hash of a stream.
     /// </summary>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "SHA-1 is intentionally used here for non-cryptographic checksum / fingerprint / cache-key scenarios; for security-sensitive use cases call Sha256Helper instead.")]
     public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
