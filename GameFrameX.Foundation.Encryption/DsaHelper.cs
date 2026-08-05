@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
@@ -144,6 +145,7 @@ public sealed class DsaHelper : IDisposable
     /// <param name="privateKey">XML 格式的私钥字符串 / XML format private key string</param>
     /// <returns>签名后的字节数组；如果私钥格式无效则返回 null / Signed byte array; returns null if private key format is invalid</returns>
     /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出 / Thrown when any parameter is null</exception>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "DSA signing explicitly uses HashAlgorithmName.SHA256 (a strong hash); S4790 flags DSA.Create() conservatively as DSA's legacy default digest is SHA-1, but this method never uses a weak hash.")]
     public static byte[] SignData(byte[] dataToSign, string privateKey)
     {
         // W-11 修复：参数校验移出 try 块，不被 catch 吞掉
