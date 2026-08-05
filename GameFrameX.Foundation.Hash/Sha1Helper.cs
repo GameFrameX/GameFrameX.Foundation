@@ -32,6 +32,7 @@
 // ==========================================================================================
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -88,6 +89,7 @@ public static class Sha1Helper
     /// <param name="buffer">要计算哈希值的字节数组，不能为null / The byte array to compute the hash for, cannot be null</param>
     /// <returns>40个字符的十六进制字符串形式的哈希值。如果输入为空数组则返回空数组的哈希值 / A 40-character hexadecimal string hash value. Returns the hash of an empty array if buffer is empty</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="buffer"/> 为 null 时抛出 / Thrown when <paramref name="buffer"/> is null</exception>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "SHA-1 is intentionally used here for non-cryptographic checksum / fingerprint / cache-key scenarios; for security-sensitive use cases call Sha256Helper instead.")]
     public static string ComputeHash(byte[] buffer)
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
@@ -100,6 +102,7 @@ public static class Sha1Helper
     /// <summary>
     /// 计算流的 SHA-1 哈希值 / Computes the SHA-1 hash of a stream.
     /// </summary>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "SHA-1 is intentionally used here for non-cryptographic checksum / fingerprint / cache-key scenarios; for security-sensitive use cases call Sha256Helper instead.")]
     public static string ComputeHash(Stream input)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
@@ -110,6 +113,7 @@ public static class Sha1Helper
     /// <summary>
     /// 异步计算流的 SHA-1 哈希值 / Asynchronously computes the SHA-1 hash of a stream.
     /// </summary>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "SHA-1 is intentionally used here for non-cryptographic checksum / fingerprint / cache-key scenarios; for security-sensitive use cases call Sha256Helper instead.")]
     public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));

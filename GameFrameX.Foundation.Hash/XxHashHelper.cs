@@ -32,7 +32,6 @@
 // ==========================================================================================
 
 using System;
-using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Standart.Hash.xxHash;
@@ -258,222 +257,6 @@ public static class XxHashHelper
     private static class InternalXxHashHelper
     {
         /// <summary>
-        /// 计算32位xxHash值的核心算法。
-        /// 通过 <see cref="ReadOnlySpan{T}"/> 与 <see cref="BinaryPrimitives"/> 安全地读取输入数据。
-        /// </summary>
-        /// <remarks>
-        /// Core algorithm for computing 32-bit xxHash values.
-        /// Reads input data safely via <see cref="ReadOnlySpan{T}"/> and <see cref="BinaryPrimitives"/>.
-        /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static uint Hash32Core(ReadOnlySpan<byte> input, uint seed = 0)
-        {
-            unchecked
-            {
-                const uint prime1 = 2654435761u;
-                const uint prime2 = 2246822519u;
-                const uint prime3 = 3266489917u;
-                const uint prime4 = 0668265263u;
-                const uint prime5 = 0374761393u;
-
-                var hash = seed + prime5;
-                var offset = 0;
-
-                if (input.Length >= 16)
-                {
-                    var val0 = seed + prime1 + prime2;
-                    var val1 = seed + prime2;
-                    var val2 = seed + 0;
-                    var val3 = seed - prime1;
-
-                    var count = input.Length >> 4;
-                    for (var i = 0; i < count; i++)
-                    {
-                        var pos0 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 0, 4));
-                        var pos1 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 4, 4));
-                        var pos2 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 8, 4));
-                        var pos3 = BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset + 12, 4));
-
-                        val0 += pos0 * prime2;
-                        val0 = (val0 << 13) | (val0 >> (32 - 13));
-                        val0 *= prime1;
-
-                        val1 += pos1 * prime2;
-                        val1 = (val1 << 13) | (val1 >> (32 - 13));
-                        val1 *= prime1;
-
-                        val2 += pos2 * prime2;
-                        val2 = (val2 << 13) | (val2 >> (32 - 13));
-                        val2 *= prime1;
-
-                        val3 += pos3 * prime2;
-                        val3 = (val3 << 13) | (val3 >> (32 - 13));
-                        val3 *= prime1;
-
-                        offset += 16;
-                    }
-
-                    hash = ((val0 << 01) | (val0 >> (32 - 01))) +
-                           ((val1 << 07) | (val1 >> (32 - 07))) +
-                           ((val2 << 12) | (val2 >> (32 - 12))) +
-                           ((val3 << 18) | (val3 >> (32 - 18)));
-                }
-
-                hash += (uint)input.Length;
-
-                var length = input.Length & 15;
-                while (length >= 4)
-                {
-                    hash += BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset, 4)) * prime3;
-                    hash = ((hash << 17) | (hash >> (32 - 17))) * prime4;
-                    offset += 4;
-                    length -= 4;
-                }
-
-                while (length > 0)
-                {
-                    hash += (uint)input[offset] * prime5;
-                    hash = ((hash << 11) | (hash >> (32 - 11))) * prime1;
-                    ++offset;
-                    --length;
-                }
-
-                hash ^= hash >> 15;
-                hash *= prime2;
-                hash ^= hash >> 13;
-                hash *= prime3;
-                hash ^= hash >> 16;
-
-                return hash;
-            }
-        }
-
-        /// <summary>
-        /// 计算64位xxHash值的核心算法。
-        /// 通过 <see cref="ReadOnlySpan{T}"/> 与 <see cref="BinaryPrimitives"/> 安全地读取输入数据。
-        /// </summary>
-        /// <remarks>
-        /// Core algorithm for computing 64-bit xxHash values.
-        /// Reads input data safely via <see cref="ReadOnlySpan{T}"/> and <see cref="BinaryPrimitives"/>.
-        /// </remarks>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static ulong Hash64Core(ReadOnlySpan<byte> input, uint seed = 0)
-        {
-            unchecked
-            {
-                const ulong prime1 = 11400714785074694791ul;
-                const ulong prime2 = 14029467366897019727ul;
-                const ulong prime3 = 01609587929392839161ul;
-                const ulong prime4 = 09650029242287828579ul;
-                const ulong prime5 = 02870177450012600261ul;
-
-                var hash = seed + prime5;
-                var offset = 0;
-
-                if (input.Length >= 32)
-                {
-                    var val0 = seed + prime1 + prime2;
-                    var val1 = seed + prime2;
-                    ulong val2 = seed + 0;
-                    var val3 = seed - prime1;
-
-                    var count = input.Length >> 5;
-                    for (var i = 0; i < count; i++)
-                    {
-                        var pos0 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 0, 8));
-                        var pos1 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 8, 8));
-                        var pos2 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 16, 8));
-                        var pos3 = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset + 24, 8));
-
-                        val0 += pos0 * prime2;
-                        val0 = (val0 << 31) | (val0 >> (64 - 31));
-                        val0 *= prime1;
-
-                        val1 += pos1 * prime2;
-                        val1 = (val1 << 31) | (val1 >> (64 - 31));
-                        val1 *= prime1;
-
-                        val2 += pos2 * prime2;
-                        val2 = (val2 << 31) | (val2 >> (64 - 31));
-                        val2 *= prime1;
-
-                        val3 += pos3 * prime2;
-                        val3 = (val3 << 31) | (val3 >> (64 - 31));
-                        val3 *= prime1;
-
-                        offset += 32;
-                    }
-
-                    hash = ((val0 << 01) | (val0 >> (64 - 01))) +
-                           ((val1 << 07) | (val1 >> (64 - 07))) +
-                           ((val2 << 12) | (val2 >> (64 - 12))) +
-                           ((val3 << 18) | (val3 >> (64 - 18)));
-
-                    val0 *= prime2;
-                    val0 = (val0 << 31) | (val0 >> (64 - 31));
-                    val0 *= prime1;
-                    hash ^= val0;
-                    hash = hash * prime1 + prime4;
-
-                    val1 *= prime2;
-                    val1 = (val1 << 31) | (val1 >> (64 - 31));
-                    val1 *= prime1;
-                    hash ^= val1;
-                    hash = hash * prime1 + prime4;
-
-                    val2 *= prime2;
-                    val2 = (val2 << 31) | (val2 >> (64 - 31));
-                    val2 *= prime1;
-                    hash ^= val2;
-                    hash = hash * prime1 + prime4;
-
-                    val3 *= prime2;
-                    val3 = (val3 << 31) | (val3 >> (64 - 31));
-                    val3 *= prime1;
-                    hash ^= val3;
-                    hash = hash * prime1 + prime4;
-                }
-
-                hash += (ulong)input.Length;
-
-                var length = input.Length & 31;
-                while (length >= 8)
-                {
-                    var lane = BinaryPrimitives.ReadUInt64LittleEndian(input.Slice(offset, 8)) * prime2;
-                    lane = ((lane << 31) | (lane >> (64 - 31))) * prime1;
-                    hash ^= lane;
-                    hash = ((hash << 27) | (hash >> (64 - 27))) * prime1 + prime4;
-                    offset += 8;
-                    length -= 8;
-                }
-
-                if (length >= 4)
-                {
-                    hash ^= BinaryPrimitives.ReadUInt32LittleEndian(input.Slice(offset, 4)) * prime1;
-                    hash = ((hash << 23) | (hash >> (64 - 23))) * prime2 + prime3;
-                    offset += 4;
-                    length -= 4;
-                }
-
-                while (length > 0)
-                {
-                    hash ^= (ulong)input[offset] * prime5;
-                    hash = ((hash << 11) | (hash >> (64 - 11))) * prime1;
-                    ++offset;
-                    --length;
-                }
-
-                hash ^= hash >> 33;
-                hash *= prime2;
-                hash ^= hash >> 29;
-                hash *= prime3;
-                hash ^= hash >> 32;
-
-                return hash;
-            }
-        }
-
-        /// <summary>
         /// 计算字节数组的32位哈希值。
         /// </summary>
         /// <remarks>
@@ -486,7 +269,7 @@ public static class XxHashHelper
         public static uint ComputeHash32(byte[] buffer)
         {
             ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-            return Hash32Core(buffer);
+            return xxHash32.ComputeHash(buffer, buffer.Length, 0u);
         }
 
         /// <summary>
@@ -546,7 +329,7 @@ public static class XxHashHelper
         public static ulong ComputeHash64(byte[] buffer)
         {
             ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
-            return Hash64Core(buffer);
+            return xxHash64.ComputeHash(buffer, buffer.Length, 0u);
         }
 
         /// <summary>
