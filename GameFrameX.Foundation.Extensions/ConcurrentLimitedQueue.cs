@@ -158,7 +158,20 @@ public class ConcurrentLimitedQueue<T> : IProducerConsumerCollection<T>, IReadOn
         set
         {
             ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(value, 0, nameof(value));
-            SetLimit(value);
+            var discardedItems = new List<T>();
+            lock (_syncRoot)
+            {
+                _limit = value;
+                while (_queue.Count > _limit && _queue.TryDequeue(out var discardedItem))
+                {
+                    discardedItems.Add(discardedItem);
+                }
+            }
+
+            foreach (var discardedItem in discardedItems)
+            {
+                NotifyDiscarded(new QueueDiscardedItem<T>(discardedItem, LimitedQueueDiscardReason.LimitReduced));
+            }
         }
     }
 
