@@ -162,50 +162,70 @@ public static class HttpClientJsonExtension
         while (true)
         {
             attempt++;
-            using var request = requestFactory();
-            AddHeaders(request, options);
-            options.OnRequest?.Invoke(new HttpClientRequestLogEntry(method, request.RequestUri, attempt));
+            var (value, shouldRetry) = await ExecuteAttemptAsync<TResponse>(
+                httpClient, method, options, requestFactory, attempt, allowRetry, effectiveToken);
+            if (shouldRetry)
+            {
+                continue;
+            }
 
-            try
-            {
-                using var response = await httpClient.SendAsync(request, effectiveToken);
-                options.OnResponse?.Invoke(new HttpClientResponseLogEntry(method, request.RequestUri, attempt, response.StatusCode));
+            return value;
+        }
+    }
 
-                if (allowRetry && attempt <= options.Retry.MaxRetries && ShouldRetryStatus(response.StatusCode, options.Retry))
-                {
-                    await DelayBeforeRetryAsync(method, request.RequestUri, attempt, response.StatusCode, null, options, effectiveToken);
-                    continue;
-                }
+    private static async Task<(TResponse? Value, bool ShouldRetry)> ExecuteAttemptAsync<TResponse>(
+        HttpClient httpClient,
+        HttpMethod method,
+        HttpClientRequestOptions options,
+        Func<HttpRequestMessage> requestFactory,
+        int attempt,
+        bool allowRetry,
+        CancellationToken effectiveToken)
+    {
+        using var request = requestFactory();
+        AddHeaders(request, options);
+        options.OnRequest?.Invoke(new HttpClientRequestLogEntry(method, request.RequestUri, attempt));
 
-                var responseText = await response.Content.ReadAsStringAsync(effectiveToken);
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw CreateStatusException(response.StatusCode, request.RequestUri, responseText);
-                }
+        try
+        {
+            using var response = await httpClient.SendAsync(request, effectiveToken);
+            options.OnResponse?.Invoke(new HttpClientResponseLogEntry(method, request.RequestUri, attempt, response.StatusCode));
 
-                return DeserializeResponse<TResponse>(responseText, request.RequestUri, options);
-            }
-            catch (OperationCanceledException) when (effectiveToken.IsCancellationRequested)
+            if (allowRetry && attempt <= options.Retry.MaxRetries && ShouldRetryStatus(response.StatusCode, options.Retry))
             {
-                throw;
+                await DelayBeforeRetryAsync(method, request.RequestUri, attempt, response.StatusCode, null, options, effectiveToken);
+                return (default, true);
             }
-            catch (HttpClientRequestException)
+
+            var responseText = await response.Content.ReadAsStringAsync(effectiveToken);
+            if (!response.IsSuccessStatusCode)
             {
-                throw;
+                throw CreateStatusException(response.StatusCode, request.RequestUri, responseText);
             }
-            catch (HttpRequestException exception) when (allowRetry && attempt <= options.Retry.MaxRetries)
-            {
-                await DelayBeforeRetryAsync(method, request.RequestUri, attempt, null, exception, options, effectiveToken);
-            }
-            catch (Exception exception) when (exception is HttpRequestException or JsonException)
-            {
-                throw new HttpClientRequestException(
-                    $"HTTP JSON request failed for {method} {request.RequestUri}.",
-                    null,
-                    request.RequestUri,
-                    null,
-                    exception);
-            }
+
+            return (DeserializeResponse<TResponse>(responseText, request.RequestUri, options), false);
+        }
+        catch (OperationCanceledException) when (effectiveToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (HttpClientRequestException)
+        {
+            throw;
+        }
+        catch (HttpRequestException exception) when (allowRetry && attempt <= options.Retry.MaxRetries)
+        {
+            await DelayBeforeRetryAsync(method, request.RequestUri, attempt, null, exception, options, effectiveToken);
+            return (default, true);
+        }
+        catch (Exception exception) when (exception is HttpRequestException or JsonException)
+        {
+            throw new HttpClientRequestException(
+                $"HTTP JSON request failed for {method} {request.RequestUri}.",
+                null,
+                request.RequestUri,
+                null,
+                exception);
         }
     }
 
