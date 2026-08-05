@@ -146,7 +146,7 @@ public static partial class StringExtensions
     /// Regex for matching Chinese characters.
     /// Matching range includes basic Chinese characters (0x4e00-0x9fa5), excluding rare characters, variant characters, and other extended Chinese characters.
     /// </remarks>
-    private static readonly Regex CnReg = new(@"[\u4e00-\u9fa5]");
+    private static readonly Regex CnReg = new(@"[\u4e00-\u9fa5]", RegexOptions.None, TimeSpan.FromSeconds(1));
 
     /// <summary>
     /// 计算字符串的显示宽度，汉字等宽字符算作 2 个单位宽度，其他字符算作 1 个单位宽度。
