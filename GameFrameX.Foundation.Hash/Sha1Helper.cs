@@ -133,6 +133,7 @@ public static class Sha1Helper
     /// <param name="filePath">要计算哈希值的文件的完整路径，不能为null或空字符串 / The full path of the file to compute the hash for, cannot be null or empty</param>
     /// <returns>40个字符的十六进制字符串形式的哈希值。如果文件不存在则返回空字符串 / A 40-character hexadecimal string hash value. Returns an empty string if the file does not exist</returns>
     /// <exception cref="ArgumentException">当 <paramref name="filePath"/> 为 null 或空字符串时抛出 / Thrown when <paramref name="filePath"/> is null or empty</exception>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "SHA-1 is intentionally used here for non-cryptographic checksum / fingerprint / cache-key scenarios; for security-sensitive use cases call Sha256Helper instead.")]
     public static string ComputeFileHash(string filePath)
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
