@@ -573,6 +573,25 @@ namespace GameFrameX.Foundation.Options
         }
 
         /// <summary>
+        /// 基本类型 → 友好类型名的映射表 / Mapping of primitive types to friendly type names.
+        /// </summary>
+        private static readonly Dictionary<Type, string> FriendlyTypeNames = new Dictionary<Type, string>
+        {
+            { typeof(string), nameof(String) },
+            { typeof(byte), nameof(Byte) },
+            { typeof(short), nameof(Int16) },
+            { typeof(ushort), nameof(Int16) },
+            { typeof(int), nameof(Int32) },
+            { typeof(uint), nameof(Int32) },
+            { typeof(bool), nameof(Boolean) },
+            { typeof(double), nameof(Double) },
+            { typeof(float), nameof(Single) },
+            { typeof(long), nameof(Int64) },
+            { typeof(ulong), nameof(Int64) },
+            { typeof(DateTime), nameof(DateTime) },
+        };
+
+        /// <summary>
         /// 获取友好的类型名称。
         /// </summary>
         /// <remarks>
@@ -582,49 +601,9 @@ namespace GameFrameX.Foundation.Options
         /// <returns>友好的类型名称 / Friendly type name</returns>
         private static string GetFriendlyTypeName(Type type)
         {
-            if (type == typeof(string))
+            if (FriendlyTypeNames.TryGetValue(type, out var friendlyName))
             {
-                return nameof(String);
-            }
-
-            if (type == typeof(byte))
-            {
-                return nameof(Byte);
-            }
-
-            if (type == typeof(short) || type == typeof(ushort))
-            {
-                return nameof(Int16);
-            }
-
-            if (type == typeof(int) || type == typeof(uint))
-            {
-                return nameof(Int32);
-            }
-
-            if (type == typeof(bool))
-            {
-                return nameof(Boolean);
-            }
-
-            if (type == typeof(double))
-            {
-                return nameof(Double);
-            }
-
-            if (type == typeof(float))
-            {
-                return nameof(Single);
-            }
-
-            if (type == typeof(long) || type == typeof(ulong))
-            {
-                return nameof(Int64);
-            }
-
-            if (type == typeof(DateTime))
-            {
-                return nameof(DateTime);
+                return friendlyName;
             }
 
             if (type.IsArray)
