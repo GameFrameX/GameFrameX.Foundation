@@ -13,8 +13,10 @@ public class OrmAttributeTests
         Assert.Equal("IsDeleted", attribute.DeletedField);
         Assert.Equal("DeletedTime", attribute.DeletedTimeField);
         Assert.Equal("DeletedBy", attribute.DeletedByField);
-        Assert.True((bool)attribute.DeletedValue);
-        Assert.False((bool)attribute.NotDeletedValue);
+        Assert.IsType<bool>(attribute.DeletedValue);
+        Assert.Equal(true, attribute.DeletedValue);
+        Assert.IsType<bool>(attribute.NotDeletedValue);
+        Assert.Equal(false, attribute.NotDeletedValue);
         Assert.True(attribute.AutoFilter);
     }
 
