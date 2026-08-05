@@ -283,14 +283,14 @@ public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceP
     /// 尝试从清单资源名解析出 <see cref="System.Resources.ResourceManager"/> 所需的基础名称。
     /// </summary>
     /// <remarks>
-    /// 支持以下命名约定（与历史实现完全等价）：
+    /// 支持以下命名约定：
     /// - [程序集名].[路径].Resources.resources（默认资源，倒数第二段为 "Resources"）
-    /// - [程序集名].[路径].Resources.[文化名].resources（文化资源，倒数第二段为形如 zh-CN 的文化名）
+    /// - [程序集名].[路径].Resources.[文化名].resources（文化资源，倒数第二段为特定文化名如 zh-CN 或中性文化名如 zh、fr）
     /// - [程序集名].[类别].resources（其他向后兼容格式）
     /// </remarks>
     /// <param name="resourceName">清单资源名，预期以 ".resources" 结尾。</param>
     /// <param name="baseName">解析成功时输出的基础名称；失败时为 <c>null</c>。</param>
-    /// <returns>资源名符合已知命名约定则返回 <c>true</c>；否则（段数不足或文化名分支格式不匹配）返回 <c>false</c>。</returns>
+    /// <returns>段数足够（≥3）时返回 <c>true</c> 并输出基础名称；段数不足时返回 <c>false</c>。</returns>
     private bool TryGetBaseName(string resourceName, out string baseName)
     {
         var parts = resourceName.Split('.');
@@ -302,7 +302,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceP
             return false;
         }
 
-        // 倒数第二段可能是 "Resources" 或文化名（如 zh-CN）
+        // 倒数第二段可能是 "Resources" 或文化名（特定文化如 zh-CN，中性文化如 zh、fr）
         var secondLastPart = parts[^2];
         if (secondLastPart.Equals("Resources", StringComparison.OrdinalIgnoreCase))
         {
@@ -311,7 +311,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceP
             return true;
         }
 
-        if (secondLastPart.Contains('-') && secondLastPart.Length >= 2)
+        if (IsCultureSegment(secondLastPart))
         {
             // 格式：[程序集名].[路径].Resources.[文化名].resources
             var pathParts = parts.Take(parts.Length - 2).ToList(); // 移除文化名与 resources
@@ -321,17 +321,42 @@ public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceP
                 return true;
             }
 
-            // 倒数第二段形似文化名但前缀并非 Resources，格式不匹配，跳过
+            // 倒数第二段是有效文化名但前缀并非 Resources，回退到向后兼容格式
         }
-        else
+
+        // 其他格式：[程序集名].[类别].resources（保持向后兼容）
+        baseName = string.Join(".", parts.Take(parts.Length - 1));
+        return true;
+    }
+
+    /// <summary>
+    /// 判断指定段是否为有效的文化名。
+    /// </summary>
+    /// <param name="segment">待判定的资源名段。</param>
+    /// <returns>段为有效文化名返回 <c>true</c>；否则返回 <c>false</c>。</returns>
+    /// <remarks>
+    /// 含连字符的段（如 zh-CN、en-US）直接视为特定文化名；其余段通过
+    /// <see cref="CultureInfo.GetCultureInfo(string)"/> 校验，以识别 zh、fr 等中性文化名，
+    /// 避免将普通类别名误判为文化。
+    /// </remarks>
+    private static bool IsCultureSegment(string segment)
+    {
+        // 含连字符的特定文化名（如 zh-CN、en-US）
+        if (segment.Contains('-') && segment.Length >= 2)
         {
-            // 其他格式：[程序集名].[类别].resources（保持向后兼容）
-            baseName = string.Join(".", parts.Take(parts.Length - 1));
             return true;
         }
 
-        baseName = null;
-        return false;
+        // 中性文化名（如 zh、fr）需通过 CultureInfo 校验
+        try
+        {
+            CultureInfo.GetCultureInfo(segment);
+            return true;
+        }
+        catch (CultureNotFoundException)
+        {
+            return false;
+        }
     }
 
     /// <summary>
