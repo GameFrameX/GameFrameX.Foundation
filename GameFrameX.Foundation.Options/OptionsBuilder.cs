@@ -459,29 +459,8 @@ public sealed class OptionsBuilder<T> where T : class, new()
             // 获取所有环境变量
             var envVars = Environment.GetEnvironmentVariables();
             var properties = GetCachedProperties(typeof(T));
-            var envVarMappings = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
-
-            // 收集环境变量映射
-            foreach (var property in properties)
-            {
-                var envVarAttrs = property.GetCustomAttributes<EnvironmentVariableAttribute>().ToList();
-                foreach (var envVarAttr in envVarAttrs)
-                {
-                    if (!string.IsNullOrEmpty(envVarAttr.Name))
-                    {
-                        envVarMappings[envVarAttr.Name] = property;
-                    }
-                }
-
-                var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
-                foreach (var optionAttr in optionAttrs)
-                {
-                    if (!string.IsNullOrEmpty(optionAttr.EnvironmentVariable))
-                    {
-                        envVarMappings[optionAttr.EnvironmentVariable] = property;
-                    }
-                }
-            }
+            // 收集环境变量映射（显式 EnvironmentVariableAttribute / OptionAttribute.EnvironmentVariable）
+            var envVarMappings = BuildEnvironmentVariableMappings(properties);
 
             // 处理环境变量
             foreach (var key in envVars.Keys)
@@ -494,57 +473,23 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 var keyStr = key.ToString();
                 var value = envVars[key]?.ToString();
 
-                // 即使值为空也要处理，因为空值可能是有意义的
-                // 检查是否有映射
-                if (envVarMappings.TryGetValue(keyStr, out var property))
+                // 值为空或 null 时跳过，让属性保持默认值
+                if (string.IsNullOrEmpty(value))
                 {
-                    // 如果值为空或null，跳过处理，让属性保持默认值
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    // 处理布尔值
-                    if (property.PropertyType == typeof(bool) && BooleanParser.IsBooleanValue(value))
-                    {
-                        result[property.Name] = BooleanParser.ParseBooleanValue(value);
-                    }
-                    else
-                    {
-                        result[property.Name] = value;
-                    }
+                // 优先按显式映射匹配；否则尝试按标准化属性名直接匹配
+                if (envVarMappings.TryGetValue(keyStr, out var mappedProperty))
+                {
+                    SetEnvironmentValue(result, mappedProperty, value);
                 }
                 else
                 {
-                    // 如果值为空或null，跳过处理
-                    if (string.IsNullOrEmpty(value))
-                    {
-                        continue;
-                    }
-
-                    // 尝试直接匹配属性名
-                    var normalizedKey = NormalizePropertyName(keyStr);
-
-                    // 如果标准化后的键为空，跳过处理
-                    if (string.IsNullOrEmpty(normalizedKey))
-                    {
-                        continue;
-                    }
-
-                    var matchedProperty = properties.FirstOrDefault(p =>
-                                                                        string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
-
+                    var matchedProperty = FindPropertyByNormalizedName(properties, keyStr);
                     if (matchedProperty != null)
                     {
-                        // 处理布尔值
-                        if (matchedProperty.PropertyType == typeof(bool) && BooleanParser.IsBooleanValue(value))
-                        {
-                            result[matchedProperty.Name] = BooleanParser.ParseBooleanValue(value);
-                        }
-                        else
-                        {
-                            result[matchedProperty.Name] = value;
-                        }
+                        SetEnvironmentValue(result, matchedProperty, value);
                     }
                 }
             }
@@ -557,6 +502,87 @@ public sealed class OptionsBuilder<T> where T : class, new()
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// 构建环境变量名到属性的映射。
+    /// </summary>
+    /// <remarks>
+    /// Builds a mapping from environment variable names to option properties, sourced from
+    /// <see cref="EnvironmentVariableAttribute"/> names and <see cref="OptionAttribute.EnvironmentVariable"/> values.
+    /// </remarks>
+    /// <param name="properties">已缓存的目标类型属性 / Cached properties of the target type</param>
+    /// <returns>环境变量名到属性的映射（OrdinalIgnoreCase）/ Mapping from env var names to properties</returns>
+    private Dictionary<string, PropertyInfo> BuildEnvironmentVariableMappings(PropertyInfo[] properties)
+    {
+        var mappings = new Dictionary<string, PropertyInfo>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var property in properties)
+        {
+            var envVarAttrs = property.GetCustomAttributes<EnvironmentVariableAttribute>().ToList();
+            foreach (var envVarAttr in envVarAttrs)
+            {
+                if (!string.IsNullOrEmpty(envVarAttr.Name))
+                {
+                    mappings[envVarAttr.Name] = property;
+                }
+            }
+
+            var optionAttrs = property.GetCustomAttributes<OptionAttribute>().ToList();
+            foreach (var optionAttr in optionAttrs)
+            {
+                if (!string.IsNullOrEmpty(optionAttr.EnvironmentVariable))
+                {
+                    mappings[optionAttr.EnvironmentVariable] = property;
+                }
+            }
+        }
+
+        return mappings;
+    }
+
+    /// <summary>
+    /// 按标准化属性名匹配属性。
+    /// </summary>
+    /// <remarks>
+    /// Normalizes the environment variable key and matches it against property names (ordinal ignore-case).
+    /// Returns null when the normalized key is empty or no property matches.
+    /// </remarks>
+    /// <param name="properties">已缓存的目标类型属性 / Cached properties of the target type</param>
+    /// <param name="key">环境变量键 / Environment variable key</param>
+    /// <returns>匹配到的属性；未匹配返回 null / Matched property, or null if not found</returns>
+    private PropertyInfo FindPropertyByNormalizedName(PropertyInfo[] properties, string key)
+    {
+        var normalizedKey = NormalizePropertyName(key);
+        if (string.IsNullOrEmpty(normalizedKey))
+        {
+            return null;
+        }
+
+        return properties.FirstOrDefault(p => string.Equals(p.Name, normalizedKey, StringComparison.OrdinalIgnoreCase));
+    }
+
+    /// <summary>
+    /// 将环境变量值写入结果字典。
+    /// </summary>
+    /// <remarks>
+    /// Writes the environment variable value to the result dictionary, parsing it as a boolean for
+    /// boolean properties whose value is a recognized boolean literal.
+    /// </remarks>
+    /// <param name="result">结果字典 / Result dictionary</param>
+    /// <param name="property">目标属性 / Target property</param>
+    /// <param name="value">环境变量值 / Environment variable value</param>
+    private static void SetEnvironmentValue(Dictionary<string, object> result, PropertyInfo property, string value)
+    {
+        // 处理布尔值
+        if (property.PropertyType == typeof(bool) && BooleanParser.IsBooleanValue(value))
+        {
+            result[property.Name] = BooleanParser.ParseBooleanValue(value);
+        }
+        else
+        {
+            result[property.Name] = value;
+        }
     }
 
     /// <summary>
