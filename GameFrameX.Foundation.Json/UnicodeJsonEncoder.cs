@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Encodings.Web;
 
@@ -92,6 +93,7 @@ public sealed class UnicodeJsonEncoder : JavaScriptEncoder
     /// <param name="text">要检查的文本指针 / Pointer to the text to check</param>
     /// <param name="textLength">文本长度 / Text length</param>
     /// <returns>第一个需要编码的字符的索引，如果没有则返回 -1 / The index of the first character that needs encoding, or -1 if none</returns>
+    [SuppressMessage("Sonar Code Smell", "S6640:Unsafe code should not be used", Justification = "The unsafe modifier is mandated by the BCL contract: this method overrides an abstract member of System.Text.Encodings.Web.TextEncoder (the base of JavaScriptEncoder) whose signature declares char*; any override must carry unsafe (compiler error CS0214 otherwise). The pointer is used only for indexed read access into the caller-provided buffer as the encoder API requires — no pointer arithmetic or manual memory management.")]
     public override unsafe int FindFirstCharacterToEncode(char* text, int textLength)
     {
         for (int index = 0; index < textLength; ++index)
@@ -118,6 +120,7 @@ public sealed class UnicodeJsonEncoder : JavaScriptEncoder
     /// <param name="bufferLength">缓冲区长度 / Buffer length</param>
     /// <param name="numberOfCharactersWritten">写入的字符数 / Number of characters written</param>
     /// <returns>如果编码成功则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if encoding succeeded; otherwise <c>false</c></returns>
+    [SuppressMessage("Sonar Code Smell", "S6640:Unsafe code should not be used", Justification = "The unsafe modifier is mandated by the BCL contract: this method overrides an abstract member of System.Text.Encodings.Web.TextEncoder (the base of JavaScriptEncoder) whose signature declares char*; any override must carry unsafe (compiler error CS0214 otherwise). The pointer is used only for indexed write access into the caller-provided buffer as the encoder API requires — no pointer arithmetic or manual memory management.")]
     public override unsafe bool TryEncodeUnicodeScalar(int unicodeScalar, char* buffer, int bufferLength, out int numberOfCharactersWritten)
     {
         bool encode = WillEncode(unicodeScalar);
