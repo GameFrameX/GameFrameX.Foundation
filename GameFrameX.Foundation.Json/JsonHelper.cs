@@ -500,7 +500,8 @@ public static class JsonHelper
             json,
             @":\s*(NaN|Infinity|-Infinity)\s*([,}])",
             ": \"$1\"$2",
-            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase,
+            TimeSpan.FromSeconds(1));
 
         return json;
     }
