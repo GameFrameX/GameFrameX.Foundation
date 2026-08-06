@@ -4,7 +4,6 @@
         <Description>GameFrameX.Foundation.Hash,GameFrameX 框架的基础设施框架库,提供基础的哈希算法.框架文档主页: https://gameframex.doc.alianblank.com</Description>
         <PackageTags>GameFrameX,Lib,Foundation,Foundation.HashServer,GameServer</PackageTags>
         <AssemblyOriginatorKeyFile>../gameframex.key.snk</AssemblyOriginatorKeyFile>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputPath>..\bin\app</OutputPath>
