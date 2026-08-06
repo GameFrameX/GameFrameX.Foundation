@@ -81,6 +81,7 @@ public sealed class DsaHelper : IDisposable
     /// <param name="key">XML 格式的密钥字符串，可以是公钥或私钥 / XML format key string, can be public key or private key</param>
     /// <exception cref="ArgumentException">当 <paramref name="key"/> 为 null 或空时抛出 / Thrown when <paramref name="key"/> is null or empty</exception>
     /// <exception cref="CryptographicException">当密钥格式无效时抛出 / Thrown when key format is invalid</exception>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "This constructor only creates a DSA object to load and hold the XML key — no hashing occurs here; all hashing is performed by the instance SignData/VerifyData methods, which explicitly use HashAlgorithmName.SHA256 (a strong hash). S4790 flags DSA.Create() conservatively as DSA's legacy default digest is SHA-1, but no weak hash is ever used.")]
     public DsaHelper(string key)
     {
         ArgumentException.ThrowIfNullOrEmpty(key, nameof(key));
