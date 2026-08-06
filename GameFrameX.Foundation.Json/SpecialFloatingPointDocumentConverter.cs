@@ -99,16 +99,11 @@ public class SpecialFloatingPointDocumentConverter : JsonConverter<JsonDocument>
                         reader.Read();
 
                         // 检查是否是特殊浮点值
-                        if (reader.TokenType == JsonTokenType.String)
+                        if (reader.TokenType == JsonTokenType.String &&
+                            IsSpecialFloatingPointValue(reader.GetString()))
                         {
-                            string value = reader.GetString();
-                            if (string.Equals(value, "NaN", StringComparison.OrdinalIgnoreCase) ||
-                                string.Equals(value, "Infinity", StringComparison.OrdinalIgnoreCase) ||
-                                string.Equals(value, "-Infinity", StringComparison.OrdinalIgnoreCase))
-                            {
-                                jsonWriter.WriteStringValue(value);
-                                continue;
-                            }
+                            jsonWriter.WriteStringValue(reader.GetString());
+                            continue;
                         }
 
                         // 复制当前token
@@ -163,5 +158,20 @@ public class SpecialFloatingPointDocumentConverter : JsonConverter<JsonDocument>
 
             return System.Text.Encoding.UTF8.GetString(ms.ToArray());
         }
+    }
+
+    /// <summary>
+    /// 判断字符串是否为特殊浮点值（NaN、Infinity、-Infinity）。
+    /// </summary>
+    /// <remarks>
+    /// Determines whether the string is a special floating-point value (NaN, Infinity, -Infinity).
+    /// </remarks>
+    /// <param name="value">待判定的字符串 / The string to check</param>
+    /// <returns>若是特殊浮点值返回 true，否则返回 false / true if the value is a special floating-point value; otherwise false</returns>
+    private static bool IsSpecialFloatingPointValue(string value)
+    {
+        return string.Equals(value, "NaN", StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(value, "Infinity", StringComparison.OrdinalIgnoreCase) ||
+               string.Equals(value, "-Infinity", StringComparison.OrdinalIgnoreCase);
     }
 }
