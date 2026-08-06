@@ -34,7 +34,6 @@
 using System.Buffers;
 using System.Buffers.Binary;
 using System.ComponentModel;
-using System.Diagnostics;
 
 namespace GameFrameX.Foundation.Hash;
 
@@ -668,15 +667,13 @@ public static partial class CrcHelper
         /// Call <see cref="GetCurrentHash()" /> or <see cref="GetHashAndReset()" />
         /// instead.
         /// </remarks>
-        /// <returns>此方法将始终抛出 <see cref="NotSupportedException"/> / This method will always throw a <see cref="NotSupportedException" /></returns>
-        /// <exception cref="NotSupportedException">在所有情况下抛出 / In all cases</exception>
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Use GetCurrentHash() to retrieve the computed hash code.", true)]
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         public override int GetHashCode()
 #pragma warning restore CS0809 // Obsolete member overrides non-obsolete member
         {
-            throw new UnreachableException();
+            return base.GetHashCode();
         }
     }
 }
