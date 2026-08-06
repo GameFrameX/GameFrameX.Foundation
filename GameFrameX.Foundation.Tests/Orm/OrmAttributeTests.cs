@@ -16,7 +16,7 @@ public class OrmAttributeTests
         Assert.IsType<bool>(attribute.DeletedValue);
         Assert.True((bool)attribute.DeletedValue);
         Assert.IsType<bool>(attribute.NotDeletedValue);
-        Assert.Equal(false, attribute.NotDeletedValue);
+        Assert.False((bool)attribute.NotDeletedValue);
         Assert.True(attribute.AutoFilter);
     }
 
