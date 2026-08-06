@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   analyze:
-    uses: GameFrameX/public-github-actions/.github/workflows/quality-dotnet.yml@main
+    uses: GameFrameX/public-github-actions/.github/workflows/quality-dotnet.yml@4afa5875295ca757f062e47649a23654208de6d6
     with:
       dotnet_version: |
         8.0.x
@@ -27,15 +27,17 @@ jobs:
       sonar_project_key: ${{ github.event.repository.name }}
       sonar_host_url: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
       sonar_organization: ${{ vars.SONAR_ORGANIZATION || 'gameframex' }}
-    secrets: inherit
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   sync:
     needs: analyze
-    uses: GameFrameX/public-github-actions/.github/workflows/sonar-issue-sync.yml@main
+    uses: GameFrameX/public-github-actions/.github/workflows/sonar-issue-sync.yml@4afa5875295ca757f062e47649a23654208de6d6
     with:
       sonar_project_key: ${{ github.event.repository.name }}
       sonar_host_url: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
       sonar_organization: ${{ vars.SONAR_ORGANIZATION || 'gameframex' }}
       sonar_branch: main
       github_repository: ${{ github.repository }}
-    secrets: inherit
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
