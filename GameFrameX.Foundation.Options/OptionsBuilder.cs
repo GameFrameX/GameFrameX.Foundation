@@ -1068,31 +1068,44 @@ public sealed class OptionsBuilder<T> where T : class, new()
         // 处理连字符和下划线
         if (key.Contains("-") || key.Contains("_"))
         {
-            var parts = key.Split(new[] { '-', '_' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // 如果分割后没有有效部分，返回空字符串
-            if (parts.Length == 0)
-            {
-                return string.Empty;
-            }
-
-            var sb = new System.Text.StringBuilder(parts[0]);
-
-            for (int i = 1; i < parts.Length; i++)
-            {
-                if (!string.IsNullOrEmpty(parts[i]))
-                {
-                    sb.Append(char.ToUpperInvariant(parts[i][0]));
-                    if (parts[i].Length > 1)
-                    {
-                        sb.Append(parts[i].Substring(1));
-                    }
-                }
-            }
-
-            return sb.ToString();
+            return BuildPascalCaseFromSegments(key);
         }
 
         return key;
+    }
+
+    /// <summary>
+    /// 将已去除前缀的键按 '-' / '_' 分割并拼接为 PascalCase。
+    /// </summary>
+    /// <remarks>
+    /// Splits the key on hyphens/underscores (discarding empty entries) and joins the segments as PascalCase; returns empty when no segment remains.
+    /// </remarks>
+    /// <param name="key">已去除前缀的键 / Key with prefixes already stripped</param>
+    /// <returns>PascalCase 拼接结果；无有效段时返回 <see cref="string.Empty"/> / PascalCase result, or empty when no segment remains</returns>
+    private static string BuildPascalCaseFromSegments(string key)
+    {
+        var parts = key.Split(new[] { '-', '_' }, StringSplitOptions.RemoveEmptyEntries);
+
+        // 如果分割后没有有效部分，返回空字符串
+        if (parts.Length == 0)
+        {
+            return string.Empty;
+        }
+
+        var sb = new System.Text.StringBuilder(parts[0]);
+
+        for (int i = 1; i < parts.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(parts[i]))
+            {
+                sb.Append(char.ToUpperInvariant(parts[i][0]));
+                if (parts[i].Length > 1)
+                {
+                    sb.Append(parts[i].Substring(1));
+                }
+            }
+        }
+
+        return sb.ToString();
     }
 }
