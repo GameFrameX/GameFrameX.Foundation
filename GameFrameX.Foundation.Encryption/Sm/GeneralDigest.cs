@@ -105,40 +105,40 @@ internal abstract class GeneralDigest : IDigest
     /// </remarks>
     /// <param name="input">输入字节数组 / Input byte array</param>
     /// <param name="inOff">输入数组的起始偏移量 / Starting offset in the input array</param>
-    /// <param name="length">要处理的字节长度 / Length of bytes to process</param>
-    public void BlockUpdate(byte[] input, int inOff, int length)
+    /// <param name="inLen">要处理的字节长度 / Length of bytes to process</param>
+    public void BlockUpdate(byte[] input, int inOff, int inLen)
     {
         //
         // fill the current word
         //
-        while ((_xBufOff != 0) && (length > 0))
+        while ((_xBufOff != 0) && (inLen > 0))
         {
             Update(input[inOff]);
             inOff++;
-            length--;
+            inLen--;
         }
 
         //
         // process whole words.
         //
-        while (length > _xBuf.Length)
+        while (inLen > _xBuf.Length)
         {
             ProcessWord(input, inOff);
 
             inOff += _xBuf.Length;
-            length -= _xBuf.Length;
+            inLen -= _xBuf.Length;
             _byteCount += _xBuf.Length;
         }
 
         //
         // load in the remainder.
         //
-        while (length > 0)
+        while (inLen > 0)
         {
             Update(input[inOff]);
 
             inOff++;
-            length--;
+            inLen--;
         }
     }
 
