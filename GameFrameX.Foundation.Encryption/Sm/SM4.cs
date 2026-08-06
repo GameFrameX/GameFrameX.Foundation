@@ -425,61 +425,86 @@ internal sealed class Sm4
         int length = input.Length;
         byte[] bins = new byte[length];
         Array.Copy(input, 0, bins, 0, length);
-        var bousList = new List<byte>();
-        if (ctx.Mode == Sm4Encrypt)
-        {
-            for (int j = 0; length > 0; length -= 16, j++)
-            {
-                byte[] inBytes = new byte[16];
-                byte[] outBytes = new byte[16];
-                byte[] out1 = new byte[16];
+        List<byte> bousList = ctx.Mode == Sm4Encrypt
+            ? ProcessCbcEncryptBlocks(ctx.Sk, bins, iv, length)
+            : ProcessCbcDecryptBlocks(ctx.Sk, bins, iv, length);
 
-                Array.Copy(bins, j * 16, inBytes, 0, length > 16 ? 16 : length);
-                for (int m = 0; m < 16; m++)
-                {
-                    outBytes[m] = ((byte)(inBytes[m] ^ iv[m]));
-                }
-
-                Sm4_one_round(ctx.Sk, outBytes, out1);
-                Array.Copy(out1, 0, iv, 0, 16);
-                for (int k = 0; k < 16; k++)
-                {
-                    bousList.Add(out1[k]);
-                }
-            }
-        }
-        else
-        {
-            byte[] temp = new byte[16];
-            for (int j = 0; length > 0; length -= 16, j++)
-            {
-                byte[] inBytes = new byte[16];
-                byte[] outBytes = new byte[16];
-                byte[] out1 = new byte[16];
-
-                Array.Copy(bins, j * 16, inBytes, 0, length > 16 ? 16 : length);
-                Array.Copy(inBytes, 0, temp, 0, 16);
-                Sm4_one_round(ctx.Sk, inBytes, outBytes);
-                for (int m = 0; m < 16; m++)
-                {
-                    out1[m] = ((byte)(outBytes[m] ^ iv[m]));
-                }
-
-                Array.Copy(temp, 0, iv, 0, 16);
-                for (int k = 0; k < 16; k++)
-                {
-                    bousList.Add(out1[k]);
-                }
-            }
-        }
-
+        byte[] output = bousList.ToArray();
         if (ctx.IsPadding && ctx.Mode == Sm4Decrypt)
         {
-            return Padding(bousList.ToArray(), Sm4Decrypt);
+            output = Padding(output, Sm4Decrypt);
         }
-        else
+
+        return output;
+    }
+
+    /// <summary>
+    /// CBC 模式加密分块处理：每块先与 IV 逐字节异或，再执行 SM4 轮函数，密文块回写 IV（CBC 链式反馈）。
+    /// </summary>
+    /// <param name="sk">轮密钥数组</param>
+    /// <param name="bins">待加密的明文缓冲区</param>
+    /// <param name="iv">初始向量，处理过程中被原地更新为最近一个密文块</param>
+    /// <param name="length">待处理字节总数</param>
+    /// <returns>密文字节列表</returns>
+    private List<byte> ProcessCbcEncryptBlocks(long[] sk, byte[] bins, byte[] iv, int length)
+    {
+        var bousList = new List<byte>();
+        for (int j = 0; length > 0; length -= 16, j++)
         {
-            return bousList.ToArray();
+            byte[] inBytes = new byte[16];
+            byte[] outBytes = new byte[16];
+            byte[] out1 = new byte[16];
+
+            Array.Copy(bins, j * 16, inBytes, 0, length > 16 ? 16 : length);
+            for (int m = 0; m < 16; m++)
+            {
+                outBytes[m] = ((byte)(inBytes[m] ^ iv[m]));
+            }
+
+            Sm4_one_round(sk, outBytes, out1);
+            Array.Copy(out1, 0, iv, 0, 16);
+            for (int k = 0; k < 16; k++)
+            {
+                bousList.Add(out1[k]);
+            }
         }
+
+        return bousList;
+    }
+
+    /// <summary>
+    /// CBC 模式解密分块处理：先暂存密文块，执行 SM4 轮函数，再与 IV 逐字节异或得明文，暂存块回写 IV（CBC 链式反馈）。
+    /// </summary>
+    /// <param name="sk">轮密钥数组</param>
+    /// <param name="bins">待解密的密文缓冲区</param>
+    /// <param name="iv">初始向量，处理过程中被原地更新为最近一个密文块</param>
+    /// <param name="length">待处理字节总数</param>
+    /// <returns>明文字节列表</returns>
+    private List<byte> ProcessCbcDecryptBlocks(long[] sk, byte[] bins, byte[] iv, int length)
+    {
+        var bousList = new List<byte>();
+        byte[] temp = new byte[16];
+        for (int j = 0; length > 0; length -= 16, j++)
+        {
+            byte[] inBytes = new byte[16];
+            byte[] outBytes = new byte[16];
+            byte[] out1 = new byte[16];
+
+            Array.Copy(bins, j * 16, inBytes, 0, length > 16 ? 16 : length);
+            Array.Copy(inBytes, 0, temp, 0, 16);
+            Sm4_one_round(sk, inBytes, outBytes);
+            for (int m = 0; m < 16; m++)
+            {
+                out1[m] = ((byte)(outBytes[m] ^ iv[m]));
+            }
+
+            Array.Copy(temp, 0, iv, 0, 16);
+            for (int k = 0; k < 16; k++)
+            {
+                bousList.Add(out1[k]);
+            }
+        }
+
+        return bousList;
     }
 }
