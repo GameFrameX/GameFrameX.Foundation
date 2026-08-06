@@ -123,6 +123,7 @@ public sealed class DsaHelper : IDisposable
     /// Generates a new DSA key pair and returns it as XML strings.
     /// </remarks>
     /// <returns>包含私钥（"privatekey"）和公钥（"publickey"）的字典 / Dictionary containing private key ("privatekey") and public key ("publickey")</returns>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "This method only generates a DSA key pair and exports it as XML — no hashing occurs here; S4790 flags DSA.Create() conservatively as DSA's legacy default digest is SHA-1, but no hash is ever computed.")]
     public static Dictionary<string, string> Make()
     {
         // C-07/C-11 修复：DSA.Create() + using
@@ -237,6 +238,7 @@ public sealed class DsaHelper : IDisposable
     /// <param name="publicKey">XML 格式的公钥字符串 / XML format public key string</param>
     /// <returns>如果签名有效，返回 true；如果公钥格式无效或签名无效，返回 false / Returns true if signature is valid; returns false if public key format is invalid or signature is invalid</returns>
     /// <exception cref="ArgumentNullException">当任意参数为 null 时抛出 / Thrown when any parameter is null</exception>
+    [SuppressMessage("Sonar Code Smell", "S4790:Use a stronger hashing algorithm", Justification = "DSA verification explicitly uses HashAlgorithmName.SHA256 (a strong hash); S4790 flags DSA.Create() conservatively as DSA's legacy default digest is SHA-1, but this method never uses a weak hash.")]
     public static bool VerifyData(byte[] dataToVerify, byte[] signedData, string publicKey)
     {
         // W-11 修复：参数校验移出 try 块
