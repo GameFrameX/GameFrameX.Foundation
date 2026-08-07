@@ -10,7 +10,7 @@
 
 **All-in-One Solution for Indie Game Development · Empowering Indie Developers' Dreams**
 
-[📖 Documentation](https://gameframex.doc.alianblank.com/) • [🚀 Quick Start](https://gameframex.doc.alianblank.com/en/server/foundation) • [💬 QQ Group: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
+[📖 Documentation](https://gameframex.doc.alianblank.com/) • [🚀 Quick Start](https://gameframex.doc.alianblank.com/en/server/foundation) • 💬 QQ Group: 467608841 / 233840761
 
 ---
 

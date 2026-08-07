@@ -10,7 +10,7 @@
 
 **인디 게임 개발자를 위한 올인원 솔루션 · 인디 개발자의 꿈을 실현**
 
-[📖 문서](https://gameframex.doc.alianblank.com/ko) • [🚀 빠른 시작](https://gameframex.doc.alianblank.com/ko/server/foundation) • [💬 QQ 그룹: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
+[📖 문서](https://gameframex.doc.alianblank.com/ko) • [🚀 빠른 시작](https://gameframex.doc.alianblank.com/ko/server/foundation) • 💬 QQ 그룹: 467608841 / 233840761
 
 ---
 

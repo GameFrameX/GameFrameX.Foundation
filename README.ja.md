@@ -10,7 +10,7 @@
 
 **インディゲーム開発者向けオールインワンソリューション · インディ開発者の夢を支援**
 
-[📖 ドキュメント](https://gameframex.doc.alianblank.com/ja) • [🚀 クイックスタート](https://gameframex.doc.alianblank.com/ja/server/foundation) • [💬 QQグループ: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
+[📖 ドキュメント](https://gameframex.doc.alianblank.com/ja) • [🚀 クイックスタート](https://gameframex.doc.alianblank.com/ja/server/foundation) • 💬 QQグループ: 467608841 / 233840761
 
 ---
 

@@ -10,7 +10,7 @@
 
 **独立游戏前后端一体化解决方案 · 独立游戏开发者的圆梦大使**
 
-[📖 文档](https://gameframex.doc.alianblank.com/zh-CN) • [🚀 快速开始](https://gameframex.doc.alianblank.com/zh-CN/server/foundation) • [💬 QQ群: 870596322](https://qm.qq.com/q/IrE4RSmqgY)
+[📖 文档](https://gameframex.doc.alianblank.com/zh-CN) • [🚀 快速开始](https://gameframex.doc.alianblank.com/zh-CN/server/foundation) • 💬 QQ群: 467608841 / 233840761
 
 ---
 
