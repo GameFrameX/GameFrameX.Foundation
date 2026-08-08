@@ -2,12 +2,12 @@ namespace GameFrameX.Foundation.Http.Normalization;
 
 /// <summary>
 /// HTTP JSON 结果常量定义。
-/// 提供统一的错误码和消息常量，用于 HttpJsonResult 和 HttpJsonResultData&lt;T&gt; 的工厂方法。
+/// 提供统一的错误码和消息常量，用于 HttpJsonResultData&lt;T&gt; 的工厂方法。
 /// 该类为内部类，仅供程序集内部使用。
 /// </summary>
 /// <remarks>
 /// HTTP JSON result constants definition.
-/// Provides unified error codes and message constants for factory methods of HttpJsonResult and HttpJsonResultData&lt;T&gt;.
+/// Provides unified error codes and message constants for factory methods of HttpJsonResultData&lt;T&gt;.
 /// This class is internal and only used within the assembly.
 /// </remarks>
 internal static class HttpJsonResultConstants

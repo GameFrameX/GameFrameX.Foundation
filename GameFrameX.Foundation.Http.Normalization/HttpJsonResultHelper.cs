@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Text.Json;
 using GameFrameX.Foundation.Json;
 
 namespace GameFrameX.Foundation.Http.Normalization;
@@ -49,7 +50,7 @@ public static class HttpJsonResultHelper
     /// <remarks>
     /// Converts a JSON string to an HttpJsonResultData object.
     /// This method will:
-    /// 1. Attempt to deserialize the JSON string into an HttpJsonResult object
+    /// 1. Parse the JSON string into an intermediate envelope (HttpJsonResultData&lt;JsonElement&gt;)
     /// 2. Determine if the request was successful based on the response code (IsSuccess property is automatically calculated based on Code==0)
     /// 3. If successful (Code=0), deserialize the Data field into the generic type T
     /// 4. If failed, preserve the error message and set the Data field to the default value
@@ -74,15 +75,24 @@ public static class HttpJsonResultHelper
     /// <summary>
     /// 尝试将JSON字符串转换为HttpJsonResultData对象，并返回可直接消费的转换诊断信息。
     /// </summary>
+    /// <remarks>
+    /// Tries to convert a JSON string to an HttpJsonResultData object and returns consumable conversion diagnostics.
+    /// <para>
+    /// Uses <c>HttpJsonResultData&lt;JsonElement&gt;</c> as the parsing envelope so the outer shell
+    /// (code/message/trackId/errorCode/type/time/extras) and the data payload can fail independently:
+    /// shell-level parse errors map to <see cref="HttpJsonResultConversionFailureStage.ResultDeserialization"/>,
+    /// while data-to-T mismatches map to <see cref="HttpJsonResultConversionFailureStage.DataDeserialization"/>.
+    /// </para>
+    /// </remarks>
     /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型 / Generic parameter T representing the target type to deserialize</typeparam>
     /// <param name="jsonResult">需要转换的JSON字符串 / The JSON string to convert</param>
     /// <returns>转换结果与诊断信息 / Conversion result and diagnostics</returns>
     public static HttpJsonResultConversionResult<T> TryToHttpJsonResultData<T>(this string jsonResult)
     {
-        HttpJsonResult httpJsonResult;
+        HttpJsonResultData<JsonElement> envelope;
         try
         {
-            httpJsonResult = JsonHelper.Deserialize<HttpJsonResult>(jsonResult);
+            envelope = JsonHelper.Deserialize<HttpJsonResultData<JsonElement>>(jsonResult);
         }
         catch (Exception e)
         {
@@ -92,7 +102,7 @@ public static class HttpJsonResultHelper
                 e);
         }
 
-        if (httpJsonResult == null)
+        if (envelope == null)
         {
             return CreateFailure<T>(
                 HttpJsonResultConversionFailureStage.ResultDeserialization,
@@ -100,19 +110,9 @@ public static class HttpJsonResultHelper
                 null);
         }
 
-        if (httpJsonResult.Code != HttpJsonResultConstants.SuccessCode)
+        if (envelope.Code != HttpJsonResultConstants.SuccessCode)
         {
-            var failureResult = new HttpJsonResultData<T>
-            {
-                Code = httpJsonResult.Code,
-                Message = httpJsonResult.Message,
-                TrackId = httpJsonResult.TrackId,
-                ErrorCode = httpJsonResult.ErrorCode,
-                Type = httpJsonResult.Type,
-                Time = httpJsonResult.Time,
-                Extras = httpJsonResult.Extras,
-            };
-
+            var failureResult = BuildResult<T>(envelope, default);
             return new HttpJsonResultConversionResult<T>(
                 true,
                 failureResult,
@@ -124,18 +124,17 @@ public static class HttpJsonResultHelper
 
         try
         {
-            var successResult = new HttpJsonResultData<T>
+            T data = default;
+            if (envelope.Data.ValueKind != JsonValueKind.Undefined && envelope.Data.ValueKind != JsonValueKind.Null)
             {
-                Code = HttpJsonResultConstants.SuccessCode,
-                Message = httpJsonResult.Message ?? string.Empty,
-                Data = string.IsNullOrEmpty(httpJsonResult.Data) ? default : JsonHelper.Deserialize<T>(httpJsonResult.Data),
-                TrackId = httpJsonResult.TrackId,
-                ErrorCode = httpJsonResult.ErrorCode,
-                Type = httpJsonResult.Type,
-                Time = httpJsonResult.Time,
-                Extras = httpJsonResult.Extras,
-            };
+                data = JsonHelper.Deserialize<T>(envelope.Data.GetRawText());
+            }
 
+            var successResult = BuildResult(envelope, data);
+            if (successResult.Message == null)
+            {
+                successResult.Message = string.Empty;
+            }
             return new HttpJsonResultConversionResult<T>(
                 true,
                 successResult,
@@ -151,6 +150,32 @@ public static class HttpJsonResultHelper
                 "Failed to deserialize HTTP JSON result data.",
                 e);
         }
+    }
+
+    /// <summary>
+    /// 从解析出的外壳构建目标 HttpJsonResultData&lt;T&gt;，复用所有公共字段（避免失败/成功分支的字段拷贝重复）。
+    /// </summary>
+    /// <remarks>
+    /// Builds the target HttpJsonResultData&lt;T&gt; from the parsed envelope, reusing all common fields
+    /// to avoid field-copy duplication between the failure and success branches.
+    /// </remarks>
+    /// <typeparam name="T">目标 data 类型 / The target data type</typeparam>
+    /// <param name="envelope">已解析的外壳（Data 为 JsonElement）/ The parsed envelope whose Data is a JsonElement</param>
+    /// <param name="data">已转换的目标数据 / The converted target data</param>
+    /// <returns>填充好的 HttpJsonResultData&lt;T&gt; / The populated HttpJsonResultData&lt;T&gt;</returns>
+    private static HttpJsonResultData<T> BuildResult<T>(HttpJsonResultData<JsonElement> envelope, T data)
+    {
+        return new HttpJsonResultData<T>
+        {
+            Code = envelope.Code,
+            Message = envelope.Message,
+            Data = data,
+            TrackId = envelope.TrackId,
+            ErrorCode = envelope.ErrorCode,
+            Type = envelope.Type,
+            Time = envelope.Time,
+            Extras = envelope.Extras,
+        };
     }
 
     private static HttpJsonResultConversionResult<T> CreateFailure<T>(

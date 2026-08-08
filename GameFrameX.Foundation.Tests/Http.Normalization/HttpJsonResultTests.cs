@@ -9,22 +9,6 @@ public sealed class HttpJsonResultTests
     private sealed record Payload(string Name, int Count);
 
     [Fact]
-    public void Success_WithObjectData_StoresDataAsJsonString()
-    {
-        var result = HttpJsonResult.Success(new Payload("alpha", 2));
-
-        Assert.True(result.IsSuccess);
-        Assert.Equal(0, result.Code);
-        Assert.Equal(string.Empty, result.Message);
-        Assert.Equal("{\"Name\":\"alpha\",\"Count\":2}", result.Data);
-
-        using var json = JsonDocument.Parse(result.ToString());
-        var data = json.RootElement.GetProperty("data");
-        Assert.Equal(JsonValueKind.String, data.ValueKind);
-        Assert.Equal(result.Data, data.GetString());
-    }
-
-    [Fact]
     public void GenericSuccess_SerializesDataAsObject()
     {
         var result = HttpJsonResultData<Payload>.Success(new Payload("beta", 3));
@@ -39,7 +23,7 @@ public sealed class HttpJsonResultTests
     [Fact]
     public void ToHttpJsonResultData_WithSuccessString_DeserializesData()
     {
-        var json = HttpJsonResult.Success(new Payload("gamma", 4)).ToString();
+        var json = HttpJsonResultData<Payload>.Success(new Payload("gamma", 4)).ToString();
 
         var result = json.ToHttpJsonResultData<Payload>();
 
@@ -52,7 +36,7 @@ public sealed class HttpJsonResultTests
     [Fact]
     public void ToHttpJsonResultData_WithFailureString_PreservesCodeAndMessage()
     {
-        var json = HttpJsonResult.Fail(404, "missing").ToString();
+        var json = HttpJsonResultData<Payload>.Fail(404, "missing").ToString();
 
         var result = json.ToHttpJsonResultData<Payload>();
 
@@ -76,7 +60,7 @@ public sealed class HttpJsonResultTests
     [Fact]
     public void ToHttpJsonResultData_WithDataTypeMismatch_ReturnsDefaultFailure()
     {
-        var json = HttpJsonResult.Success("{\"Name\":123,\"Count\":\"bad\"}").ToString();
+        const string json = "{\"code\":0,\"data\":{\"Name\":123,\"Count\":\"bad\"}}";
 
         var result = json.ToHttpJsonResultData<Payload>();
 
@@ -89,7 +73,7 @@ public sealed class HttpJsonResultTests
     [Fact]
     public void TryToHttpJsonResultData_WithFailureString_ReturnsConvertedFailureResult()
     {
-        var json = HttpJsonResult.Fail(404, "missing").ToString();
+        var json = HttpJsonResultData<Payload>.Fail(404, "missing").ToString();
 
         var conversion = json.TryToHttpJsonResultData<Payload>();
 
@@ -123,7 +107,7 @@ public sealed class HttpJsonResultTests
     [Fact]
     public void TryToHttpJsonResultData_WithDataTypeMismatch_ReturnsDataDeserializationFailure()
     {
-        var json = HttpJsonResult.Success("{\"Name\":123,\"Count\":\"bad\"}").ToString();
+        const string json = "{\"code\":0,\"data\":{\"Name\":123,\"Count\":\"bad\"}}";
 
         var conversion = json.TryToHttpJsonResultData<Payload>();
 

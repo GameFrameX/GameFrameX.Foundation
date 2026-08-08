@@ -14,7 +14,7 @@ public sealed class TrackIdTests
     [Fact]
     public void TrackId_Default_IsSerializedAsNull()
     {
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
 
         using var json = JsonDocument.Parse(result.ToString());
         Assert.True(json.RootElement.TryGetProperty("trackId", out var trackId));
@@ -24,7 +24,7 @@ public sealed class TrackIdTests
     [Fact]
     public void TrackId_WhenSet_IsSerializedToOutput()
     {
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
         result.TrackId = "abc-123";
 
         using var json = JsonDocument.Parse(result.ToString());
@@ -34,7 +34,7 @@ public sealed class TrackIdTests
     [Fact]
     public void TrackId_FlowsThroughToHttpJsonResultData_OnSuccess()
     {
-        var result = HttpJsonResult.Success(new Payload { Name = "x" });
+        var result = HttpJsonResultData<Payload>.Success(new Payload { Name = "x" });
         result.TrackId = "tid-success";
 
         var converted = result.ToString().ToHttpJsonResultData<Payload>();
@@ -45,7 +45,7 @@ public sealed class TrackIdTests
     [Fact]
     public void TrackId_FlowsThroughToHttpJsonResultData_OnFailure()
     {
-        var result = HttpJsonResult.Fail(400, "bad");
+        var result = HttpJsonResultData<Payload>.Fail(400, "bad");
         result.TrackId = "tid-fail";
 
         var converted = result.ToString().ToHttpJsonResultData<Payload>();
