@@ -6,10 +6,15 @@ namespace GameFrameX.Foundation.Tests.Http.Normalization;
 
 public sealed class HttpJsonResultExtendedFieldsTests
 {
+    private sealed class Payload
+    {
+        public string Name { get; set; }
+    }
+
     [Fact]
     public void ErrorCode_Null_IsNotSerialized()
     {
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
 
         using var json = JsonDocument.Parse(result.ToString());
         Assert.False(json.RootElement.TryGetProperty("errorCode", out _));
@@ -18,7 +23,7 @@ public sealed class HttpJsonResultExtendedFieldsTests
     [Fact]
     public void ErrorCode_WhenSet_IsSerialized()
     {
-        var result = HttpJsonResult.Fail("bad");
+        var result = HttpJsonResultData<Payload>.Fail("bad");
         result.ErrorCode = "VALIDATION.FAILED";
 
         using var json = JsonDocument.Parse(result.ToString());
@@ -28,7 +33,7 @@ public sealed class HttpJsonResultExtendedFieldsTests
     [Fact]
     public void Type_Null_IsNotSerialized()
     {
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
 
         using var json = JsonDocument.Parse(result.ToString());
         Assert.False(json.RootElement.TryGetProperty("type", out _));
@@ -37,7 +42,7 @@ public sealed class HttpJsonResultExtendedFieldsTests
     [Fact]
     public void Type_WhenSet_IsSerialized()
     {
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
         result.Type = "warning";
 
         using var json = JsonDocument.Parse(result.ToString());
@@ -48,7 +53,7 @@ public sealed class HttpJsonResultExtendedFieldsTests
     public void Time_AutoFilled_OnCreation_WithinNowRange()
     {
         var before = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
         var after = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         using var json = JsonDocument.Parse(result.ToString());
@@ -59,9 +64,9 @@ public sealed class HttpJsonResultExtendedFieldsTests
     }
 
     [Fact]
-    public void ExtendedFields_FlowThroughToHttpJsonResultData()
+    public void ExtendedFields_FlowsThroughToHttpJsonResultData()
     {
-        var result = HttpJsonResult.Fail(400, "bad");
+        var result = HttpJsonResultData<Payload>.Fail(400, "bad");
         result.ErrorCode = "E001";
         result.Type = "error";
 
@@ -76,7 +81,7 @@ public sealed class HttpJsonResultExtendedFieldsTests
     [Fact]
     public void Extras_Null_IsNotSerialized()
     {
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
 
         using var json = JsonDocument.Parse(result.ToString());
         Assert.False(json.RootElement.TryGetProperty("extras", out _));
@@ -85,7 +90,7 @@ public sealed class HttpJsonResultExtendedFieldsTests
     [Fact]
     public void Extras_WhenSet_IsSerializedAsObject()
     {
-        var result = HttpJsonResult.Success();
+        var result = HttpJsonResultData<Payload>.Success();
         result.Extras = new { Page = 1, Total = 100 };
 
         using var json = JsonDocument.Parse(result.ToString());
@@ -98,7 +103,7 @@ public sealed class HttpJsonResultExtendedFieldsTests
     [Fact]
     public void Extras_FlowsThroughToHttpJsonResultData()
     {
-        var result = HttpJsonResult.Fail(400, "bad");
+        var result = HttpJsonResultData<Payload>.Fail(400, "bad");
         result.Extras = new { Hint = "retry" };
 
         var converted = result.ToString().ToHttpJsonResultData<object>();
