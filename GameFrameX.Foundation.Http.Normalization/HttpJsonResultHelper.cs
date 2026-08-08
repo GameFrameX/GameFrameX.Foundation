@@ -106,6 +106,11 @@ public static class HttpJsonResultHelper
             {
                 Code = httpJsonResult.Code,
                 Message = httpJsonResult.Message,
+                TrackId = httpJsonResult.TrackId,
+                ErrorCode = httpJsonResult.ErrorCode,
+                Type = httpJsonResult.Type,
+                Time = httpJsonResult.Time,
+                Extras = httpJsonResult.Extras,
             };
 
             return new HttpJsonResultConversionResult<T>(
@@ -124,6 +129,11 @@ public static class HttpJsonResultHelper
                 Code = HttpJsonResultConstants.SuccessCode,
                 Message = httpJsonResult.Message ?? string.Empty,
                 Data = string.IsNullOrEmpty(httpJsonResult.Data) ? default : JsonHelper.Deserialize<T>(httpJsonResult.Data),
+                TrackId = httpJsonResult.TrackId,
+                ErrorCode = httpJsonResult.ErrorCode,
+                Type = httpJsonResult.Type,
+                Time = httpJsonResult.Time,
+                Extras = httpJsonResult.Extras,
             };
 
             return new HttpJsonResultConversionResult<T>(

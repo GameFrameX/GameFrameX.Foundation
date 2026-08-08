@@ -112,6 +112,77 @@ public sealed class HttpJsonResultData<T> : IHttpJsonResult
     string IHttpJsonResult.Data => Data == null ? null : JsonHelper.Serialize(Data);
 
     /// <summary>
+    /// 获取或设置链路追踪标识（TrackId）。
+    /// <para>用于在一次请求的响应、日志与下游调用之间建立关联，成功或失败响应均可携带；为空表示未启用追踪。</para>
+    /// 该属性不参与 <see cref="IsSuccess"/> 判定，且不影响响应码语义。
+    /// </summary>
+    /// <remarks>
+    /// Gets or sets the track identifier (TrackId).
+    /// <para>Used to correlate a request across its response, logs, and downstream calls; may be present on both success and failure responses, empty when tracking is not enabled.</para>
+    /// This property does not participate in <see cref="IsSuccess"/> evaluation and does not affect response code semantics.
+    /// </remarks>
+    /// <value>链路追踪标识 / Track identifier</value>
+    [JsonPropertyName("trackId")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
+    public string TrackId { get; set; }
+
+    /// <summary>
+    /// 获取或设置稳定业务错误码。
+    /// <para>
+    /// 失败响应承载具体业务原因（如 <c>VALIDATION.FAILED</c>、<c>AUTH.UNAUTHORIZED</c> 等稳定字符串），
+    /// 成功响应为空。与 <see cref="Code"/>（承载 HTTP/状态语义）正交，本字段不替代 <see cref="Code"/>。
+    /// </para>
+    /// 值为 <c>null</c> 时不参与序列化。
+    /// </summary>
+    /// <remarks>
+    /// Gets or sets the stable business error code.
+    /// <para>
+    /// Carries the specific business reason on failure responses (e.g. <c>VALIDATION.FAILED</c>, <c>AUTH.UNAUTHORIZED</c>);
+    /// empty on success. Orthogonal to <see cref="Code"/> (which carries HTTP/status semantics) and does not replace it.
+    /// </para>
+    /// Not serialized when the value is <c>null</c>.
+    /// </remarks>
+    /// <value>稳定业务错误码 / Stable business error code</value>
+    [JsonPropertyName("errorCode")]
+    public string ErrorCode { get; set; }
+
+    /// <summary>
+    /// 获取或设置响应类型（如 <c>success</c>、<c>warning</c>、<c>error</c>）。
+    /// <para>用于补充 <see cref="Code"/> 无法表达的状态语义（例如 <c>warning</c> 这类中间态）。值为 <c>null</c> 时不参与序列化。</para>
+    /// </summary>
+    /// <remarks>
+    /// Gets or sets the response type (e.g. <c>success</c>, <c>warning</c>, <c>error</c>).
+    /// <para>Supplements status semantics that <see cref="Code"/> cannot express (such as the <c>warning</c> intermediate state). Not serialized when the value is <c>null</c>.</para>
+    /// </remarks>
+    /// <value>响应类型 / Response type</value>
+    [JsonPropertyName("type")]
+    public string Type { get; set; }
+
+    /// <summary>
+    /// 获取或设置响应生成的 UTC 时间戳（自 1970-01-01T00:00:00Z 起经过的秒数）。
+    /// <para>默认值为当前实例创建时刻的 UTC 时间戳，工厂方法创建的对象会自动携带生成时间。</para>
+    /// </summary>
+    /// <remarks>
+    /// Gets or sets the UTC timestamp (seconds elapsed since 1970-01-01T00:00:00Z) at which the response was generated.
+    /// <para>Defaults to the UTC timestamp of the current instance creation, so objects created via factory methods carry the generation time automatically.</para>
+    /// </remarks>
+    /// <value>UTC 时间戳（秒） / UTC timestamp in seconds</value>
+    [JsonPropertyName("time")]
+    public long Time { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+    /// <summary>
+    /// 获取或设置附加数据对象，用于承载主数据之外的额外元信息。
+    /// <para>成功或失败响应均可携带；为 <c>null</c> 时不参与序列化。</para>
+    /// </summary>
+    /// <remarks>
+    /// Gets or sets the extras object carrying additional metadata beyond the main data.
+    /// <para>May be present on both success and failure responses; not serialized when <c>null</c>.</para>
+    /// </remarks>
+    /// <value>附加数据 / Extras</value>
+    [JsonPropertyName("extras")]
+    public object Extras { get; set; }
+
+    /// <summary>
     /// 将当前对象序列化为JSON字符串。
     /// 使用JsonHelper进行序列化，保持中文字符和Emoji不被转义。
     /// </summary>

@@ -23,4 +23,8 @@
     <ItemGroup>
         <ProjectReference Include="..\GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj"/>
     </ItemGroup>
+    <ItemGroup>
+        <!-- ASP.NET Core: 提供 HttpContext / IApplicationBuilder / IMiddleware 等 Web 管道类型，供 TrackIdMiddleware 使用 -->
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
 </Project>
