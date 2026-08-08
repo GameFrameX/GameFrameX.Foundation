@@ -27,6 +27,7 @@ jobs:
       sonar_project_key: ${{ github.event.repository.name }}
       sonar_host_url: ${{ vars.SONAR_HOST_URL || 'https://sonarcloud.io' }}
       sonar_organization: ${{ vars.SONAR_ORGANIZATION || 'gameframex' }}
+      sonar_exclusions: ".github/**"
     secrets: inherit
 
   sync:
