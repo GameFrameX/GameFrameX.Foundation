@@ -290,7 +290,8 @@ public static class LocalizationService
     /// </summary>
     /// <remarks>
     /// 主要用于应用程序关闭时的清理工作
-    /// 调用此方法后，本地化服务将不再可用
+    /// 释放底层资源管理器与各程序集资源提供者占用的资源，但不会使本地化服务永久失效——
+    /// 下次访问 <see cref="GetString(string)"/> 等成员时会自动重新加载已发现的程序集资源。
     /// 通常不需要手动调用，由应用程序生命周期管理
     /// </remarks>
     /// <example>

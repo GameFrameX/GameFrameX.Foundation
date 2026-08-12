@@ -476,6 +476,7 @@ public class AssemblyResourceProvider : ILazyResourceProvider, ICultureResourceP
             }
 
             _resourceManagers.Clear();
+            _isInitialized = false; // 允许 Dispose 后下次访问时重新扫描并加载资源
         }
         catch (Exception ex)
         {

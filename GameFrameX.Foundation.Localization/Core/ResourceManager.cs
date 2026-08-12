@@ -84,6 +84,11 @@ public class ResourceManager : IDisposable
         }
 
         _loadLock = new object();
+
+        // 订阅程序集加载事件：LocalizationService 单例首次初始化之后才被加载到 AppDomain 的
+        // GameFrameX.* 程序集（.NET 程序集按需 JIT 加载）也需要纳入资源发现，
+        // 否则其本地化资源会因时序问题被遗漏，GetString 回退为 key 字符串。
+        AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
     }
 
     /// <summary>
@@ -405,6 +410,65 @@ public class ResourceManager : IDisposable
     }
 
     /// <summary>
+    /// 处理程序集动态加载事件：当新的 GameFrameX.* 程序集在当前 <see cref="ResourceManager"/>
+    /// 构造之后被加载到 AppDomain 时，自动发现并注册其本地化资源提供者。
+    /// </summary>
+    /// <remarks>
+    /// .NET 程序集按需 JIT 加载，<see cref="DiscoverAssemblyProviders"/> 仅能发现构造时已加载的
+    /// 程序集。此回调弥补该限制，保证后加载模块的本地化资源不会因时序问题被遗漏而回退为 key 字符串。
+    /// 线程安全：<see cref="_assemblyProviders"/> 为 ConcurrentDictionary，
+    /// 对 <see cref="_providers"/> 的修改在 <see cref="_providersLock"/> 内进行。
+    /// </remarks>
+    /// <param name="sender">事件发送者。</param>
+    /// <param name="args">程序集加载事件参数。</param>
+    private void OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
+    {
+        try
+        {
+            var assembly = args.LoadedAssembly;
+            if (assembly.IsDynamic)
+            {
+                return;
+            }
+
+            if (assembly.FullName == null ||
+                !assembly.FullName.StartsWith("GameFrameX.", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            var hasResources = assembly.GetManifestResourceNames()
+                .Any(name => name.Contains(".Localization.") && name.EndsWith(".resources"));
+            if (!hasResources)
+            {
+                return;
+            }
+
+            var provider = new AssemblyResourceProvider(assembly);
+            if (!_assemblyProviders.Value.TryAdd(assembly.FullName, provider))
+            {
+                return; // 该程序集已注册
+            }
+
+            // 若提供者列表已完成加载，同步将新提供者按高优先级插入到列表开头
+            if (_providersLoaded)
+            {
+                lock (_providersLock)
+                {
+                    if (!_providers.Exists(p => p.AssemblyName == provider.AssemblyName))
+                    {
+                        _providers.Insert(0, provider);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to handle assembly load for {args.LoadedAssembly?.FullName}: {ex.Message}");
+        }
+    }
+
+    /// <summary>
     /// 手动注册资源提供者
     /// </summary>
     /// <param name="provider">要注册的资源提供者</param>
@@ -512,11 +576,14 @@ public class ResourceManager : IDisposable
     /// </remarks>
     public void Dispose()
     {
+        AppDomain.CurrentDomain.AssemblyLoad -= OnAssemblyLoad;
+
         IResourceProvider[] providers;
         lock (_providersLock)
         {
             providers = _providers.ToArray();
             _providers.Clear();
+            _providersLoaded = false; // 允许 Dispose 后下次访问时从已发现的程序集重新加载提供者
         }
 
         foreach (var provider in providers)
