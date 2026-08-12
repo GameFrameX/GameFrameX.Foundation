@@ -33,7 +33,9 @@
 
 using System.Collections.Concurrent;
 using System.Reflection;
+using GameFrameX.Foundation.Localization.Core;
 using GameFrameX.Foundation.Options.Attributes;
+using GameFrameX.Foundation.Options.Localization;
 
 namespace GameFrameX.Foundation.Options;
 
@@ -291,7 +293,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException($"处理命令行参数时发生错误 (An error occurred while processing command-line arguments): {ex.Message}", ex);
+                    throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ProcessingError, ex.Message), ex);
                 }
             }
 
@@ -309,7 +311,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
         catch (Exception ex)
         {
             // 发生异常时抛出异常
-            throw new ArgumentException($"构建选项时发生错误 (An error occurred while building options): {ex.Message}", ex);
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.BuildError, ex.Message), ex);
         }
     }
 
@@ -415,7 +417,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         if (missingOptions.Count > 0)
         {
-            throw new ArgumentException($"缺少必需的选项 (Missing required options): {string.Join(", ", missingOptions)}");
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.MissingRequiredOptions, string.Join(", ", missingOptions)));
         }
     }
 
@@ -936,30 +938,30 @@ public sealed class OptionsBuilder<T> where T : class, new()
     {
         if (ex is ArgumentException)
         {
-            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.Message}", ex);
+            return new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ApplyValueToPropertyFailed, kvp.Key, kvp.Value, property.Name, ex.Message), ex);
         }
 
         if (ex is TargetInvocationException)
         {
-            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法应用到属性 {property.Name}: {ex.InnerException?.Message ?? ex.Message}", ex);
+            return new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ApplyValueToPropertyFailed, kvp.Key, kvp.Value, property.Name, ex.InnerException?.Message ?? ex.Message), ex);
         }
 
         if (ex is FormatException)
         {
-            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
+            return new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ConvertValueFailed, kvp.Key, kvp.Value, property.PropertyType.Name, ex.Message), ex);
         }
 
         if (ex is InvalidCastException)
         {
-            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 无法转换为 {property.PropertyType.Name}: {ex.Message}", ex);
+            return new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ConvertValueFailed, kvp.Key, kvp.Value, property.PropertyType.Name, ex.Message), ex);
         }
 
         if (ex is OverflowException)
         {
-            return new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 超出 {property.PropertyType.Name} 的范围: {ex.Message}", ex);
+            return new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ValueOutOfRange, kvp.Key, kvp.Value, property.PropertyType.Name, ex.Message), ex);
         }
 
-        throw new ArgumentException($"选项 {kvp.Key} 的值 '{kvp.Value}' 应用失败: {ex.Message}", ex);
+        throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ApplyValueFailed, kvp.Key, kvp.Value, ex.Message), ex);
     }
 
     private static object ConvertOptionValue(PropertyInfo property, object value)
@@ -974,7 +976,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
 
         if (string.IsNullOrEmpty(stringValue))
         {
-            throw new FormatException("非字符串选项不能使用空值。");
+            throw new FormatException(LocalizationService.GetString(LocalizationKeys.Exceptions.NonStringOptionNullValue));
         }
 
         if (targetType == typeof(bool))
@@ -1006,7 +1008,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
             return BooleanParser.ParseBooleanValue(stringValue);
         }
 
-        throw new FormatException("布尔值必须是 true/false、1/0、yes/no 或 on/off。");
+        throw new FormatException(LocalizationService.GetString(LocalizationKeys.Exceptions.InvalidBooleanFormat));
     }
 
     /// <summary>

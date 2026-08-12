@@ -31,6 +31,9 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Options.Localization;
+
 namespace GameFrameX.Foundation.Options;
 
 /// <summary>
@@ -187,7 +190,7 @@ public sealed class CommandLineArgumentConverter
                 // 命令行参数不能包含 null 元素，直接拒绝（Main 的 args 不会有 null，这里是防御性校验）
                 if (arg == null)
                 {
-                    throw new ArgumentException("命令行参数不能包含 null 元素 (Command-line arguments cannot contain null elements).", nameof(args));
+                    throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ArgsCannotContainNull), nameof(args));
                 }
 
                 // 处理键值对格式 (--key=value)
@@ -220,7 +223,7 @@ public sealed class CommandLineArgumentConverter
         }
         catch (Exception ex)
         {
-            throw new ArgumentException($"处理命令行参数时发生错误 (An error occurred while processing command-line arguments): {ex.Message}", ex);
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ProcessingError, ex.Message), ex);
         }
     }
 
@@ -321,7 +324,7 @@ public sealed class CommandLineArgumentConverter
         // 下一个参数为 null 是非法输入（防御性：Main 的 args 不会有 null）
         if (nextArg == null)
         {
-            throw new ArgumentException("命令行参数不能包含 null 元素 (Command-line arguments cannot contain null elements).", nameof(args));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.ArgsCannotContainNull), nameof(args));
         }
 
         // 如果下一个参数是选项（以-开头），不作为值消耗

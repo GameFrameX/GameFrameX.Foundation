@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Options module exception messages -->
+  <data name="Options.Exceptions.ArgsCannotContainNull" xml:space="preserve">
+    <value>Command-line arguments cannot contain null elements.</value>
+  </data>
+
+  <data name="Options.Exceptions.ProcessingError" xml:space="preserve">
+    <value>An error occurred while processing command-line arguments: {0}</value>
+  </data>
+
+  <data name="Options.Exceptions.BuildError" xml:space="preserve">
+    <value>An error occurred while building options: {0}</value>
+  </data>
+
+  <data name="Options.Exceptions.MissingRequiredOptions" xml:space="preserve">
+    <value>Missing required options: {0}</value>
+  </data>
+
+  <data name="Options.Exceptions.ApplyValueFailed" xml:space="preserve">
+    <value>Failed to apply value '{1}' for option '{0}': {2}</value>
+  </data>
+
+  <data name="Options.Exceptions.NonStringOptionNullValue" xml:space="preserve">
+    <value>Non-string option cannot use null value.</value>
+  </data>
+
+  <data name="Options.Exceptions.InvalidBooleanFormat" xml:space="preserve">
+    <value>Boolean value must be true/false, 1/0, yes/no, or on/off.</value>
+  </data>
+
+  <data name="Options.Exceptions.ApplyValueToPropertyFailed" xml:space="preserve">
+    <value>Value '{1}' for option '{0}' cannot be applied to property '{2}': {3}</value>
+  </data>
+
+  <data name="Options.Exceptions.ConvertValueFailed" xml:space="preserve">
+    <value>Value '{1}' for option '{0}' cannot be converted to {2}: {3}</value>
+  </data>
+
+  <data name="Options.Exceptions.ValueOutOfRange" xml:space="preserve">
+    <value>Value '{1}' for option '{0}' is out of range for {2}: {3}</value>
+  </data>
+</root>

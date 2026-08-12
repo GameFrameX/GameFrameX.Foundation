@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Options 模块异常消息 -->
+  <data name="Options.Exceptions.ArgsCannotContainNull" xml:space="preserve">
+    <value>命令行参数不能包含 null 元素。</value>
+  </data>
+
+  <data name="Options.Exceptions.ProcessingError" xml:space="preserve">
+    <value>处理命令行参数时发生错误：{0}</value>
+  </data>
+
+  <data name="Options.Exceptions.BuildError" xml:space="preserve">
+    <value>构建选项时发生错误：{0}</value>
+  </data>
+
+  <data name="Options.Exceptions.MissingRequiredOptions" xml:space="preserve">
+    <value>缺少必需的选项：{0}</value>
+  </data>
+
+  <data name="Options.Exceptions.ApplyValueFailed" xml:space="preserve">
+    <value>选项 {0} 的值 '{1}' 应用失败：{2}</value>
+  </data>
+
+  <data name="Options.Exceptions.NonStringOptionNullValue" xml:space="preserve">
+    <value>非字符串选项不能使用空值。</value>
+  </data>
+
+  <data name="Options.Exceptions.InvalidBooleanFormat" xml:space="preserve">
+    <value>布尔值必须是 true/false、1/0、yes/no 或 on/off。</value>
+  </data>
+
+  <data name="Options.Exceptions.ApplyValueToPropertyFailed" xml:space="preserve">
+    <value>选项 {0} 的值 '{1}' 无法应用到属性 {2}：{3}</value>
+  </data>
+
+  <data name="Options.Exceptions.ConvertValueFailed" xml:space="preserve">
+    <value>选项 {0} 的值 '{1}' 无法转换为 {2}：{3}</value>
+  </data>
+
+  <data name="Options.Exceptions.ValueOutOfRange" xml:space="preserve">
+    <value>选项 {0} 的值 '{1}' 超出 {2} 的范围：{3}</value>
+  </data>
+</root>
