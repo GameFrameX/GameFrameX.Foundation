@@ -74,19 +74,21 @@ public sealed class RsaHelper : IDisposable
         ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
         ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
 
-        using var rsa = RSA.Create();
-        try
+        using (var rsa = RSA.Create())
         {
-            rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(privateKey), out _);
-        }
-        catch (CryptographicException)
-        {
-            rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKey), out _);
-        }
+            try
+            {
+                rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(privateKey), out _);
+            }
+            catch (CryptographicException)
+            {
+                rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKey), out _);
+            }
 
-        var data = Encoding.UTF8.GetBytes(content);
-        var signature = rsa.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-        return Convert.ToBase64String(signature);
+            var data = Encoding.UTF8.GetBytes(content);
+            var signature = rsa.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            return Convert.ToBase64String(signature);
+        }
     }
 
     /// <summary>
@@ -109,19 +111,21 @@ public sealed class RsaHelper : IDisposable
         ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
         ArgumentException.ThrowIfNullOrEmpty(sign, nameof(sign));
 
-        using var rsa = RSA.Create();
-        try
+        using (var rsa = RSA.Create())
         {
-            rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(publicKey), out _);
-        }
-        catch (CryptographicException)
-        {
-            rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKey), out _);
-        }
+            try
+            {
+                rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(publicKey), out _);
+            }
+            catch (CryptographicException)
+            {
+                rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKey), out _);
+            }
 
-        var data = Encoding.UTF8.GetBytes(content);
-        var signature = Convert.FromBase64String(sign);
-        return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            var data = Encoding.UTF8.GetBytes(content);
+            var signature = Convert.FromBase64String(sign);
+            return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        }
     }
 
     /// <summary>
@@ -150,35 +154,38 @@ public sealed class RsaHelper : IDisposable
         ArgumentException.ThrowIfNullOrEmpty(publicKey, nameof(publicKey));
         ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
 
-        using var rsa = RSA.Create();
-        try
+        using (var rsa = RSA.Create())
         {
-            rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(publicKey), out _);
+            try
+            {
+                rsa.ImportSubjectPublicKeyInfo(Convert.FromBase64String(publicKey), out _);
+            }
+            catch (CryptographicException)
+            {
+                rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKey), out _);
+            }
+
+            var dataToEncrypt = Encoding.UTF8.GetBytes(content);
+
+            // OAEP-SHA256 最大明文块：KeySize/8 - 2*32 - 2（C-05 修复）
+            int bufferSize = (rsa.KeySize / 8) - 66;
+            using (var outputStream = new MemoryStream())
+            {
+                int offset = 0;
+                while (offset < dataToEncrypt.Length)
+                {
+                    int currentBlockSize = Math.Min(bufferSize, dataToEncrypt.Length - offset);
+                    var chunk = new byte[currentBlockSize];
+                    Array.Copy(dataToEncrypt, offset, chunk, 0, currentBlockSize);
+                    // C-05 修复：使用 OaepSHA256 替代 Pkcs1（Bleichenbacher 攻击防护）
+                    var encryptedChunk = rsa.Encrypt(chunk, RSAEncryptionPadding.OaepSHA256);
+                    outputStream.Write(encryptedChunk, 0, encryptedChunk.Length);
+                    offset += currentBlockSize;
+                }
+
+                return Convert.ToBase64String(outputStream.ToArray());
+            }
         }
-        catch (CryptographicException)
-        {
-            rsa.ImportRSAPublicKey(Convert.FromBase64String(publicKey), out _);
-        }
-
-        var dataToEncrypt = Encoding.UTF8.GetBytes(content);
-
-        // OAEP-SHA256 最大明文块：KeySize/8 - 2*32 - 2（C-05 修复）
-        int bufferSize = (rsa.KeySize / 8) - 66;
-        using var outputStream = new MemoryStream();
-
-        int offset = 0;
-        while (offset < dataToEncrypt.Length)
-        {
-            int currentBlockSize = Math.Min(bufferSize, dataToEncrypt.Length - offset);
-            var chunk = new byte[currentBlockSize];
-            Array.Copy(dataToEncrypt, offset, chunk, 0, currentBlockSize);
-            // C-05 修复：使用 OaepSHA256 替代 Pkcs1（Bleichenbacher 攻击防护）
-            var encryptedChunk = rsa.Encrypt(chunk, RSAEncryptionPadding.OaepSHA256);
-            outputStream.Write(encryptedChunk, 0, encryptedChunk.Length);
-            offset += currentBlockSize;
-        }
-
-        return Convert.ToBase64String(outputStream.ToArray());
     }
 
     /// <summary>
@@ -197,34 +204,37 @@ public sealed class RsaHelper : IDisposable
         ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
         ArgumentException.ThrowIfNullOrEmpty(content, nameof(content));
 
-        using var rsa = RSA.Create();
-        try
+        using (var rsa = RSA.Create())
         {
-            rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(privateKey), out _);
+            try
+            {
+                rsa.ImportPkcs8PrivateKey(Convert.FromBase64String(privateKey), out _);
+            }
+            catch (CryptographicException)
+            {
+                rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKey), out _);
+            }
+
+            var dataToDecrypt = Convert.FromBase64String(content);
+
+            int bufferSize = rsa.KeySize / 8;
+            using (var outputStream = new MemoryStream())
+            {
+                int offset = 0;
+                while (offset < dataToDecrypt.Length)
+                {
+                    int currentBlockSize = Math.Min(bufferSize, dataToDecrypt.Length - offset);
+                    var chunk = new byte[currentBlockSize];
+                    Array.Copy(dataToDecrypt, offset, chunk, 0, currentBlockSize);
+                    // C-05 修复：使用 OaepSHA256
+                    var decryptedChunk = rsa.Decrypt(chunk, RSAEncryptionPadding.OaepSHA256);
+                    outputStream.Write(decryptedChunk, 0, decryptedChunk.Length);
+                    offset += currentBlockSize;
+                }
+
+                return Encoding.UTF8.GetString(outputStream.ToArray());
+            }
         }
-        catch (CryptographicException)
-        {
-            rsa.ImportRSAPrivateKey(Convert.FromBase64String(privateKey), out _);
-        }
-
-        var dataToDecrypt = Convert.FromBase64String(content);
-
-        int bufferSize = rsa.KeySize / 8;
-        using var outputStream = new MemoryStream();
-
-        int offset = 0;
-        while (offset < dataToDecrypt.Length)
-        {
-            int currentBlockSize = Math.Min(bufferSize, dataToDecrypt.Length - offset);
-            var chunk = new byte[currentBlockSize];
-            Array.Copy(dataToDecrypt, offset, chunk, 0, currentBlockSize);
-            // C-05 修复：使用 OaepSHA256
-            var decryptedChunk = rsa.Decrypt(chunk, RSAEncryptionPadding.OaepSHA256);
-            outputStream.Write(decryptedChunk, 0, decryptedChunk.Length);
-            offset += currentBlockSize;
-        }
-
-        return Encoding.UTF8.GetString(outputStream.ToArray());
     }
 
     // ── 实例成员 ─────────────────────────────────────────────────────────────
@@ -305,12 +315,14 @@ public sealed class RsaHelper : IDisposable
     public static Dictionary<string, string> Make()
     {
         // C-10 修复：使用 using 确保 RSA 实例被释放
-        using var rsa = RSA.Create();
-        return new Dictionary<string, string>
+        using (var rsa = RSA.Create())
         {
-            ["privateKey"] = rsa.ToXmlString(true),
-            ["publicKey"] = rsa.ToXmlString(false)
-        };
+            return new Dictionary<string, string>
+            {
+                ["privateKey"] = rsa.ToXmlString(true),
+                ["publicKey"] = rsa.ToXmlString(false)
+            };
+        }
     }
 
     /// <summary>
@@ -359,10 +371,12 @@ public sealed class RsaHelper : IDisposable
         ArgumentNullException.ThrowIfNull(content, nameof(content));
 
         // C-10 修复：using 确保 RSA 实例被释放
-        using var rsa = RSA.Create();
-        rsa.FromXmlString(publicKey);
-        // C-05 修复：OaepSHA256 替代 Pkcs1
-        return rsa.Encrypt(content, RSAEncryptionPadding.OaepSHA256);
+        using (var rsa = RSA.Create())
+        {
+            rsa.FromXmlString(publicKey);
+            // C-05 修复：OaepSHA256 替代 Pkcs1
+            return rsa.Encrypt(content, RSAEncryptionPadding.OaepSHA256);
+        }
     }
 
     /// <summary>
@@ -411,10 +425,12 @@ public sealed class RsaHelper : IDisposable
         ArgumentNullException.ThrowIfNull(content, nameof(content));
 
         // C-10 修复：using 确保 RSA 实例被释放
-        using var rsa = RSA.Create();
-        rsa.FromXmlString(privateKey);
-        // C-05 修复：OaepSHA256 替代 Pkcs1
-        return rsa.Decrypt(content, RSAEncryptionPadding.OaepSHA256);
+        using (var rsa = RSA.Create())
+        {
+            rsa.FromXmlString(privateKey);
+            // C-05 修复：OaepSHA256 替代 Pkcs1
+            return rsa.Decrypt(content, RSAEncryptionPadding.OaepSHA256);
+        }
     }
 
     /// <summary>
@@ -459,9 +475,11 @@ public sealed class RsaHelper : IDisposable
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
         ArgumentException.ThrowIfNullOrEmpty(privateKey, nameof(privateKey));
 
-        using var rsa = RSA.Create();
-        rsa.FromXmlString(privateKey);
-        return rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        using (var rsa = RSA.Create())
+        {
+            rsa.FromXmlString(privateKey);
+            return rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        }
     }
 
     /// <summary>
@@ -529,9 +547,11 @@ public sealed class RsaHelper : IDisposable
         try
         {
             // C-10 修复：using；C-04 修复：SHA256
-            using var rsa = RSA.Create();
-            rsa.FromXmlString(publicKey);
-            return rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            using (var rsa = RSA.Create())
+            {
+                rsa.FromXmlString(publicKey);
+                return rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            }
         }
         catch (CryptographicException)
         {

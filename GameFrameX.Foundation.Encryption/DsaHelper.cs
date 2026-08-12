@@ -129,12 +129,14 @@ public sealed class DsaHelper : IDisposable
         // C-07/C-11 修复：DSA.Create() + using
         // 注意：使用默认密钥大小以确保跨平台兼容性
         // macOS 的 DSA 实现不支持显式指定 2048 位密钥
-        using var dsa = DSA.Create();
-        return new Dictionary<string, string>
+        using (var dsa = DSA.Create())
         {
-            ["privatekey"] = dsa.ToXmlString(true),
-            ["publickey"] = dsa.ToXmlString(false)
-        };
+            return new Dictionary<string, string>
+            {
+                ["privatekey"] = dsa.ToXmlString(true),
+                ["publickey"] = dsa.ToXmlString(false)
+            };
+        }
     }
 
     /// <summary>
@@ -157,9 +159,11 @@ public sealed class DsaHelper : IDisposable
         try
         {
             // C-07/C-11 修复：DSA.Create() + using
-            using var dsa = DSA.Create();
-            dsa.FromXmlString(privateKey);
-            return dsa.SignData(dataToSign, HashAlgorithmName.SHA256);
+            using (var dsa = DSA.Create())
+            {
+                dsa.FromXmlString(privateKey);
+                return dsa.SignData(dataToSign, HashAlgorithmName.SHA256);
+            }
         }
         catch (CryptographicException)
         {
@@ -249,9 +253,11 @@ public sealed class DsaHelper : IDisposable
         try
         {
             // C-07/C-11 修复：DSA.Create() + using
-            using var dsa = DSA.Create();
-            dsa.FromXmlString(publicKey);
-            return dsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256);
+            using (var dsa = DSA.Create())
+            {
+                dsa.FromXmlString(publicKey);
+                return dsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256);
+            }
         }
         catch (CryptographicException)
         {

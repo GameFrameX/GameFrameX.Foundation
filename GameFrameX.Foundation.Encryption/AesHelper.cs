@@ -163,16 +163,18 @@ public static class AesHelper
         var keyBytes = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(encryptKey), salt, Pbkdf2Iterations, HashAlgorithmName.SHA256, 32);
 
-        using var aesGcm = new AesGcm(keyBytes, TagSize);
-        aesGcm.Encrypt(nonce, encryptByte, cipherText, tag);
+        using (var aesGcm = new AesGcm(keyBytes, TagSize))
+        {
+            aesGcm.Encrypt(nonce, encryptByte, cipherText, tag);
 
-        var result = new byte[HeaderSize + cipherText.Length];
-        result[0] = CurrentVersion;
-        Buffer.BlockCopy(salt, 0, result, 1, SaltSize);
-        Buffer.BlockCopy(nonce, 0, result, 1 + SaltSize, NonceSize);
-        Buffer.BlockCopy(tag, 0, result, 1 + SaltSize + NonceSize, TagSize);
-        Buffer.BlockCopy(cipherText, 0, result, HeaderSize, cipherText.Length);
-        return result;
+            var result = new byte[HeaderSize + cipherText.Length];
+            result[0] = CurrentVersion;
+            Buffer.BlockCopy(salt, 0, result, 1, SaltSize);
+            Buffer.BlockCopy(nonce, 0, result, 1 + SaltSize, NonceSize);
+            Buffer.BlockCopy(tag, 0, result, 1 + SaltSize + NonceSize, TagSize);
+            Buffer.BlockCopy(cipherText, 0, result, HeaderSize, cipherText.Length);
+            return result;
+        }
     }
 
     /// <summary>
@@ -250,8 +252,10 @@ public static class AesHelper
             Encoding.UTF8.GetBytes(decryptKey), salt, Pbkdf2Iterations, HashAlgorithmName.SHA256, 32);
 
         var plainText = new byte[cipherText.Length];
-        using var aesGcm = new AesGcm(keyBytes, TagSize);
-        aesGcm.Decrypt(nonce, cipherText, tag, plainText);
-        return plainText;
+        using (var aesGcm = new AesGcm(keyBytes, TagSize))
+        {
+            aesGcm.Decrypt(nonce, cipherText, tag, plainText);
+            return plainText;
+        }
     }
 }
