@@ -21,7 +21,7 @@ namespace GameFrameX.Foundation.Tests.Options
         public void DefaultConstructor_ShouldSetDefaultValueToFalse()
         {
             var attr = new FlagOptionAttribute();
-            Assert.Equal(false, attr.DefaultValue);
+            Assert.False((bool)attr.DefaultValue);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             var attr = new FlagOptionAttribute("verbose");
             Assert.Equal("verbose", attr.LongName);
-            Assert.Equal(false, attr.DefaultValue);
+            Assert.False((bool)attr.DefaultValue);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             var attr = new FlagOptionAttribute(null);
             Assert.Null(attr.LongName);
-            Assert.Equal(false, attr.DefaultValue);
+            Assert.False((bool)attr.DefaultValue);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace GameFrameX.Foundation.Tests.Options
         {
             var attr = new FlagOptionAttribute("");
             Assert.Equal("", attr.LongName);
-            Assert.Equal(false, attr.DefaultValue);
+            Assert.False((bool)attr.DefaultValue);
         }
 
         // ============================================================
@@ -73,7 +73,7 @@ namespace GameFrameX.Foundation.Tests.Options
             Assert.Equal("Enable debug mode", attr.Description);
             Assert.Equal("DEBUG_FLAG", attr.EnvironmentVariable);
             Assert.False(attr.Sensitive);
-            Assert.Equal(false, attr.DefaultValue);
+            Assert.False((bool)attr.DefaultValue);
         }
 
         // ============================================================
