@@ -261,7 +261,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// </remarks>
     /// <param name="key">要获取或设置的键 / The key to get or set.</param>
     /// <value>与指定键关联的值；如果键不存在则返回 <see cref="FallbackValue"/> / The value associated with the specified key; returns <see cref="FallbackValue"/> if the key does not exist.</value>
-    public new TValue this[NullObject<TKey> key]
+    public new virtual TValue this[NullObject<TKey> key]
     {
         get { return TryGetValue(key, out var value) ? value : FallbackValue; }
         set { base[key] = value; }
@@ -276,7 +276,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// <param name="condition">条件谓词，用于测试每个键值对 / The predicate to test each key-value pair.</param>
     /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<KeyValuePair<TKey, TValue>, bool> condition]
+    public virtual TValue this[Func<KeyValuePair<TKey, TValue>, bool> condition]
     {
         get
         {
@@ -309,7 +309,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// <param name="condition">条件谓词，接受键和值作为参数 / The predicate that accepts key and value as parameters.</param>
     /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<TKey, TValue, bool> condition]
+    public virtual TValue this[Func<TKey, TValue, bool> condition]
     {
         get
         {
@@ -342,7 +342,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// <param name="condition">条件谓词，接受键作为参数 / The predicate that accepts key as parameter.</param>
     /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<TKey, bool> condition]
+    public virtual TValue this[Func<TKey, bool> condition]
     {
         get
         {
@@ -375,7 +375,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// <param name="condition">条件谓词，接受值作为参数 / The predicate that accepts value as parameter.</param>
     /// <value>匹配条件的第一个值；如果没有匹配项则返回 <see cref="FallbackValue"/> / The first value that matches the condition; returns <see cref="FallbackValue"/> if no match is found.</value>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<TValue, bool> condition]
+    public virtual TValue this[Func<TValue, bool> condition]
     {
         get
         {
@@ -407,7 +407,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// </remarks>
     /// <param name="key">要获取或设置的键 / The key to get or set.</param>
     /// <value>与指定键关联的值；如果键不存在则返回 <see cref="FallbackValue"/> / The value associated with the specified key; returns <see cref="FallbackValue"/> if the key does not exist.</value>
-    public TValue this[TKey key]
+    public virtual TValue this[TKey key]
     {
         get { return TryGetValue(new NullObject<TKey>(key), out var value) ? value : FallbackValue; }
         set { base[new NullObject<TKey>(key)] = value; }
@@ -421,7 +421,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// </remarks>
     /// <param name="key">要查找的键 / The key to locate.</param>
     /// <returns>如果字典包含指定的键则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the dictionary contains the specified key; otherwise <c>false</c>.</returns>
-    public bool ContainsKey(TKey key)
+    public virtual bool ContainsKey(TKey key)
     {
         return base.ContainsKey(new NullObject<TKey>(key));
     }
@@ -434,7 +434,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// </remarks>
     /// <param name="key">要添加的键 / The key to add.</param>
     /// <param name="value">要添加的值 / The value to add.</param>
-    public void Add(TKey key, TValue value)
+    public virtual void Add(TKey key, TValue value)
     {
         base.Add(new NullObject<TKey>(key), value);
     }
@@ -447,7 +447,7 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// </remarks>
     /// <param name="key">要移除的键 / The key to remove.</param>
     /// <returns>如果成功移除则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the element is successfully removed; otherwise <c>false</c>.</returns>
-    public bool Remove(TKey key)
+    public virtual bool Remove(TKey key)
     {
         return base.Remove(new NullObject<TKey>(key));
     }
@@ -461,9 +461,21 @@ public class NullableDictionary<TKey, TValue> : Dictionary<NullObject<TKey>, TVa
     /// <param name="key">要查找的键 / The key to locate.</param>
     /// <param name="value">输出参数，存储找到的值 / Output parameter that stores the found value.</param>
     /// <returns>如果找到则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the key is found; otherwise <c>false</c>.</returns>
-    public bool TryGetValue(TKey key, out TValue value)
+    public virtual bool TryGetValue(TKey key, out TValue value)
     {
         return base.TryGetValue(new NullObject<TKey>(key), out value);
+    }
+
+    /// <summary>
+    /// 返回循环访问 <see cref="NullableDictionary{TKey, TValue}"/> 的枚举器。
+    /// </summary>
+    /// <remarks>
+    /// Returns an enumerator that iterates through the <see cref="NullableDictionary{TKey, TValue}"/>.
+    /// </remarks>
+    /// <returns>用于循环访问字典的枚举器 / An enumerator for the dictionary.</returns>
+    public new virtual Dictionary<NullObject<TKey>, TValue>.Enumerator GetEnumerator()
+    {
+        return base.GetEnumerator();
     }
 
     /// <summary>

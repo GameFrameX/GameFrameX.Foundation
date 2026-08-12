@@ -29,7 +29,7 @@ public class DisposableDictionaryBoundaryTests
     // DisposableDictionary — Dispose 后操作应抛出 ObjectDisposedException
     // ============================================================
 
-    [Fact(Skip = "已知健壮性缺陷:NullableDictionary 方法非 virtual,DisposableDictionary 无法加 ObjectDisposedException guard,需重构基类方法为 virtual 后统一处理")]
+    [Fact]
     public void Add_AfterDispose_ShouldThrowObjectDisposedException()
     {
         // Arrange
@@ -42,7 +42,7 @@ public class DisposableDictionaryBoundaryTests
         Assert.Throws<ObjectDisposedException>(() => dictionary.Add("key2", new TrackableDisposable()));
     }
 
-    [Fact(Skip = "已知健壮性缺陷:NullableDictionary 方法非 virtual,DisposableDictionary 无法加 ObjectDisposedException guard,需重构基类方法为 virtual 后统一处理")]
+    [Fact]
     public void Remove_AfterDispose_ShouldThrowObjectDisposedException()
     {
         // Arrange
@@ -54,7 +54,7 @@ public class DisposableDictionaryBoundaryTests
         Assert.Throws<ObjectDisposedException>(() => dictionary.Remove("key1"));
     }
 
-    [Fact(Skip = "已知健壮性缺陷:NullableDictionary 方法非 virtual,DisposableDictionary 无法加 ObjectDisposedException guard,需重构基类方法为 virtual 后统一处理")]
+    [Fact]
     public void IndexerSet_AfterDispose_ShouldThrowObjectDisposedException()
     {
         // Arrange
@@ -66,7 +66,7 @@ public class DisposableDictionaryBoundaryTests
         Assert.Throws<ObjectDisposedException>(() => dictionary["key2"] = new TrackableDisposable());
     }
 
-    [Fact(Skip = "已知健壮性缺陷:NullableDictionary 方法非 virtual,DisposableDictionary 无法加 ObjectDisposedException guard,需重构基类方法为 virtual 后统一处理")]
+    [Fact]
     public void Enumerate_AfterDispose_ShouldThrowObjectDisposedException()
     {
         // Arrange
@@ -89,7 +89,7 @@ public class DisposableDictionaryBoundaryTests
     // DisposableConcurrentDictionary — Dispose 后操作应抛出 ObjectDisposedException
     // ============================================================
 
-    [Fact(Skip = "已知健壮性缺陷:NullableDictionary 方法非 virtual,DisposableDictionary 无法加 ObjectDisposedException guard,需重构基类方法为 virtual 后统一处理")]
+    [Fact]
     public void Concurrent_TryAdd_AfterDispose_ShouldThrowObjectDisposedException()
     {
         // Arrange
@@ -102,7 +102,7 @@ public class DisposableDictionaryBoundaryTests
         Assert.Throws<ObjectDisposedException>(() => dictionary.TryAdd("key2", new TrackableDisposable()));
     }
 
-    [Fact(Skip = "已知健壮性缺陷:NullableDictionary 方法非 virtual,DisposableDictionary 无法加 ObjectDisposedException guard,需重构基类方法为 virtual 后统一处理")]
+    [Fact]
     public void Concurrent_Remove_AfterDispose_ShouldThrowObjectDisposedException()
     {
         // Arrange

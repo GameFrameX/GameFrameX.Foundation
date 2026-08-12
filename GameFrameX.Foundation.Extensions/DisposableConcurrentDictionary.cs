@@ -72,6 +72,43 @@ public class DisposableConcurrentDictionary<TKey, TValue> : NullableConcurrentDi
     }
 
     /// <summary>
+    /// 尝试向字典中添加键值对。Dispose 之后调用将抛出 <see cref="ObjectDisposedException"/>。
+    /// </summary>
+    /// <remarks>
+    /// Attempts to add a key-value pair to the dictionary. Throws <see cref="ObjectDisposedException"/> after the instance has been disposed.
+    /// </remarks>
+    /// <param name="key">键，可以为 null / The key, can be null.</param>
+    /// <param name="value">值，可以为 null（如果 TValue 是引用类型） / The value, can be null if TValue is a reference type.</param>
+    /// <returns>如果成功添加则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if added successfully; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ObjectDisposedException">在实例释放后调用时抛出 / Thrown when called after the instance has been disposed.</exception>
+    public override bool TryAdd(TKey key, TValue value)
+    {
+        if (_isDisposed)
+        {
+            throw new ObjectDisposedException(nameof(DisposableConcurrentDictionary<TKey, TValue>));
+        }
+        return base.TryAdd(key, value);
+    }
+
+    /// <summary>
+    /// 从字典中移除指定的键。Dispose 之后调用将抛出 <see cref="ObjectDisposedException"/>。
+    /// </summary>
+    /// <remarks>
+    /// Removes the specified key from the dictionary. Throws <see cref="ObjectDisposedException"/> after the instance has been disposed.
+    /// </remarks>
+    /// <param name="key">键，可以为 null / The key, can be null.</param>
+    /// <returns>如果成功移除则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if removed successfully; otherwise, <c>false</c>.</returns>
+    /// <exception cref="ObjectDisposedException">在实例释放后调用时抛出 / Thrown when called after the instance has been disposed.</exception>
+    public override bool Remove(TKey key)
+    {
+        if (_isDisposed)
+        {
+            throw new ObjectDisposedException(nameof(DisposableConcurrentDictionary<TKey, TValue>));
+        }
+        return base.Remove(key);
+    }
+
+    /// <summary>
     /// 释放资源。
     /// </summary>
     /// <remarks>

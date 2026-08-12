@@ -242,7 +242,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// </remarks>
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <returns>如果找到该键，则返回对应的值；否则返回默认值 / Returns the value if the key is found; otherwise, returns the default value.</returns>
-    public new TValue this[NullObject<TKey> key]
+    public new virtual TValue this[NullObject<TKey> key]
     {
         get { return base.TryGetValue(key, out var value) ? value : FallbackValue; }
         set { base[key] = value; }
@@ -257,7 +257,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="condition">用于筛选键值对的条件，不能为 null / The condition to filter key-value pairs, cannot be null.</param>
     /// <returns>匹配条件的第一个键值对的值；如果没有匹配项，则返回默认值 / The value of the first key-value pair matching the condition; returns the default value if no match is found.</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<KeyValuePair<TKey, TValue>, bool> condition]
+    public virtual TValue this[Func<KeyValuePair<TKey, TValue>, bool> condition]
     {
         get
         {
@@ -290,7 +290,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="condition">用于筛选键值对的条件，不能为 null / The condition to filter key-value pairs, cannot be null.</param>
     /// <returns>匹配条件的第一个键值对的值；如果没有匹配项，则返回默认值 / The value of the first key-value pair matching the condition; returns the default value if no match is found.</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<TKey, TValue, bool> condition]
+    public virtual TValue this[Func<TKey, TValue, bool> condition]
     {
         get
         {
@@ -323,7 +323,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="condition">用于筛选键的条件，不能为 null / The condition to filter keys, cannot be null.</param>
     /// <returns>匹配条件的第一个键值对的值；如果没有匹配项，则返回默认值 / The value of the first key-value pair matching the condition; returns the default value if no match is found.</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<TKey, bool> condition]
+    public virtual TValue this[Func<TKey, bool> condition]
     {
         get
         {
@@ -356,7 +356,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="condition">用于筛选值的条件，不能为 null / The condition to filter values, cannot be null.</param>
     /// <returns>匹配条件的第一个键值对的值；如果没有匹配项，则返回默认值 / The value of the first key-value pair matching the condition; returns the default value if no match is found.</returns>
     /// <exception cref="ArgumentNullException">当 <paramref name="condition"/> 为 null 时抛出 / Thrown when <paramref name="condition"/> is null.</exception>
-    public TValue this[Func<TValue, bool> condition]
+    public virtual TValue this[Func<TValue, bool> condition]
     {
         get
         {
@@ -388,7 +388,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// </remarks>
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <returns>如果找到该键，则返回对应的值；否则返回默认值 / Returns the value if the key is found; otherwise, returns the default value.</returns>
-    public TValue this[TKey key]
+    public virtual TValue this[TKey key]
     {
         get { return base.TryGetValue(new NullObject<TKey>(key), out var value) ? value : FallbackValue; }
         set { base[new NullObject<TKey>(key)] = value; }
@@ -402,7 +402,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// </remarks>
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <returns>如果包含则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if the key is contained; otherwise, <c>false</c>.</returns>
-    public bool ContainsKey(TKey key)
+    public virtual bool ContainsKey(TKey key)
     {
         return base.ContainsKey(new NullObject<TKey>(key));
     }
@@ -415,7 +415,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// </remarks>
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <param name="value">值，可以为 null（如果 TValue 是引用类型） / The value, can be null if TValue is a reference type.</param>
-    public void Add(TKey key, TValue value)
+    public virtual void Add(TKey key, TValue value)
     {
         base[new NullObject<TKey>(key)] = value;
     }
@@ -429,7 +429,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <param name="value">值，可以为 null（如果 TValue 是引用类型） / The value, can be null if TValue is a reference type.</param>
     /// <returns>如果成功添加则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if added successfully; otherwise, <c>false</c>.</returns>
-    public bool TryAdd(TKey key, TValue value)
+    public virtual bool TryAdd(TKey key, TValue value)
     {
         return base.TryAdd(new NullObject<TKey>(key), value);
     }
@@ -442,7 +442,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// </remarks>
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <returns>如果成功移除则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if removed successfully; otherwise, <c>false</c>.</returns>
-    public bool Remove(TKey key)
+    public virtual bool Remove(TKey key)
     {
         return base.TryRemove(new NullObject<TKey>(key), out _);
     }
@@ -456,7 +456,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <param name="value">输出参数，存储被移除的值 / Output parameter storing the removed value.</param>
     /// <returns>如果成功移除则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if removed successfully; otherwise, <c>false</c>.</returns>
-    public bool TryRemove(TKey key, out TValue value)
+    public virtual bool TryRemove(TKey key, out TValue value)
     {
         return base.TryRemove(new NullObject<TKey>(key), out value);
     }
@@ -471,7 +471,7 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="newValue">新值，可以为 null（如果 TValue 是引用类型） / The new value, can be null if TValue is a reference type.</param>
     /// <param name="comparisonValue">比较值，可以为 null（如果 TValue 是引用类型） / The comparison value, can be null if TValue is a reference type.</param>
     /// <returns>如果成功更新则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if updated successfully; otherwise, <c>false</c>.</returns>
-    public bool TryUpdate(TKey key, TValue newValue, TValue comparisonValue)
+    public virtual bool TryUpdate(TKey key, TValue newValue, TValue comparisonValue)
     {
         return base.TryUpdate(new NullObject<TKey>(key), newValue, comparisonValue);
     }
@@ -485,9 +485,21 @@ public class NullableConcurrentDictionary<TKey, TValue> : ConcurrentDictionary<N
     /// <param name="key">键，可以为 null / The key, can be null.</param>
     /// <param name="value">输出参数，存储找到的值 / Output parameter storing the found value.</param>
     /// <returns>如果找到则返回 <c>true</c>，否则返回 <c>false</c> / <c>true</c> if found; otherwise, <c>false</c>.</returns>
-    public bool TryGetValue(TKey key, out TValue value)
+    public virtual bool TryGetValue(TKey key, out TValue value)
     {
         return base.TryGetValue(new NullObject<TKey>(key), out value);
+    }
+
+    /// <summary>
+    /// 返回循环访问 <see cref="NullableConcurrentDictionary{TKey, TValue}"/> 的枚举器。
+    /// </summary>
+    /// <remarks>
+    /// Returns an enumerator that iterates through the <see cref="NullableConcurrentDictionary{TKey, TValue}"/>.
+    /// </remarks>
+    /// <returns>用于循环访问字典的枚举器 / An enumerator for the dictionary.</returns>
+    public new virtual IEnumerator<KeyValuePair<NullObject<TKey>, TValue>> GetEnumerator()
+    {
+        return base.GetEnumerator();
     }
 
     /// <summary>

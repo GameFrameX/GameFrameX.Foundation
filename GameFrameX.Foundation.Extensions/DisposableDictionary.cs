@@ -88,6 +88,81 @@ public class DisposableDictionary<TKey, TValue> : NullableDictionary<TKey, TValu
     }
 
     /// <summary>
+    /// 获取或设置指定键的值。Dispose 之后调用 set 访问器将抛出 <see cref="ObjectDisposedException"/>。
+    /// </summary>
+    /// <remarks>
+    /// Gets or sets the value associated with the specified key. The set accessor throws <see cref="ObjectDisposedException"/> after the instance has been disposed.
+    /// </remarks>
+    /// <param name="key">要获取或设置的键 / The key to get or set.</param>
+    /// <value>与指定键关联的值 / The value associated with the specified key.</value>
+    /// <exception cref="ObjectDisposedException">在实例释放后执行 set 操作时抛出 / Thrown when performing a set operation after the instance has been disposed.</exception>
+    public override TValue this[TKey key]
+    {
+        get { return base[key]; }
+        set
+        {
+            if (_isDisposed)
+            {
+                throw new ObjectDisposedException(nameof(DisposableDictionary<TKey, TValue>));
+            }
+            base[key] = value;
+        }
+    }
+
+    /// <summary>
+    /// 向字典中添加指定的键值对。Dispose 之后调用将抛出 <see cref="ObjectDisposedException"/>。
+    /// </summary>
+    /// <remarks>
+    /// Adds the specified key and value to the dictionary. Throws <see cref="ObjectDisposedException"/> after the instance has been disposed.
+    /// </remarks>
+    /// <param name="key">要添加的键 / The key to add.</param>
+    /// <param name="value">要添加的值 / The value to add.</param>
+    /// <exception cref="ObjectDisposedException">在实例释放后调用时抛出 / Thrown when called after the instance has been disposed.</exception>
+    public override void Add(TKey key, TValue value)
+    {
+        if (_isDisposed)
+        {
+            throw new ObjectDisposedException(nameof(DisposableDictionary<TKey, TValue>));
+        }
+        base.Add(key, value);
+    }
+
+    /// <summary>
+    /// 从字典中移除指定键的值。Dispose 之后调用将抛出 <see cref="ObjectDisposedException"/>。
+    /// </summary>
+    /// <remarks>
+    /// Removes the value with the specified key from the dictionary. Throws <see cref="ObjectDisposedException"/> after the instance has been disposed.
+    /// </remarks>
+    /// <param name="key">要移除的键 / The key to remove.</param>
+    /// <returns>如果成功移除则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if the element is successfully removed; otherwise <c>false</c>.</returns>
+    /// <exception cref="ObjectDisposedException">在实例释放后调用时抛出 / Thrown when called after the instance has been disposed.</exception>
+    public override bool Remove(TKey key)
+    {
+        if (_isDisposed)
+        {
+            throw new ObjectDisposedException(nameof(DisposableDictionary<TKey, TValue>));
+        }
+        return base.Remove(key);
+    }
+
+    /// <summary>
+    /// 返回循环访问字典的枚举器。Dispose 之后调用将抛出 <see cref="ObjectDisposedException"/>。
+    /// </summary>
+    /// <remarks>
+    /// Returns an enumerator that iterates through the dictionary. Throws <see cref="ObjectDisposedException"/> after the instance has been disposed.
+    /// </remarks>
+    /// <returns>用于循环访问字典的枚举器 / An enumerator for the dictionary.</returns>
+    /// <exception cref="ObjectDisposedException">在实例释放后调用时抛出 / Thrown when called after the instance has been disposed.</exception>
+    public override Dictionary<NullObject<TKey>, TValue>.Enumerator GetEnumerator()
+    {
+        if (_isDisposed)
+        {
+            throw new ObjectDisposedException(nameof(DisposableDictionary<TKey, TValue>));
+        }
+        return base.GetEnumerator();
+    }
+
+    /// <summary>
     /// 释放资源。
     /// </summary>
     /// <remarks>
