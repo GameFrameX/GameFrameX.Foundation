@@ -70,7 +70,7 @@ public static class Sm2Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm2InvalidDataFormat), ex);
         }
     }
 
@@ -96,7 +96,7 @@ public static class Sm2Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm2InvalidDataFormat), ex);
         }
     }
 
@@ -140,7 +140,7 @@ public static class Sm2Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm2InvalidDataFormat), ex);
         }
     }
 
@@ -169,7 +169,7 @@ public static class Sm2Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm2InvalidDataFormat), ex);
         }
     }
 }

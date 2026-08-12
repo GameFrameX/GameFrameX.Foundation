@@ -81,6 +81,14 @@
     <value>Initialization Vector (IV) must be 16 hexadecimal characters (8 bytes).</value>
   </data>
 
+  <data name="Encryption.Exceptions.Sm2InvalidDataFormat" xml:space="preserve">
+    <value>Invalid SM2 input data format.</value>
+  </data>
+
+  <data name="Encryption.Exceptions.Sm4InvalidDataFormat" xml:space="preserve">
+    <value>Invalid SM4 input data format.</value>
+  </data>
+
   <!-- Log messages -->
   <data name="Encryption.Logs.EncryptionCompleted" xml:space="preserve">
     <value>{0} algorithm encryption completed, data length: {1} bytes.</value>

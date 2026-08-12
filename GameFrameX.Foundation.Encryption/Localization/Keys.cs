@@ -285,6 +285,28 @@ public static class LocalizationKeys
         /// Usage: SM4 algorithm requires IV to be 16 hexadecimal characters.
         /// </remarks>
         public const string IVMustBe16Characters = "Encryption.Exceptions.IVMustBe16Characters";
+
+        /// <summary>
+        /// SM2输入数据格式无效的错误消息。
+        /// </summary>
+        /// <remarks>
+        /// Error message for invalid SM2 input data format.
+        /// 键名: Encryption.Exceptions.Sm2InvalidDataFormat
+        /// 用途: 当SM2加密/解密时输入数据格式无效时使用
+        /// Usage: Used when SM2 input data format is invalid during encryption/decryption.
+        /// </remarks>
+        public const string Sm2InvalidDataFormat = "Encryption.Exceptions.Sm2InvalidDataFormat";
+
+        /// <summary>
+        /// SM4输入数据格式无效的错误消息。
+        /// </summary>
+        /// <remarks>
+        /// Error message for invalid SM4 input data format.
+        /// 键名: Encryption.Exceptions.Sm4InvalidDataFormat
+        /// 用途: 当SM4加密/解密时输入数据格式无效时使用
+        /// Usage: Used when SM4 input data format is invalid during encryption/decryption.
+        /// </remarks>
+        public const string Sm4InvalidDataFormat = "Encryption.Exceptions.Sm4InvalidDataFormat";
     }
 
     /// <summary>

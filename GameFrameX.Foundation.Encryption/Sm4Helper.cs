@@ -100,7 +100,7 @@ public static class Sm4Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm4InvalidDataFormat), ex);
         }
     }
 
@@ -156,7 +156,7 @@ public static class Sm4Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm4InvalidDataFormat), ex);
         }
     }
 
@@ -208,7 +208,7 @@ public static class Sm4Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm4InvalidDataFormat), ex);
         }
     }
 
@@ -260,7 +260,7 @@ public static class Sm4Helper
         }
         catch (IOException ex)
         {
-            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm4InvalidDataFormat), ex);
         }
     }
 }

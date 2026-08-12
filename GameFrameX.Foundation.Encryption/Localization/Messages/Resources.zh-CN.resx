@@ -81,6 +81,14 @@
     <value>初始化向量(IV)必须为16个十六进制字符（8字节）。</value>
   </data>
 
+  <data name="Encryption.Exceptions.Sm2InvalidDataFormat" xml:space="preserve">
+    <value>SM2 输入数据格式无效。</value>
+  </data>
+
+  <data name="Encryption.Exceptions.Sm4InvalidDataFormat" xml:space="preserve">
+    <value>SM4 输入数据格式无效。</value>
+  </data>
+
   <!-- 日志消息 -->
   <data name="Encryption.Logs.EncryptionCompleted" xml:space="preserve">
     <value>{0}算法加密完成，数据长度：{1}字节。</value>
