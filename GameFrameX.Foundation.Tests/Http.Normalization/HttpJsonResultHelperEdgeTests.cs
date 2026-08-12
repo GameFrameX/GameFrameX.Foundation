@@ -1,5 +1,6 @@
 using System.Text.Json;
 using GameFrameX.Foundation.Http.Normalization;
+using GameFrameX.Foundation.Json;
 using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Http.Normalization;
@@ -13,6 +14,63 @@ public sealed class HttpJsonResultHelperEdgeTests
     {
         public string Name { get; set; }
         public int Count { get; set; }
+    }
+
+    // === ToHttpJsonResult（data 字符串契约，2.8.x 兼容）===
+
+    [Fact]
+    public void ToHttpJsonResult_DataString_RoundTripsObject()
+    {
+        var payload = new Payload { Name = "alpha", Count = 7 };
+        var responseJson = HttpJsonResultData<string>.Success(JsonHelper.Serialize(payload)).ToString();
+
+        var result = responseJson.ToHttpJsonResult<Payload>();
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal("alpha", result.Data.Name);
+        Assert.Equal(7, result.Data.Count);
+    }
+
+    [Fact]
+    public void ToHttpJsonResult_FailedCode_PreservesCodeAndMessage()
+    {
+        var responseJson = HttpJsonResultData<string>.Fail(404, "missing").ToString();
+
+        var result = responseJson.ToHttpJsonResult<Payload>();
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(404, result.Code);
+        Assert.Equal("missing", result.Message);
+    }
+
+    [Fact]
+    public void ToHttpJsonResult_NullInput_ReturnsFailure()
+    {
+        var result = ((string)null).ToHttpJsonResult<Payload>();
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
+    }
+
+    [Fact]
+    public void ToHttpJsonResult_EmptyInput_ReturnsFailure()
+    {
+        var result = "".ToHttpJsonResult<Payload>();
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
+    }
+
+    [Fact]
+    public void ToHttpJsonResult_InvalidDataString_ReturnsFailure()
+    {
+        // data 是字符串但不是合法 JSON 对象 → Deserialize<Payload> 失败 → 返回失败码
+        var responseJson = HttpJsonResultData<string>.Success("not-a-json-object").ToString();
+
+        var result = responseJson.ToHttpJsonResult<Payload>();
+
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
     }
 
     // === 输入边界 ===
@@ -257,5 +315,106 @@ public sealed class HttpJsonResultHelperEdgeTests
         Assert.Contains("deserialize", conversion.ErrorMessage, StringComparison.OrdinalIgnoreCase);
         Assert.False(conversion.Result.IsSuccess);
         Assert.Null(conversion.Result.Data);
+    }
+
+    // === TryGet（bool + out 友好形式）===
+
+    [Fact]
+    public void TryGetHttpJsonResult_Success_ReturnsTrueAndDeserializedData()
+    {
+        // data 字段为合法 JSON 字符串 → 业务成功，out 含反序列化后的对象
+        var payload = new Payload { Name = "alpha", Count = 7 };
+        var responseJson = HttpJsonResultData<string>.Success(JsonHelper.Serialize(payload)).ToString();
+
+        var ok = responseJson.TryGetHttpJsonResult<Payload>(out var result);
+
+        Assert.True(ok);
+        Assert.True(result.IsSuccess);
+        Assert.Equal("alpha", result.Data.Name);
+        Assert.Equal(7, result.Data.Count);
+    }
+
+    [Fact]
+    public void TryGetHttpJsonResult_BusinessFailure_ReturnsFalseButPreservesCode()
+    {
+        // 业务失败（Code != 0）→ false，但 result 仍携带错误码与消息
+        var responseJson = HttpJsonResultData<string>.Fail(404, "missing").ToString();
+
+        var ok = responseJson.TryGetHttpJsonResult<Payload>(out var result);
+
+        Assert.False(ok);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(404, result.Code);
+        Assert.Equal("missing", result.Message);
+    }
+
+    [Fact]
+    public void TryGetHttpJsonResult_NullInput_ReturnsFalseWithFailCode()
+    {
+        var ok = ((string)null).TryGetHttpJsonResult<Payload>(out var result);
+
+        Assert.False(ok);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
+    }
+
+    [Fact]
+    public void TryGetHttpJsonResult_InvalidDataString_ReturnsFalseWithFailCode()
+    {
+        // data 字符串非合法 JSON → 反序列化失败 → false
+        var responseJson = HttpJsonResultData<string>.Success("not-a-json-object").ToString();
+
+        var ok = responseJson.TryGetHttpJsonResult<Payload>(out var result);
+
+        Assert.False(ok);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
+    }
+
+    [Fact]
+    public void TryGetHttpJsonResultData_Success_ReturnsTrueAndDeserializedData()
+    {
+        var responseJson = "{\"code\":0,\"data\":{\"Name\":\"x\",\"Count\":7}}";
+
+        var ok = responseJson.TryGetHttpJsonResultData<Payload>(out var result);
+
+        Assert.True(ok);
+        Assert.True(result.IsSuccess);
+        Assert.Equal("x", result.Data.Name);
+        Assert.Equal(7, result.Data.Count);
+    }
+
+    [Fact]
+    public void TryGetHttpJsonResultData_BusinessFailure_ReturnsFalseButPreservesCode()
+    {
+        // 业务失败（Code != 0）→ false，但 result 仍携带错误码与消息
+        var responseJson = "{\"code\":403,\"message\":\"forbidden\"}";
+
+        var ok = responseJson.TryGetHttpJsonResultData<Payload>(out var result);
+
+        Assert.False(ok);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(403, result.Code);
+        Assert.Equal("forbidden", result.Message);
+    }
+
+    [Fact]
+    public void TryGetHttpJsonResultData_NullInput_ReturnsFalseWithFailCode()
+    {
+        var ok = ((string)null).TryGetHttpJsonResultData<Payload>(out var result);
+
+        Assert.False(ok);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
+    }
+
+    [Fact]
+    public void TryGetHttpJsonResultData_MalformedJson_ReturnsFalseWithFailCode()
+    {
+        var ok = "{broken".TryGetHttpJsonResultData<Payload>(out var result);
+
+        Assert.False(ok);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(-1, result.Code);
     }
 }

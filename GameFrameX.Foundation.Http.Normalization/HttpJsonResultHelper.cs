@@ -45,6 +45,104 @@ namespace GameFrameX.Foundation.Http.Normalization;
 public static class HttpJsonResultHelper
 {
     /// <summary>
+    /// 将 data 字段为 JSON 字符串的响应解析为 <see cref="HttpJsonResultData{T}"/>（保持 2.8.x 的 data 字符串契约）。
+    /// </summary>
+    /// <remarks>
+    /// 与 <see cref="ToHttpJsonResultData{T}"/> 的区别：后者假设 data 字段为 JSON 对象（以 <see cref="JsonElement"/> 取值）；
+    /// 本方法面向 data 字段为 JSON 字符串的响应（2.8.x 非泛型 <c>HttpJsonResult</c> 生态）：
+    /// 先以外壳 <see cref="HttpJsonResultData{T}"/>（T=string）解析响应，再将 data 字符串反序列化为 <typeparamref name="T"/>。
+    /// 解析失败或 Code 非成功时返回带错误码的失败结果，不抛出异常。
+    /// </remarks>
+    /// <typeparam name="T">data 字符串反序列化的目标类型 / Target type to deserialize the data string into</typeparam>
+    /// <param name="jsonResult">需要转换的 JSON 响应字符串 / The JSON response string to convert</param>
+    /// <returns>包含反序列化 data 的响应对象；失败时 Code 为 <see cref="HttpJsonResultConstants.FailCode"/> / The response object with deserialized data; on failure, Code is <see cref="HttpJsonResultConstants.FailCode"/></returns>
+    public static HttpJsonResultData<T> ToHttpJsonResult<T>(this string jsonResult)
+    {
+        if (string.IsNullOrEmpty(jsonResult))
+        {
+            return new HttpJsonResultData<T>
+            {
+                Code = HttpJsonResultConstants.FailCode,
+                Message = "Empty response.",
+            };
+        }
+
+        HttpJsonResultData<string> shell;
+        try
+        {
+            shell = JsonHelper.Deserialize<HttpJsonResultData<string>>(jsonResult);
+        }
+        catch (Exception)
+        {
+            return new HttpJsonResultData<T>
+            {
+                Code = HttpJsonResultConstants.FailCode,
+                Message = "Failed to deserialize response shell.",
+            };
+        }
+
+        if (shell == null)
+        {
+            return new HttpJsonResultData<T>
+            {
+                Code = HttpJsonResultConstants.FailCode,
+                Message = "Failed to deserialize response shell.",
+            };
+        }
+
+        if (!shell.IsSuccess)
+        {
+            return new HttpJsonResultData<T>
+            {
+                Code = shell.Code,
+                Message = shell.Message,
+            };
+        }
+
+        T data = default;
+        if (!string.IsNullOrEmpty(shell.Data))
+        {
+            try
+            {
+                data = JsonHelper.Deserialize<T>(shell.Data);
+            }
+            catch (Exception)
+            {
+                return new HttpJsonResultData<T>
+                {
+                    Code = HttpJsonResultConstants.FailCode,
+                    Message = "Failed to deserialize response data.",
+                };
+            }
+        }
+
+        return new HttpJsonResultData<T>
+        {
+            Code = shell.Code,
+            Message = shell.Message,
+            Data = data,
+        };
+    }
+
+    /// <summary>
+    /// 尝试将 data 字段为 JSON 字符串的响应解析为 <see cref="HttpJsonResultData{T}"/>，返回业务是否成功。
+    /// </summary>
+    /// <remarks>
+    /// <see cref="TryGetHttpJsonResultData{T}"/> 的 data 字符串契约版本，调用更友好：
+    /// 业务成功（Code 为成功码）时返回 <c>true</c> 且 <paramref name="result"/> 含反序列化后的 data；
+    /// 解析失败或业务失败时返回 <c>false</c>，<paramref name="result"/> 仍携带错误码与消息，不抛出异常。
+    /// </remarks>
+    /// <typeparam name="T">data 字符串反序列化的目标类型 / Target type to deserialize the data string into</typeparam>
+    /// <param name="jsonResult">需要转换的 JSON 响应字符串 / The JSON response string to convert</param>
+    /// <param name="result">转换结果；成功时含 data，失败时含错误码与消息 / The conversion result; contains data on success, error code and message on failure</param>
+    /// <returns>业务是否成功（Code 为成功码）/ Whether the business request succeeded (Code is the success code)</returns>
+    public static bool TryGetHttpJsonResult<T>(this string jsonResult, out HttpJsonResultData<T> result)
+    {
+        result = jsonResult.ToHttpJsonResult<T>();
+        return result.IsSuccess;
+    }
+
+    /// <summary>
     /// 将JSON字符串转换为HttpJsonResultData对象。
     /// </summary>
     /// <remarks>
@@ -70,6 +168,25 @@ public static class HttpJsonResultHelper
         {
             Code = HttpJsonResultConstants.FailCode,
         };
+    }
+
+    /// <summary>
+    /// 尝试将JSON字符串转换为 <see cref="HttpJsonResultData{T}"/>，返回业务是否成功。
+    /// </summary>
+    /// <remarks>
+    /// <see cref="ToHttpJsonResultData{T}"/> 的 Try 形式，调用更友好：
+    /// 业务成功（Code 为成功码）时返回 <c>true</c> 且 <paramref name="result"/> 含反序列化后的 data；
+    /// 解析失败或业务失败时返回 <c>false</c>，<paramref name="result"/> 仍携带错误码与消息，不抛出异常。
+    /// </remarks>
+    /// <typeparam name="T">泛型参数T，表示要反序列化的目标类型 / Generic parameter T representing the target type to deserialize</typeparam>
+    /// <param name="jsonResult">需要转换的JSON字符串 / The JSON string to convert</param>
+    /// <param name="result">转换结果；成功时含 data，失败时含错误码与消息 / The conversion result; contains data on success, error code and message on failure</param>
+    /// <returns>业务是否成功（Code 为成功码）/ Whether the business request succeeded (Code is the success code)</returns>
+    public static bool TryGetHttpJsonResultData<T>(this string jsonResult, out HttpJsonResultData<T> result)
+    {
+        var conversion = jsonResult.TryToHttpJsonResultData<T>();
+        result = conversion.Result;
+        return result.IsSuccess;
     }
 
     /// <summary>

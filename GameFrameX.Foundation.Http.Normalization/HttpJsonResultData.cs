@@ -59,7 +59,10 @@ public sealed class HttpJsonResultData<T> : IHttpJsonResult
     /// </remarks>
     /// <value>如果成功则为 <c>true</c>；否则为 <c>false</c> / <c>true</c> if successful; otherwise <c>false</c></value>
     [JsonIgnore]
-    public bool IsSuccess => Code == HttpJsonResultConstants.SuccessCode;
+    public bool IsSuccess
+    {
+        get { return Code == HttpJsonResultConstants.SuccessCode; }
+    }
 
     /// <summary>
     /// 获取或设置响应码。
