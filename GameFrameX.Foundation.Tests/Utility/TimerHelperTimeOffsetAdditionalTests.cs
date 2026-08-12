@@ -7,7 +7,7 @@ namespace GameFrameX.Foundation.Tests.Utility
     /// <summary>
     /// TimerHelper.TimeOffset.UTC.cs / TimeOffset.TimeZone.cs 单元测试：
     /// 覆盖 UnixTimeSecondsWithOffset / UnixTimeMillisecondsWithOffset（已废弃但保留）以及
-    /// UnixTimeSecondsWithOffsetWithTimeZone / UnixTimeMillisecondsWithOffsetWithTimeZone。
+    /// UnixTimeSecondsWithTimeZoneOffset / UnixTimeMillisecondsWithTimeZoneOffset。
     /// </summary>
 #pragma warning disable CS0618 // 测试故意调用已废弃的 UnixTimeSecondsWithOffset / UnixTimeMillisecondsWithOffset
     [Collection("TimerHelper")]
@@ -87,62 +87,32 @@ namespace GameFrameX.Foundation.Tests.Utility
 
         #endregion
 
-        #region UnixTimeSecondsWithOffsetWithTimeZone / UnixTimeMillisecondsWithOffsetWithTimeZone
+        #region UnixTimeSecondsWithTimeZoneOffset / UnixTimeMillisecondsWithTimeZoneOffset
 
         [Fact]
-        public void UnixTimeSecondsWithOffsetWithTimeZone_WithUtcZone_ShouldEqualUtcVersion()
+        public void UnixTimeSecondsWithTimeZoneOffset_WithPlus8_ShouldBeStableWithinAbsoluteInstant()
         {
-            // 当前时区为 UTC，GetNowWithTimeZone == GetNowWithUtc，所以两套结果相同
-            Assert.Equal(TimerHelper.UnixTimeSecondsWithOffset(),
-                TimerHelper.UnixTimeSecondsWithOffsetWithTimeZone());
-            Assert.Equal(TimerHelper.UnixTimeMillisecondsWithOffset(),
-                TimerHelper.UnixTimeMillisecondsWithOffsetWithTimeZone());
-        }
-
-        [Fact]
-        public void UnixTimeSecondsWithOffsetWithTimeZone_WithPlus8_ShouldBeStableWithinAbsoluteInstant()
-        {
-            // 该方法内部使用 new DateTimeOffset(GetNowWithTimeZone())，DateTimeOffset 构造会用 Local 偏移
-            // 所以这里只验证 TimeOffset 能正确叠加；不与 baseline 绝对比较以避免 Local 时区依赖
+            // 验证 TimeOffset 能正确叠加；不与 baseline 绝对比较以避免环境差异
             var zone = TimeZoneInfo.CreateCustomTimeZone("Test+8", TimeSpan.FromHours(8), "Test+8", "Test+8");
             TimerHelper.SetTimeZone(zone);
-            var baseline = TimerHelper.UnixTimeSecondsWithOffsetWithTimeZone();
+            var baseline = TimerHelper.UnixTimeSecondsWithTimeZoneOffset();
 
             TimerHelper.SetTimeOffset(500L, 500000L);
 
-            Assert.Equal(baseline + 500L, TimerHelper.UnixTimeSecondsWithOffsetWithTimeZone());
+            Assert.Equal(baseline + 500L, TimerHelper.UnixTimeSecondsWithTimeZoneOffset());
         }
 
         [Fact]
-        public void UnixTimeSecondsWithOffsetWithTimeZone_ShouldApplyTimeOffset()
+        public void UnixTimeMillisecondsWithTimeZoneOffset_WithPlus8_ShouldBeStableWithinAbsoluteInstant()
         {
-            TimerHelper.SetTimeOffset(100L, 100000L);
-            var baseline = new DateTimeOffset(FixedUtcNow).ToUnixTimeSeconds();
-
-            Assert.Equal(baseline + 100L, TimerHelper.UnixTimeSecondsWithOffsetWithTimeZone());
-        }
-
-        [Fact]
-        public void UnixTimeMillisecondsWithOffsetWithTimeZone_ShouldApplyTimeOffset()
-        {
-            TimerHelper.SetTimeOffset(0L, 999L);
-            var baseline = new DateTimeOffset(FixedUtcNow).ToUnixTimeMilliseconds();
-
-            Assert.Equal(baseline + 999L, TimerHelper.UnixTimeMillisecondsWithOffsetWithTimeZone());
-        }
-
-        [Fact]
-        public void UnixTimeMillisecondsWithOffsetWithTimeZone_WithPlus8_ShouldBeStableWithinAbsoluteInstant()
-        {
-            // 该方法内部使用 new DateTimeOffset(GetNowWithTimeZone())，DateTimeOffset 构造会用 Local 偏移
-            // 所以这里只验证 TimeOffset 能正确叠加；不与 baseline 绝对比较以避免 Local 时区依赖
+            // 验证 TimeOffset 能正确叠加；不与 baseline 绝对比较以避免环境差异
             var zone = TimeZoneInfo.CreateCustomTimeZone("Test+8", TimeSpan.FromHours(8), "Test+8", "Test+8");
             TimerHelper.SetTimeZone(zone);
-            var baseline = TimerHelper.UnixTimeMillisecondsWithOffsetWithTimeZone();
+            var baseline = TimerHelper.UnixTimeMillisecondsWithTimeZoneOffset();
 
             TimerHelper.SetTimeOffset(0L, 1234L);
 
-            Assert.Equal(baseline + 1234L, TimerHelper.UnixTimeMillisecondsWithOffsetWithTimeZone());
+            Assert.Equal(baseline + 1234L, TimerHelper.UnixTimeMillisecondsWithTimeZoneOffset());
         }
 
         #endregion
