@@ -184,10 +184,10 @@ public sealed class CommandLineArgumentConverter
             {
                 var arg = args[i];
 
-                // 如果参数为null，跳过
+                // 命令行参数不能包含 null 元素，直接拒绝（Main 的 args 不会有 null，这里是防御性校验）
                 if (arg == null)
                 {
-                    continue;
+                    throw new ArgumentException("命令行参数不能包含 null 元素 (Command-line arguments cannot contain null elements).", nameof(args));
                 }
 
                 // 处理键值对格式 (--key=value)
@@ -212,6 +212,11 @@ public sealed class CommandLineArgumentConverter
             }
 
             return result;
+        }
+        catch (ArgumentException)
+        {
+            // 参数校验异常直接穿透，不被包装为通用处理错误
+            throw;
         }
         catch (Exception ex)
         {
@@ -313,10 +318,10 @@ public sealed class CommandLineArgumentConverter
 
         var nextArg = args[currentIndex + 1];
 
-        // 如果下一个参数是null，则当前参数被视为布尔标志（没有值）
+        // 下一个参数为 null 是非法输入（防御性：Main 的 args 不会有 null）
         if (nextArg == null)
         {
-            return currentIndex + 1;
+            throw new ArgumentException("命令行参数不能包含 null 元素 (Command-line arguments cannot contain null elements).", nameof(args));
         }
 
         // 如果下一个参数是选项（以-开头），不作为值消耗

@@ -257,22 +257,17 @@ namespace GameFrameX.Foundation.Tests.Options
         }
 
         /// <summary>
-        /// 测试包含 null 参数
+        /// 测试包含 null 元素的参数数组应被拒绝（null 元素是非法输入）
         /// </summary>
         [Fact]
-        public void Build_WithNullArgValues_ShouldHandleCorrectly()
+        public void Build_WithNullArgValues_ShouldThrowArgumentException()
         {
-            // 准备测试数据
+            // 准备测试数据 —— args 数组含 null 元素
             var args = new[] { "--host", null, "--port", "9090" };
 
-            // 执行测试
+            // 执行 & 验证 —— null 元素非法，Build 经 ConvertToStandardFormat 拒绝
             var builder = new OptionsBuilder<TestConfig>(args);
-            var config = builder.Build();
-
-            // 验证结果
-            Assert.NotNull(config);
-            Assert.Equal("localhost", config.Host); // 默认值
-            Assert.Equal(9090, config.Port);
+            Assert.Throws<ArgumentException>(() => builder.Build());
         }
     }
 }
