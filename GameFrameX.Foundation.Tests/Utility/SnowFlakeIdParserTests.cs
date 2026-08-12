@@ -3,6 +3,7 @@ using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Utility;
 
+[Collection("Snowflake")]
 public sealed class SnowFlakeIdParserTests
 {
     private const long TestBaseTime = IdWorker.DefaultBaseTime;

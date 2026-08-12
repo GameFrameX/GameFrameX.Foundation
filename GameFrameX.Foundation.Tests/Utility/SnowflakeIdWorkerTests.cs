@@ -4,6 +4,7 @@ using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Utility;
 
+[Collection("Snowflake")]
 public sealed class SnowflakeIdWorkerTests
 {
     private static IdWorker CreateWorker(long workerId = 1, long dataCenterId = 1)

@@ -76,6 +76,10 @@ public static class SnowFlakeIdParser
     /// <returns>解析结果 / The parsed result</returns>
     public static SnowFlakeIdInfo Parse(long id, long baseTimeMs)
     {
+        if (id < 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(id), id, "Snowflake ID must be non-negative.");
+        }
         var timestamp = (id >> TimestampLeftShift) + baseTimeMs;
         var dataCenterId = (id >> DatacenterIdShift) & DatacenterIdMask;
         var workerId = (id >> WorkerIdShift) & WorkerIdMask;

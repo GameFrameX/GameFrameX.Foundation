@@ -1,14 +1,15 @@
 /*
+
 using System;
 using GameFrameX.Foundation.Utility;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace GameFrameX.Foundation.Tests.Utility
 {
     /// <summary>
     /// TimerHelper 时区功能测试
     /// </summary>
+    [Collection("TimerHelper")]
     public class TimerHelperTimeZoneTests : IDisposable
     {
         private readonly ITestOutputHelper _output;
