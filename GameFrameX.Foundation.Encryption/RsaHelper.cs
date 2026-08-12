@@ -31,6 +31,7 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using System.Buffers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Generic;
@@ -167,23 +168,44 @@ public sealed class RsaHelper : IDisposable
 
             var dataToEncrypt = Encoding.UTF8.GetBytes(content);
 
-            // OAEP-SHA256 最大明文块：KeySize/8 - 2*32 - 2（C-05 修复）
-            int bufferSize = (rsa.KeySize / 8) - 66;
-            using (var outputStream = new MemoryStream())
-            {
-                int offset = 0;
-                while (offset < dataToEncrypt.Length)
-                {
-                    int currentBlockSize = Math.Min(bufferSize, dataToEncrypt.Length - offset);
-                    var chunk = new byte[currentBlockSize];
-                    Array.Copy(dataToEncrypt, offset, chunk, 0, currentBlockSize);
-                    // C-05 修复：使用 OaepSHA256 替代 Pkcs1（Bleichenbacher 攻击防护）
-                    var encryptedChunk = rsa.Encrypt(chunk, RSAEncryptionPadding.OaepSHA256);
-                    outputStream.Write(encryptedChunk, 0, encryptedChunk.Length);
-                    offset += currentBlockSize;
-                }
+            // OAEP-SHA256：明文块上限 = KeySize/8 - 2*32 - 2；密文块固定 = KeySize/8（C-05 修复）
+            int plainBlockSize = (rsa.KeySize / 8) - 66;
+            int cipherBlockSize = rsa.KeySize / 8;
 
-                return Convert.ToBase64String(outputStream.ToArray());
+            // 出租一个密文块缓冲并在循环内反复复用，省去每轮 new byte[] + Array.Copy + rsa.Encrypt 返回的临时数组。
+            // Rent one cipher-block buffer and reuse it across iterations, avoiding per-iteration
+            // new byte[] + Array.Copy + the temporary array returned by rsa.Encrypt.
+            var cipherBlock = ArrayPool<byte>.Shared.Rent(cipherBlockSize);
+            try
+            {
+                using (var outputStream = new MemoryStream())
+                {
+                    int offset = 0;
+                    while (offset < dataToEncrypt.Length)
+                    {
+                        int currentBlockSize = Math.Min(plainBlockSize, dataToEncrypt.Length - offset);
+                        // C-05 修复：使用 OaepSHA256 替代 Pkcs1（Bleichenbacher 攻击防护）
+                        // C-05 fix: OaepSHA256 instead of Pkcs1 (Bleichenbacher mitigation);
+                        // Span 重载直接从 dataToEncrypt 切片读取并写入复用的 cipherBlock，无需 chunk 临时数组。
+                        // span overload reads a slice of dataToEncrypt into the reused cipherBlock, no chunk temp.
+                        int written = rsa.Encrypt(
+                            dataToEncrypt.AsSpan(offset, currentBlockSize),
+                            cipherBlock.AsSpan(0, cipherBlockSize),
+                            RSAEncryptionPadding.OaepSHA256);
+                        outputStream.Write(cipherBlock, 0, written);
+                        offset += currentBlockSize;
+                    }
+
+                    // GetBuffer 直接取底层缓冲，省去 ToArray 的末尾一次复制。
+                    // GetBuffer returns the underlying buffer, avoiding ToArray's final copy.
+                    return Convert.ToBase64String(outputStream.GetBuffer(), 0, (int)outputStream.Length);
+                }
+            }
+            finally
+            {
+                // 清零后归还，避免密文残留被池的下个租用者读到。
+                // Clear before returning so ciphertext remnants aren't exposed to the next pool renter.
+                ArrayPool<byte>.Shared.Return(cipherBlock, clearArray: true);
             }
         }
     }
@@ -217,22 +239,42 @@ public sealed class RsaHelper : IDisposable
 
             var dataToDecrypt = Convert.FromBase64String(content);
 
-            int bufferSize = rsa.KeySize / 8;
-            using (var outputStream = new MemoryStream())
-            {
-                int offset = 0;
-                while (offset < dataToDecrypt.Length)
-                {
-                    int currentBlockSize = Math.Min(bufferSize, dataToDecrypt.Length - offset);
-                    var chunk = new byte[currentBlockSize];
-                    Array.Copy(dataToDecrypt, offset, chunk, 0, currentBlockSize);
-                    // C-05 修复：使用 OaepSHA256
-                    var decryptedChunk = rsa.Decrypt(chunk, RSAEncryptionPadding.OaepSHA256);
-                    outputStream.Write(decryptedChunk, 0, decryptedChunk.Length);
-                    offset += currentBlockSize;
-                }
+            // OAEP-SHA256：密文块固定 = KeySize/8；解密明文上限 = KeySize/8 - 2*32 - 2
+            int cipherBlockSize = rsa.KeySize / 8;
+            int maxPlainBlockSize = cipherBlockSize - 66;
 
-                return Encoding.UTF8.GetString(outputStream.ToArray());
+            // 出租一个明文块缓冲并在循环内反复复用，省去每轮 new byte[] + Array.Copy + rsa.Decrypt 返回的临时数组。
+            // Rent one plaintext-block buffer and reuse it across iterations, avoiding per-iteration
+            // new byte[] + Array.Copy + the temporary array returned by rsa.Decrypt.
+            var plainBlock = ArrayPool<byte>.Shared.Rent(maxPlainBlockSize);
+            try
+            {
+                using (var outputStream = new MemoryStream())
+                {
+                    int offset = 0;
+                    while (offset < dataToDecrypt.Length)
+                    {
+                        int currentBlockSize = Math.Min(cipherBlockSize, dataToDecrypt.Length - offset);
+                        // C-05 修复：使用 OaepSHA256；Span 重载直接读取密文切片并写入复用的 plainBlock。
+                        // C-05 fix: OaepSHA256; span overload reads a ciphertext slice into the reused plainBlock.
+                        int written = rsa.Decrypt(
+                            dataToDecrypt.AsSpan(offset, currentBlockSize),
+                            plainBlock.AsSpan(0, maxPlainBlockSize),
+                            RSAEncryptionPadding.OaepSHA256);
+                        outputStream.Write(plainBlock, 0, written);
+                        offset += currentBlockSize;
+                    }
+
+                    // GetBuffer 省去 ToArray 的末尾复制；GetString 三参形式仅读 [0, Length)。
+                    // GetBuffer avoids ToArray's final copy; the 3-arg GetString reads only [0, Length).
+                    return Encoding.UTF8.GetString(outputStream.GetBuffer(), 0, (int)outputStream.Length);
+                }
+            }
+            finally
+            {
+                // 解密明文属敏感数据，清零后归还，避免明文残留被池的下个租用者读到。
+                // Decrypted plaintext is sensitive; clear before returning so it isn't exposed to the next pool renter.
+                ArrayPool<byte>.Shared.Return(plainBlock, clearArray: true);
             }
         }
     }
