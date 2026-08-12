@@ -97,7 +97,7 @@ public static class Sha1Helper
         using (var sha1 = SHA1.Create())
         {
             var hash = sha1.ComputeHash(buffer);
-            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            return Convert.ToHexString(hash).ToLowerInvariant();
         }
     }
 
@@ -154,7 +154,7 @@ public static class Sha1Helper
             using (var fs = File.OpenRead(filePath))
             {
                 var hash = sha1.ComputeHash(fs);
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                return Convert.ToHexString(hash).ToLowerInvariant();
             }
         }
     }

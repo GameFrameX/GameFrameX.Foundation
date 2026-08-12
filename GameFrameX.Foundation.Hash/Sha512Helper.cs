@@ -78,7 +78,7 @@ public static class Sha512Helper
         using (var sha512 = SHA512.Create())
         {
             var hash = sha512.ComputeHash(buffer);
-            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            return Convert.ToHexString(hash).ToLowerInvariant();
         }
     }
 
@@ -130,7 +130,7 @@ public static class Sha512Helper
             using (var fs = File.OpenRead(filePath))
             {
                 var hash = sha512.ComputeHash(fs);
-                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+                return Convert.ToHexString(hash).ToLowerInvariant();
             }
         }
     }
