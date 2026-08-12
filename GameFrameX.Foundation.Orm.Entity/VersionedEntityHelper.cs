@@ -32,6 +32,8 @@
 // ==========================================================================================
 
 using System;
+using GameFrameX.Foundation.Localization.Core;
+using GameFrameX.Foundation.Orm.Entity.Localization;
 
 namespace GameFrameX.Foundation.Orm.Entity
 {
@@ -89,7 +91,7 @@ namespace GameFrameX.Foundation.Orm.Entity
             if (entity.RowVersion != expectedRowVersion)
             {
                 throw new InvalidOperationException(
-                    $"行版本冲突：期望行版本 {expectedRowVersion}，实际行版本 {entity.RowVersion}。/ Row version conflict: expected {expectedRowVersion}, actual {entity.RowVersion}.");
+                    LocalizationService.GetString(LocalizationKeys.Exceptions.RowVersionConflict, expectedRowVersion, entity.RowVersion));
             }
         }
     }

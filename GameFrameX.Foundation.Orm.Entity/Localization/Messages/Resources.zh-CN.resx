@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Orm.Entity 模块异常消息 -->
+  <data name="Orm.Entity.Exceptions.RowVersionConflict" xml:space="preserve">
+    <value>行版本冲突：期望行版本 {0}，实际行版本 {1}。</value>
+  </data>
+</root>

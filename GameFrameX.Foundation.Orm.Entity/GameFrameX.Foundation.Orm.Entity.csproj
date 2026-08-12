@@ -24,5 +24,11 @@
     <ItemGroup>
         <ProjectReference Include="..\GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj"/>
     </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Localization\Messages\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GameFrameX.Foundation.Localization\GameFrameX.Foundation.Localization.csproj" />
+    </ItemGroup>
 
 </Project>

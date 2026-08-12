@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Orm.Entity module exception messages -->
+  <data name="Orm.Entity.Exceptions.RowVersionConflict" xml:space="preserve">
+    <value>Row version conflict: expected {0}, actual {1}.</value>
+  </data>
+</root>
