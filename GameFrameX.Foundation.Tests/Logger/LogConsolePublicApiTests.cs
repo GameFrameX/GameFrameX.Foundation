@@ -45,8 +45,10 @@ namespace GameFrameX.Foundation.Tests.Logger
         [Fact]
         public void SetFrameLength_WithPositiveValue_ShouldNotThrow()
         {
-            LogHelper.SetFrameLength(80);
+            var exception = Record.Exception(() => LogHelper.SetFrameLength(80));
+
             // 不抛异常即为通过。
+            Assert.Null(exception);
         }
 
         [Theory]
@@ -61,7 +63,9 @@ namespace GameFrameX.Foundation.Tests.Logger
         [Fact]
         public void SetFrameLength_WithLargeValue_ShouldNotThrow()
         {
-            LogHelper.SetFrameLength(500);
+            var exception = Record.Exception(() => LogHelper.SetFrameLength(500));
+
+            Assert.Null(exception);
         }
 
         // ============================================================
