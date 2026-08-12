@@ -109,6 +109,61 @@ public static class HttpClientDeleteExtension
     }
 
     /// <summary>
+    /// 发送DELETE请求，并将响应内容读取为流。
+    /// </summary>
+    /// <remarks>
+    /// Sends a DELETE request and reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<Stream> DeleteToStreamAsync(this HttpClient httpClient, string url, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
+        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
+        using var request = new HttpRequestMessage(HttpMethod.Delete, url);
+        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cancellationToken);
+    }
+
+    /// <summary>
+    /// 发送DELETE请求，并将响应内容读取为流。
+    /// </summary>
+    /// <remarks>
+    /// Sends a DELETE request with custom headers and reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<Stream> DeleteToStreamAsync(this HttpClient httpClient, string url, IDictionary<string, string> headers, int timeout = 10, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+
+        var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
+
+        using var request = CreateDeleteRequest(url, headers);
+        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
+        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
+        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+    }
+
+    /// <summary>
     /// 创建DELETE请求消息。
     /// </summary>
     /// <remarks>

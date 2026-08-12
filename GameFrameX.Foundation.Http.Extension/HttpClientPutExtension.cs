@@ -215,6 +215,181 @@ public static class HttpClientPutExtension
     }
 
     /// <summary>
+    /// 发送PUT请求，使用自定义序列化选项将JSON数据序列化后发送，并将响应内容读取为字符串。
+    /// </summary>
+    /// <remarks>
+    /// Sends a PUT request with JSON serialized data using custom serialization options and reads the response content as a string.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<string> PutJsonToStringAsync<TValue>(this HttpClient httpClient, string url, TValue data, JsonSerializerOptions jsonSerializerOptions, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+        using var request = CreatePutRequest(url, data, jsonSerializerOptions);
+        using var response = await httpClient.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// 发送PUT请求，使用自定义请求头和序列化选项将JSON数据序列化后发送，并将响应内容读取为字符串。
+    /// </summary>
+    /// <remarks>
+    /// Sends a PUT request with JSON serialized data, custom headers and serialization options, then reads the response content as a string.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字符串形式 / The response content as a string</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<string> PutJsonToStringAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, JsonSerializerOptions jsonSerializerOptions, int timeout = 10, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+
+        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
+
+        using var request = CreatePutRequest(url, data, headers, jsonSerializerOptions);
+        using var response = await httpClient.SendAsync(request, cts.Token);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStringAsync(cts.Token);
+    }
+
+    /// <summary>
+    /// 发送PUT请求，使用自定义序列化选项将JSON数据序列化后发送，并将响应内容读取为字节数组。
+    /// </summary>
+    /// <remarks>
+    /// Sends a PUT request with JSON serialized data using custom serialization options and reads the response content as a byte array.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字节数组形式 / The response content as a byte array</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<byte[]> PutJsonToByteArrayAsync<TValue>(this HttpClient httpClient, string url, TValue data, JsonSerializerOptions jsonSerializerOptions, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+        using var request = CreatePutRequest(url, data, jsonSerializerOptions);
+        using var response = await httpClient.SendAsync(request, cancellationToken);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+    }
+
+    /// <summary>
+    /// 发送PUT请求，使用自定义请求头和序列化选项将JSON数据序列化后发送，并将响应内容读取为字节数组。
+    /// </summary>
+    /// <remarks>
+    /// Sends a PUT request with JSON serialized data, custom headers and serialization options, then reads the response content as a byte array.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的字节数组形式 / The response content as a byte array</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<byte[]> PutJsonToByteArrayAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, JsonSerializerOptions jsonSerializerOptions, int timeout = 10, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+
+        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
+
+        using var request = CreatePutRequest(url, data, headers, jsonSerializerOptions);
+        using var response = await httpClient.SendAsync(request, cts.Token);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsByteArrayAsync(cts.Token);
+    }
+
+    /// <summary>
+    /// 发送PUT请求，使用自定义序列化选项将JSON数据序列化后发送，并将响应内容读取为流。
+    /// </summary>
+    /// <remarks>
+    /// Sends a PUT request with JSON serialized data using custom serialization options and reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<Stream> PutJsonToStreamAsync<TValue>(this HttpClient httpClient, string url, TValue data, JsonSerializerOptions jsonSerializerOptions, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
+        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
+        using var request = CreatePutRequest(url, data, jsonSerializerOptions);
+        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cancellationToken);
+    }
+
+    /// <summary>
+    /// 发送PUT请求，使用自定义请求头和序列化选项将JSON数据序列化后发送，并将响应内容读取为流。
+    /// </summary>
+    /// <remarks>
+    /// Sends a PUT request with JSON serialized data, custom headers and serialization options, then reads the response content as a stream.
+    /// Note: The caller is responsible for disposing the returned stream.
+    /// </remarks>
+    /// <typeparam name="TValue">要发送的数据类型 / The type of data to send</typeparam>
+    /// <param name="httpClient">HttpClient实例 / The HttpClient instance</param>
+    /// <param name="url">请求URL / The request URL</param>
+    /// <param name="data">要发送的数据 / The data to send</param>
+    /// <param name="headers">请求头字典 / The request headers dictionary</param>
+    /// <param name="jsonSerializerOptions">JSON序列化选项 / The JSON serialization options</param>
+    /// <param name="timeout">超时时间(秒)，默认10秒 / Timeout in seconds, default is 10 seconds</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token</param>
+    /// <returns>响应内容的流形式，调用方需负责释放 / The response content as a stream; the caller must dispose it</returns>
+    /// <exception cref="ArgumentNullException">当 <paramref name="httpClient"/> 或 <paramref name="url"/> 为 null 时抛出 / Thrown when <paramref name="httpClient"/> or <paramref name="url"/> is null</exception>
+    /// <exception cref="ArgumentException">当 <paramref name="url"/> 为空字符串或空白字符串时抛出 / Thrown when <paramref name="url"/> is empty or whitespace</exception>
+    /// <exception cref="HttpRequestException">当HTTP响应状态码表示失败时抛出 / Thrown when the HTTP response status code indicates failure</exception>
+    public static async Task<Stream> PutJsonToStreamAsync<TValue>(this HttpClient httpClient, string url, TValue data, IDictionary<string, string> headers, JsonSerializerOptions jsonSerializerOptions, int timeout = 10, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
+        ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
+
+        var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
+
+        using var request = CreatePutRequest(url, data, headers, jsonSerializerOptions);
+        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
+        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
+        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+    }
+
+    /// <summary>
     /// 创建PUT请求消息（带JSON内容）。
     /// </summary>
     /// <remarks>
