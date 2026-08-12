@@ -166,7 +166,8 @@ public sealed class PartitionTableAttribute : System.Attribute
     /// <exception cref="ArgumentNullException">当 <paramref name="partitionKey"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="partitionKey"/> is <c>null</c></exception>
     public PartitionTableAttribute(string partitionKey, PartitionType partitionType)
     {
-        PartitionKey = partitionKey ?? throw new ArgumentNullException(nameof(partitionKey));
+        ArgumentException.ThrowIfNullOrWhiteSpace(partitionKey, nameof(partitionKey));
+        PartitionKey = partitionKey;
         PartitionType = partitionType;
     }
 
@@ -182,7 +183,8 @@ public sealed class PartitionTableAttribute : System.Attribute
     /// <exception cref="ArgumentNullException">当 <paramref name="partitionKey"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="partitionKey"/> is <c>null</c></exception>
     public PartitionTableAttribute(string partitionKey, PartitionType partitionType, PartitionInterval interval)
     {
-        PartitionKey = partitionKey ?? throw new ArgumentNullException(nameof(partitionKey));
+        ArgumentException.ThrowIfNullOrWhiteSpace(partitionKey, nameof(partitionKey));
+        PartitionKey = partitionKey;
         PartitionType = partitionType;
         Interval = interval;
     }
@@ -199,8 +201,13 @@ public sealed class PartitionTableAttribute : System.Attribute
     /// <exception cref="ArgumentNullException">当 <paramref name="partitionKey"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="partitionKey"/> is <c>null</c></exception>
     public PartitionTableAttribute(string partitionKey, PartitionType partitionType, int partitionCount)
     {
-        PartitionKey = partitionKey ?? throw new ArgumentNullException(nameof(partitionKey));
+        ArgumentException.ThrowIfNullOrWhiteSpace(partitionKey, nameof(partitionKey));
+        PartitionKey = partitionKey;
         PartitionType = partitionType;
+        if (partitionCount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(partitionCount), partitionCount, "Partition count must be positive.");
+        }
         PartitionCount = partitionCount;
     }
 }

@@ -150,6 +150,7 @@ public sealed class ImportExportAttribute : System.Attribute
     /// <exception cref="ArgumentNullException">当 <paramref name="displayName"/> 为 <c>null</c> 时抛出 / Thrown when <paramref name="displayName"/> is <c>null</c></exception>
     public ImportExportAttribute(string displayName)
     {
-        DisplayName = displayName ?? throw new ArgumentNullException(nameof(displayName));
+        ArgumentException.ThrowIfNullOrWhiteSpace(displayName, nameof(displayName));
+        DisplayName = displayName;
     }
 }

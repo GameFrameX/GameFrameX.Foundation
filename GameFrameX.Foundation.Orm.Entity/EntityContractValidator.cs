@@ -39,55 +39,6 @@ using System.Reflection;
 namespace GameFrameX.Foundation.Orm.Entity
 {
     /// <summary>
-    /// 实体契约违反记录。
-    /// </summary>
-    /// <remarks>
-    /// Represents a single entity contract violation.
-    /// </remarks>
-    public sealed class EntityContractViolation
-    {
-        /// <summary>
-        /// 获取违反契约的接口类型。
-        /// </summary>
-        /// <remarks>
-        /// Gets the interface type that was violated.
-        /// </remarks>
-        public Type InterfaceType { get; }
-
-        /// <summary>
-        /// 获取缺失或类型不匹配的属性名称。
-        /// </summary>
-        /// <remarks>
-        /// Gets the property name that is missing or has a mismatched type.
-        /// </remarks>
-        public string PropertyName { get; }
-
-        /// <summary>
-        /// 获取违反原因。
-        /// </summary>
-        /// <remarks>
-        /// Gets the reason for the violation.
-        /// </remarks>
-        public string Reason { get; }
-
-        /// <summary>
-        /// 初始化契约违反记录。
-        /// </summary>
-        /// <remarks>
-        /// Initializes a new contract violation record.
-        /// </remarks>
-        /// <param name="interfaceType">违反的接口类型 / The violated interface type</param>
-        /// <param name="propertyName">属性名称 / The property name</param>
-        /// <param name="reason">违反原因 / The violation reason</param>
-        public EntityContractViolation(Type interfaceType, string propertyName, string reason)
-        {
-            InterfaceType = interfaceType;
-            PropertyName = propertyName;
-            Reason = reason;
-        }
-    }
-
-    /// <summary>
     /// 实体契约验证器，校验接口和实际属性语义是否一致。
     /// </summary>
     /// <remarks>

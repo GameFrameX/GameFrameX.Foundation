@@ -53,7 +53,11 @@ namespace GameFrameX.Foundation.Orm.Entity
         /// <returns>递增后的行版本号 / The incremented row version number</returns>
         public static long IncrementRowVersion(this IVersionedEntity entity)
         {
-            entity.RowVersion = (entity.RowVersion ?? 0) + 1;
+            ArgumentNullException.ThrowIfNull(entity);
+            checked
+            {
+                entity.RowVersion = (entity.RowVersion ?? 0) + 1;
+            }
             return entity.RowVersion.Value;
         }
 
