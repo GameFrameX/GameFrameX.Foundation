@@ -39,19 +39,21 @@ public sealed class AsyncEnumerableExtensionsTests
     [Fact]
     public async Task ForEachParallelAsync_ShouldPassCancellationToken()
     {
-        using var cancellation = new CancellationTokenSource();
-        var receivedToken = CancellationToken.None;
+        using (var cancellation = new CancellationTokenSource())
+        {
+            var receivedToken = CancellationToken.None;
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
-            Enumerable.Range(0, 10).ForEachParallelAsync(async (_, token) =>
-            {
-                receivedToken = token;
-                cancellation.Cancel();
-                await Task.Delay(20, token);
-            }, 2, cancellation.Token));
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(() =>
+                Enumerable.Range(0, 10).ForEachParallelAsync(async (_, token) =>
+                {
+                    receivedToken = token;
+                    cancellation.Cancel();
+                    await Task.Delay(20, token);
+                }, 2, cancellation.Token));
 
-        Assert.True(receivedToken.CanBeCanceled);
-        Assert.True(receivedToken.IsCancellationRequested);
+            Assert.True(receivedToken.CanBeCanceled);
+            Assert.True(receivedToken.IsCancellationRequested);
+        }
     }
 
     [Fact]

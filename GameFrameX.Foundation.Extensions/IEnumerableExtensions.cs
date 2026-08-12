@@ -1291,17 +1291,21 @@ public static class IEnumerableExtensions
     /// <returns>如果两个序列长度相等且对应位置的元素都满足比较条件，则返回 <c>true</c>；否则返回 <c>false</c> / <c>true</c> if sequences have equal length and corresponding elements satisfy the comparison condition; otherwise <c>false</c></returns>
     private static bool CompareByEnumerator<T>(IEnumerable<T> first, IEnumerable<T> second, Func<T, T, bool> condition)
     {
-        using var enumerator1 = first.GetEnumerator();
-        using var enumerator2 = second.GetEnumerator();
-        while (enumerator1.MoveNext())
+        using (var enumerator1 = first.GetEnumerator())
         {
-            if (!enumerator2.MoveNext() || !condition(enumerator1.Current, enumerator2.Current))
+            using (var enumerator2 = second.GetEnumerator())
             {
-                return false;
+                while (enumerator1.MoveNext())
+                {
+                    if (!enumerator2.MoveNext() || !condition(enumerator1.Current, enumerator2.Current))
+                    {
+                        return false;
+                    }
+                }
+
+                return !enumerator2.MoveNext();
             }
         }
-
-        return !enumerator2.MoveNext();
     }
 
     /// <summary>
@@ -1388,17 +1392,21 @@ public static class IEnumerableExtensions
     /// <returns>长度相等且所有对应元素满足条件时返回 <c>true</c> / Returns <c>true</c> if lengths match and all pairs satisfy <paramref name="condition"/></returns>
     private static bool EqualByEnumerator<T1, T2>(IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, bool> condition)
     {
-        using var enumerator1 = first.GetEnumerator();
-        using var enumerator2 = second.GetEnumerator();
-        while (enumerator1.MoveNext())
+        using (var enumerator1 = first.GetEnumerator())
         {
-            if (!enumerator2.MoveNext() || !condition(enumerator1.Current, enumerator2.Current))
+            using (var enumerator2 = second.GetEnumerator())
             {
-                return false;
+                while (enumerator1.MoveNext())
+                {
+                    if (!enumerator2.MoveNext() || !condition(enumerator1.Current, enumerator2.Current))
+                    {
+                        return false;
+                    }
+                }
+
+                return !enumerator2.MoveNext();
             }
         }
-
-        return !enumerator2.MoveNext();
     }
 
     /// <summary>
