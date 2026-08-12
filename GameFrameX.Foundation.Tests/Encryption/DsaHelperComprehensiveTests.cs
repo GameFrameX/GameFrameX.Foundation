@@ -92,7 +92,8 @@ namespace GameFrameX.Foundation.Tests.Encryption
             using (var dsa = DSA.Create())
             {
                 var helper = new DsaHelper(dsa);
-                helper.Dispose();
+                var ex = Record.Exception(() => helper.Dispose());
+                Assert.Null(ex);
             }
         }
 
@@ -107,8 +108,12 @@ namespace GameFrameX.Foundation.Tests.Encryption
             using (var dsa = DSA.Create())
             {
                 var helper = new DsaHelper(dsa);
-                helper.Dispose();
-                helper.Dispose();
+                var ex = Record.Exception(() =>
+                {
+                    helper.Dispose();
+                    helper.Dispose();
+                });
+                Assert.Null(ex);
             }
         }
 
