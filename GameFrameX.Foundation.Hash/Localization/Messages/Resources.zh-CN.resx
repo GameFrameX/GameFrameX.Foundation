@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Hash 模块异常消息 -->
+  <data name="Hash.Exceptions.DataCannotBeNullOrEmpty" xml:space="preserve">
+    <value>数据不能为 null 或空。</value>
+  </data>
+
+  <data name="Hash.Exceptions.HashComputationFailed" xml:space="preserve">
+    <value>{0} 哈希计算失败：{1}</value>
+  </data>
+
+  <data name="Hash.Exceptions.UnsupportedHashAlgorithm" xml:space="preserve">
+    <value>不支持的哈希算法：{0}。</value>
+  </data>
+
+  <data name="Hash.Exceptions.WorkFactorOutOfRange" xml:space="preserve">
+    <value>工作因子必须在 [4, 31] 范围内。</value>
+  </data>
+
+  <data name="Hash.Exceptions.IterationsMustBePositive" xml:space="preserve">
+    <value>迭代次数必须 >= 1。</value>
+  </data>
+
+  <data name="Hash.Exceptions.OutputBytesMustBePositive" xml:space="preserve">
+    <value>输出长度必须 >= 1 字节。</value>
+  </data>
+
+  <data name="Hash.Exceptions.ScryptNMustBePowerOfTwo" xml:space="preserve">
+    <value>N 必须 >= 2 且为 2 的幂。</value>
+  </data>
+
+  <data name="Hash.Exceptions.ScryptRMustBePositive" xml:space="preserve">
+    <value>r 必须 >= 1。</value>
+  </data>
+
+  <data name="Hash.Exceptions.ScryptPMustBePositive" xml:space="preserve">
+    <value>p 必须 >= 1。</value>
+  </data>
+
+  <data name="Hash.Exceptions.UnsupportedPasswordHashKind" xml:space="preserve">
+    <value>不支持的密码哈希算法种类。</value>
+  </data>
+
+  <data name="Hash.Exceptions.Argon2MemoryTooSmall" xml:space="preserve">
+    <value>内存开销必须 >= 8 KB。</value>
+  </data>
+
+  <data name="Hash.Exceptions.ParallelismMustBePositive" xml:space="preserve">
+    <value>并行度必须 >= 1。</value>
+  </data>
+
+  <!-- Hash 模块日志消息 -->
+  <data name="Hash.Logs.HashComputationCompleted" xml:space="preserve">
+    <value>{0} 哈希计算完成，数据长度：{1} 字节，哈希值：{2}。</value>
+  </data>
+
+  <data name="Hash.Logs.CrcComputationCompleted" xml:space="preserve">
+    <value>{0} CRC 计算完成，数据长度：{1} 字节，CRC 值：{2}。</value>
+  </data>
+
+  <!-- Hash 模块状态消息 -->
+  <data name="Hash.Status.HashAlgorithmInitialized" xml:space="preserve">
+    <value>{0} 哈希算法初始化成功。</value>
+  </data>
+
+  <data name="Hash.Status.CrcValidationSuccessful" xml:space="preserve">
+    <value>{0} CRC 校验通过，期望值：{1}，实际值：{2}。</value>
+  </data>
+
+  <!-- Hash 模块性能消息 -->
+  <data name="Hash.Performance.HashComputationTime" xml:space="preserve">
+    <value>{0} 哈希计算完成，数据长度：{1} 字节，执行时间：{2} 毫秒。</value>
+  </data>
+
+  <data name="Hash.Performance.HashThroughput" xml:space="preserve">
+    <value>{0} 哈希吞吐量统计，数据量：{1} MB，处理时间：{2} 秒。</value>
+  </data>
+
+  <!-- Hash 模块验证消息 -->
+  <data name="Hash.Validation.InvalidDataLength" xml:space="preserve">
+    <value>数据长度无效，实际长度：{0}，期望长度：{1}。</value>
+  </data>
+
+  <data name="Hash.Validation.HashValueMismatch" xml:space="preserve">
+    <value>哈希值不匹配，期望值：{0}，实际值：{1}。</value>
+  </data>
+
+  <data name="Hash.Validation.CrcCheckFailed" xml:space="preserve">
+    <value>{0} CRC 校验失败，期望值：{1}，实际值：{2}。</value>
+  </data>
+
+  <!-- Hash 模块密码异常消息 -->
+  <data name="Hash.Exceptions.PasswordExceedsBcryptLimit" xml:space="preserve">
+    <value>密码 UTF-8 字节数超过 bcrypt 协议硬限制 72 字节。</value>
+  </data>
+</root>

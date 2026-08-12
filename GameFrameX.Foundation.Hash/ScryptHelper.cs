@@ -34,6 +34,8 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using GameFrameX.Foundation.Hash.Localization;
+using GameFrameX.Foundation.Localization.Core;
 using Org.BouncyCastle.Crypto.Generators;
 
 namespace GameFrameX.Foundation.Hash
@@ -116,7 +118,7 @@ namespace GameFrameX.Foundation.Hash
             ValidateParameters(n, r, p);
             if (outputBytes < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(outputBytes), outputBytes, "输出长度必须 >= 1 字节。 / Output length must be >= 1 byte.");
+                throw new ArgumentOutOfRangeException(nameof(outputBytes), outputBytes, LocalizationService.GetString(LocalizationKeys.Exceptions.OutputBytesMustBePositive));
             }
 
             byte[] derived = SCrypt.Generate(password, salt, n, r, p, outputBytes);
@@ -204,17 +206,17 @@ namespace GameFrameX.Foundation.Hash
         {
             if (n < 2 || (n & (n - 1)) != 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(n), n, "N 必须 >= 2 且为 2 的幂。 / N must be >= 2 and a power of two.");
+                throw new ArgumentOutOfRangeException(nameof(n), n, LocalizationService.GetString(LocalizationKeys.Exceptions.ScryptNMustBePowerOfTwo));
             }
 
             if (r < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(r), r, "r 必须 >= 1。 / r must be >= 1.");
+                throw new ArgumentOutOfRangeException(nameof(r), r, LocalizationService.GetString(LocalizationKeys.Exceptions.ScryptRMustBePositive));
             }
 
             if (p < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(p), p, "p 必须 >= 1。 / p must be >= 1.");
+                throw new ArgumentOutOfRangeException(nameof(p), p, LocalizationService.GetString(LocalizationKeys.Exceptions.ScryptPMustBePositive));
             }
         }
     }

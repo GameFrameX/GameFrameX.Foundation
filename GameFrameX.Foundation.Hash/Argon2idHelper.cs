@@ -34,6 +34,8 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using GameFrameX.Foundation.Hash.Localization;
+using GameFrameX.Foundation.Localization.Core;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
 
@@ -120,7 +122,7 @@ namespace GameFrameX.Foundation.Hash
             ValidateParameters(memoryKB, iterations, parallelism);
             if (outputBytes < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(outputBytes), outputBytes, "输出长度必须 >= 1 字节。 / Output length must be >= 1 byte.");
+                throw new ArgumentOutOfRangeException(nameof(outputBytes), outputBytes, LocalizationService.GetString(LocalizationKeys.Exceptions.OutputBytesMustBePositive));
             }
 
             Argon2Parameters parameters = new Argon2Parameters.Builder(Argon2Parameters.Argon2id)
@@ -284,17 +286,17 @@ namespace GameFrameX.Foundation.Hash
         {
             if (memoryKB < 8)
             {
-                throw new ArgumentOutOfRangeException(nameof(memoryKB), memoryKB, "内存开销必须 >= 8 KB。 / Memory cost must be >= 8 KB.");
+                throw new ArgumentOutOfRangeException(nameof(memoryKB), memoryKB, LocalizationService.GetString(LocalizationKeys.Exceptions.Argon2MemoryTooSmall));
             }
 
             if (iterations < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(iterations), iterations, "迭代次数必须 >= 1。 / Iterations must be >= 1.");
+                throw new ArgumentOutOfRangeException(nameof(iterations), iterations, LocalizationService.GetString(LocalizationKeys.Exceptions.IterationsMustBePositive));
             }
 
             if (parallelism < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(parallelism), parallelism, "并行度必须 >= 1。 / Parallelism must be >= 1.");
+                throw new ArgumentOutOfRangeException(nameof(parallelism), parallelism, LocalizationService.GetString(LocalizationKeys.Exceptions.ParallelismMustBePositive));
             }
         }
     }

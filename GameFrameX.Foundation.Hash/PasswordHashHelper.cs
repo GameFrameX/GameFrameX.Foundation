@@ -31,6 +31,9 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
+using GameFrameX.Foundation.Hash.Localization;
+using GameFrameX.Foundation.Localization.Core;
+
 namespace GameFrameX.Foundation.Hash
 {
     /// <summary>
@@ -66,7 +69,7 @@ namespace GameFrameX.Foundation.Hash
                 case PasswordHashAlgorithmKind.Argon2id:
                     return Argon2idHelper.Hash(password);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(kind), kind, "不支持的密码哈希算法种类。 / Unsupported password hash algorithm kind.");
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, LocalizationService.GetString(LocalizationKeys.Exceptions.UnsupportedPasswordHashKind));
             }
         }
 

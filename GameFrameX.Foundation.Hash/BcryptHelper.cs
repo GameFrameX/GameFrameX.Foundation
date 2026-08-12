@@ -32,6 +32,8 @@
 // ==========================================================================================
 
 using System.Text;
+using GameFrameX.Foundation.Hash.Localization;
+using GameFrameX.Foundation.Localization.Core;
 
 namespace GameFrameX.Foundation.Hash
 {
@@ -113,7 +115,7 @@ namespace GameFrameX.Foundation.Hash
             if (Encoding.UTF8.GetByteCount(password) > MaxPasswordBytes)
             {
                 throw new ArgumentException(
-                    "密码 UTF-8 字节数超过 bcrypt 协议硬限制 72 字节。 / Password exceeds bcrypt's 72-byte UTF-8 limit.",
+                    LocalizationService.GetString(LocalizationKeys.Exceptions.PasswordExceedsBcryptLimit),
                     nameof(password));
             }
         }
@@ -122,7 +124,7 @@ namespace GameFrameX.Foundation.Hash
         {
             if (workFactor < 4 || workFactor > 31)
             {
-                throw new ArgumentOutOfRangeException(nameof(workFactor), workFactor, "工作因子必须在 [4, 31] 范围内。 / Work factor must be within [4, 31].");
+                throw new ArgumentOutOfRangeException(nameof(workFactor), workFactor, LocalizationService.GetString(LocalizationKeys.Exceptions.WorkFactorOutOfRange));
             }
         }
     }

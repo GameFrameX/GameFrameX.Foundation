@@ -34,6 +34,8 @@
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
+using GameFrameX.Foundation.Hash.Localization;
+using GameFrameX.Foundation.Localization.Core;
 
 namespace GameFrameX.Foundation.Hash
 {
@@ -188,7 +190,7 @@ namespace GameFrameX.Foundation.Hash
         {
             if (iterations < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(iterations), iterations, "迭代次数必须 >= 1。 / Iterations must be >= 1.");
+                throw new ArgumentOutOfRangeException(nameof(iterations), iterations, LocalizationService.GetString(LocalizationKeys.Exceptions.IterationsMustBePositive));
             }
         }
 
@@ -196,7 +198,7 @@ namespace GameFrameX.Foundation.Hash
         {
             if (outputBytes < 1)
             {
-                throw new ArgumentOutOfRangeException(nameof(outputBytes), outputBytes, "输出长度必须 >= 1 字节。 / Output length must be >= 1 byte.");
+                throw new ArgumentOutOfRangeException(nameof(outputBytes), outputBytes, LocalizationService.GetString(LocalizationKeys.Exceptions.OutputBytesMustBePositive));
             }
         }
     }

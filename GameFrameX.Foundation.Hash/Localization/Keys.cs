@@ -85,6 +85,96 @@ public static class LocalizationKeys
         /// 参数: {0} - 算法名称
         /// </remarks>
         public const string UnsupportedHashAlgorithm = "Hash.Exceptions.UnsupportedHashAlgorithm";
+
+        /// <summary>
+        /// bcrypt 工作因子越界的错误消息 / Out-of-range bcrypt work factor error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.WorkFactorOutOfRange
+        /// 用途: 当 bcrypt 工作因子(cost)不在 [4, 31] 范围内时使用
+        /// </remarks>
+        public const string WorkFactorOutOfRange = "Hash.Exceptions.WorkFactorOutOfRange";
+
+        /// <summary>
+        /// 迭代次数必须为正数的错误消息 / Iterations must be positive error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.IterationsMustBePositive
+        /// 用途: 当 KDF 的迭代次数小于 1 时使用（PBKDF2 / Argon2id 共用）
+        /// </remarks>
+        public const string IterationsMustBePositive = "Hash.Exceptions.IterationsMustBePositive";
+
+        /// <summary>
+        /// 输出长度必须为正的错误消息 / Output length must be positive error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.OutputBytesMustBePositive
+        /// 用途: 当输出哈希长度（字节）小于 1 时使用（PBKDF2 / scrypt / Argon2id 共用）
+        /// </remarks>
+        public const string OutputBytesMustBePositive = "Hash.Exceptions.OutputBytesMustBePositive";
+
+        /// <summary>
+        /// scrypt N 必须为 2 的幂的错误消息 / scrypt N must be a power of two error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.ScryptNMustBePowerOfTwo
+        /// 用途: 当 scrypt 的 N 参数小于 2 或不为 2 的幂时使用
+        /// </remarks>
+        public const string ScryptNMustBePowerOfTwo = "Hash.Exceptions.ScryptNMustBePowerOfTwo";
+
+        /// <summary>
+        /// scrypt r 必须为正数的错误消息 / scrypt r must be positive error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.ScryptRMustBePositive
+        /// 用途: 当 scrypt 的块大小参数 r 小于 1 时使用
+        /// </remarks>
+        public const string ScryptRMustBePositive = "Hash.Exceptions.ScryptRMustBePositive";
+
+        /// <summary>
+        /// scrypt p 必须为正数的错误消息 / scrypt p must be positive error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.ScryptPMustBePositive
+        /// 用途: 当 scrypt 的并行参数 p 小于 1 时使用
+        /// </remarks>
+        public const string ScryptPMustBePositive = "Hash.Exceptions.ScryptPMustBePositive";
+
+        /// <summary>
+        /// 不支持的密码哈希算法种类的错误消息 / Unsupported password hash algorithm kind error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.UnsupportedPasswordHashKind
+        /// 用途: 当 PasswordHashHelper.Hash 收到未知的 PasswordHashAlgorithmKind 时使用
+        /// </remarks>
+        public const string UnsupportedPasswordHashKind = "Hash.Exceptions.UnsupportedPasswordHashKind";
+
+        /// <summary>
+        /// Argon2 内存开销过小的错误消息 / Argon2 memory cost too small error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.Argon2MemoryTooSmall
+        /// 用途: 当 Argon2id 的内存开销（KB）小于 8 时使用
+        /// </remarks>
+        public const string Argon2MemoryTooSmall = "Hash.Exceptions.Argon2MemoryTooSmall";
+
+        /// <summary>
+        /// 并行度必须为正数的错误消息 / Parallelism must be positive error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.ParallelismMustBePositive
+        /// 用途: 当 Argon2id 的并行度参数小于 1 时使用
+        /// </remarks>
+        public const string ParallelismMustBePositive = "Hash.Exceptions.ParallelismMustBePositive";
+
+        /// <summary>
+        /// 密码 UTF-8 字节数超过 bcrypt 限制的错误消息 / Password exceeds bcrypt byte limit error message.
+        /// </summary>
+        /// <remarks>
+        /// 键名: Hash.Exceptions.PasswordExceedsBcryptLimit
+        /// 用途: 当密码的 UTF-8 字节数超过 bcrypt 协议硬限制 72 字节时使用
+        /// </remarks>
+        public const string PasswordExceedsBcryptLimit = "Hash.Exceptions.PasswordExceedsBcryptLimit";
     }
 
     /// <summary>

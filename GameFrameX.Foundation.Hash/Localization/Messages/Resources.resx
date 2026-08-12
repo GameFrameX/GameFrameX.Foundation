@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Hash module exception messages -->
+  <data name="Hash.Exceptions.DataCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Data cannot be null or empty.</value>
+  </data>
+
+  <data name="Hash.Exceptions.HashComputationFailed" xml:space="preserve">
+    <value>{0} hash computation failed: {1}</value>
+  </data>
+
+  <data name="Hash.Exceptions.UnsupportedHashAlgorithm" xml:space="preserve">
+    <value>Unsupported hash algorithm: {0}.</value>
+  </data>
+
+  <data name="Hash.Exceptions.WorkFactorOutOfRange" xml:space="preserve">
+    <value>Work factor must be within [4, 31].</value>
+  </data>
+
+  <data name="Hash.Exceptions.IterationsMustBePositive" xml:space="preserve">
+    <value>Iterations must be >= 1.</value>
+  </data>
+
+  <data name="Hash.Exceptions.OutputBytesMustBePositive" xml:space="preserve">
+    <value>Output length must be >= 1 byte.</value>
+  </data>
+
+  <data name="Hash.Exceptions.ScryptNMustBePowerOfTwo" xml:space="preserve">
+    <value>N must be >= 2 and a power of two.</value>
+  </data>
+
+  <data name="Hash.Exceptions.ScryptRMustBePositive" xml:space="preserve">
+    <value>r must be >= 1.</value>
+  </data>
+
+  <data name="Hash.Exceptions.ScryptPMustBePositive" xml:space="preserve">
+    <value>p must be >= 1.</value>
+  </data>
+
+  <data name="Hash.Exceptions.UnsupportedPasswordHashKind" xml:space="preserve">
+    <value>Unsupported password hash algorithm kind.</value>
+  </data>
+
+  <data name="Hash.Exceptions.Argon2MemoryTooSmall" xml:space="preserve">
+    <value>Memory cost must be >= 8 KB.</value>
+  </data>
+
+  <data name="Hash.Exceptions.ParallelismMustBePositive" xml:space="preserve">
+    <value>Parallelism must be >= 1.</value>
+  </data>
+
+  <!-- Hash module log messages -->
+  <data name="Hash.Logs.HashComputationCompleted" xml:space="preserve">
+    <value>{0} hash computation completed, data length: {1} bytes, hash: {2}.</value>
+  </data>
+
+  <data name="Hash.Logs.CrcComputationCompleted" xml:space="preserve">
+    <value>{0} CRC computation completed, data length: {1} bytes, CRC: {2}.</value>
+  </data>
+
+  <!-- Hash module status messages -->
+  <data name="Hash.Status.HashAlgorithmInitialized" xml:space="preserve">
+    <value>{0} hash algorithm initialized successfully.</value>
+  </data>
+
+  <data name="Hash.Status.CrcValidationSuccessful" xml:space="preserve">
+    <value>{0} CRC validation passed, expected: {1}, actual: {2}.</value>
+  </data>
+
+  <!-- Hash module performance messages -->
+  <data name="Hash.Performance.HashComputationTime" xml:space="preserve">
+    <value>{0} hash computation completed, data length: {1} bytes, time: {2} ms.</value>
+  </data>
+
+  <data name="Hash.Performance.HashThroughput" xml:space="preserve">
+    <value>{0} hash throughput, data: {1} MB, time: {2} s.</value>
+  </data>
+
+  <!-- Hash module validation messages -->
+  <data name="Hash.Validation.InvalidDataLength" xml:space="preserve">
+    <value>Invalid data length, actual length: {0}, expected length: {1}.</value>
+  </data>
+
+  <data name="Hash.Validation.HashValueMismatch" xml:space="preserve">
+    <value>Hash value mismatch, expected: {0}, actual: {1}.</value>
+  </data>
+
+  <data name="Hash.Validation.CrcCheckFailed" xml:space="preserve">
+    <value>{0} CRC check failed, expected: {1}, actual: {2}.</value>
+  </data>
+
+  <!-- Hash module password exception messages -->
+  <data name="Hash.Exceptions.PasswordExceedsBcryptLimit" xml:space="preserve">
+    <value>Password exceeds bcrypt's 72-byte UTF-8 limit.</value>
+  </data>
+</root>
