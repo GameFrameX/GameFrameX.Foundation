@@ -457,20 +457,23 @@ namespace GameFrameX.Foundation.Tests.Json
                 testObject.Tags.Add("标签-" + i);
             }
 
-            using var stream = new MemoryStream();
-            using var cancellationTokenSource = new CancellationTokenSource();
+            using (var stream = new MemoryStream())
+            {
+                using (var cancellationTokenSource = new CancellationTokenSource())
+                {
+                    await JsonHelper.SerializeAsync(stream, testObject, cancellationToken: cancellationTokenSource.Token);
+                    Assert.True(stream.Length > 1024);
 
-            await JsonHelper.SerializeAsync(stream, testObject, cancellationToken: cancellationTokenSource.Token);
-            Assert.True(stream.Length > 1024);
+                    stream.Position = 0;
+                    var result = await JsonHelper.DeserializeAsync<TestClass>(stream, cancellationToken: cancellationTokenSource.Token);
 
-            stream.Position = 0;
-            var result = await JsonHelper.DeserializeAsync<TestClass>(stream, cancellationToken: cancellationTokenSource.Token);
-
-            Assert.NotNull(result);
-            Assert.Equal(testObject.Id, result.Id);
-            Assert.Equal(testObject.Name, result.Name);
-            Assert.Equal(testObject.Tags.Count, result.Tags.Count);
-            Assert.Equal("标签-4095", result.Tags[4095]);
+                    Assert.NotNull(result);
+                    Assert.Equal(testObject.Id, result.Id);
+                    Assert.Equal(testObject.Name, result.Name);
+                    Assert.Equal(testObject.Tags.Count, result.Tags.Count);
+                    Assert.Equal("标签-4095", result.Tags[4095]);
+                }
+            }
         }
 
         [Fact]
@@ -483,14 +486,18 @@ namespace GameFrameX.Foundation.Tests.Json
                 IsActive = true,
                 CreatedDate = new DateTime(2023, 12, 12)
             };
-            using var stream = new MemoryStream();
-            using var cancellationTokenSource = new CancellationTokenSource();
-            cancellationTokenSource.Cancel();
+            using (var stream = new MemoryStream())
+            {
+                using (var cancellationTokenSource = new CancellationTokenSource())
+                {
+                    cancellationTokenSource.Cancel();
 
-            await Assert.ThrowsAnyAsync<OperationCanceledException>(() => JsonHelper.SerializeAsync(stream, testObject, cancellationToken: cancellationTokenSource.Token));
+                    await Assert.ThrowsAnyAsync<OperationCanceledException>(() => JsonHelper.SerializeAsync(stream, testObject, cancellationToken: cancellationTokenSource.Token));
 
-            stream.Position = 0;
-            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await JsonHelper.DeserializeAsync<TestClass>(stream, cancellationToken: cancellationTokenSource.Token));
+                    stream.Position = 0;
+                    await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await JsonHelper.DeserializeAsync<TestClass>(stream, cancellationToken: cancellationTokenSource.Token));
+                }
+            }
         }
 
         [Fact]
@@ -504,14 +511,16 @@ namespace GameFrameX.Foundation.Tests.Json
             byte[] utf8Bytes = JsonHelper.SerializeToUtf8Bytes(model, jsonTypeInfo);
             SourceGeneratedJsonModel fromBytes = JsonHelper.DeserializeFromUtf8Bytes(utf8Bytes, jsonTypeInfo);
 
-            using var stream = new MemoryStream();
-            await JsonHelper.SerializeAsync(stream, model, jsonTypeInfo);
-            stream.Position = 0;
-            SourceGeneratedJsonModel fromStream = await JsonHelper.DeserializeAsync(stream, jsonTypeInfo);
+            using (var stream = new MemoryStream())
+            {
+                await JsonHelper.SerializeAsync(stream, model, jsonTypeInfo);
+                stream.Position = 0;
+                SourceGeneratedJsonModel fromStream = await JsonHelper.DeserializeAsync(stream, jsonTypeInfo);
 
-            Assert.Equal(model.Id, fromString.Id);
-            Assert.Equal(model.Name, fromBytes.Name);
-            Assert.Equal(model.Id, fromStream.Id);
+                Assert.Equal(model.Id, fromString.Id);
+                Assert.Equal(model.Name, fromBytes.Name);
+                Assert.Equal(model.Id, fromStream.Id);
+            }
         }
 
         [Fact]
