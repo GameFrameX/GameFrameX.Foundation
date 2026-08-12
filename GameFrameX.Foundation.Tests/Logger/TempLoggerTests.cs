@@ -40,6 +40,7 @@ using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Logger;
 
+[Collection("LogHelperSerialCollection")]
 public class TempLoggerTests : IDisposable
 {
     private readonly ConcurrentQueue<LogEvent> _capturedEvents = new();

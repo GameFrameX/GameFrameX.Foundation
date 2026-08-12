@@ -106,6 +106,7 @@ internal sealed class InternalTempLogger : IDisposable
     /// </remarks>
     public void FlushTo(ILogger targetLogger)
     {
+        ArgumentNullException.ThrowIfNull(targetLogger);
         if (_isFlushed || _isDisposed)
         {
             return;

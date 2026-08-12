@@ -77,6 +77,7 @@ public sealed class LoggerMemorySink : ILogEventSink
     /// </remarks>
     public void Emit(LogEvent logEvent)
     {
+        ArgumentNullException.ThrowIfNull(logEvent);
         _events.Enqueue(logEvent);
         _onEmit?.Invoke(logEvent);
     }

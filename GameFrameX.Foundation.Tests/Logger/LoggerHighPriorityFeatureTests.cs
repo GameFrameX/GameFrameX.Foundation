@@ -5,6 +5,7 @@ using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Logger;
 
+[Collection("LogHelperSerialCollection")]
 public sealed class LoggerHighPriorityFeatureTests
 {
     [Fact]

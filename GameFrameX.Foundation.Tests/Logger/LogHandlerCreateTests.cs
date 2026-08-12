@@ -37,7 +37,7 @@ using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Logger;
 
-[Collection(nameof(LogHandlerCreateTestsCollection))]
+[Collection("LogHelperSerialCollection")]
 public sealed class LogHandlerCreateTests : IDisposable
 {
     private readonly string _tempDirectory;
