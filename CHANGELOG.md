@@ -1,3 +1,11 @@
+## [3.1.1] - 2026-08-12
+
+### Testing
+
+- 为 DsaHelper Dispose 测试补显式断言以消除 S2699 (#257)
+- 补全 SetFrameLength 测试断言以消除 Sonar S2699 (#258)
+- 为 RsaHelper Dispose 测试补显式断言以消除 S2699 (#259)
+
 ## [3.1.0] - 2026-08-12
 
 ### Features
