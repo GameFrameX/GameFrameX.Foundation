@@ -64,10 +64,14 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        using var request = CreatePostRequest(url, data, JsonHelper.DefaultOptions);
-        using var response = await httpClient.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        using (var request = CreatePostRequest(url, data, JsonHelper.DefaultOptions))
+        {
+            using (var response = await httpClient.SendAsync(request, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync(cancellationToken);
+            }
+        }
     }
 
     /// <summary>
@@ -90,10 +94,14 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        using var request = CreatePostRequest(url, data, jsonSerializerOptions);
-        using var response = await httpClient.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        using (var request = CreatePostRequest(url, data, jsonSerializerOptions))
+        {
+            using (var response = await httpClient.SendAsync(request, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync(cancellationToken);
+            }
+        }
     }
 
     /// <summary>
@@ -118,12 +126,17 @@ public static class HttpClientPostExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = CreatePostRequest(url, data, headers, JsonHelper.DefaultOptions);
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cts.Token);
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
+        {
+            using (var request = CreatePostRequest(url, data, headers, JsonHelper.DefaultOptions))
+            {
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsStringAsync(cts.Token);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -149,12 +162,17 @@ public static class HttpClientPostExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = CreatePostRequest(url, data, headers, jsonSerializerOptions);
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cts.Token);
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
+        {
+            using (var request = CreatePostRequest(url, data, headers, jsonSerializerOptions))
+            {
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsStringAsync(cts.Token);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -176,10 +194,14 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        using var request = CreatePostRequest(url, data, JsonHelper.DefaultOptions);
-        using var response = await httpClient.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+        using (var request = CreatePostRequest(url, data, JsonHelper.DefaultOptions))
+        {
+            using (var response = await httpClient.SendAsync(request, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+            }
+        }
     }
 
     /// <summary>
@@ -202,10 +224,14 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        using var request = CreatePostRequest(url, data, jsonSerializerOptions);
-        using var response = await httpClient.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+        using (var request = CreatePostRequest(url, data, jsonSerializerOptions))
+        {
+            using (var response = await httpClient.SendAsync(request, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+            }
+        }
     }
 
     /// <summary>
@@ -230,12 +256,17 @@ public static class HttpClientPostExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = CreatePostRequest(url, data, headers, JsonHelper.DefaultOptions);
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsByteArrayAsync(cts.Token);
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
+        {
+            using (var request = CreatePostRequest(url, data, headers, JsonHelper.DefaultOptions))
+            {
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsByteArrayAsync(cts.Token);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -261,12 +292,17 @@ public static class HttpClientPostExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = CreatePostRequest(url, data, headers, jsonSerializerOptions);
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsByteArrayAsync(cts.Token);
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
+        {
+            using (var request = CreatePostRequest(url, data, headers, jsonSerializerOptions))
+            {
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsByteArrayAsync(cts.Token);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -291,9 +327,11 @@ public static class HttpClientPostExtension
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
         // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
         // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
-        using var request = CreatePostRequest(url, data, JsonHelper.DefaultOptions);
-        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cancellationToken);
+        using (var request = CreatePostRequest(url, data, JsonHelper.DefaultOptions))
+        {
+            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cancellationToken);
+        }
     }
 
     /// <summary>
@@ -319,9 +357,11 @@ public static class HttpClientPostExtension
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
         // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
         // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
-        using var request = CreatePostRequest(url, data, jsonSerializerOptions);
-        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cancellationToken);
+        using (var request = CreatePostRequest(url, data, jsonSerializerOptions))
+        {
+            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+            return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cancellationToken);
+        }
     }
 
     /// <summary>
@@ -349,11 +389,13 @@ public static class HttpClientPostExtension
 
         var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
 
-        using var request = CreatePostRequest(url, data, headers, JsonHelper.DefaultOptions);
-        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
-        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
-        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
-        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+        using (var request = CreatePostRequest(url, data, headers, JsonHelper.DefaultOptions))
+        {
+            // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
+            // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
+            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+        }
     }
 
     /// <summary>
@@ -382,11 +424,13 @@ public static class HttpClientPostExtension
 
         var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
 
-        using var request = CreatePostRequest(url, data, headers, jsonSerializerOptions);
-        // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
-        // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
-        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
-        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+        using (var request = CreatePostRequest(url, data, headers, jsonSerializerOptions))
+        {
+            // 使用 ResponseHeadersRead 避免将全部响应体缓冲到内存
+            // response 的生命周期由返回的 Stream 内部管理（.NET 会在流关闭时释放 response）
+            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+        }
     }
 
     /// <summary>
@@ -407,10 +451,14 @@ public static class HttpClientPostExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        using var content = new FormUrlEncodedContent(formData);
-        using var response = await httpClient.PostAsync(url, content, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        using (var content = new FormUrlEncodedContent(formData))
+        {
+            using (var response = await httpClient.PostAsync(url, content, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync(cancellationToken);
+            }
+        }
     }
 
     /// <summary>
@@ -434,22 +482,27 @@ public static class HttpClientPostExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = new HttpRequestMessage(HttpMethod.Post, url);
-        request.Content = new FormUrlEncodedContent(formData);
-
-        if (headers is { Count: > 0 })
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
         {
-            foreach (var header in headers)
+            using (var request = new HttpRequestMessage(HttpMethod.Post, url))
             {
-                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                request.Content = new FormUrlEncodedContent(formData);
+
+                if (headers is { Count: > 0 })
+                {
+                    foreach (var header in headers)
+                    {
+                        request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                    }
+                }
+
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsStringAsync(cts.Token);
+                }
             }
         }
-
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cts.Token);
     }
 
     /// <summary>
@@ -472,12 +525,18 @@ public static class HttpClientPostExtension
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
         ArgumentException.ThrowIfNullOrWhiteSpace(filePath, nameof(filePath));
 
-        using var fileStream = File.OpenRead(filePath);
-        using var content = new StreamContent(fileStream);
-        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-        using var response = await httpClient.PostAsync(url, content, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        using (var fileStream = File.OpenRead(filePath))
+        {
+            using (var content = new StreamContent(fileStream))
+            {
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                using (var response = await httpClient.PostAsync(url, content, cancellationToken))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsStringAsync(cancellationToken);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -502,26 +561,35 @@ public static class HttpClientPostExtension
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
         ArgumentException.ThrowIfNullOrWhiteSpace(filePath, nameof(filePath));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var fileStream = File.OpenRead(filePath);
-        using var content = new StreamContent(fileStream);
-        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-
-        using var request = new HttpRequestMessage(HttpMethod.Post, url);
-        request.Content = content;
-
-        if (headers is { Count: > 0 })
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
         {
-            foreach (var header in headers)
+            using (var fileStream = File.OpenRead(filePath))
             {
-                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                using (var content = new StreamContent(fileStream))
+                {
+                    content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+
+                    using (var request = new HttpRequestMessage(HttpMethod.Post, url))
+                    {
+                        request.Content = content;
+
+                        if (headers is { Count: > 0 })
+                        {
+                            foreach (var header in headers)
+                            {
+                                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                            }
+                        }
+
+                        using (var response = await httpClient.SendAsync(request, cts.Token))
+                        {
+                            response.EnsureSuccessStatusCode();
+                            return await response.Content.ReadAsStringAsync(cts.Token);
+                        }
+                    }
+                }
             }
         }
-
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cts.Token);
     }
 
     /// <summary>
@@ -547,23 +615,31 @@ public static class HttpClientPostExtension
         ArgumentException.ThrowIfNullOrWhiteSpace(fileFieldName, nameof(fileFieldName));
         ArgumentException.ThrowIfNullOrWhiteSpace(filePath, nameof(filePath));
 
-        using var multipartContent = new MultipartFormDataContent();
-        using var fileStream = File.OpenRead(filePath);
-        using var fileContent = new StreamContent(fileStream);
-        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-        multipartContent.Add(fileContent, fileFieldName, Path.GetFileName(filePath));
-
-        if (formData is { Count: > 0 })
+        using (var multipartContent = new MultipartFormDataContent())
         {
-            foreach (var field in formData)
+            using (var fileStream = File.OpenRead(filePath))
             {
-                multipartContent.Add(new StringContent(field.Value), field.Key);
+                using (var fileContent = new StreamContent(fileStream))
+                {
+                    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                    multipartContent.Add(fileContent, fileFieldName, Path.GetFileName(filePath));
+
+                    if (formData is { Count: > 0 })
+                    {
+                        foreach (var field in formData)
+                        {
+                            multipartContent.Add(new StringContent(field.Value), field.Key);
+                        }
+                    }
+
+                    using (var response = await httpClient.PostAsync(url, multipartContent, cancellationToken))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        return await response.Content.ReadAsStringAsync(cancellationToken);
+                    }
+                }
             }
         }
-
-        using var response = await httpClient.PostAsync(url, multipartContent, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cancellationToken);
     }
 
     /// <summary>

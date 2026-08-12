@@ -25,9 +25,11 @@ public static class HttpClientGetExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        using var response = await httpClient.GetAsync(url, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cancellationToken);
+        using (var response = await httpClient.GetAsync(url, cancellationToken))
+        {
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(cancellationToken);
+        }
     }
 
     /// <summary>
@@ -50,12 +52,17 @@ public static class HttpClientGetExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = CreateGetRequest(url, headers);
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync(cts.Token);
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
+        {
+            using (var request = CreateGetRequest(url, headers))
+            {
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsStringAsync(cts.Token);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -75,9 +82,11 @@ public static class HttpClientGetExtension
     {
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
-        using var response = await httpClient.GetAsync(url, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+        using (var response = await httpClient.GetAsync(url, cancellationToken))
+        {
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsByteArrayAsync(cancellationToken);
+        }
     }
 
     /// <summary>
@@ -100,12 +109,17 @@ public static class HttpClientGetExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = CreateGetRequest(url, headers);
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsByteArrayAsync(cts.Token);
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
+        {
+            using (var request = CreateGetRequest(url, headers))
+            {
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsByteArrayAsync(cts.Token);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -153,9 +167,11 @@ public static class HttpClientGetExtension
 
         var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
 
-        using var request = CreateGetRequest(url, headers);
-        var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
-        return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+        using (var request = CreateGetRequest(url, headers))
+        {
+            var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+            return await HttpClientExtensionHelper.ReadResponseStreamAsync(response, cts.Token, cts);
+        }
     }
 
     /// <summary>

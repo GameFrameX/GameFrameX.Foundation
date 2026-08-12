@@ -26,10 +26,14 @@ public static class HttpClientOptionsExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var request = new HttpRequestMessage(HttpMethod.Options, url);
-        using var response = await httpClient.SendAsync(request, cancellationToken);
-        response.EnsureSuccessStatusCode();
-        return response.Content.Headers.Allow.ToList().AsReadOnly();
+        using (var request = new HttpRequestMessage(HttpMethod.Options, url))
+        {
+            using (var response = await httpClient.SendAsync(request, cancellationToken))
+            {
+                response.EnsureSuccessStatusCode();
+                return response.Content.Headers.Allow.ToList().AsReadOnly();
+            }
+        }
     }
 
     /// <summary>
@@ -52,12 +56,17 @@ public static class HttpClientOptionsExtension
         ArgumentNullException.ThrowIfNull(httpClient, nameof(httpClient));
         ArgumentException.ThrowIfNullOrWhiteSpace(url, nameof(url));
 
-        using var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken);
-
-        using var request = CreateOptionsRequest(url, headers);
-        using var response = await httpClient.SendAsync(request, cts.Token);
-        response.EnsureSuccessStatusCode();
-        return response.Content.Headers.Allow.ToList().AsReadOnly();
+        using (var cts = HttpClientExtensionHelper.CreateTimeoutTokenSource(timeout, cancellationToken))
+        {
+            using (var request = CreateOptionsRequest(url, headers))
+            {
+                using (var response = await httpClient.SendAsync(request, cts.Token))
+                {
+                    response.EnsureSuccessStatusCode();
+                    return response.Content.Headers.Allow.ToList().AsReadOnly();
+                }
+            }
+        }
     }
 
     /// <summary>
