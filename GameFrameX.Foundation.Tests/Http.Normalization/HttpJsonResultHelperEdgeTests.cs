@@ -234,4 +234,28 @@ public sealed class HttpJsonResultHelperEdgeTests
             Assert.InRange(r.Time, before, after);
         }
     }
+
+    // === envelope == null 分支（JSON 字面量 "null"）===
+
+    [Fact]
+    public void NullLiteralJson_TriggersEnvelopeNullBranch_FailureStageResultDeserialization_NoExceptionType()
+    {
+        // JSON 字面量 "null" 让 JsonHelper.Deserialize<HttpJsonResultData<JsonElement>> 返回 null
+        // （引用类型 + JSON null literal 的标准行为），触发 TryToHttpJsonResultData 第 105-111 行
+        // 的 envelope==null 分支。该分支调用 CreateFailure(..., exception: null)，
+        // 因此 ExceptionType 经 exception?.GetType().Name ?? string.Empty 合并为空字符串。
+        // Arrange
+        const string json = "null";
+
+        // Act
+        var conversion = json.TryToHttpJsonResultData<Payload>();
+
+        // Assert
+        Assert.False(conversion.Succeeded);
+        Assert.Equal(HttpJsonResultConversionFailureStage.ResultDeserialization, conversion.FailureStage);
+        Assert.Equal(string.Empty, conversion.ExceptionType);
+        Assert.Contains("deserialize", conversion.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+        Assert.False(conversion.Result.IsSuccess);
+        Assert.Null(conversion.Result.Data);
+    }
 }
