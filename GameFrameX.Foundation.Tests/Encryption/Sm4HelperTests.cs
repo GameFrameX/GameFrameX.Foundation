@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using Xunit;
 using GameFrameX.Foundation.Encryption;
@@ -180,13 +181,13 @@ public class Sm4HelperTests
     }
 
     [Fact]
-    public void DecryptCbc_WithInvalidEncryptedData_ShouldThrowException()
+    public void DecryptCbc_WithInvalidEncryptedData_ShouldThrowCryptographicException()
     {
         // Arrange
         var invalidEncryptedData = "invalid_encrypted_data";
 
         // Act & Assert
-        Assert.ThrowsAny<Exception>(() => Sm4Helper.DecryptCbc(TestKey, invalidEncryptedData, hexString: true));
+        Assert.Throws<CryptographicException>(() => Sm4Helper.DecryptCbc(TestKey, invalidEncryptedData, hexString: true));
     }
 
     [Fact]

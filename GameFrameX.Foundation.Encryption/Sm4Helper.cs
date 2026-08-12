@@ -32,6 +32,8 @@
 // ==========================================================================================
 
 using GameFrameX.Foundation.Encryption.Sm;
+using System.IO;
+using System.Security.Cryptography;
 using GameFrameX.Foundation.Localization.Core;
 using GameFrameX.Foundation.Encryption.Localization;
 
@@ -92,7 +94,14 @@ public static class Sm4Helper
             sm4Util.iv = "00000000000000000000000000000000";
         }
 
-        return sm4Util.Encrypt_CBC(dataString);
+        try
+        {
+            return sm4Util.Encrypt_CBC(dataString);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+        }
     }
 
     /// <summary>
@@ -141,7 +150,14 @@ public static class Sm4Helper
             sm4Util.iv = "00000000000000000000000000000000";
         }
 
-        return sm4Util.Decrypt_CBC(dataString);
+        try
+        {
+            return sm4Util.Decrypt_CBC(dataString);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+        }
     }
 
     /// <summary>
@@ -186,7 +202,14 @@ public static class Sm4Helper
             sm4Util.iv = iv;
         }
 
-        return sm4Util.Encrypt_ECB(dataString);
+        try
+        {
+            return sm4Util.Encrypt_ECB(dataString);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+        }
     }
 
     /// <summary>
@@ -231,6 +254,13 @@ public static class Sm4Helper
             sm4Util.iv = iv;
         }
 
-        return sm4Util.Decrypt_ECB(dataString);
+        try
+        {
+            return sm4Util.Decrypt_ECB(dataString);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM4 输入数据格式无效。", ex);
+        }
     }
 }

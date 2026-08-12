@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Text;
 using Xunit;
 using GameFrameX.Foundation.Encryption;
@@ -156,17 +157,17 @@ public class Sm2HelperTests
     }
 
     [Fact]
-    public void Encrypt_WithInvalidPublicKey_ShouldThrowException()
+    public void Encrypt_WithInvalidPublicKey_ShouldThrowCryptographicException()
     {
         // Arrange
         var invalidPublicKey = "invalid_public_key";
 
         // Act & Assert
-        Assert.ThrowsAny<Exception>(() => Sm2Helper.Encrypt(invalidPublicKey, TestData));
+        Assert.Throws<CryptographicException>(() => Sm2Helper.Encrypt(invalidPublicKey, TestData));
     }
 
     [Fact]
-    public void Decrypt_WithInvalidPrivateKey_ShouldThrowException()
+    public void Decrypt_WithInvalidPrivateKey_ShouldThrowCryptographicException()
     {
         // Arrange
         Sm2Helper.GenerateKeyPair(out string publicKey, out string privateKey);
@@ -174,18 +175,18 @@ public class Sm2HelperTests
         var invalidPrivateKey = "invalid_private_key";
 
         // Act & Assert
-        Assert.ThrowsAny<Exception>(() => Sm2Helper.Decrypt(invalidPrivateKey, encryptedText));
+        Assert.Throws<CryptographicException>(() => Sm2Helper.Decrypt(invalidPrivateKey, encryptedText));
     }
 
     [Fact]
-    public void Decrypt_WithInvalidEncryptedData_ShouldThrowException()
+    public void Decrypt_WithInvalidEncryptedData_ShouldThrowCryptographicException()
     {
         // Arrange
         Sm2Helper.GenerateKeyPair(out string publicKey, out string privateKey);
         var invalidEncryptedData = "invalid_encrypted_data";
 
         // Act & Assert
-        Assert.ThrowsAny<Exception>(() => Sm2Helper.Decrypt(privateKey, invalidEncryptedData));
+        Assert.Throws<CryptographicException>(() => Sm2Helper.Decrypt(privateKey, invalidEncryptedData));
     }
 
     [Fact]

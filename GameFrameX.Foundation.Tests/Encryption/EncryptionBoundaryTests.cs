@@ -73,7 +73,7 @@ public class EncryptionBoundaryTests
 
     // ========================================================================
     // Sm2Helper 边界测试
-    // 非法 hex 字符 → BouncyCastle Hex.Decode 抛异常（BC 内部类型，非 FormatException/CryptographicException）。
+    // 非法 hex 字符 → Sm2Helper 包装 BouncyCastle Hex.Decode 的 IOException 为 CryptographicException。
     // 字节数组 Decrypt 最小密文长度 = 97 字节（65 C1 + 0 C2 + 32 C3）。
     // ========================================================================
 
@@ -130,24 +130,23 @@ public class EncryptionBoundaryTests
     }
 
     /// <summary>
-    /// 非法 hex 公钥（含非 hex 字符）→ BouncyCastle Hex.Decode 抛出异常。
-    /// 异常来自 BouncyCastle 内部，非 FormatException 也非 CryptographicException。
+    /// 非法 hex 公钥（含非 hex 字符）→ Sm2Helper 包装 IOException 为 CryptographicException。
     /// </summary>
     [Fact]
-    public void Sm2Encrypt_WithNonHexPublicKey_ShouldThrow()
+    public void Sm2Encrypt_WithNonHexPublicKey_ShouldThrowCryptographicException()
     {
         // Arrange
         var nonHexKey = "XYZ:not_a_hex_key!!";
 
-        // Act & Assert — BouncyCastle Hex.Decode 异常类型为 BC 内部类型（IOException）
-        Assert.ThrowsAny<Exception>(() => Sm2Helper.Encrypt(nonHexKey, "test"));
+        // Act & Assert — Hex.Decode 抛 IOException，Sm2Helper 包装为 CryptographicException
+        Assert.Throws<CryptographicException>(() => Sm2Helper.Encrypt(nonHexKey, "test"));
     }
 
     /// <summary>
-    /// 非法 hex 私钥（含非 hex 字符）→ BouncyCastle Hex.Decode 抛出异常。
+    /// 非法 hex 私钥（含非 hex 字符）→ Sm2Helper 包装 IOException 为 CryptographicException。
     /// </summary>
     [Fact]
-    public void Sm2Decrypt_WithNonHexPrivateKey_ShouldThrow()
+    public void Sm2Decrypt_WithNonHexPrivateKey_ShouldThrowCryptographicException()
     {
         // Arrange
         Sm2Helper.GenerateKeyPair(out string publicKey, out _);
@@ -155,7 +154,7 @@ public class EncryptionBoundaryTests
         var nonHexPrivateKey = "ZZnot_a_hex_key!!";
 
         // Act & Assert
-        Assert.ThrowsAny<Exception>(() => Sm2Helper.Decrypt(nonHexPrivateKey, encrypted));
+        Assert.Throws<CryptographicException>(() => Sm2Helper.Decrypt(nonHexPrivateKey, encrypted));
     }
 
     // ========================================================================

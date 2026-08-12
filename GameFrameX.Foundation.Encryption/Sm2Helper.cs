@@ -33,6 +33,8 @@
 
 using GameFrameX.Foundation.Encryption.Sm;
 using System;
+using System.IO;
+using System.Security.Cryptography;
 using GameFrameX.Foundation.Localization.Core;
 using GameFrameX.Foundation.Encryption.Localization;
 
@@ -62,7 +64,14 @@ public static class Sm2Helper
         ArgumentNullException.ThrowIfNull(publicKeyString, nameof(publicKeyString));
         ArgumentException.ThrowIfNullOrWhiteSpace(publicKeyString, nameof(publicKeyString));
 
-        return Sm2Util.Encrypt(publicKeyString, dataString);
+        try
+        {
+            return Sm2Util.Encrypt(publicKeyString, dataString);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+        }
     }
 
     /// <summary>
@@ -81,7 +90,14 @@ public static class Sm2Helper
         ArgumentNullException.ThrowIfNull(privateKeyString, nameof(privateKeyString));
         ArgumentException.ThrowIfNullOrWhiteSpace(privateKeyString, nameof(privateKeyString));
 
-        return Sm2Util.Decrypt(privateKeyString, encryptedDataString);
+        try
+        {
+            return Sm2Util.Decrypt(privateKeyString, encryptedDataString);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+        }
     }
 
     /// <summary>
@@ -118,7 +134,14 @@ public static class Sm2Helper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PublicKeyCannotBeEmpty), nameof(publicKey));
         }
 
-        return Sm2Util.Encrypt(publicKey, data);
+        try
+        {
+            return Sm2Util.Encrypt(publicKey, data);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+        }
     }
 
     /// <summary>
@@ -140,6 +163,13 @@ public static class Sm2Helper
             throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.PrivateKeyCannotBeEmpty), nameof(privateKey));
         }
 
-        return Sm2Util.Decrypt(privateKey, encryptedData);
+        try
+        {
+            return Sm2Util.Decrypt(privateKey, encryptedData);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException("SM2 输入数据格式无效。", ex);
+        }
     }
 }
