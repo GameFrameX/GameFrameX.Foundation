@@ -114,14 +114,15 @@ public static class Md5Helper
         ArgumentNullException.ThrowIfNull(input, nameof(input));
         ArgumentNullException.ThrowIfNull(salt, nameof(salt));
         var inputBytes = Encoding.UTF8.GetBytes(input);
-        var saltedBytes = new byte[inputBytes.Length + salt.Length];
-        Buffer.BlockCopy(inputBytes, 0, saltedBytes, 0, inputBytes.Length);
-        Buffer.BlockCopy(salt, 0, saltedBytes, inputBytes.Length, salt.Length);
 
-        using (var md5 = MD5.Create())
+        // 使用增量哈希分两段喂入 input 和 salt，省去合并字节数组的分配与两次拷贝。
+        // Feed input and salt as two separate chunks via incremental hash, avoiding
+        // the allocation and two copies of a merged byte array.
+        using (var hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5))
         {
-            var data = md5.ComputeHash(saltedBytes);
-            return ToHash(data, isUpper);
+            hash.AppendData(inputBytes);
+            hash.AppendData(salt);
+            return ToHash(hash.GetHashAndReset(), isUpper);
         }
     }
 
@@ -242,15 +243,7 @@ public static class Md5Helper
     /// <returns>32个字符的十六进制字符串形式的哈希值 / A 32-character hexadecimal string hash value</returns>
     private static string ToHash(byte[] data, bool isUpper = false)
     {
-        var sb = new StringBuilder(data.Length * 2);
-        var hex = isUpper ? "0123456789ABCDEF" : "0123456789abcdef";
-        foreach (var b in data)
-        {
-            sb.Append(hex[b >> 4]);
-            sb.Append(hex[b & 0xF]);
-        }
-
-        return sb.ToString();
+        return isUpper ? Convert.ToHexString(data) : Convert.ToHexStringLower(data);
     }
 
     /// <summary>
