@@ -28,11 +28,13 @@ public class HashHighPriorityFeatureTests
     [Fact]
     public async Task CryptographicHelpers_AsyncStream_WithCanceledToken_ShouldCancel()
     {
-        using var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.Cancel();
+        using (var cancellationTokenSource = new CancellationTokenSource())
+        {
+            cancellationTokenSource.Cancel();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => Sha256Helper.ComputeHashAsync(new MemoryStream(Data), cancellationTokenSource.Token));
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(
+                () => Sha256Helper.ComputeHashAsync(new MemoryStream(Data), cancellationTokenSource.Token));
+        }
     }
 
     [Fact]
@@ -48,13 +50,15 @@ public class HashHighPriorityFeatureTests
     [Fact]
     public async Task CrcHelpers_AsyncStream_WithCanceledToken_ShouldCancel()
     {
-        using var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.Cancel();
+        using (var cancellationTokenSource = new CancellationTokenSource())
+        {
+            cancellationTokenSource.Cancel();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => CrcHelper.GetCrc32Async(new MemoryStream(Data), cancellationTokenSource.Token));
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => CrcHelper.GetCrc64Async(new MemoryStream(Data), cancellationTokenSource.Token));
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(
+                () => CrcHelper.GetCrc32Async(new MemoryStream(Data), cancellationTokenSource.Token));
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(
+                () => CrcHelper.GetCrc64Async(new MemoryStream(Data), cancellationTokenSource.Token));
+        }
     }
 
     [Theory]
@@ -137,13 +141,15 @@ public class HashHighPriorityFeatureTests
     [Fact]
     public async Task HmacHelpers_AsyncStream_WithCanceledToken_ShouldCancel()
     {
-        using var cancellationTokenSource = new CancellationTokenSource();
-        cancellationTokenSource.Cancel();
-        var key = Encoding.UTF8.GetBytes("secret");
+        using (var cancellationTokenSource = new CancellationTokenSource())
+        {
+            cancellationTokenSource.Cancel();
+            var key = Encoding.UTF8.GetBytes("secret");
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => HmacSha256Helper.HashAsync(new MemoryStream(Data), key, cancellationTokenSource.Token));
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(
-            () => HmacSha512Helper.HashAsync(new MemoryStream(Data), key, cancellationTokenSource.Token));
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(
+                () => HmacSha256Helper.HashAsync(new MemoryStream(Data), key, cancellationTokenSource.Token));
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(
+                () => HmacSha512Helper.HashAsync(new MemoryStream(Data), key, cancellationTokenSource.Token));
+        }
     }
 }

@@ -94,9 +94,11 @@ public static class Sha1Helper
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
 
-        using var sha1 = SHA1.Create();
-        var hash = sha1.ComputeHash(buffer);
-        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        using (var sha1 = SHA1.Create())
+        {
+            var hash = sha1.ComputeHash(buffer);
+            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        }
     }
 
     /// <summary>
@@ -106,8 +108,10 @@ public static class Sha1Helper
     public static string ComputeHash(Stream input)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var sha1 = SHA1.Create();
-        return Convert.ToHexString(sha1.ComputeHash(input)).ToLowerInvariant();
+        using (var sha1 = SHA1.Create())
+        {
+            return Convert.ToHexString(sha1.ComputeHash(input)).ToLowerInvariant();
+        }
     }
 
     /// <summary>
@@ -117,9 +121,11 @@ public static class Sha1Helper
     public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var sha1 = SHA1.Create();
-        var hash = await sha1.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
-        return Convert.ToHexString(hash).ToLowerInvariant();
+        using (var sha1 = SHA1.Create())
+        {
+            var hash = await sha1.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+            return Convert.ToHexString(hash).ToLowerInvariant();
+        }
     }
 
     /// <summary>
@@ -143,10 +149,14 @@ public static class Sha1Helper
             return string.Empty;
         }
 
-        using var sha1 = SHA1.Create();
-        using var fs = File.OpenRead(filePath);
-        var hash = sha1.ComputeHash(fs);
-        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        using (var sha1 = SHA1.Create())
+        {
+            using (var fs = File.OpenRead(filePath))
+            {
+                var hash = sha1.ComputeHash(fs);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+        }
     }
 
     /// <summary>

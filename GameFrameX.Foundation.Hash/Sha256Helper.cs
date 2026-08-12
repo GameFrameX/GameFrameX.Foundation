@@ -82,9 +82,11 @@ public static class Sha256Helper
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
 
-        using var sha256 = SHA256.Create();
-        var hash = sha256.ComputeHash(buffer);
-        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        using (var sha256 = SHA256.Create())
+        {
+            var hash = sha256.ComputeHash(buffer);
+            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        }
     }
 
     /// <summary>
@@ -93,8 +95,10 @@ public static class Sha256Helper
     public static string ComputeHash(Stream input)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var sha256 = SHA256.Create();
-        return Convert.ToHexString(sha256.ComputeHash(input)).ToLowerInvariant();
+        using (var sha256 = SHA256.Create())
+        {
+            return Convert.ToHexString(sha256.ComputeHash(input)).ToLowerInvariant();
+        }
     }
 
     /// <summary>
@@ -103,9 +107,11 @@ public static class Sha256Helper
     public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var sha256 = SHA256.Create();
-        var hash = await sha256.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
-        return Convert.ToHexString(hash).ToLowerInvariant();
+        using (var sha256 = SHA256.Create())
+        {
+            var hash = await sha256.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+            return Convert.ToHexString(hash).ToLowerInvariant();
+        }
     }
 
     /// <summary>
@@ -126,10 +132,14 @@ public static class Sha256Helper
             return string.Empty;
         }
 
-        using var sha256 = SHA256.Create();
-        using var fs = File.OpenRead(filePath);
-        var hash = sha256.ComputeHash(fs);
-        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        using (var sha256 = SHA256.Create())
+        {
+            using (var fs = File.OpenRead(filePath))
+            {
+                var hash = sha256.ComputeHash(fs);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+        }
     }
 
     /// <summary>

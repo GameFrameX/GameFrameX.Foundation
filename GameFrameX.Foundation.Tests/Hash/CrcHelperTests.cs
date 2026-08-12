@@ -107,13 +107,14 @@ public class CrcHelperTests
     {
         // Arrange
         var data = Encoding.UTF8.GetBytes(TestString);
-        using var stream = new MemoryStream(data);
+        using (var stream = new MemoryStream(data))
+        {
+            // Act
+            var crc = CrcHelper.GetCrc32(stream);
 
-        // Act
-        var crc = CrcHelper.GetCrc32(stream);
-
-        // Assert
-        Assert.NotEqual(0, crc);
+            // Assert
+            Assert.NotEqual(0, crc);
+        }
     }
 
     [Fact]
@@ -121,14 +122,15 @@ public class CrcHelperTests
     {
         // Arrange
         var data = Encoding.UTF8.GetBytes(TestString);
-        using var stream = new MemoryStream(data);
+        using (var stream = new MemoryStream(data))
+        {
+            // Act
+            var crcFromBytes = CrcHelper.GetCrc32(data);
+            var crcFromStream = CrcHelper.GetCrc32(stream);
 
-        // Act
-        var crcFromBytes = CrcHelper.GetCrc32(data);
-        var crcFromStream = CrcHelper.GetCrc32(stream);
-
-        // Assert
-        Assert.Equal(crcFromBytes, crcFromStream);
+            // Assert
+            Assert.Equal(crcFromBytes, crcFromStream);
+        }
     }
 
     [Fact]
@@ -354,13 +356,14 @@ public class CrcHelperTests
     {
         // Arrange
         var data = Encoding.UTF8.GetBytes(TestString);
-        using var stream = new MemoryStream(data);
+        using (var stream = new MemoryStream(data))
+        {
+            // Act
+            var crc = CrcHelper.GetCrc64(stream);
 
-        // Act
-        var crc = CrcHelper.GetCrc64(stream);
-
-        // Assert
-        Assert.NotEqual(0UL, crc);
+            // Assert
+            Assert.NotEqual(0UL, crc);
+        }
     }
 
     [Fact]
@@ -368,14 +371,15 @@ public class CrcHelperTests
     {
         // Arrange
         var data = Encoding.UTF8.GetBytes(TestString);
-        using var stream = new MemoryStream(data);
+        using (var stream = new MemoryStream(data))
+        {
+            // Act
+            var crcFromBytes = CrcHelper.GetCrc64(data);
+            var crcFromStream = CrcHelper.GetCrc64(stream);
 
-        // Act
-        var crcFromBytes = CrcHelper.GetCrc64(data);
-        var crcFromStream = CrcHelper.GetCrc64(stream);
-
-        // Assert
-        Assert.Equal(crcFromBytes, crcFromStream);
+            // Assert
+            Assert.Equal(crcFromBytes, crcFromStream);
+        }
     }
 
     [Fact]
@@ -527,34 +531,40 @@ public class CrcHelperTests
     public void GetCrc32_EmptyStream_ShouldReturnValidValue()
     {
         // Arrange
-        using var stream = new MemoryStream();
+        using (var stream = new MemoryStream())
+        {
+            // Act
+            var crc = CrcHelper.GetCrc32(stream);
 
-        // Act
-        var crc = CrcHelper.GetCrc32(stream);
-
-        // Assert
-        // CRC32 of empty stream may be 0 or a specific value depending on implementation
-        // We just verify it's consistent
-        using var stream2 = new MemoryStream();
-        var crc2 = CrcHelper.GetCrc32(stream2);
-        Assert.Equal(crc, crc2);
+            // Assert
+            // CRC32 of empty stream may be 0 or a specific value depending on implementation
+            // We just verify it's consistent
+            using (var stream2 = new MemoryStream())
+            {
+                var crc2 = CrcHelper.GetCrc32(stream2);
+                Assert.Equal(crc, crc2);
+            }
+        }
     }
 
     [Fact]
     public void GetCrc64_EmptyStream_ShouldReturnValidValue()
     {
         // Arrange
-        using var stream = new MemoryStream();
+        using (var stream = new MemoryStream())
+        {
+            // Act
+            var crc = CrcHelper.GetCrc64(stream);
 
-        // Act
-        var crc = CrcHelper.GetCrc64(stream);
-
-        // Assert
-        // CRC64 of empty stream may be 0 or a specific value depending on implementation
-        // We just verify it's consistent
-        using var stream2 = new MemoryStream();
-        var crc2 = CrcHelper.GetCrc64(stream2);
-        Assert.Equal(crc, crc2);
+            // Assert
+            // CRC64 of empty stream may be 0 or a specific value depending on implementation
+            // We just verify it's consistent
+            using (var stream2 = new MemoryStream())
+            {
+                var crc2 = CrcHelper.GetCrc64(stream2);
+                Assert.Equal(crc, crc2);
+            }
+        }
     }
 
     #endregion

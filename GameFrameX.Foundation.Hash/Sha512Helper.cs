@@ -75,9 +75,11 @@ public static class Sha512Helper
     {
         ArgumentNullException.ThrowIfNull(buffer, nameof(buffer));
 
-        using var sha512 = SHA512.Create();
-        var hash = sha512.ComputeHash(buffer);
-        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        using (var sha512 = SHA512.Create())
+        {
+            var hash = sha512.ComputeHash(buffer);
+            return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        }
     }
 
     /// <summary>
@@ -86,8 +88,10 @@ public static class Sha512Helper
     public static string ComputeHash(Stream input)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var sha512 = SHA512.Create();
-        return Convert.ToHexString(sha512.ComputeHash(input)).ToLowerInvariant();
+        using (var sha512 = SHA512.Create())
+        {
+            return Convert.ToHexString(sha512.ComputeHash(input)).ToLowerInvariant();
+        }
     }
 
     /// <summary>
@@ -96,9 +100,11 @@ public static class Sha512Helper
     public static async Task<string> ComputeHashAsync(Stream input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var sha512 = SHA512.Create();
-        var hash = await sha512.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
-        return Convert.ToHexString(hash).ToLowerInvariant();
+        using (var sha512 = SHA512.Create())
+        {
+            var hash = await sha512.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+            return Convert.ToHexString(hash).ToLowerInvariant();
+        }
     }
 
     /// <summary>
@@ -119,10 +125,14 @@ public static class Sha512Helper
             return string.Empty;
         }
 
-        using var sha512 = SHA512.Create();
-        using var fs = File.OpenRead(filePath);
-        var hash = sha512.ComputeHash(fs);
-        return BitConverter.ToString(hash).Replace("-", "").ToLower();
+        using (var sha512 = SHA512.Create())
+        {
+            using (var fs = File.OpenRead(filePath))
+            {
+                var hash = sha512.ComputeHash(fs);
+                return BitConverter.ToString(hash).Replace("-", "").ToLower();
+            }
+        }
     }
 
     /// <summary>

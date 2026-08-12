@@ -82,8 +82,10 @@ public static class HmacSha256Helper
     {
         ArgumentNullException.ThrowIfNull(message, nameof(message));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
-        using var hmac = new HMACSHA256(key);
-        return Convert.ToBase64String(hmac.ComputeHash(message));
+        using (var hmac = new HMACSHA256(key))
+        {
+            return Convert.ToBase64String(hmac.ComputeHash(message));
+        }
     }
 
     /// <summary>
@@ -93,9 +95,11 @@ public static class HmacSha256Helper
     {
         ArgumentNullException.ThrowIfNull(message, nameof(message));
         ArgumentNullException.ThrowIfNull(key, nameof(key));
-        using var hmac = new HMACSHA256(key);
-        var hash = await hmac.ComputeHashAsync(message, cancellationToken).ConfigureAwait(false);
-        return Convert.ToBase64String(hash);
+        using (var hmac = new HMACSHA256(key))
+        {
+            var hash = await hmac.ComputeHashAsync(message, cancellationToken).ConfigureAwait(false);
+            return Convert.ToBase64String(hash);
+        }
     }
 
     /// <summary>

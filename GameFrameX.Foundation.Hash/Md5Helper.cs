@@ -67,9 +67,11 @@ public static class Md5Helper
     public static string Hash(string input, bool isUpper = false)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var md5 = MD5.Create();
-        var data = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-        return ToHash(data, isUpper);
+        using (var md5 = MD5.Create())
+        {
+            var data = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
+            return ToHash(data, isUpper);
+        }
     }
 
     /// <summary>
@@ -116,9 +118,11 @@ public static class Md5Helper
         Buffer.BlockCopy(inputBytes, 0, saltedBytes, 0, inputBytes.Length);
         Buffer.BlockCopy(salt, 0, saltedBytes, inputBytes.Length, salt.Length);
 
-        using var md5 = MD5.Create();
-        var data = md5.ComputeHash(saltedBytes);
-        return ToHash(data, isUpper);
+        using (var md5 = MD5.Create())
+        {
+            var data = md5.ComputeHash(saltedBytes);
+            return ToHash(data, isUpper);
+        }
     }
 
     /// <summary>
@@ -137,9 +141,11 @@ public static class Md5Helper
     public static string Hash(byte[] input, bool isUpper = false)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var md5 = MD5.Create();
-        var data = md5.ComputeHash(input);
-        return ToHash(data, isUpper);
+        using (var md5 = MD5.Create())
+        {
+            var data = md5.ComputeHash(input);
+            return ToHash(data, isUpper);
+        }
     }
 
     /// <summary>
@@ -157,9 +163,11 @@ public static class Md5Helper
     public static string Hash(Stream input)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var md5 = MD5.Create();
-        var data = md5.ComputeHash(input);
-        return ToHash(data);
+        using (var md5 = MD5.Create())
+        {
+            var data = md5.ComputeHash(input);
+            return ToHash(data);
+        }
     }
 
     /// <summary>
@@ -172,9 +180,11 @@ public static class Md5Helper
     public static async Task<string> HashAsync(Stream input, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(input, nameof(input));
-        using var md5 = MD5.Create();
-        var data = await md5.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
-        return ToHash(data);
+        using (var md5 = MD5.Create())
+        {
+            var data = await md5.ComputeHashAsync(input, cancellationToken).ConfigureAwait(false);
+            return ToHash(data);
+        }
     }
 
     /// <summary>
@@ -258,7 +268,9 @@ public static class Md5Helper
     public static string HashByFilePath(string filePath)
     {
         ArgumentException.ThrowIfNullOrEmpty(filePath, nameof(filePath));
-        using var file = new FileStream(filePath, FileMode.Open);
-        return Hash(file);
+        using (var file = new FileStream(filePath, FileMode.Open))
+        {
+            return Hash(file);
+        }
     }
 }
