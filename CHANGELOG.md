@@ -1,3 +1,9 @@
+## [3.0.0] - 2026-08-12
+
+### Bug Fixes
+
+- 升级 semantic-version 至 v6 并采用 Conventional Commits 默认 pattern
+
 ## [2.9.1] - 2026-08-12
 
 ### Bug Fixes
