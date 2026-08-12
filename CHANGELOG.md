@@ -1,3 +1,136 @@
+## [2.9.0] - 2026-08-12
+
+### Bug Fixes
+
+- 修复 DisposableDictionaryTests 缺失断言的 Sonar S2699 违规 (#94)
+- 消除 DisposableConcurrentDictionaryTests 的 Sonar S2699 缺失断言违规 (#95)
+- 消除 LocalizationServiceTests 的 Sonar S2699 缺失断言违规 (#98)
+- 消除 SpanExtensions.WriteBytesWithoutLength 的 Sonar S6640 unsafe 违规 (#100)
+- 重命名 NullObject.CompareTo 参数 value 为 obj (#103)
+- 修复 ConcurrentLimitedQueue.Limit setter 不直接引用 _limit 字段的 Sonar S4275 违规 (#104)
+- 为 CnReg 补传 Regex matchTimeout 消除 Sonar S6444 (#105)
+- 抑制 Md5Helper.Hash(byte[]) 的 Sonar S4790 弱哈希漏洞告警 (#107)
+- 抑制 Md5Helper.HashWithSalt(string, byte[]) 的 Sonar S4790 弱哈希漏洞告警 (#108)
+- 抑制 Md5Helper.Hash(Stream) 的 Sonar S4790 弱哈希告警 (#110)
+- 抑制 Md5Helper.HashAsync(Stream) 的 Sonar S4790 弱哈希告警 (#112)
+- 抑制 Md5Helper 的 Sonar S4790 弱哈希漏洞告警 (#106)
+- 重命名 XxHashHelper 内层 Hash64 unsafe 方法规避 Sonar S3218 shadow (#114)
+- 重命名 XxHashHelper 内层 Hash32(string) 消除 Sonar S3218 shadow (#116)
+- 重命名内部类型哈希方法 (#117)
+- 重命名内部字节哈希方法 (#118)
+- 重命名 xxHash 内部 Hash32 以消除外层成员遮蔽 (#115)
+- 消除 CrcHelper.Crc64.GetHashCode 的 Sonar S3877 BLOCKER (#109)
+- 实现 ResourceManager 的 IDisposable 接口 (#111)
+- 重命名 InternalXxHashHelper 公开方法消除 Sonar S3218 遮蔽 (#119)
+- 消除 XxHashHelper Hash64Core 的 Sonar S6640 unsafe 违规 (#155)
+- 消除 XxHashHelper 的 Sonar S6640 unsafe 代码块违规 (#154)
+- 消除 Sha1Helper.ComputeHash(byte[]) 的 Sonar S4790 弱哈希违规 (#162)
+- 抑制 Sha1Helper.ComputeHash(Stream) 的 Sonar S4790 弱哈希告警 (#160)
+- 抑制 Sha1Helper.ComputeHashAsync(Stream) 的 Sonar S4790 弱哈希告警 (#159)
+- 消除 XxHashHelper 32位路径的 Sonar S6640 unsafe 违规 (#158)
+- 消除 XxHashHelper ComputeHash32 的 Sonar S6640 unsafe 违规 (#161)
+- 抑制 Sha1Helper.ComputeFileHash(string) 的 Sonar S4790 弱哈希告警 (#166)
+- 重构 OptionsDebugger.IsWideCharacter 降低 Cognitive Complexity 至阈值内 (#170)
+- 修复中性文化资源基础名未剥离文化段
+- 消除 OptionsBuilder._ensurePrefixedKeys 的 Sonar S4487 未读取字段告警 (#175)
+- 消除 OptionsBuilder._boolFormat 的 Sonar S4487 未读取字段告警 (#188)
+- 移除 Hash 项目不再需要的 AllowUnsafeBlocks 编译开关 (#209)
+- 移除 NonCryptographicHashAlgorithm.GetHashCode 的 throw 消除 Sonar S3877 (#210)
+- JsonHelper 正则替换补 matchTimeout 限制执行时间 (S6444) (#213)
+- 抑制 DsaHelper.SignData(byte[], string) 的 Sonar S4790 弱哈希告警 (#214)
+- 抑制 DsaHelper(string) 构造函数的 Sonar S4790 弱哈希告警 (#230)
+- 抑制 DsaHelper.Make/VerifyData 的 Sonar S4790 弱哈希告警 (#232)
+- 钉 SHA 并只传必要 secret 修复 sonar-issues.yml 的 S7635/S7637 安全违规 (#234)
+- 抑制 UnicodeJsonEncoder 两个 unsafe override 的 Sonar S6640 告警 (#239)
+- 补齐 Logger 参数空校验并扩充测试
+- 强化 ORM 属性与实体契约校验
+- 补齐 Snowflake 解析校验并扩充工具测试
+- SM2/SM4 输入异常统一为 CryptographicException
+- 命令行参数拒绝 null 元素
+- 集成测试改用 httpbingo 提升稳定性
+- Using 声明改为带大括号的 using 语句
+- Using 声明改为带大括号的 using 语句
+- Using 声明改为带大括号的 using 语句
+- Using 声明改为带大括号的 using 语句
+- Using 声明改为带大括号的 using 语句
+- Using 声明改为带大括号的 using 语句
+- Using 声明改为带大括号的 using 语句
+- Using 声明改为带大括号的 using 语句
+- RSA 分块加解密复用缓冲池与切片写入
+- MD5 带盐哈希改用增量哈希并简化十六进制编码
+- SHA 系列十六进制编码改用 Convert.ToHexString
+
+### Documentation
+
+- 更新 QQ 群号
+
+### Features
+
+- HttpJsonResult 增加 TrackId/ErrorCode/Type/Time/Extras 字段及链路追踪中间件 (#247)
+- 补充加密算法边界与综合测试
+- 补充扩展方法边界与综合测试
+- 补充哈希算法边界与 HMAC 测试
+- 补充 HttpClient 扩展边界与综合测试
+- 补充 HttpJsonResult 与 TrackId 中间件边界测试
+- 补充 JsonHelper 与编码器边界测试
+- 补充资源管理器与本地化测试
+- 补充命令行与环境变量选项解析测试
+- Disposable 字典补齐释放后访问保护
+- 统一 TimerHelper 命名规范并补充 TimeSpan 转换
+- 迁移 TimeOffset 测试至新命名
+- 支持动态加载程序集的资源发现
+- SM2/SM4 异常消息迁移至本地化
+- 异常消息迁移至本地化资源
+- 异常消息迁移至本地化资源
+- 行版本冲突消息迁移至本地化
+- 补齐 PUT/PATCH/DELETE 对称重载
+- 新增 HttpClientResponse 原始响应 API
+
+### Refactor
+
+- 拆分 LogHandler.Create 私有 helper 降低认知复杂度 (#93)
+- 拆分 SequenceEqualSameType 降低认知复杂度 (#101)
+- 降低 SequenceEqual<T1,T2> 认知复杂度 (#102)
+- 降低 CrcHelper.GetCrc32(Stream, byte[], int) 认知复杂度 (#113)
+- 拆分 LoadResources baseName 解析降低认知复杂度 (#171)
+- 拆分 GetFriendlyTypeName 类型映射表降低认知复杂度 (#172)
+- 抽取 TrySetPropertyValue 降低 ApplyDefaultValues 认知复杂度 (#178)
+- 拆分 PrintParsedOptions 编排阶段降低认知复杂度 (#180)
+- 抽取 TryGetDebugFromOptionsEnvVar 与 TryGetDebugFromRuntimeEnvironment 降低 ShouldEnableDebugOutput 认知复杂度 (#182)
+- 抽取辅助方法降低 GetEnvironmentVariables 认知复杂度 (#184)
+- 抽取 ExecuteAttemptAsync 降低 SendJsonCoreAsync 认知复杂度 (#187)
+- 抽取辅助方法降低 ValidateRequiredOptions 认知复杂度 (#191)
+- 抽取 ApplyKeyValuePair 与 ApplySeparatedOption 降低 ConvertToOptionsDictionary 认知复杂度 (#192)
+- 抽取 ConvertBoolOptionValue 与 ConvertToTargetType 降低 ConvertOptionValue 认知复杂度 (#195)
+- 抽取 ApplyOptions 辅助方法降 Cognitive Complexity (25→≤15) (#197)
+- 抽取辅助方法降低 ConvertToStandardFormat 认知复杂度 (42→≤5) (#199)
+- 重命名 Sm3Digest.ProcessWord 形参 in_Renamed 为 input 与基类对齐 (#201)
+- 抽取辅助方法降低 ToCommandLineString 认知复杂度 (19→≤9) (#203)
+- 移除 Sm3Digest.ProcessLength 中恒等的位与掩码 (#204)
+- 重命名 Sm3Digest.DoFinal 形参 out_Renamed 为 output 与基类对齐 (#207)
+- 重命名 GeneralDigest.BlockUpdate 形参 length 为 inLen 与接口对齐 (#215)
+- 拆分 Sm4_crypt_cbc 加解密分块循环降低 Cognitive Complexity (S3776) (#229)
+- 降低 SpecialFloatingPointDocumentConverter.GetModifiedJson Cognitive Complexity (S3776) (#240)
+- 降低 OptionsBuilder.NormalizePropertyName Cognitive Complexity (S3776) (#242)
+- 废弃 HttpJsonResult，统一为 HttpJsonResultData<T> (#250)
+
+### Testing
+
+- 消除 EnsureLoaded_ShouldNotThrow 的 Sonar S2699 缺失断言违规 (#97)
+- 为 AssemblyResourceProvider 释放测试补充显式断言 (#99)
+- 消除 OrmAttributeTests 第17行 Sonar S2701 字面量布尔断言 (#211)
+- 消除 OrmAttributeTests 第19行 Sonar S2701 字面量布尔断言 (#212)
+- 补充 Helper/TrackId 边界与逆向测试（null/空/类型不匹配/Unicode 往返/AsyncLocal 隔离/异常穿透）
+
+### Build
+
+- 串行化测试执行以消除全局状态串扰
+
+### Ci
+
+- 忽略 .github 目录的 SonarCloud 分析 (#252)
+- 启用 Release 发布流水线
+
 ## [2.8.3] - 2026-08-05
 
 ### Testing
