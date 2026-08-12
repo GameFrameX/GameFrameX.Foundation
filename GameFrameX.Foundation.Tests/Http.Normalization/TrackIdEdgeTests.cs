@@ -83,45 +83,55 @@ public sealed class TrackIdEdgeTests
     public async Task Middleware_BlankHeader_GeneratesNewId()
     {
         // 逆向：空白 header 值应视为无，生成新 ID（而非透传空白）
-        using var server = CreateServer(async ctx =>
+        using (var server = CreateServer(async ctx =>
         {
             await ctx.Response.WriteAsync(TrackIdContext.Current ?? string.Empty);
-        });
-        using var client = server.CreateClient();
-        client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, "   ");
+        }))
+        {
+            using (var client = server.CreateClient())
+            {
+                client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, "   ");
 
-        var response = await client.GetAsync("/");
-        var body = await response.Content.ReadAsStringAsync();
+                var response = await client.GetAsync("/");
+                var body = await response.Content.ReadAsStringAsync();
 
-        Assert.Equal(22, body.Length);
-        Assert.Matches("^[A-Za-z0-9_-]{22}$", body);
+                Assert.Equal(22, body.Length);
+                Assert.Matches("^[A-Za-z0-9_-]{22}$", body);
+            }
+        }
     }
 
     [Fact]
     public async Task Middleware_DistinctRequests_GetDistinctTrackIds()
     {
-        using var server = CreateServer(async ctx =>
+        using (var server = CreateServer(async ctx =>
         {
             ctx.Response.StatusCode = 200;
             await ctx.Response.WriteAsync(TrackIdContext.Current ?? string.Empty);
-        });
-        using var client = server.CreateClient();
+        }))
+        {
+            using (var client = server.CreateClient())
+            {
+                var id1 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
+                var id2 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
 
-        var id1 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
-        var id2 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
-
-        Assert.NotEqual(id1, id2);
-        Assert.Equal(22, id1.Length);
-        Assert.Equal(22, id2.Length);
+                Assert.NotEqual(id1, id2);
+                Assert.Equal(22, id1.Length);
+                Assert.Equal(22, id2.Length);
+            }
+        }
     }
 
     [Fact]
     public async Task Middleware_NextThrows_ExceptionPropagates_NotSwallowed()
     {
         // 逆向：下游抛异常时，中间件不得吞掉异常
-        using var server = CreateServer(ctx => throw new InvalidOperationException("boom"));
-        using var client = server.CreateClient();
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => client.GetAsync("/"));
+        using (var server = CreateServer(ctx => throw new InvalidOperationException("boom")))
+        {
+            using (var client = server.CreateClient())
+            {
+                await Assert.ThrowsAsync<InvalidOperationException>(() => client.GetAsync("/"));
+            }
+        }
     }
 }

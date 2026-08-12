@@ -16,8 +16,10 @@ public sealed class HttpJsonResultExtendedFieldsTests
     {
         var result = HttpJsonResultData<Payload>.Success();
 
-        using var json = JsonDocument.Parse(result.ToString());
-        Assert.False(json.RootElement.TryGetProperty("errorCode", out _));
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            Assert.False(json.RootElement.TryGetProperty("errorCode", out _));
+        }
     }
 
     [Fact]
@@ -26,8 +28,10 @@ public sealed class HttpJsonResultExtendedFieldsTests
         var result = HttpJsonResultData<Payload>.Fail("bad");
         result.ErrorCode = "VALIDATION.FAILED";
 
-        using var json = JsonDocument.Parse(result.ToString());
-        Assert.Equal("VALIDATION.FAILED", json.RootElement.GetProperty("errorCode").GetString());
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            Assert.Equal("VALIDATION.FAILED", json.RootElement.GetProperty("errorCode").GetString());
+        }
     }
 
     [Fact]
@@ -35,8 +39,10 @@ public sealed class HttpJsonResultExtendedFieldsTests
     {
         var result = HttpJsonResultData<Payload>.Success();
 
-        using var json = JsonDocument.Parse(result.ToString());
-        Assert.False(json.RootElement.TryGetProperty("type", out _));
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            Assert.False(json.RootElement.TryGetProperty("type", out _));
+        }
     }
 
     [Fact]
@@ -45,8 +51,10 @@ public sealed class HttpJsonResultExtendedFieldsTests
         var result = HttpJsonResultData<Payload>.Success();
         result.Type = "warning";
 
-        using var json = JsonDocument.Parse(result.ToString());
-        Assert.Equal("warning", json.RootElement.GetProperty("type").GetString());
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            Assert.Equal("warning", json.RootElement.GetProperty("type").GetString());
+        }
     }
 
     [Fact]
@@ -56,11 +64,13 @@ public sealed class HttpJsonResultExtendedFieldsTests
         var result = HttpJsonResultData<Payload>.Success();
         var after = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-        using var json = JsonDocument.Parse(result.ToString());
-        var time = json.RootElement.GetProperty("time").GetInt64();
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            var time = json.RootElement.GetProperty("time").GetInt64();
 
-        Assert.True(time > 0);
-        Assert.InRange(time, before, after);
+            Assert.True(time > 0);
+            Assert.InRange(time, before, after);
+        }
     }
 
     [Fact]
@@ -83,8 +93,10 @@ public sealed class HttpJsonResultExtendedFieldsTests
     {
         var result = HttpJsonResultData<Payload>.Success();
 
-        using var json = JsonDocument.Parse(result.ToString());
-        Assert.False(json.RootElement.TryGetProperty("extras", out _));
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            Assert.False(json.RootElement.TryGetProperty("extras", out _));
+        }
     }
 
     [Fact]
@@ -93,11 +105,13 @@ public sealed class HttpJsonResultExtendedFieldsTests
         var result = HttpJsonResultData<Payload>.Success();
         result.Extras = new { Page = 1, Total = 100 };
 
-        using var json = JsonDocument.Parse(result.ToString());
-        var extras = json.RootElement.GetProperty("extras");
-        Assert.Equal(JsonValueKind.Object, extras.ValueKind);
-        Assert.Equal(1, extras.GetProperty("Page").GetInt32());
-        Assert.Equal(100, extras.GetProperty("Total").GetInt32());
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            var extras = json.RootElement.GetProperty("extras");
+            Assert.Equal(JsonValueKind.Object, extras.ValueKind);
+            Assert.Equal(1, extras.GetProperty("Page").GetInt32());
+            Assert.Equal(100, extras.GetProperty("Total").GetInt32());
+        }
     }
 
     [Fact]

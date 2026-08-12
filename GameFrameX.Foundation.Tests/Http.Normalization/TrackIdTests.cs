@@ -16,9 +16,11 @@ public sealed class TrackIdTests
     {
         var result = HttpJsonResultData<Payload>.Success();
 
-        using var json = JsonDocument.Parse(result.ToString());
-        Assert.True(json.RootElement.TryGetProperty("trackId", out var trackId));
-        Assert.Equal(JsonValueKind.Null, trackId.ValueKind);
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            Assert.True(json.RootElement.TryGetProperty("trackId", out var trackId));
+            Assert.Equal(JsonValueKind.Null, trackId.ValueKind);
+        }
     }
 
     [Fact]
@@ -27,8 +29,10 @@ public sealed class TrackIdTests
         var result = HttpJsonResultData<Payload>.Success();
         result.TrackId = "abc-123";
 
-        using var json = JsonDocument.Parse(result.ToString());
-        Assert.Equal("abc-123", json.RootElement.GetProperty("trackId").GetString());
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            Assert.Equal("abc-123", json.RootElement.GetProperty("trackId").GetString());
+        }
     }
 
     [Fact]

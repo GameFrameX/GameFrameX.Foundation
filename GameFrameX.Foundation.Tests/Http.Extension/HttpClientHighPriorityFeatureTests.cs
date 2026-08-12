@@ -55,12 +55,13 @@ public sealed class HttpClientHighPriorityFeatureTests
     {
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.OK, "{\"name\":\"ok\",\"value\":42}");
-        using var client = new HttpClient(handler);
+        using (var client = new HttpClient(handler))
+        {
+            var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items");
 
-        var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items");
-
-        Assert.Equal(new ResponseDto("ok", 42), result);
-        Assert.Equal(HttpMethod.Get, handler.Requests.Single().Method);
+            Assert.Equal(new ResponseDto("ok", 42), result);
+            Assert.Equal(HttpMethod.Get, handler.Requests.Single().Method);
+        }
     }
 
     [Fact]
@@ -68,15 +69,16 @@ public sealed class HttpClientHighPriorityFeatureTests
     {
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.OK, "{\"name\":\"created\",\"value\":7}");
-        using var client = new HttpClient(handler);
+        using (var client = new HttpClient(handler))
+        {
+            var result = await client.PostJsonAsync<RequestDto, ResponseDto>(
+                             "http://example.com/items",
+                             new RequestDto("input"));
 
-        var result = await client.PostJsonAsync<RequestDto, ResponseDto>(
-                         "http://example.com/items",
-                         new RequestDto("input"));
-
-        Assert.Equal(new ResponseDto("created", 7), result);
-        Assert.Equal(HttpMethod.Post, handler.Requests.Single().Method);
-        Assert.Contains("\"Name\":\"input\"", handler.RequestBodies.Single());
+            Assert.Equal(new ResponseDto("created", 7), result);
+            Assert.Equal(HttpMethod.Post, handler.Requests.Single().Method);
+            Assert.Contains("\"Name\":\"input\"", handler.RequestBodies.Single());
+        }
     }
 
     [Fact]
@@ -84,17 +86,18 @@ public sealed class HttpClientHighPriorityFeatureTests
     {
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.BadGateway, "{\"error\":\"upstream failed\"}");
-        using var client = new HttpClient(handler);
+        using (var client = new HttpClient(handler))
+        {
+            var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
+                                client.SendJsonAsync<RequestDto, ResponseDto>(
+                                    HttpMethod.Post,
+                                    "http://example.com/items",
+                                    new RequestDto("input")));
 
-        var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                            client.SendJsonAsync<RequestDto, ResponseDto>(
-                                HttpMethod.Post,
-                                "http://example.com/items",
-                                new RequestDto("input")));
-
-        Assert.Equal(HttpStatusCode.BadGateway, exception.StatusCode);
-        Assert.Equal(new Uri("http://example.com/items"), exception.RequestUri);
-        Assert.Contains("upstream failed", exception.ResponseSummary);
+            Assert.Equal(HttpStatusCode.BadGateway, exception.StatusCode);
+            Assert.Equal(new Uri("http://example.com/items"), exception.RequestUri);
+            Assert.Contains("upstream failed", exception.ResponseSummary);
+        }
     }
 
     [Fact]
@@ -102,11 +105,12 @@ public sealed class HttpClientHighPriorityFeatureTests
     {
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.NoContent, "");
-        using var client = new HttpClient(handler);
+        using (var client = new HttpClient(handler))
+        {
+            var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items");
 
-        var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items");
-
-        Assert.Null(result);
+            Assert.Null(result);
+        }
     }
 
     [Fact]
@@ -114,13 +118,14 @@ public sealed class HttpClientHighPriorityFeatureTests
     {
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.OK, "not json");
-        using var client = new HttpClient(handler);
+        using (var client = new HttpClient(handler))
+        {
+            var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
+                                client.GetJsonAsync<ResponseDto>("http://example.com/items"));
 
-        var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                            client.GetJsonAsync<ResponseDto>("http://example.com/items"));
-
-        Assert.IsType<System.Text.Json.JsonException>(exception.RawException);
-        Assert.Contains("not json", exception.ResponseSummary);
+            Assert.IsType<System.Text.Json.JsonException>(exception.RawException);
+            Assert.Contains("not json", exception.ResponseSummary);
+        }
     }
 
     [Fact]
@@ -130,25 +135,26 @@ public sealed class HttpClientHighPriorityFeatureTests
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.ServiceUnavailable, "{\"error\":\"try again\"}");
         handler.Enqueue(HttpStatusCode.OK, "{\"name\":\"retried\",\"value\":2}");
-        using var client = new HttpClient(handler);
-
-        var result = await client.GetJsonAsync<ResponseDto>(
-                         "http://example.com/items",
-                         new HttpClientRequestOptions
-                         {
-                             Retry = new HttpClientRetryOptions
+        using (var client = new HttpClient(handler))
+        {
+            var result = await client.GetJsonAsync<ResponseDto>(
+                             "http://example.com/items",
+                             new HttpClientRequestOptions
                              {
-                                 MaxRetries = 1,
-                                 BaseDelay = TimeSpan.FromMilliseconds(1),
-                                 BackoffFactor = 2,
-                                 OnRetry = retry => retryDelays.Add(retry.Delay)
-                             }
-                         });
+                                 Retry = new HttpClientRetryOptions
+                                 {
+                                     MaxRetries = 1,
+                                     BaseDelay = TimeSpan.FromMilliseconds(1),
+                                     BackoffFactor = 2,
+                                     OnRetry = retry => retryDelays.Add(retry.Delay)
+                                 }
+                             });
 
-        Assert.Equal(new ResponseDto("retried", 2), result);
-        Assert.Equal(2, handler.SendCount);
-        Assert.Single(retryDelays);
-        Assert.Equal(TimeSpan.FromMilliseconds(1), retryDelays[0]);
+            Assert.Equal(new ResponseDto("retried", 2), result);
+            Assert.Equal(2, handler.SendCount);
+            Assert.Single(retryDelays);
+            Assert.Equal(TimeSpan.FromMilliseconds(1), retryDelays[0]);
+        }
     }
 
     [Fact]
@@ -157,22 +163,23 @@ public sealed class HttpClientHighPriorityFeatureTests
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.ServiceUnavailable, "{\"error\":\"try again\"}");
         handler.Enqueue(HttpStatusCode.OK, "{\"name\":\"retried\",\"value\":2}");
-        using var client = new HttpClient(handler);
-
-        await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-            client.PostJsonAsync<RequestDto, ResponseDto>(
-                "http://example.com/items",
-                new RequestDto("input"),
-                new HttpClientRequestOptions
-                {
-                    Retry = new HttpClientRetryOptions
+        using (var client = new HttpClient(handler))
+        {
+            await Assert.ThrowsAsync<HttpClientRequestException>(() =>
+                client.PostJsonAsync<RequestDto, ResponseDto>(
+                    "http://example.com/items",
+                    new RequestDto("input"),
+                    new HttpClientRequestOptions
                     {
-                        MaxRetries = 1,
-                        BaseDelay = TimeSpan.FromMilliseconds(1)
-                    }
-                }));
+                        Retry = new HttpClientRetryOptions
+                        {
+                            MaxRetries = 1,
+                            BaseDelay = TimeSpan.FromMilliseconds(1)
+                        }
+                    }));
 
-        Assert.Equal(1, handler.SendCount);
+            Assert.Equal(1, handler.SendCount);
+        }
     }
 
     [Fact]
@@ -181,51 +188,55 @@ public sealed class HttpClientHighPriorityFeatureTests
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.ServiceUnavailable, "{\"error\":\"try again\"}");
         handler.Enqueue(HttpStatusCode.OK, "{\"name\":\"retried\",\"value\":2}");
-        using var client = new HttpClient(handler);
-
-        var result = await client.PostJsonAsync<RequestDto, ResponseDto>(
-                         "http://example.com/items",
-                         new RequestDto("input"),
-                         new HttpClientRequestOptions
-                         {
-                             Retry = new HttpClientRetryOptions
+        using (var client = new HttpClient(handler))
+        {
+            var result = await client.PostJsonAsync<RequestDto, ResponseDto>(
+                             "http://example.com/items",
+                             new RequestDto("input"),
+                             new HttpClientRequestOptions
                              {
-                                 MaxRetries = 1,
-                                 BaseDelay = TimeSpan.FromMilliseconds(1),
-                                 AllowNonIdempotentRetry = true
-                             }
-                         });
+                                 Retry = new HttpClientRetryOptions
+                                 {
+                                     MaxRetries = 1,
+                                     BaseDelay = TimeSpan.FromMilliseconds(1),
+                                     AllowNonIdempotentRetry = true
+                                 }
+                             });
 
-        Assert.Equal(new ResponseDto("retried", 2), result);
-        Assert.Equal(2, handler.SendCount);
+            Assert.Equal(new ResponseDto("retried", 2), result);
+            Assert.Equal(2, handler.SendCount);
+        }
     }
 
     [Fact]
     public async Task GetJsonAsync_Retry_StopsDuringCancellation()
     {
-        using var cts = new CancellationTokenSource();
-        var handler = new QueueHttpMessageHandler();
-        handler.Enqueue(HttpStatusCode.ServiceUnavailable, "{\"error\":\"try again\"}");
-        using var client = new HttpClient(handler);
-
-        await Assert.ThrowsAsync<TaskCanceledException>(async () =>
+        using (var cts = new CancellationTokenSource())
         {
-            var task = client.GetJsonAsync<ResponseDto>(
-                "http://example.com/items",
-                new HttpClientRequestOptions
+            var handler = new QueueHttpMessageHandler();
+            handler.Enqueue(HttpStatusCode.ServiceUnavailable, "{\"error\":\"try again\"}");
+            using (var client = new HttpClient(handler))
+            {
+                await Assert.ThrowsAsync<TaskCanceledException>(async () =>
                 {
-                    Retry = new HttpClientRetryOptions
-                    {
-                        MaxRetries = 3,
-                        BaseDelay = TimeSpan.FromSeconds(5)
-                    }
-                },
-                cts.Token);
-            await cts.CancelAsync();
-            await task;
-        });
+                    var task = client.GetJsonAsync<ResponseDto>(
+                        "http://example.com/items",
+                        new HttpClientRequestOptions
+                        {
+                            Retry = new HttpClientRetryOptions
+                            {
+                                MaxRetries = 3,
+                                BaseDelay = TimeSpan.FromSeconds(5)
+                            }
+                        },
+                        cts.Token);
+                    await cts.CancelAsync();
+                    await task;
+                });
 
-        Assert.Equal(1, handler.SendCount);
+                Assert.Equal(1, handler.SendCount);
+            }
+        }
     }
 
     [Fact]
@@ -234,18 +245,19 @@ public sealed class HttpClientHighPriorityFeatureTests
         var headerResults = new List<HttpClientHeaderResult>();
         var handler = new QueueHttpMessageHandler();
         handler.Enqueue(HttpStatusCode.OK, "{\"name\":\"ok\",\"value\":1}");
-        using var client = new HttpClient(handler);
+        using (var client = new HttpClient(handler))
+        {
+            await client.GetJsonAsync<ResponseDto>(
+                "http://example.com/items",
+                new HttpClientRequestOptions
+                {
+                    Headers = { ["Content-Type"] = "application/json" },
+                    OnHeader = headerResults.Add
+                });
 
-        await client.GetJsonAsync<ResponseDto>(
-            "http://example.com/items",
-            new HttpClientRequestOptions
-            {
-                Headers = { ["Content-Type"] = "application/json" },
-                OnHeader = headerResults.Add
-            });
-
-        var result = Assert.Single(headerResults);
-        Assert.Equal("Content-Type", result.Name);
-        Assert.False(result.Success);
+            var result = Assert.Single(headerResults);
+            Assert.Equal("Content-Type", result.Name);
+            Assert.False(result.Success);
+        }
     }
 }

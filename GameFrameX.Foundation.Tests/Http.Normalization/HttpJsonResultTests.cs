@@ -13,11 +13,13 @@ public sealed class HttpJsonResultTests
     {
         var result = HttpJsonResultData<Payload>.Success(new Payload("beta", 3));
 
-        using var json = JsonDocument.Parse(result.ToString());
-        var data = json.RootElement.GetProperty("data");
-        Assert.Equal(JsonValueKind.Object, data.ValueKind);
-        Assert.Equal("beta", data.GetProperty("Name").GetString());
-        Assert.Equal(3, data.GetProperty("Count").GetInt32());
+        using (var json = JsonDocument.Parse(result.ToString()))
+        {
+            var data = json.RootElement.GetProperty("data");
+            Assert.Equal(JsonValueKind.Object, data.ValueKind);
+            Assert.Equal("beta", data.GetProperty("Name").GetString());
+            Assert.Equal(3, data.GetProperty("Count").GetInt32());
+        }
     }
 
     [Fact]

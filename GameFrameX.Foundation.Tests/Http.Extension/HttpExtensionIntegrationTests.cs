@@ -128,8 +128,10 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
         var json = Encoding.UTF8.GetString(bytes);
         _output.WriteLine(json);
         // 能解析为合法 JSON
-        using var doc = JsonDocument.Parse(json);
-        Assert.True(doc.RootElement.TryGetProperty("url", out _));
+        using (var doc = JsonDocument.Parse(json))
+        {
+            Assert.True(doc.RootElement.TryGetProperty("url", out _));
+        }
     }
 
     [IntegrationFact]
@@ -144,12 +146,15 @@ public sealed class HttpClientGetIntegrationTests : IDisposable
     [IntegrationFact]
     public async Task GetToStreamAsync_HttpBin_ReturnsReadableStream()
     {
-        await using var stream = await _client.GetToStreamAsync($"{IntegrationEndpoints.HttpBin}/get");
-        using var reader = new StreamReader(stream, Encoding.UTF8);
-
-        var text = await reader.ReadToEndAsync();
-        _output.WriteLine(text);
-        Assert.Contains(IntegrationEndpoints.HttpBinHost, text);
+        await using (var stream = await _client.GetToStreamAsync($"{IntegrationEndpoints.HttpBin}/get"))
+        {
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                var text = await reader.ReadToEndAsync();
+                _output.WriteLine(text);
+                Assert.Contains(IntegrationEndpoints.HttpBinHost, text);
+            }
+        }
     }
 
     public void Dispose() => _client.Dispose();
@@ -228,13 +233,16 @@ public sealed class HttpClientPostIntegrationTests : IDisposable
     [IntegrationFact]
     public async Task PostJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
-        await using var stream = await _client.PostJsonToStreamAsync(
-                                     $"{IntegrationEndpoints.HttpBin}/post", new TestPayload("stream-test", 7));
-        using var reader = new StreamReader(stream, Encoding.UTF8);
-
-        var text = await reader.ReadToEndAsync();
-        _output.WriteLine(text);
-        Assert.Contains("stream-test", text);
+        await using (var stream = await _client.PostJsonToStreamAsync(
+                                     $"{IntegrationEndpoints.HttpBin}/post", new TestPayload("stream-test", 7)))
+        {
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                var text = await reader.ReadToEndAsync();
+                _output.WriteLine(text);
+                Assert.Contains("stream-test", text);
+            }
+        }
     }
 
     public void Dispose() => _client.Dispose();
@@ -306,14 +314,17 @@ public sealed class HttpClientPutIntegrationTests : IDisposable
     [IntegrationFact]
     public async Task PutJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
-        await using var stream = await _client.PutJsonToStreamAsync(
+        await using (var stream = await _client.PutJsonToStreamAsync(
                                      $"{IntegrationEndpoints.HttpBin}/put",
-                                     new UpdatePayload("stream-put", "data"));
-        using var reader = new StreamReader(stream, Encoding.UTF8);
-
-        var text = await reader.ReadToEndAsync();
-        _output.WriteLine(text);
-        Assert.Contains("stream-put", text);
+                                     new UpdatePayload("stream-put", "data")))
+        {
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                var text = await reader.ReadToEndAsync();
+                _output.WriteLine(text);
+                Assert.Contains("stream-put", text);
+            }
+        }
     }
 
     public void Dispose() => _client.Dispose();
@@ -385,14 +396,17 @@ public sealed class HttpClientPatchIntegrationTests : IDisposable
     [IntegrationFact]
     public async Task PatchJsonToStreamAsync_HttpBin_ReturnsReadableStream()
     {
-        await using var stream = await _client.PatchJsonToStreamAsync(
+        await using (var stream = await _client.PatchJsonToStreamAsync(
                                      $"{IntegrationEndpoints.HttpBin}/patch",
-                                     new PatchPayload("stream-field", "stream-value"));
-        using var reader = new StreamReader(stream, Encoding.UTF8);
-
-        var text = await reader.ReadToEndAsync();
-        _output.WriteLine(text);
-        Assert.Contains("stream-field", text);
+                                     new PatchPayload("stream-field", "stream-value")))
+        {
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                var text = await reader.ReadToEndAsync();
+                _output.WriteLine(text);
+                Assert.Contains("stream-field", text);
+            }
+        }
     }
 
     public void Dispose() => _client.Dispose();
@@ -451,8 +465,10 @@ public sealed class HttpClientDeleteIntegrationTests : IDisposable
         Assert.NotEmpty(bytes);
         var json = Encoding.UTF8.GetString(bytes);
         _output.WriteLine(json);
-        using var doc = JsonDocument.Parse(json);
-        Assert.True(doc.RootElement.TryGetProperty("url", out _));
+        using (var doc = JsonDocument.Parse(json))
+        {
+            Assert.True(doc.RootElement.TryGetProperty("url", out _));
+        }
     }
 
     [IntegrationFact]

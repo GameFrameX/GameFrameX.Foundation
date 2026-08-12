@@ -168,10 +168,13 @@ public sealed class HttpClientGetExtensionTests : IDisposable
     {
         _handler.ResponseContent = "stream-data";
 
-        await using var stream = await _client.GetToStreamAsync("http://test.com");
-        using var reader = new StreamReader(stream);
-
-        Assert.Equal("stream-data", await reader.ReadToEndAsync());
+        await using (var stream = await _client.GetToStreamAsync("http://test.com"))
+        {
+            using (var reader = new StreamReader(stream))
+            {
+                Assert.Equal("stream-data", await reader.ReadToEndAsync());
+            }
+        }
     }
 
     [Fact]
@@ -283,10 +286,13 @@ public sealed class HttpClientPostExtensionTests : IDisposable
     {
         _handler.ResponseContent = "stream";
 
-        await using var stream = await _client.PostJsonToStreamAsync("http://test.com", new Payload("x"));
-        using var reader = new StreamReader(stream);
-
-        Assert.Equal("stream", await reader.ReadToEndAsync());
+        await using (var stream = await _client.PostJsonToStreamAsync("http://test.com", new Payload("x")))
+        {
+            using (var reader = new StreamReader(stream))
+            {
+                Assert.Equal("stream", await reader.ReadToEndAsync());
+            }
+        }
     }
 
     [Fact]
@@ -397,9 +403,10 @@ public sealed class HttpClientPutExtensionTests : IDisposable
     [Fact]
     public async Task PutJsonToStreamAsync_Success_SendsPutMethod()
     {
-        await using var stream = await _client.PutJsonToStreamAsync("http://test.com", new Payload("v"));
-
-        Assert.Equal(HttpMethod.Put, _handler.CapturedRequest!.Method);
+        await using (var stream = await _client.PutJsonToStreamAsync("http://test.com", new Payload("v")))
+        {
+            Assert.Equal(HttpMethod.Put, _handler.CapturedRequest!.Method);
+        }
     }
 
     [Fact]
@@ -407,10 +414,13 @@ public sealed class HttpClientPutExtensionTests : IDisposable
     {
         _handler.ResponseContent = "put-stream";
 
-        await using var stream = await _client.PutJsonToStreamAsync("http://test.com", new Payload("v"));
-        using var reader = new StreamReader(stream);
-
-        Assert.Equal("put-stream", await reader.ReadToEndAsync());
+        await using (var stream = await _client.PutJsonToStreamAsync("http://test.com", new Payload("v")))
+        {
+            using (var reader = new StreamReader(stream))
+            {
+                Assert.Equal("put-stream", await reader.ReadToEndAsync());
+            }
+        }
     }
 
     [Fact]
@@ -520,9 +530,10 @@ public sealed class HttpClientPatchExtensionTests : IDisposable
     [Fact]
     public async Task PatchJsonToStreamAsync_Success_SendsPatchMethod()
     {
-        await using var stream = await _client.PatchJsonToStreamAsync("http://test.com", new Payload("f"));
-
-        Assert.Equal(HttpMethod.Patch, _handler.CapturedRequest!.Method);
+        await using (var stream = await _client.PatchJsonToStreamAsync("http://test.com", new Payload("f")))
+        {
+            Assert.Equal(HttpMethod.Patch, _handler.CapturedRequest!.Method);
+        }
     }
 
     [Fact]
@@ -530,10 +541,13 @@ public sealed class HttpClientPatchExtensionTests : IDisposable
     {
         _handler.ResponseContent = "patch-stream";
 
-        await using var stream = await _client.PatchJsonToStreamAsync("http://test.com", new Payload("f"));
-        using var reader = new StreamReader(stream);
-
-        Assert.Equal("patch-stream", await reader.ReadToEndAsync());
+        await using (var stream = await _client.PatchJsonToStreamAsync("http://test.com", new Payload("f")))
+        {
+            using (var reader = new StreamReader(stream))
+            {
+                Assert.Equal("patch-stream", await reader.ReadToEndAsync());
+            }
+        }
     }
 
     [Fact]
