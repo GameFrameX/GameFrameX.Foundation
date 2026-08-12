@@ -64,18 +64,20 @@ public static class LogHandler
             if (request.Content != null)
             {
                 var bytes = await request.Content.ReadAsByteArrayAsync(cancellationToken);
-                using var stream = new MemoryStream();
-                await using (var gzipStream = new GZipStream(stream, _compressionLevel, leaveOpen: true))
+                using (var stream = new MemoryStream())
                 {
-                    await gzipStream.WriteAsync(bytes, cancellationToken);
-                }
+                    await using (var gzipStream = new GZipStream(stream, _compressionLevel, leaveOpen: true))
+                    {
+                        await gzipStream.WriteAsync(bytes, cancellationToken);
+                    }
 
-                request.Content = new ByteArrayContent(stream.ToArray());
-                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json")
-                {
-                    CharSet = "utf-8",
-                };
-                request.Content.Headers.ContentEncoding.Add("gzip");
+                    request.Content = new ByteArrayContent(stream.ToArray());
+                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json")
+                    {
+                        CharSet = "utf-8",
+                    };
+                    request.Content.Headers.ContentEncoding.Add("gzip");
+                }
             }
 
             return await base.SendAsync(request, cancellationToken);
