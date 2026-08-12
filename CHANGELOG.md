@@ -1,3 +1,9 @@
+## [3.1.2] - 2026-08-12
+
+### Testing
+
+- 消除 FlagOptionAttributeTests 的 Sonar S2701 字面量布尔断言 (#261)
+
 ## [3.1.1] - 2026-08-12
 
 ### Testing
