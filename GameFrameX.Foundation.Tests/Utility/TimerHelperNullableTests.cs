@@ -60,8 +60,8 @@ public class TimerHelperNullableTests : IDisposable
     [Fact]
     public void DateTimeToSecond_Null_ShouldReturnNull()
     {
-        Assert.Null(TimerHelper.DateTimeToSecond(null));
-        Assert.Null(TimerHelper.DateTimeToSecond(null, true));
+        Assert.Null(TimerHelper.DateTimeToSeconds(null));
+        Assert.Null(TimerHelper.DateTimeToSeconds(null, true));
     }
 
     [Fact]
@@ -74,15 +74,15 @@ public class TimerHelperNullableTests : IDisposable
     [Fact]
     public void TimestampSecondToDateTime_Null_ShouldReturnNull()
     {
-        Assert.Null(TimerHelper.TimestampSecondToDateTime(null));
-        Assert.Null(TimerHelper.TimestampSecondToDateTime(null, true));
+        Assert.Null(TimerHelper.TimestampSecondsToDateTime(null));
+        Assert.Null(TimerHelper.TimestampSecondsToDateTime(null, true));
     }
 
     [Fact]
     public void TimeStampMillisecondToDateTime_Null_ShouldReturnNull()
     {
-        Assert.Null(TimerHelper.TimeStampMillisecondToDateTime(null));
-        Assert.Null(TimerHelper.TimeStampMillisecondToDateTime(null, true));
+        Assert.Null(TimerHelper.TimestampMillisecondsToDateTime(null));
+        Assert.Null(TimerHelper.TimestampMillisecondsToDateTime(null, true));
     }
 
     #endregion
@@ -94,8 +94,8 @@ public class TimerHelperNullableTests : IDisposable
     {
         var time = new DateTime(2024, 6, 15, 10, 30, 0, DateTimeKind.Utc);
 
-        Assert.Equal(TimerHelper.DateTimeToSecond(time, true), TimerHelper.DateTimeToSecond((DateTime?)time, true));
-        Assert.Equal(TimerHelper.DateTimeToSecond(time, false), TimerHelper.DateTimeToSecond((DateTime?)time, false));
+        Assert.Equal(TimerHelper.DateTimeToSeconds(time, true), TimerHelper.DateTimeToSeconds((DateTime?)time, true));
+        Assert.Equal(TimerHelper.DateTimeToSeconds(time, false), TimerHelper.DateTimeToSeconds((DateTime?)time, false));
     }
 
     [Fact]
@@ -112,8 +112,8 @@ public class TimerHelperNullableTests : IDisposable
     {
         const long timestamp = 1718447400L; // 2024-06-15 10:30:00 UTC
 
-        Assert.Equal(TimerHelper.TimestampSecondToDateTime(timestamp, true), TimerHelper.TimestampSecondToDateTime((long?)timestamp, true));
-        Assert.Equal(TimerHelper.TimestampSecondToDateTime(timestamp, false), TimerHelper.TimestampSecondToDateTime((long?)timestamp, false));
+        Assert.Equal(TimerHelper.TimestampSecondsToDateTime(timestamp, true), TimerHelper.TimestampSecondsToDateTime((long?)timestamp, true));
+        Assert.Equal(TimerHelper.TimestampSecondsToDateTime(timestamp, false), TimerHelper.TimestampSecondsToDateTime((long?)timestamp, false));
     }
 
     [Fact]
@@ -121,8 +121,8 @@ public class TimerHelperNullableTests : IDisposable
     {
         const long timestamp = 1718447400123L; // 2024-06-15 10:30:00.123 UTC
 
-        Assert.Equal(TimerHelper.TimeStampMillisecondToDateTime(timestamp, true), TimerHelper.TimeStampMillisecondToDateTime((long?)timestamp, true));
-        Assert.Equal(TimerHelper.TimeStampMillisecondToDateTime(timestamp, false), TimerHelper.TimeStampMillisecondToDateTime((long?)timestamp, false));
+        Assert.Equal(TimerHelper.TimestampMillisecondsToDateTime(timestamp, true), TimerHelper.TimestampMillisecondsToDateTime((long?)timestamp, true));
+        Assert.Equal(TimerHelper.TimestampMillisecondsToDateTime(timestamp, false), TimerHelper.TimestampMillisecondsToDateTime((long?)timestamp, false));
     }
 
     #endregion

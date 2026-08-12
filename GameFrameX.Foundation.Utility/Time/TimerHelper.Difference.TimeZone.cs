@@ -51,8 +51,8 @@ public static partial class TimerHelper
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
     public static TimeSpan GetTimeDifference(long startUtcTimestampSeconds, long endUtcTimestampSeconds, bool isUseUtc = true)
     {
-        var startTime = TimestampSecondToDateTime(startUtcTimestampSeconds, isUseUtc);
-        var endTime = TimestampSecondToDateTime(endUtcTimestampSeconds, isUseUtc);
+        var startTime = TimestampSecondsToDateTime(startUtcTimestampSeconds, isUseUtc);
+        var endTime = TimestampSecondsToDateTime(endUtcTimestampSeconds, isUseUtc);
         return endTime - startTime;
     }
 
@@ -70,10 +70,10 @@ public static partial class TimerHelper
     /// <param name="endUtcTimestampMillisecond">结束时间戳（毫秒） / End timestamp (milliseconds)</param>
     /// <param name="isUseUtc">是否使用UTC时间，默认为true / Whether to use UTC time, defaults to true</param>
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
-    public static TimeSpan GetTimeDifferenceMillisecond(long startUtcTimestampMillisecond, long endUtcTimestampMillisecond, bool isUseUtc = true)
+    public static TimeSpan GetTimeDifferenceMilliseconds(long startUtcTimestampMillisecond, long endUtcTimestampMillisecond, bool isUseUtc = true)
     {
-        var startTime = TimeStampMillisecondToDateTime(startUtcTimestampMillisecond, isUseUtc);
-        var endTime = TimeStampMillisecondToDateTime(endUtcTimestampMillisecond, isUseUtc);
+        var startTime = TimestampMillisecondsToDateTime(startUtcTimestampMillisecond, isUseUtc);
+        var endTime = TimestampMillisecondsToDateTime(endUtcTimestampMillisecond, isUseUtc);
         return endTime - startTime;
     }
 
@@ -111,7 +111,7 @@ public static partial class TimerHelper
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
     public static TimeSpan GetTimeDifferenceFromNow(long timestamp, bool isUseUtc = true)
     {
-        var time = TimestampSecondToDateTime(timestamp, isUseUtc);
+        var time = TimestampSecondsToDateTime(timestamp, isUseUtc);
         return GetTimeDifferenceFromNow(time, isUseUtc);
     }
 
@@ -128,9 +128,9 @@ public static partial class TimerHelper
     /// <param name="timestampMs">时间戳（毫秒） / Timestamp (milliseconds)</param>
     /// <param name="isUseUtc">是否使用UTC时间，默认为true / Whether to use UTC time, defaults to true</param>
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
-    public static TimeSpan GetTimeDifferenceFromNowMs(long timestampMs, bool isUseUtc = true)
+    public static TimeSpan GetTimeDifferenceFromNowMilliseconds(long timestampMs, bool isUseUtc = true)
     {
-        var time = TimeStampMillisecondToDateTime(timestampMs, isUseUtc);
+        var time = TimestampMillisecondsToDateTime(timestampMs, isUseUtc);
         return GetTimeDifferenceFromNow(time, isUseUtc);
     }
 
@@ -170,8 +170,8 @@ public static partial class TimerHelper
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
     public static TimeSpan GetTimeDifferenceWithTimeZone(long startTimestampSeconds, long endTimestampSeconds)
     {
-        var startTime = TimestampSecondToDateTime(startTimestampSeconds, false);
-        var endTime = TimestampSecondToDateTime(endTimestampSeconds, false);
+        var startTime = TimestampSecondsToDateTime(startTimestampSeconds, false);
+        var endTime = TimestampSecondsToDateTime(endTimestampSeconds, false);
         return endTime - startTime;
     }
 
@@ -188,10 +188,10 @@ public static partial class TimerHelper
     /// <param name="startTimestampMillisecond">开始时间戳（毫秒） / Start timestamp (milliseconds)</param>
     /// <param name="endTimestampMillisecond">结束时间戳（毫秒） / End timestamp (milliseconds)</param>
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
-    public static TimeSpan GetTimeDifferenceMillisecondWithTimeZone(long startTimestampMillisecond, long endTimestampMillisecond)
+    public static TimeSpan GetTimeDifferenceMillisecondsWithTimeZone(long startTimestampMillisecond, long endTimestampMillisecond)
     {
-        var startTime = TimeStampMillisecondToDateTime(startTimestampMillisecond, false);
-        var endTime = TimeStampMillisecondToDateTime(endTimestampMillisecond, false);
+        var startTime = TimestampMillisecondsToDateTime(startTimestampMillisecond, false);
+        var endTime = TimestampMillisecondsToDateTime(endTimestampMillisecond, false);
         return endTime - startTime;
     }
 
@@ -227,7 +227,7 @@ public static partial class TimerHelper
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
     public static TimeSpan GetTimeDifferenceFromNowWithTimeZone(long timestamp)
     {
-        var time = TimestampSecondToDateTime(timestamp, false);
+        var time = TimestampSecondsToDateTime(timestamp, false);
         return GetTimeDifferenceFromNowWithTimeZone(time);
     }
 
@@ -243,9 +243,9 @@ public static partial class TimerHelper
     /// </remarks>
     /// <param name="timestampMs">时间戳（毫秒） / Timestamp (milliseconds)</param>
     /// <returns>时间差TimeSpan对象 / The time difference TimeSpan object</returns>
-    public static TimeSpan GetTimeDifferenceFromNowMsWithTimeZone(long timestampMs)
+    public static TimeSpan GetTimeDifferenceFromNowMillisecondsWithTimeZone(long timestampMs)
     {
-        var time = TimeStampMillisecondToDateTime(timestampMs, false);
+        var time = TimestampMillisecondsToDateTime(timestampMs, false);
         return GetTimeDifferenceFromNowWithTimeZone(time);
     }
 

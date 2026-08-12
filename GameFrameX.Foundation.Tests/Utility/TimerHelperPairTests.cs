@@ -607,11 +607,11 @@ public class TimerHelperPairTests : IDisposable
         var now = TimerHelper.GetNowWithTimeZone();
         var startTime = now.AddMilliseconds(-5000);
         var endTime = now;
-        var startTimestamp = TimerHelper.TimeToMillisecondsWithTimeZone(startTime);
-        var endTimestamp = TimerHelper.TimeToMillisecondsWithTimeZone(endTime);
+        var startTimestamp = TimerHelper.DateTimeToMillisecondsWithTimeZone(startTime);
+        var endTimestamp = TimerHelper.DateTimeToMillisecondsWithTimeZone(endTime);
 
         // Act
-        var difference = TimerHelper.GetTimeDifferenceMillisecondWithTimeZone(startTimestamp, endTimestamp);
+        var difference = TimerHelper.GetTimeDifferenceMillisecondsWithTimeZone(startTimestamp, endTimestamp);
 
         // Assert
         Assert.True(Math.Abs(difference.TotalSeconds - 5) < 1, $"Difference should be ~5 seconds, got {difference.TotalSeconds}");
@@ -659,7 +659,7 @@ public class TimerHelperPairTests : IDisposable
         var pastTimestamp = new DateTimeOffset(pastTime, _testOffset).ToUnixTimeMilliseconds();
 
         // Act
-        var difference = TimerHelper.GetTimeDifferenceFromNowMsWithTimeZone(pastTimestamp);
+        var difference = TimerHelper.GetTimeDifferenceFromNowMillisecondsWithTimeZone(pastTimestamp);
 
         // Assert
         Assert.True(Math.Abs(difference.TotalSeconds - 45) < 2, $"Difference should be ~45 seconds, got {difference.TotalSeconds}");
@@ -690,8 +690,8 @@ public class TimerHelperPairTests : IDisposable
         const long timestamp = 3600; // 1小时
 
         // Act
-        var timeSpanUtc = TimerHelper.TimeSpanWithTimestampUtc(timestamp);
-        var timeSpanZone = TimerHelper.TimeSpanWithTimestampWithTimeZone(timestamp);
+        var timeSpanUtc = TimerHelper.TimestampToTimeSpan(timestamp);
+        var timeSpanZone = TimerHelper.TimestampToTimeSpan(timestamp);
 
         // Assert
         Assert.Equal(TimeSpan.FromHours(1), timeSpanUtc);
@@ -705,8 +705,8 @@ public class TimerHelperPairTests : IDisposable
         const long timestamp = 0;
 
         // Act
-        var timeSpanUtc = TimerHelper.TimeSpanWithTimestampUtc(timestamp);
-        var timeSpanZone = TimerHelper.TimeSpanWithTimestampWithTimeZone(timestamp);
+        var timeSpanUtc = TimerHelper.TimestampToTimeSpan(timestamp);
+        var timeSpanZone = TimerHelper.TimestampToTimeSpan(timestamp);
 
         // Assert
         Assert.Equal(TimeSpan.Zero, timeSpanUtc);
@@ -720,8 +720,8 @@ public class TimerHelperPairTests : IDisposable
         const long invalidTimestamp = long.MinValue;
 
         // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => TimerHelper.TimeSpanWithTimestampUtc(invalidTimestamp));
-        Assert.Throws<ArgumentOutOfRangeException>(() => TimerHelper.TimeSpanWithTimestampWithTimeZone(invalidTimestamp));
+        Assert.Throws<ArgumentOutOfRangeException>(() => TimerHelper.TimestampToTimeSpan(invalidTimestamp));
+        Assert.Throws<ArgumentOutOfRangeException>(() => TimerHelper.TimestampToTimeSpan(invalidTimestamp));
     }
 
     #endregion

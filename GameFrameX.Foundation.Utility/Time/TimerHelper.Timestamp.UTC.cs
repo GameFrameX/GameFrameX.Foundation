@@ -31,50 +31,8 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
-using GameFrameX.Foundation.Localization.Core;
-using GameFrameX.Foundation.Utility.Localization;
-
 namespace GameFrameX.Foundation.Utility;
 
 public static partial class TimerHelper
 {
-    /// <summary>
-    /// 将给定的时间戳转换为相对于EpochUtc的 TimeSpan 对象。
-    /// </summary>
-    /// <remarks>
-    /// Converts the given timestamp to a TimeSpan object relative to EpochUtc.
-    /// </remarks>
-    /// <param name="timestamp">自1970年1月1日午夜以来经过的秒数 / Number of seconds elapsed since midnight on January 1, 1970</param>
-    /// <returns>一个 TimeSpan 对象，表示从EpochUtc到给定时间戳的间隔 / A TimeSpan object representing the interval from EpochUtc to the given timestamp</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当时间戳超出有效范围时抛出此异常 / Thrown when the timestamp is out of valid range</exception>
-    public static TimeSpan TimeSpanWithTimestampUtc(long timestamp)
-    {
-        if (timestamp < -62135596800L || timestamp > 253402300799L)
-        {
-            throw new ArgumentOutOfRangeException(nameof(timestamp), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
-        }
-
-        // 直接将秒数转换为TimeSpan
-        return TimeSpan.FromSeconds(timestamp);
-    }
-
-    /// <summary>
-    /// 将给定的毫秒时间戳转换为相对于EpochUtc的 TimeSpan 对象。
-    /// </summary>
-    /// <remarks>
-    /// Converts the given millisecond timestamp to a TimeSpan object relative to EpochUtc.
-    /// </remarks>
-    /// <param name="timestampMilliseconds">自1970年1月1日午夜以来经过的毫秒数 / Number of milliseconds elapsed since midnight on January 1, 1970</param>
-    /// <returns>一个 TimeSpan 对象，表示从EpochUtc到给定毫秒时间戳的间隔 / A TimeSpan object representing the interval from EpochUtc to the given millisecond timestamp</returns>
-    /// <exception cref="ArgumentOutOfRangeException">当毫秒时间戳超出有效范围时抛出此异常 / Thrown when the millisecond timestamp is out of valid range</exception>
-    public static TimeSpan TimeSpanWithTimestampUtcMs(long timestampMilliseconds)
-    {
-        if (timestampMilliseconds < -62135596800000L || timestampMilliseconds > 253402300799999L)
-        {
-            throw new ArgumentOutOfRangeException(nameof(timestampMilliseconds), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
-        }
-
-        // 直接将毫秒数转换为TimeSpan
-        return TimeSpan.FromMilliseconds(timestampMilliseconds);
-    }
 }

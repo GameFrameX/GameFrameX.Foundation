@@ -227,7 +227,7 @@ namespace GameFrameX.Foundation.Tests.Utility
         }
 
         /// <summary>
-        /// 测试 TimeToSecondsWithTimeZone 和 TimeToMillisecondsWithTimeZone 方法
+        /// 测试 TimeToSecondsWithTimeZone 和 DateTimeToMillisecondsWithTimeZone 方法
         /// </summary>
         [Fact]
         public void TimeToWithTimeZone_ShouldHandleDifferentKinds()

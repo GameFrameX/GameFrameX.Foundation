@@ -257,7 +257,7 @@ public static partial class TimerHelper
     /// <returns>
     /// 返回一个 <see cref="long"/> 值，表示将指定时间视为 UTC 时间时的 Unix 时间戳 + 时区偏移 / A <see cref="long"/> value representing the Unix timestamp when treating the specified time as UTC time + time zone offset.
     /// </returns>
-    public static long TimeToMillisecondsWithTimeZone(DateTime time)
+    public static long DateTimeToMillisecondsWithTimeZone(DateTime time)
     {
         var utcTime = ConvertToUtc(time);
         var offset = CurrentTimeZone.GetUtcOffset(utcTime);
@@ -353,7 +353,7 @@ public static partial class TimerHelper
     /// Console.WriteLine($"历史时间毫秒数: {historicalMillis}"); // 负值
     /// </code>
     /// </example>
-    /// <seealso cref="DateTimeToSecond"/>
+    /// <seealso cref="DateTimeToSeconds"/>
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="EpochLocal"/>
     public static long DateTimeToMilliseconds(DateTime time, bool utc = false)
@@ -406,7 +406,7 @@ public static partial class TimerHelper
     /// <seealso cref="DateTimeToMilliseconds"/>
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="EpochLocal"/>
-    public static long DateTimeToSecond(DateTime time, bool utc = false)
+    public static long DateTimeToSeconds(DateTime time, bool utc = false)
     {
         if (utc)
         {

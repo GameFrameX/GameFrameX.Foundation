@@ -49,21 +49,21 @@ public static partial class TimerHelper
     /// 将可空 <see cref="DateTime"/> 转换为距离纪元时间的秒数。输入为 <c>null</c> 时返回 <c>null</c>。
     /// </summary>
     /// <remarks>
-    /// Nullable overload of <see cref="DateTimeToSecond(DateTime, bool)"/>. A <c>null</c> input returns <c>null</c>;
+    /// Nullable overload of <see cref="DateTimeToSeconds(DateTime, bool)"/>. A <c>null</c> input returns <c>null</c>;
     /// a non-null input is delegated to the base method with identical behavior.
     /// </remarks>
     /// <param name="time">要转换的可空指定时间 / The nullable specified time to convert</param>
     /// <param name="utc">指定使用的纪元时间类型。如果为 <c>true</c>，使用 UTC 纪元时间；如果为 <c>false</c>，使用当前设置时区的纪元时间。默认值为 <c>false</c> / Specifies the type of epoch time to use. If <c>true</c>, uses UTC epoch time; if <c>false</c>, uses the epoch time of the currently set time zone. Default is <c>false</c></param>
     /// <returns>返回可空 <see cref="long"/>，表示指定时间距离相应纪元时间的秒数；输入为 <c>null</c> 时返回 <c>null</c> / A nullable <see cref="long"/> representing the number of seconds from the specified time to the corresponding epoch time; returns <c>null</c> when the input is <c>null</c>.</returns>
-    /// <seealso cref="DateTimeToSecond(DateTime, bool)"/>
-    public static long? DateTimeToSecond(DateTime? time, bool utc = false)
+    /// <seealso cref="DateTimeToSeconds(DateTime, bool)"/>
+    public static long? DateTimeToSeconds(DateTime? time, bool utc = false)
     {
         if (!time.HasValue)
         {
             return null;
         }
 
-        return DateTimeToSecond(time.Value, utc);
+        return DateTimeToSeconds(time.Value, utc);
     }
 
     /// <summary>
@@ -91,41 +91,41 @@ public static partial class TimerHelper
     /// 将可空秒级 Unix 时间戳转换为 <see cref="DateTime"/>。输入为 <c>null</c> 时返回 <c>null</c>。
     /// </summary>
     /// <remarks>
-    /// Nullable overload of <see cref="TimestampSecondToDateTime(long, bool)"/>. A <c>null</c> input returns <c>null</c>;
+    /// Nullable overload of <see cref="TimestampSecondsToDateTime(long, bool)"/>. A <c>null</c> input returns <c>null</c>;
     /// a non-null input is delegated to the base method with identical behavior.
     /// </remarks>
     /// <param name="utcTimestampSeconds">可空秒时间戳 / The nullable second timestamp</param>
     /// <param name="utc">是否使用UTC时间 / Whether to use UTC time</param>
     /// <returns>转换后的可空时间；输入为 <c>null</c> 时返回 <c>null</c>。如果 utc 为 false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间 / The converted nullable time; returns <c>null</c> when the input is <c>null</c>. If utc is false, returns the time in the current time zone (<see cref="CurrentTimeZone"/>)</returns>
-    /// <seealso cref="TimestampSecondToDateTime(long, bool)"/>
-    public static DateTime? TimestampSecondToDateTime(long? utcTimestampSeconds, bool utc = false)
+    /// <seealso cref="TimestampSecondsToDateTime(long, bool)"/>
+    public static DateTime? TimestampSecondsToDateTime(long? utcTimestampSeconds, bool utc = false)
     {
         if (!utcTimestampSeconds.HasValue)
         {
             return null;
         }
 
-        return TimestampSecondToDateTime(utcTimestampSeconds.Value, utc);
+        return TimestampSecondsToDateTime(utcTimestampSeconds.Value, utc);
     }
 
     /// <summary>
     /// 将可空毫秒级 Unix 时间戳转换为 <see cref="DateTime"/>。输入为 <c>null</c> 时返回 <c>null</c>。
     /// </summary>
     /// <remarks>
-    /// Nullable overload of <see cref="TimeStampMillisecondToDateTime(long, bool)"/>. A <c>null</c> input returns <c>null</c>;
+    /// Nullable overload of <see cref="TimestampMillisecondsToDateTime(long, bool)"/>. A <c>null</c> input returns <c>null</c>;
     /// a non-null input is delegated to the base method with identical behavior.
     /// </remarks>
     /// <param name="utcTimestampMilliseconds">可空毫秒时间戳 / The nullable millisecond timestamp</param>
     /// <param name="utc">是否使用UTC时间 / Whether to use UTC time</param>
     /// <returns>转换后的可空时间；输入为 <c>null</c> 时返回 <c>null</c>。如果 utc 为 false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间 / The converted nullable time; returns <c>null</c> when the input is <c>null</c>. If utc is false, returns the time in the current time zone (<see cref="CurrentTimeZone"/>)</returns>
-    /// <seealso cref="TimeStampMillisecondToDateTime(long, bool)"/>
-    public static DateTime? TimeStampMillisecondToDateTime(long? utcTimestampMilliseconds, bool utc = false)
+    /// <seealso cref="TimestampMillisecondsToDateTime(long, bool)"/>
+    public static DateTime? TimestampMillisecondsToDateTime(long? utcTimestampMilliseconds, bool utc = false)
     {
         if (!utcTimestampMilliseconds.HasValue)
         {
             return null;
         }
 
-        return TimeStampMillisecondToDateTime(utcTimestampMilliseconds.Value, utc);
+        return TimestampMillisecondsToDateTime(utcTimestampMilliseconds.Value, utc);
     }
 }

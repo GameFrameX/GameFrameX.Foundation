@@ -90,7 +90,7 @@ public static partial class TimerHelper
     /// }
     /// </code>
     /// </example>
-    /// <seealso cref="TimestampMillisToTicks"/>
+    /// <seealso cref="TimestampMillisecondsToTicks"/>
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="TimeSpan.TicksPerSecond"/>
     /// <seealso cref="DateTime"/>
@@ -140,13 +140,13 @@ public static partial class TimerHelper
     /// <code>
     /// // 转换当前毫秒时间戳
     /// long currentMillisTimestamp = TimerHelper.UnixTimeMilliseconds();
-    /// long ticks = TimerHelper.TimestampMillisToTicks(currentMillisTimestamp);
+    /// long ticks = TimerHelper.TimestampMillisecondsToTicks(currentMillisTimestamp);
     /// DateTime dateTime = new DateTime(ticks);
     /// Console.WriteLine($"转换后的时间: {dateTime:yyyy-MM-dd HH:mm:ss.fff}");
     ///
     /// // 转换JavaScript时间戳
     /// long jsTimestamp = 1609459200000; // 2021-01-01 00:00:00.000 UTC
-    /// long ticksValue = TimerHelper.TimestampMillisToTicks(jsTimestamp);
+    /// long ticksValue = TimerHelper.TimestampMillisecondsToTicks(jsTimestamp);
     /// DateTime jsDate = new DateTime(ticksValue);
     /// Console.WriteLine($"JavaScript时间: {jsDate}");
     ///
@@ -155,7 +155,7 @@ public static partial class TimerHelper
     /// long millisTimestamp = 1609459200123; // 毫秒级
     ///
     /// DateTime fromSeconds = new DateTime(TimerHelper.TimestampToTicks(secondsTimestamp));
-    /// DateTime fromMillis = new DateTime(TimerHelper.TimestampMillisToTicks(millisTimestamp));
+    /// DateTime fromMillis = new DateTime(TimerHelper.TimestampMillisecondsToTicks(millisTimestamp));
     ///
     /// Console.WriteLine($"秒级精度: {fromSeconds:yyyy-MM-dd HH:mm:ss.fff}");
     /// Console.WriteLine($"毫秒级精度: {fromMillis:yyyy-MM-dd HH:mm:ss.fff}");
@@ -165,7 +165,7 @@ public static partial class TimerHelper
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="TimeSpan.TicksPerMillisecond"/>
     /// <seealso cref="DateTime"/>
-    public static long TimestampMillisToTicks(long timestampMillisSeconds)
+    public static long TimestampMillisecondsToTicks(long timestampMillisSeconds)
     {
         if (timestampMillisSeconds < -62135596800000L || timestampMillisSeconds > 253402300799999L)
         {
@@ -186,7 +186,7 @@ public static partial class TimerHelper
     /// <param name="utcTimestampMilliseconds">毫秒时间戳 / Millisecond timestamp</param>
     /// <param name="utc">是否使用UTC时间 / Whether to use UTC time</param>
     /// <returns>转换后的时间。如果utc为false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间 / The converted time. If utc is false, returns the time in the current time zone (<see cref="CurrentTimeZone"/>)</returns>
-    public static DateTime TimeStampMillisecondToDateTime(long utcTimestampMilliseconds, bool utc = false)
+    public static DateTime TimestampMillisecondsToDateTime(long utcTimestampMilliseconds, bool utc = false)
     {
         var dateTime = EpochUtc.AddMilliseconds(utcTimestampMilliseconds);
         if (utc)
@@ -206,7 +206,7 @@ public static partial class TimerHelper
     /// <param name="utcTimestampSeconds">秒时间戳 / Second timestamp</param>
     /// <param name="utc">是否使用UTC时间 / Whether to use UTC time</param>
     /// <returns>转换后的时间。如果utc为false，则返回当前时区 (<see cref="CurrentTimeZone"/>) 的时间 / The converted time. If utc is false, returns the time in the current time zone (<see cref="CurrentTimeZone"/>)</returns>
-    public static DateTime TimestampSecondToDateTime(long utcTimestampSeconds, bool utc = false)
+    public static DateTime TimestampSecondsToDateTime(long utcTimestampSeconds, bool utc = false)
     {
         var dateTime = EpochUtc.AddSeconds(utcTimestampSeconds);
         if (utc)
@@ -215,5 +215,49 @@ public static partial class TimerHelper
         }
 
         return TimeZoneInfo.ConvertTimeFromUtc(dateTime, CurrentTimeZone);
+    }
+
+    /// <summary>
+    /// 将 Unix 时间戳（秒级）转换为 <see cref="TimeSpan"/> 对象。
+    /// </summary>
+    /// <remarks>
+    /// Converts a Unix timestamp (seconds) to a <see cref="TimeSpan"/> object.
+    /// This method validates the timestamp range and then converts it to a TimeSpan using <see cref="TimeSpan.FromSeconds"/>.
+    /// The conversion is timezone-independent: the TimeSpan represents the raw interval from epoch.
+    /// </remarks>
+    /// <param name="timestamp">自1970年1月1日午夜以来经过的秒数 / Number of seconds elapsed since midnight on January 1, 1970</param>
+    /// <returns>一个 <see cref="TimeSpan"/> 对象，表示从Epoch到给定时间戳的间隔 / A <see cref="TimeSpan"/> object representing the interval from Epoch to the given timestamp</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当时间戳超出有效范围时抛出此异常 / Thrown when the timestamp is out of valid range</exception>
+    public static TimeSpan TimestampToTimeSpan(long timestamp)
+    {
+        if (timestamp < -62135596800L || timestamp > 253402300799L)
+        {
+            throw new ArgumentOutOfRangeException(nameof(timestamp), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
+        }
+
+        // 直接将秒数转换为TimeSpan
+        return TimeSpan.FromSeconds(timestamp);
+    }
+
+    /// <summary>
+    /// 将 Unix 时间戳（毫秒级）转换为 <see cref="TimeSpan"/> 对象。
+    /// </summary>
+    /// <remarks>
+    /// Converts a Unix timestamp (milliseconds) to a <see cref="TimeSpan"/> object.
+    /// This method validates the millisecond timestamp range and then converts it to a TimeSpan using <see cref="TimeSpan.FromMilliseconds"/>.
+    /// The conversion is timezone-independent: the TimeSpan represents the raw interval from epoch.
+    /// </remarks>
+    /// <param name="timestampMilliseconds">自1970年1月1日午夜以来经过的毫秒数 / Number of milliseconds elapsed since midnight on January 1, 1970</param>
+    /// <returns>一个 <see cref="TimeSpan"/> 对象，表示从Epoch到给定毫秒时间戳的间隔 / A <see cref="TimeSpan"/> object representing the interval from Epoch to the given millisecond timestamp</returns>
+    /// <exception cref="ArgumentOutOfRangeException">当毫秒时间戳超出有效范围时抛出此异常 / Thrown when the millisecond timestamp is out of valid range</exception>
+    public static TimeSpan TimestampMillisecondsToTimeSpan(long timestampMilliseconds)
+    {
+        if (timestampMilliseconds < -62135596800000L || timestampMilliseconds > 253402300799999L)
+        {
+            throw new ArgumentOutOfRangeException(nameof(timestampMilliseconds), LocalizationService.GetString(LocalizationKeys.Exceptions.TimestampOutOfRange));
+        }
+
+        // 直接将毫秒数转换为TimeSpan
+        return TimeSpan.FromMilliseconds(timestampMilliseconds);
     }
 }

@@ -169,7 +169,7 @@ namespace GameFrameX.Foundation.Tests.Utility
         public void GetDayOfWeekTime_FromCurrentTime_ShouldReturnDayOfCurrentWeek()
         {
             // FixedUtcNow=2024-06-15 (Saturday)
-            var result = TimerHelper.GetDayOfWeekTime(DayOfWeek.Monday);
+            var result = TimerHelper.GetDayOfWeekTimeWithUtc(DayOfWeek.Monday);
 
             Assert.Equal(new DateTime(2024, 6, 10), result.Date);
         }

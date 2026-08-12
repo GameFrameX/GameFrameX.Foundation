@@ -73,7 +73,7 @@ public static partial class TimerHelper
     /// Uses the <see cref="CurrentTimeZone"/> time zone for calculation.
     /// </remarks>
     /// <returns>今年12月31号23:59:59的时间 / The time at 23:59:59 on December 31st of the current year</returns>
-    public static DateTime GetYearEndTime()
+    public static DateTime GetYearEndTimeWithTimeZone()
     {
         var now = GetNowWithTimeZone();
         return GetStartTimeOfYear(now).AddYears(1).AddSeconds(-1);
@@ -90,7 +90,7 @@ public static partial class TimerHelper
     /// <returns>今年12月31号23:59:59的时间戳(秒) / The timestamp (seconds) at 23:59:59 on December 31st of the current year</returns>
     public static long GetYearEndTimestampWithTimeZone()
     {
-        var date = GetYearEndTime();
+        var date = GetYearEndTimeWithTimeZone();
         return DateTimeToSecondsWithTimeZone(date);
     }
 
@@ -121,21 +121,6 @@ public static partial class TimerHelper
     public static DateTime GetNextYearStartTimeWithTimeZone()
     {
         return GetYearStartTimeWithTimeZone().AddYears(1);
-    }
-
-    /// <summary>
-    /// 获取明年开始时间戳。
-    /// </summary>
-    /// <remarks>
-    /// Gets the start timestamp of the next year.
-    /// This method returns the Unix timestamp of the midnight time on the first day of the next year.
-    /// Converts the time to UTC before calculating the timestamp.
-    /// </remarks>
-    /// <returns>明年1月1号00:00:00的时间戳(秒) / The timestamp (seconds) at 00:00:00 on January 1st of the next year</returns>
-    public static long GetNextYearStartTimestamp()
-    {
-        var date = GetNextYearStartTimeWithTimeZone();
-        return DateTimeToSecondsWithTimeZone(date);
     }
 
     /// <summary>

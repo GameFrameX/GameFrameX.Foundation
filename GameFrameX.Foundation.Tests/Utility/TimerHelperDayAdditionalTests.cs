@@ -7,7 +7,7 @@ namespace GameFrameX.Foundation.Tests.Utility
     /// <summary>
     /// TimerHelper.Day.cs / Day.UTC.cs / Day.TimeZone.cs 单元测试：
     /// 覆盖 IsSameDay、GetDaysDifference、GetCrossDays（含 hour 阈值与越界）、
-    /// GetStartTimeOfDay/GetEndTimeOfDay 及其时间戳重载、CurrentDateWithUtcDay/WithTimeZone、
+    /// GetStartTimeOfDay/GetEndTimeOfDay 及其时间戳重载、CurrentDateWithUtc/WithTimeZone、
     /// GetToday/GetTomorrow 系列 UTC 与 TimeZone 成对方法。
     /// </summary>
     [Collection("TimerHelper")]
@@ -285,19 +285,19 @@ namespace GameFrameX.Foundation.Tests.Utility
 
         #endregion
 
-        #region CurrentDateWithUtcDay / CurrentDateWithDayWithTimeZone
+        #region CurrentDateWithUtc / CurrentDateWithTimeZone
 
         [Fact]
         public void CurrentDateWithUtcDay_ShouldReturnFormattedInt()
         {
             // FakeTimeProvider 固定 UTC=2024-06-15 10:30:45
-            Assert.Equal(20240615, TimerHelper.CurrentDateWithUtcDay());
+            Assert.Equal(20240615, TimerHelper.CurrentDateWithUtc());
         }
 
         [Fact]
         public void CurrentDateWithDayWithTimeZone_WithUtc_ShouldEqualUtcVersion()
         {
-            Assert.Equal(TimerHelper.CurrentDateWithUtcDay(), TimerHelper.CurrentDateWithDayWithTimeZone());
+            Assert.Equal(TimerHelper.CurrentDateWithUtc(), TimerHelper.CurrentDateWithTimeZone());
         }
 
         [Fact]
@@ -306,7 +306,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             // 2024-06-15 10:30 UTC + 8h = 2024-06-15 18:30 → 同日
             TimerHelper.SetTimeZone(UtcPlus8);
 
-            Assert.Equal(20240615, TimerHelper.CurrentDateWithDayWithTimeZone());
+            Assert.Equal(20240615, TimerHelper.CurrentDateWithTimeZone());
         }
 
         [Fact]
@@ -316,12 +316,12 @@ namespace GameFrameX.Foundation.Tests.Utility
             TimerHelper.SetTimeZone(UtcPlus8);
             TimerHelper.SetTimeProvider(new FakeTimeProvider(new DateTimeOffset(2024, 6, 15, 16, 0, 0, TimeSpan.Zero)));
 
-            Assert.Equal(20240616, TimerHelper.CurrentDateWithDayWithTimeZone());
+            Assert.Equal(20240616, TimerHelper.CurrentDateWithTimeZone());
         }
 
         #endregion
 
-        #region GetCrossDaysUtc / GetCrossDaysWithUtc
+        #region GetCrossDaysWithUtc / GetCrossDaysWithUtc
 
         [Fact]
         public void GetCrossDaysUtc_ShouldConvertTimestampsAndDelegate()
@@ -330,11 +330,11 @@ namespace GameFrameX.Foundation.Tests.Utility
             const long begin = 1704894400L;   // 大致 2024-01-10 12:00 UTC
             const long after = 1704980800L;   // 大致 2024-01-11 12:00 UTC
 
-            var beginDate = TimerHelper.TimestampSecondToDateTime(begin, true);
-            var afterDate = TimerHelper.TimestampSecondToDateTime(after, true);
+            var beginDate = TimerHelper.TimestampSecondsToDateTime(begin, true);
+            var afterDate = TimerHelper.TimestampSecondsToDateTime(after, true);
             var expected = TimerHelper.GetCrossDays(beginDate, afterDate, 0);
 
-            Assert.Equal(expected, TimerHelper.GetCrossDaysUtc(begin, after, 0));
+            Assert.Equal(expected, TimerHelper.GetCrossDaysWithUtc(begin, after, 0));
         }
 
         [Fact]
@@ -367,8 +367,8 @@ namespace GameFrameX.Foundation.Tests.Utility
             var end = new DateTimeOffset(2024, 6, 15, 0, 0, 0, TimeSpan.Zero).ToUnixTimeSeconds();
 
             // 时间戳转回 DateTime 后调用 GetCrossDays（小时默认 0）
-            var startDate = TimerHelper.TimestampSecondToDateTime(start);
-            var endDate = TimerHelper.TimestampSecondToDateTime(end);
+            var startDate = TimerHelper.TimestampSecondsToDateTime(start);
+            var endDate = TimerHelper.TimestampSecondsToDateTime(end);
             var expected = TimerHelper.GetCrossDays(startDate, endDate, 0);
 
             Assert.Equal(expected, TimerHelper.GetCrossDaysWithTimeZone(start, end, 0));

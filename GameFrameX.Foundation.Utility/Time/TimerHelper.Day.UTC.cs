@@ -47,7 +47,7 @@ public static partial class TimerHelper
     /// Uses DateTime.UtcNow to get UTC time.
     /// </remarks>
     /// <returns>返回一个8位整数，表示当前UTC时区的日期。例如：20231225表示2023年12月25日 / Returns an 8-digit integer representing the current UTC date. For example: 20231225 represents December 25, 2023</returns>
-    public static int CurrentDateWithUtcDay()
+    public static int CurrentDateWithUtc()
     {
         return Convert.ToInt32(GetNowWithUtc().ToString("yyyyMMdd"));
     }
@@ -62,10 +62,10 @@ public static partial class TimerHelper
     /// <param name="afterUnixTimestamp">结束时间戳(秒)，从1970年1月1日以来经过的秒数 / End timestamp (seconds), number of seconds elapsed since January 1, 1970</param>
     /// <param name="hour">小时阈值 / Hour threshold</param>
     /// <returns>跨越的天数 / The number of days crossed</returns>
-    public static int GetCrossDaysUtc(long beginUnixTimestamp, long afterUnixTimestamp, int hour = 0)
+    public static int GetCrossDaysWithUtc(long beginUnixTimestamp, long afterUnixTimestamp, int hour = 0)
     {
-        var begin = TimestampSecondToDateTime(beginUnixTimestamp, true);
-        var after = TimestampSecondToDateTime(afterUnixTimestamp, true);
+        var begin = TimestampSecondsToDateTime(beginUnixTimestamp, true);
+        var after = TimestampSecondsToDateTime(afterUnixTimestamp, true);
         return GetCrossDays(begin, after, hour);
     }
 
@@ -218,7 +218,7 @@ public static partial class TimerHelper
     /// <returns>跨越的天数 / The number of days crossed</returns>
     public static int GetCrossDaysWithUtc(long beginTimestamp, int hour = 0)
     {
-        var begin = TimestampSecondToDateTime(beginTimestamp);
+        var begin = TimestampSecondsToDateTime(beginTimestamp);
         return GetCrossDaysWithUtc(begin, hour);
     }
 }

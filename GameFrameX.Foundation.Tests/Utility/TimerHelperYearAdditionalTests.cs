@@ -224,7 +224,7 @@ namespace GameFrameX.Foundation.Tests.Utility
         [Fact]
         public void GetYearEndTime_ShouldReturnDecember31stLastSecond()
         {
-            Assert.Equal(new DateTime(2024, 12, 31, 23, 59, 59), TimerHelper.GetYearEndTime());
+            Assert.Equal(new DateTime(2024, 12, 31, 23, 59, 59), TimerHelper.GetYearEndTimeWithTimeZone());
         }
 
         [Fact]
@@ -249,13 +249,6 @@ namespace GameFrameX.Foundation.Tests.Utility
         }
 
         [Fact]
-        public void GetNextYearStartTimestamp_WithUtc_ShouldEqualUtcVersion()
-        {
-            Assert.Equal(TimerHelper.GetNextYearStartTimestampWithUtc(),
-                TimerHelper.GetNextYearStartTimestamp());
-        }
-
-        [Fact]
         public void GetNextYearStartTimestampWithTimeZone_WithUtc_ShouldEqualUtcVersion()
         {
             Assert.Equal(TimerHelper.GetNextYearStartTimestampWithUtc(),
@@ -268,7 +261,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             // 在年末测试跨年
             TimerHelper.SetTimeProvider(new FakeTimeProvider(new DateTimeOffset(2024, 12, 31, 23, 59, 0, TimeSpan.Zero)));
 
-            Assert.Equal(new DateTime(2024, 12, 31, 23, 59, 59), TimerHelper.GetYearEndTime());
+            Assert.Equal(new DateTime(2024, 12, 31, 23, 59, 59), TimerHelper.GetYearEndTimeWithTimeZone());
 
             Assert.Equal(new DateTime(2025, 1, 1, 0, 0, 0),
                 TimerHelper.GetNextYearStartTimeWithTimeZone());

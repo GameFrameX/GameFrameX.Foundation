@@ -47,7 +47,7 @@ public static partial class TimerHelper
     /// Uses <see cref="GetNowWithTimeZone"/> to get the current time zone time.
     /// </remarks>
     /// <returns>返回一个8位整数，表示当前时区 (<see cref="CurrentTimeZone"/>) 的日期。例如：20231225表示2023年12月25日 / Returns an 8-digit integer representing the current time zone date. For example: 20231225 represents December 25, 2023</returns>
-    public static int CurrentDateWithDayWithTimeZone()
+    public static int CurrentDateWithTimeZone()
     {
         return Convert.ToInt32(GetNowWithTimeZone().ToString("yyyyMMdd"));
     }
@@ -66,8 +66,8 @@ public static partial class TimerHelper
     /// <returns>间隔天数,如果开始时间晚于结束时间,返回负数 / The number of days interval, returns negative if start time is later than end time</returns>
     public static int GetCrossDaysWithTimeZone(long startTimestamp, long endTimestamp, int hour = 0)
     {
-        var startTime = TimestampSecondToDateTime(startTimestamp);
-        var endTime = TimestampSecondToDateTime(endTimestamp);
+        var startTime = TimestampSecondsToDateTime(startTimestamp);
+        var endTime = TimestampSecondsToDateTime(endTimestamp);
         return GetCrossDays(startTime, endTime, hour);
     }
 
@@ -212,7 +212,7 @@ public static partial class TimerHelper
     /// <returns>跨越的天数 / The number of days crossed</returns>
     public static int GetCrossDaysWithTimeZone(long beginTimestamp, int hour = 0)
     {
-        var begin = TimestampSecondToDateTime(beginTimestamp);
+        var begin = TimestampSecondsToDateTime(beginTimestamp);
         return GetCrossDaysWithTimeZone(begin, hour);
     }
 }

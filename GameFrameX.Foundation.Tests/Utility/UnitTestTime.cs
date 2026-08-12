@@ -375,7 +375,7 @@ public class UnitTestTime : IDisposable
     public void TestTimestampMillisToTicks()
     {
         var timestampMs = 1704902445123L; // 2024-01-10 14:30:45.123 UTC
-        var ticks = TimeHelper.TimestampMillisToTicks(timestampMs);
+        var ticks = TimeHelper.TimestampMillisecondsToTicks(timestampMs);
         var expectedTicks = timestampMs * 10000L + TimeHelper.EpochUtc.Ticks;
         Assert.Equal(expectedTicks, ticks);
     }
@@ -568,7 +568,7 @@ public class UnitTestTime : IDisposable
     public void TestGetYearStartAndEndTime()
     {
         var startTime = TimeHelper.GetYearStartTime();
-        var endTime = TimeHelper.GetYearEndTime();
+        var endTime = TimeHelper.GetYearEndTimeWithTimeZone();
 
         Assert.Equal(1, startTime.Month);
         Assert.Equal(1, startTime.Day);
@@ -786,7 +786,7 @@ public class UnitTestTime : IDisposable
     public void TestTimeSpanWithTimestamp()
     {
         var fixedTimestamp = 86400L; // 1970-01-02 00:00:00 UTC (1天后，在有效范围内)
-        var timeSpan = TimeHelper.TimeSpanWithTimestampUtc(fixedTimestamp);
+        var timeSpan = TimeHelper.TimestampToTimeSpan(fixedTimestamp);
 
         Assert.IsType<TimeSpan>(timeSpan);
         Assert.Equal(TimeSpan.FromSeconds(fixedTimestamp), timeSpan);
@@ -888,7 +888,7 @@ public class UnitTestTime : IDisposable
     {
         // 使用固定时间戳进行测试，避免动态时间导致的问题
         var fixedTimestampMs = 1704897045000L; // 2024-01-10 14:30:45 UTC
-        var diff = TimeHelper.GetTimeDifferenceFromNowMs(fixedTimestampMs, true);
+        var diff = TimeHelper.GetTimeDifferenceFromNowMilliseconds(fixedTimestampMs, true);
         // 只验证返回类型正确，不验证具体时间差
         Assert.IsType<TimeSpan>(diff);
     }
@@ -970,7 +970,7 @@ public class UnitTestTime : IDisposable
     [Fact]
     public void TestGetDayOfWeekTimeWithDayOfWeek()
     {
-        var result = TimeHelper.GetDayOfWeekTime(DayOfWeek.Monday);
+        var result = TimeHelper.GetDayOfWeekTimeWithUtc(DayOfWeek.Monday);
         Assert.IsType<DateTime>(result);
         Assert.Equal(DayOfWeek.Monday, result.DayOfWeek); // 应该返回本周一
     }
@@ -989,7 +989,7 @@ public class UnitTestTime : IDisposable
     [Fact]
     public void TestCurrentDateWithUtcDay()
     {
-        var result = TimeHelper.CurrentDateWithUtcDay();
+        var result = TimeHelper.CurrentDateWithUtc();
         var expected = int.Parse(DateTime.UtcNow.ToString("yyyyMMdd"));
         // 允许日期可能跨天的情况
         Assert.True(Math.Abs(result - expected) <= 1);

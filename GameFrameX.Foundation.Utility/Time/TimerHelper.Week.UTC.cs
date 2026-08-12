@@ -46,7 +46,7 @@ public static partial class TimerHelper
     /// </remarks>
     /// <param name="day">星期几 (DayOfWeek.Sunday 到 DayOfWeek.Saturday) / Day of week (DayOfWeek.Sunday to DayOfWeek.Saturday)</param>
     /// <returns>本周指定星期几的UTC日期时间 / The UTC date time of the specified day of the current week</returns>
-    public static DateTime GetDayOfWeekTime(DayOfWeek day)
+    public static DateTime GetDayOfWeekTimeWithUtc(DayOfWeek day)
     {
         return GetDayOfWeekTime(GetNowWithUtc(), day);
     }

@@ -238,7 +238,7 @@ public class TimeHelperTests
     }
 
     /// <summary>
-    /// 测试 TimestampMillisToTicks 方法
+    /// 测试 TimestampMillisecondsToTicks 方法
     /// </summary>
     [Fact]
     public void TimestampMillisToTicks_ShouldReturnCorrectValue()
@@ -249,7 +249,7 @@ public class TimeHelperTests
         var expectedTicks = expectedDateTime.Ticks;
 
         // Act
-        var actualTicks = TimerHelper.TimestampMillisToTicks(timestampMillis);
+        var actualTicks = TimerHelper.TimestampMillisecondsToTicks(timestampMillis);
 
         // Assert
         Assert.Equal(expectedTicks, actualTicks);
@@ -267,7 +267,7 @@ public class TimeHelperTests
         var expectedTimeSpan = expectedDateTime - TimerHelper.EpochUtc;
 
         // Act
-        var actualTimeSpan = TimerHelper.TimeSpanWithTimestampUtc(timestamp);
+        var actualTimeSpan = TimerHelper.TimestampToTimeSpan(timestamp);
 
         // Assert
         Assert.Equal(expectedTimeSpan, actualTimeSpan);

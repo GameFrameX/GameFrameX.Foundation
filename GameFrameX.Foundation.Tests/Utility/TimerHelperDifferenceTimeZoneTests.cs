@@ -6,8 +6,8 @@ namespace GameFrameX.Foundation.Tests.Utility
 {
     /// <summary>
     /// TimerHelper.Difference.TimeZone.cs / Difference.UTC.cs 单元测试：
-    /// 覆盖 GetTimeDifferenceWithTimeZone、GetTimeDifferenceMillisecondWithTimeZone、
-    /// GetTimeDifferenceFromNowWithTimeZone（含 DateTime/long 重载）、GetTimeDifferenceFromNowMsWithTimeZone、
+    /// 覆盖 GetTimeDifferenceWithTimeZone、GetTimeDifferenceMillisecondsWithTimeZone、
+    /// GetTimeDifferenceFromNowWithTimeZone（含 DateTime/long 重载）、GetTimeDifferenceFromNowMillisecondsWithTimeZone、
     /// GetElapsedSecondsWithTimeZone(DateTime)、GetElapsedSecondsWithUtc / GetElapsedMillisecondsWithUtc。
     /// </summary>
     [Collection("TimerHelper")]
@@ -75,20 +75,20 @@ namespace GameFrameX.Foundation.Tests.Utility
 
         #endregion
 
-        #region GetTimeDifferenceMillisecondWithTimeZone
+        #region GetTimeDifferenceMillisecondsWithTimeZone
 
         [Fact]
         public void GetTimeDifferenceMillisecondWithTimeZone_ShouldReturnDifference()
         {
             Assert.Equal(TimeSpan.FromMilliseconds(500),
-                TimerHelper.GetTimeDifferenceMillisecondWithTimeZone(1000L, 1500L));
+                TimerHelper.GetTimeDifferenceMillisecondsWithTimeZone(1000L, 1500L));
         }
 
         [Fact]
         public void GetTimeDifferenceMillisecondWithTimeZone_WhenNegative_ShouldReturnNegative()
         {
             Assert.Equal(TimeSpan.FromMilliseconds(-500),
-                TimerHelper.GetTimeDifferenceMillisecondWithTimeZone(1500L, 1000L));
+                TimerHelper.GetTimeDifferenceMillisecondsWithTimeZone(1500L, 1000L));
         }
 
         #endregion
@@ -126,7 +126,7 @@ namespace GameFrameX.Foundation.Tests.Utility
 
         #endregion
 
-        #region GetTimeDifferenceFromNowMsWithTimeZone
+        #region GetTimeDifferenceFromNowMillisecondsWithTimeZone
 
         [Fact]
         public void GetTimeDifferenceFromNowMsWithTimeZone_ShouldUseFixedNow()
@@ -134,7 +134,7 @@ namespace GameFrameX.Foundation.Tests.Utility
             var pastMs = new DateTimeOffset(2024, 6, 15, 9, 30, 45, TimeSpan.Zero).ToUnixTimeMilliseconds();
 
             Assert.Equal(TimeSpan.FromHours(1),
-                TimerHelper.GetTimeDifferenceFromNowMsWithTimeZone(pastMs));
+                TimerHelper.GetTimeDifferenceFromNowMillisecondsWithTimeZone(pastMs));
         }
 
         #endregion
