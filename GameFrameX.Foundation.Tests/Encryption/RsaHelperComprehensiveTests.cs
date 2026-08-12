@@ -360,7 +360,8 @@ namespace GameFrameX.Foundation.Tests.Encryption
             using (var rsa = RSA.Create())
             {
                 var helper = new RsaHelper(rsa);
-                helper.Dispose();
+                var ex = Record.Exception(() => helper.Dispose());
+                Assert.Null(ex);
             }
         }
 
@@ -370,8 +371,12 @@ namespace GameFrameX.Foundation.Tests.Encryption
             using (var rsa = RSA.Create())
             {
                 var helper = new RsaHelper(rsa);
-                helper.Dispose();
-                helper.Dispose();
+                var ex = Record.Exception(() =>
+                {
+                    helper.Dispose();
+                    helper.Dispose();
+                });
+                Assert.Null(ex);
             }
         }
 
