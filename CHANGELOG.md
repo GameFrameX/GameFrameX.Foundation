@@ -1,3 +1,18 @@
+## [4.0.0] - 2026-08-13
+
+### Bug Fixes
+
+- 解耦 Loki sink 批量配置并对齐全局日志级别
+- Loki 推送周期配置改为秒并兜底非法值
+
+### Features
+
+- 支持自定义位宽生成雪花ID
+
+### Miscellaneous Tasks
+
+- 升级 nuget 依赖版本
+
 ## [3.1.2] - 2026-08-12
 
 ### Testing
