@@ -339,7 +339,7 @@ public static class LogHandler
                 credentials: credentials,
                 batchSizeLimit: logOptions.GrafanaLokiBatchSizeLimit,
                 queueLimit: logOptions.GrafanaLokiQueueLimit,
-                period: logOptions.GrafanaLokiPeriod,
+                period: TimeSpan.FromSeconds(logOptions.GrafanaLokiPeriod),
                 httpMessageHandler: new LokiGzipHandler(CompressionLevel.Optimal),
                 restrictedToMinimumLevel: logOptions.LogEventLevel);
         }
@@ -351,7 +351,7 @@ public static class LogHandler
                 credentials: credentials,
                 batchSizeLimit: logOptions.GrafanaLokiBatchSizeLimit,
                 queueLimit: logOptions.GrafanaLokiQueueLimit,
-                period: logOptions.GrafanaLokiPeriod,
+                period: TimeSpan.FromSeconds(logOptions.GrafanaLokiPeriod),
                 restrictedToMinimumLevel: logOptions.LogEventLevel);
         }
     }

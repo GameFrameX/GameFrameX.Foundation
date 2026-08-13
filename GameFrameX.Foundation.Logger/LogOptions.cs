@@ -220,12 +220,19 @@ public sealed class LogOptions
     public int GrafanaLokiQueueLimit { get; set; } = 100000;
 
     /// <summary>
-    /// GrafanaLoki 批量推送周期，默认为 2 秒。 / GrafanaLoki batch push period, default is 2 seconds.
+    /// GrafanaLoki 批量推送周期（秒），默认为 2。 / GrafanaLoki batch push period in seconds, default is 2.
     /// </summary>
     /// <remarks>
     /// 即使未攒满 <see cref="GrafanaLokiBatchSizeLimit"/>，每到该周期也会强制推送一次。 / A flush is forced at each period even if <see cref="GrafanaLokiBatchSizeLimit"/> is not reached.
+    /// 传入 0 或负值将被视为无效，强制回退为默认 2 秒。 / A value of 0 or negative is treated as invalid and forced back to the default 2 seconds.
     /// </remarks>
-    public TimeSpan GrafanaLokiPeriod { get; set; } = TimeSpan.FromSeconds(2);
+    public int GrafanaLokiPeriod
+    {
+        get { return _grafanaLokiPeriod; }
+        set { _grafanaLokiPeriod = value > 0 ? value : 2; }
+    }
+
+    private int _grafanaLokiPeriod = 2;
 
     /// <summary>
     /// 日志滚动间隔，默认为每天（Day）。 / Log rolling interval, default is per day (Day).
