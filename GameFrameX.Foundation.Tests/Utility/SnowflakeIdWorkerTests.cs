@@ -13,6 +13,55 @@ public sealed class SnowflakeIdWorkerTests
     }
 
     [Fact]
+    public void IdWorker_CustomBits_GeneratesValidIds()
+    {
+        // WorkerId 3 位（0-7），不用数据中心，序列 10 位
+        var worker = new IdWorker(5, 0, IdWorker.DefaultBaseTime, 0, workerIdBits: 3, datacenterIdBits: 0, sequenceBits: 10);
+        var id = worker.NextId();
+
+        Assert.True(id > 0);
+        var info = worker.ParseId(id);
+        Assert.Equal(5, info.WorkerId);
+        Assert.Equal(0, info.DataCenterId);
+    }
+
+    [Fact]
+    public void IdWorker_BitsSumOver62_ShouldThrow()
+    {
+        // 20 + 20 + 23 = 63 > 62，时间戳位不足
+        Assert.Throws<ArgumentException>(() => new IdWorker(0, 0, IdWorker.DefaultBaseTime, 0, workerIdBits: 20, datacenterIdBits: 20, sequenceBits: 23));
+    }
+
+    [Fact]
+    public void IdWorker_WorkerIdExceedsCustomBits_ShouldThrow()
+    {
+        // WorkerId 3 位（0-7），传 8 应抛异常
+        Assert.Throws<ArgumentException>(() => new IdWorker(8, 0, IdWorker.DefaultBaseTime, 0, workerIdBits: 3, datacenterIdBits: 0, sequenceBits: 10));
+    }
+
+    [Fact]
+    public void SnowFlakeIdParser_CustomBits_RoundTrip()
+    {
+        var worker = new IdWorker(3, 2, IdWorker.DefaultBaseTime, 0, workerIdBits: 6, datacenterIdBits: 4, sequenceBits: 8);
+        var id = worker.NextId();
+
+        var info = SnowFlakeIdParser.Parse(id, IdWorker.DefaultBaseTime, workerIdBits: 6, datacenterIdBits: 4, sequenceBits: 8);
+        Assert.Equal(3, info.WorkerId);
+        Assert.Equal(2, info.DataCenterId);
+    }
+
+    [Fact]
+    public void IdWorker_DefaultBits_BackwardCompatible()
+    {
+        // 旧构造函数（默认 5/5/12）与显式传默认位数结果一致
+        var w1 = new IdWorker(1, 1);
+        var w2 = new IdWorker(1, 1, IdWorker.DefaultBaseTime, 0, IdWorker.WorkerIdBits, IdWorker.DatacenterIdBits, IdWorker.SequenceBits);
+
+        Assert.True(w1.NextId() > 0);
+        Assert.True(w2.NextId() > 0);
+    }
+
+    [Fact]
     public void ManualWorkerIdProvider_ShouldReturnConfiguredId()
     {
         var provider = new ManualWorkerIdProvider(5);

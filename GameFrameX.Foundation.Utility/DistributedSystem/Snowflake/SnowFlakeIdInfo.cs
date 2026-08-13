@@ -58,26 +58,26 @@ public struct SnowFlakeIdInfo
     public DateTimeOffset Timestamp { get; }
 
     /// <summary>
-    /// 工作节点ID（0-31）。
+    /// 工作节点ID（范围由 WorkerIdBits 决定，默认 0-31）。
     /// </summary>
     /// <remarks>
-    /// The worker node ID (0-31).
+    /// The worker node ID (range depends on WorkerIdBits, default 0-31).
     /// </remarks>
     public long WorkerId { get; }
 
     /// <summary>
-    /// 数据中心ID（0-31）。
+    /// 数据中心ID（范围由 DatacenterIdBits 决定，默认 0-31）。
     /// </summary>
     /// <remarks>
-    /// The data center ID (0-31).
+    /// The data center ID (range depends on DatacenterIdBits, default 0-31).
     /// </remarks>
     public long DataCenterId { get; }
 
     /// <summary>
-    /// 序列号（0-4095）。
+    /// 序列号（范围由 SequenceBits 决定，默认 0-4095）。
     /// </summary>
     /// <remarks>
-    /// The sequence number (0-4095).
+    /// The sequence number (range depends on SequenceBits, default 0-4095).
     /// </remarks>
     public long Sequence { get; }
 

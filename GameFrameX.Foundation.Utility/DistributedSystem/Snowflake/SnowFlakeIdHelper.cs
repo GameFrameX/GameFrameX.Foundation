@@ -145,6 +145,21 @@ public static class SnowFlakeIdHelper
     public static int DataCenterId { get; set; } = 1;
 
     /// <summary>
+    /// 工作节点ID位数（默认 5）。必须在首次访问 <see cref="Instance"/> 前设置。
+    /// </summary>
+    public static int WorkerIdBits { get; set; } = IdWorker.WorkerIdBits;
+
+    /// <summary>
+    /// 数据中心ID位数（默认 5，可为 0 表示不使用数据中心维度）。必须在首次访问 <see cref="Instance"/> 前设置。
+    /// </summary>
+    public static int DatacenterIdBits { get; set; } = IdWorker.DatacenterIdBits;
+
+    /// <summary>
+    /// 序列号位数（默认 12）。必须在首次访问 <see cref="Instance"/> 前设置。
+    /// </summary>
+    public static int SequenceBits { get; set; } = IdWorker.SequenceBits;
+
+    /// <summary>
     /// 获取 <see cref="IdWorker"/> 的单例实例
     /// </summary>
     /// <value>
@@ -179,7 +194,7 @@ public static class SnowFlakeIdHelper
                         }
 
                         LastWorkerIdConflict = _workerIdConflictDetector.Register(Environment.MachineName, DataCenterId, WorkId, _workerIdProvider?.Name ?? "Manual");
-                        _worker = new IdWorker(WorkId, DataCenterId, BaseTime);
+                        _worker = new IdWorker(WorkId, DataCenterId, BaseTime, 0, WorkerIdBits, DatacenterIdBits, SequenceBits);
                     }
                 }
             }

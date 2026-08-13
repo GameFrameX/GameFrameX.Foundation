@@ -73,17 +73,17 @@ public class IdWorker
     /// <summary>
     /// 工作节点ID占用的位数
     /// </summary>
-    const int WorkerIdBits = 5;
+    public const int WorkerIdBits = 5;
 
     /// <summary>
     /// 数据中心ID占用的位数
     /// </summary>
-    const int DatacenterIdBits = 5;
+    public const int DatacenterIdBits = 5;
 
     /// <summary>
     /// 序列号占用的位数
     /// </summary>
-    const int SequenceBits = 12;
+    public const int SequenceBits = 12;
 
     /// <summary>
     /// 工作节点ID的最大值（31）
@@ -114,6 +114,19 @@ public class IdWorker
     /// 序列号掩码（4095），用于获取序列号的低12位
     /// </summary>
     private const long SequenceMask = -1L ^ (-1L << SequenceBits);
+
+    /// <summary>
+    /// 可配位数（实例级）。默认 5/5/12；通过接受位宽参数的构造函数自定义。
+    /// </summary>
+    private readonly int _workerIdBits;
+    private readonly int _datacenterIdBits;
+    private readonly int _sequenceBits;
+    private readonly long _maxWorkerId;
+    private readonly long _maxDatacenterId;
+    private readonly int _workerIdShift;
+    private readonly int _datacenterIdShift;
+    private readonly int _timestampLeftShift;
+    private readonly long _sequenceMask;
 
     /// <summary>
     /// 默认起始时间（2025-01-01 00:00:00 UTC）
@@ -175,21 +188,55 @@ public class IdWorker
     /// </code>
     /// </example>
     public IdWorker(long workerId, long dataCenterId, long baseTime = DefaultBaseTime, long sequence = 0L)
+        : this(workerId, dataCenterId, baseTime, sequence, WorkerIdBits, DatacenterIdBits, SequenceBits)
     {
+    }
+
+    /// <summary>
+    /// 使用自定义位宽初始化 <see cref="IdWorker"/>（位数可配，类 Yitter 的 WorkerIdBitLength / SeqBitLength）。
+    /// </summary>
+    /// <param name="workerId">工作节点ID，取值范围 [0, 2^<paramref name="workerIdBits"/> - 1]</param>
+    /// <param name="dataCenterId">数据中心ID，取值范围 [0, 2^<paramref name="datacenterIdBits"/> - 1]</param>
+    /// <param name="baseTime">基准时间（毫秒，Unix 纪元起）</param>
+    /// <param name="sequence">初始序列号</param>
+    /// <param name="workerIdBits">工作节点ID位数（默认 5）</param>
+    /// <param name="datacenterIdBits">数据中心ID位数（默认 5，可为 0 表示不使用数据中心维度）</param>
+    /// <param name="sequenceBits">序列号位数（默认 12）</param>
+    public IdWorker(long workerId, long dataCenterId, long baseTime, long sequence, int workerIdBits, int datacenterIdBits, int sequenceBits)
+    {
+        if (workerIdBits < 1 || datacenterIdBits < 0 || sequenceBits < 1)
+        {
+            throw new ArgumentException("位宽必须满足：workerIdBits >= 1, datacenterIdBits >= 0, sequenceBits >= 1");
+        }
+
+        if ((long)workerIdBits + datacenterIdBits + sequenceBits > 62)
+        {
+            throw new ArgumentException($"位宽总和（{workerIdBits + datacenterIdBits + sequenceBits}）超过 62，时间戳位不足");
+        }
+
+        _workerIdBits = workerIdBits;
+        _datacenterIdBits = datacenterIdBits;
+        _sequenceBits = sequenceBits;
+        _maxWorkerId = -1L ^ (-1L << workerIdBits);
+        _maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
+        _sequenceMask = -1L ^ (-1L << sequenceBits);
+        _workerIdShift = sequenceBits;
+        _datacenterIdShift = sequenceBits + workerIdBits;
+        _timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
+
         WorkerId = workerId;
         DataCenterId = dataCenterId;
         BaseTime = baseTime;
         _sequence = sequence;
 
-        // sanity check for workerId
-        if (workerId > MaxWorkerId || workerId < 0)
+        if (workerId > _maxWorkerId || workerId < 0)
         {
-            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.WorkerIdOutOfRange, MaxWorkerId));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.WorkerIdOutOfRange, _maxWorkerId));
         }
 
-        if (dataCenterId > MaxDatacenterId || dataCenterId < 0)
+        if (dataCenterId > _maxDatacenterId || dataCenterId < 0)
         {
-            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DatacenterIdOutOfRange, MaxDatacenterId));
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.DatacenterIdOutOfRange, _maxDatacenterId));
         }
     }
 
@@ -310,7 +357,7 @@ public class IdWorker
 
             if (_lastTimestamp == timestamp)
             {
-                _sequence = (_sequence + 1) & SequenceMask;
+                _sequence = (_sequence + 1) & _sequenceMask;
                 if (_sequence == 0)
                 {
                     timestamp = WaitNextMillis(_lastTimestamp);
@@ -322,9 +369,9 @@ public class IdWorker
             }
 
             _lastTimestamp = timestamp;
-            var id = ((timestamp - BaseTime) << TimestampLeftShift) |
-                     (DataCenterId << DatacenterIdShift) |
-                     (WorkerId << WorkerIdShift) | _sequence;
+            var id = ((timestamp - BaseTime) << _timestampLeftShift) |
+                     (DataCenterId << _datacenterIdShift) |
+                     (WorkerId << _workerIdShift) | _sequence;
 
             Interlocked.Increment(ref _totalIdsGenerated);
             Interlocked.Exchange(ref _lastGeneratedId, id);
@@ -378,6 +425,6 @@ public class IdWorker
     /// <returns>解析结果 / The parsed result</returns>
     public SnowFlakeIdInfo ParseId(long id)
     {
-        return SnowFlakeIdParser.Parse(id, BaseTime);
+        return SnowFlakeIdParser.Parse(id, BaseTime, _workerIdBits, _datacenterIdBits, _sequenceBits);
     }
 }

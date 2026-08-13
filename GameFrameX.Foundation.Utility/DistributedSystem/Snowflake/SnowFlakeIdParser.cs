@@ -76,14 +76,33 @@ public static class SnowFlakeIdParser
     /// <returns>解析结果 / The parsed result</returns>
     public static SnowFlakeIdInfo Parse(long id, long baseTimeMs)
     {
+        return Parse(id, baseTimeMs, WorkerIdBits, DatacenterIdBits, SequenceBits);
+    }
+
+    /// <summary>
+    /// 使用指定 BaseTime 和位宽解析雪花ID（位数可配，类 Yitter）。
+    /// </summary>
+    /// <remarks>
+    /// Bit layout: 1 sign | timestamp(62 - sum) | datacenter | worker | sequence.
+    /// </remarks>
+    public static SnowFlakeIdInfo Parse(long id, long baseTimeMs, int workerIdBits, int datacenterIdBits, int sequenceBits)
+    {
         if (id < 0)
         {
             throw new ArgumentOutOfRangeException(nameof(id), id, "Snowflake ID must be non-negative.");
         }
-        var timestamp = (id >> TimestampLeftShift) + baseTimeMs;
-        var dataCenterId = (id >> DatacenterIdShift) & DatacenterIdMask;
-        var workerId = (id >> WorkerIdShift) & WorkerIdMask;
-        var sequence = id & SequenceMask;
+
+        var workerIdShift = sequenceBits;
+        var datacenterIdShift = sequenceBits + workerIdBits;
+        var timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
+        var sequenceMask = -1L ^ (-1L << sequenceBits);
+        var workerIdMask = -1L ^ (-1L << workerIdBits);
+        var datacenterIdMask = -1L ^ (-1L << datacenterIdBits);
+
+        var timestamp = (id >> timestampLeftShift) + baseTimeMs;
+        var dataCenterId = (id >> datacenterIdShift) & datacenterIdMask;
+        var workerId = (id >> workerIdShift) & workerIdMask;
+        var sequence = id & sequenceMask;
 
         var timestampOffset = DateTimeOffset.FromUnixTimeMilliseconds(timestamp);
 
