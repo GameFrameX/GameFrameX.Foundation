@@ -337,17 +337,22 @@ public static class LogHandler
                 logOptions.GrafanaLokiUrl,
                 labels: labels,
                 credentials: credentials,
-                batchSizeLimit: 1000,
-                period: TimeSpan.FromSeconds(2),
+                batchSizeLimit: logOptions.GrafanaLokiBatchSizeLimit,
+                queueLimit: logOptions.GrafanaLokiQueueLimit,
+                period: logOptions.GrafanaLokiPeriod,
                 httpMessageHandler: new LokiGzipHandler(CompressionLevel.Optimal),
-                restrictedToMinimumLevel: LogEventLevel.Verbose);
+                restrictedToMinimumLevel: logOptions.LogEventLevel);
         }
         else
         {
             logger.WriteTo.GrafanaLoki(
                 logOptions.GrafanaLokiUrl,
                 labels: labels,
-                credentials: credentials);
+                credentials: credentials,
+                batchSizeLimit: logOptions.GrafanaLokiBatchSizeLimit,
+                queueLimit: logOptions.GrafanaLokiQueueLimit,
+                period: logOptions.GrafanaLokiPeriod,
+                restrictedToMinimumLevel: logOptions.LogEventLevel);
         }
     }
 

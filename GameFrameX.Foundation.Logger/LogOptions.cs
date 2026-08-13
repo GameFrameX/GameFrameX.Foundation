@@ -204,6 +204,30 @@ public sealed class LogOptions
     public bool GrafanaLokiCompressionEnabled { get; set; } = true;
 
     /// <summary>
+    /// GrafanaLoki 单次批量推送的最大日志条数，默认为 1000。 / Maximum number of log entries per batch push to GrafanaLoki, default is 1000.
+    /// </summary>
+    /// <remarks>
+    /// 攒满该数量即触发一次推送；未攒满时由 <see cref="GrafanaLokiPeriod"/> 周期触发。 / A push is triggered once this count is reached; otherwise it is triggered by the <see cref="GrafanaLokiPeriod"/> timer.
+    /// </remarks>
+    public int GrafanaLokiBatchSizeLimit { get; set; } = 1000;
+
+    /// <summary>
+    /// GrafanaLoki 内存队列最大长度，默认为 100000。 / Maximum length of the GrafanaLoki in-memory queue, default is 100000.
+    /// </summary>
+    /// <remarks>
+    /// 队列写满后新日志将被丢弃，作为背压保护防止内存无限增长。 / When the queue is full, new log entries are dropped as back-pressure to prevent unbounded memory growth.
+    /// </remarks>
+    public int GrafanaLokiQueueLimit { get; set; } = 100000;
+
+    /// <summary>
+    /// GrafanaLoki 批量推送周期，默认为 2 秒。 / GrafanaLoki batch push period, default is 2 seconds.
+    /// </summary>
+    /// <remarks>
+    /// 即使未攒满 <see cref="GrafanaLokiBatchSizeLimit"/>，每到该周期也会强制推送一次。 / A flush is forced at each period even if <see cref="GrafanaLokiBatchSizeLimit"/> is not reached.
+    /// </remarks>
+    public TimeSpan GrafanaLokiPeriod { get; set; } = TimeSpan.FromSeconds(2);
+
+    /// <summary>
     /// 日志滚动间隔，默认为每天（Day）。 / Log rolling interval, default is per day (Day).
     /// </summary>
     /// <remarks>
