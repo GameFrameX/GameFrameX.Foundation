@@ -111,3 +111,11 @@ jobs:
           body_path: CHANGELOG.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    needs: release
+    if: needs.release.result == 'success'
+    uses: GameFrameX/public-github-actions/.github/workflows/notify.yml@main
+    with:
+      repository_name: GameFrameX.Foundation
+    secrets: inherit
