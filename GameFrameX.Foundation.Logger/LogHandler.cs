@@ -152,7 +152,7 @@ public static class LogHandler
     /// <exception cref="ArgumentNullException">当 <paramref name="logOptions"/> 参数为 null 时抛出 / Thrown when <paramref name="logOptions"/> parameter is null</exception>
     /// <exception cref="ArgumentException">当 <paramref name="logOptions.LogTagName"/> 为空或仅包含空白字符时抛出 / Thrown when <paramref name="logOptions.LogTagName"/> is empty or contains only whitespace</exception>
     /// <exception cref="DirectoryNotFoundException">日志文件目录不存在且无法创建时抛出 / Thrown when log file directory does not exist and cannot be created</exception>
-    /// <exception cref="UnauthorizedAccessException">没有权限创建日志目录或写入日志文件时抛出 / Thrown when there is no permission to create log directory or write log files</exception>
+    /// <exception cref="UnauthorizedAccessException">写入日志文件无权限时抛出；日志目录创建失败不抛出，而是禁用文件 sink 并输出 Console 警告后继续 / Thrown when there is no permission to write log files; log directory creation failure does not throw — the file sink is disabled with a console warning and startup continues</exception>
     /// <exception cref="Exception">初始化日志系统过程中发生的其他异常 / Other exceptions that occur during log system initialization</exception>
     /// <returns>配置好的 ILogger 实例 / The configured ILogger instance</returns>
     /// <remarks>
@@ -206,7 +206,7 @@ public static class LogHandler
     }
 
     /// <summary>
-    /// 计算最终日志文件路径，必要时创建目录。
+    /// 计算最终日志文件路径（纯路径计算，不创建目录；目录创建由 ApplyFile 按需执行）。
     /// </summary>
     /// <param name="logOptions">日志配置选项 / Log configuration options</param>
     /// <param name="isDefault">是否为默认配置（用于触发展示调用） / Whether this is the default configuration</param>
@@ -227,12 +227,6 @@ public static class LogHandler
 
         // 计算最终日志文件路径
         var logPath = Path.Combine(logSavePath, logFileName);
-        // 兼容可能的层级目录：始终创建文件所在的目录
-        var logFolderPath = Path.GetDirectoryName(logPath) ?? logSavePath;
-        if (!Directory.Exists(logFolderPath))
-        {
-            Directory.CreateDirectory(logFolderPath);
-        }
 
         if (isDefault)
         {
@@ -397,7 +391,7 @@ public static class LogHandler
     }
 
     /// <summary>
-    /// 装配文件 sink（按 IsWriteToFile 开关）。
+    /// 装配文件 sink（按 IsWriteToFile 开关；日志目录因权限不足创建失败时降级跳过文件 sink，不终结进程）。
     /// </summary>
     /// <param name="logger">Logger 配置 / Logger configuration</param>
     /// <param name="logOptions">日志配置选项 / Log configuration options</param>
@@ -410,6 +404,12 @@ public static class LogHandler
             return;
         }
 
+        if (!TryEnsureLogDirectory(logPath))
+        {
+            // 目录创建降级失败（如权限不足）：不装配文件 sink，其余 sink 继续生效。
+            return;
+        }
+
         logger.WriteTo.File(logPath,
                             shared: true,
                             restrictedToMinimumLevel: logOptions.LogEventLevel,
@@ -417,6 +417,34 @@ public static class LogHandler
                             rollingInterval: logOptions.RollingInterval,
                             rollOnFileSizeLimit: logOptions.FileSizeLimitBytes > 0,
                             fileSizeLimitBytes: logOptions.FileSizeLimitBytes);
+    }
+
+    /// <summary>
+    /// 确保日志文件所在目录存在；权限不足导致创建失败时降级返回 false（不抛出）。
+    /// </summary>
+    /// <param name="logPath">日志文件路径 / Log file path</param>
+    /// <returns>目录可用返回 true；权限不足创建失败返回 false / True if the directory is available; false if creation failed due to insufficient permissions</returns>
+    private static bool TryEnsureLogDirectory(string logPath)
+    {
+        // 兼容可能的层级目录：始终创建文件所在的目录
+        var logFolderPath = Path.GetDirectoryName(logPath);
+        if (string.IsNullOrEmpty(logFolderPath) || Directory.Exists(logFolderPath))
+        {
+            return true;
+        }
+
+        try
+        {
+            Directory.CreateDirectory(logFolderPath);
+            return true;
+        }
+        catch (UnauthorizedAccessException e)
+        {
+            // 目录不可写（如容器非 root 运行 + bind mount 属主不匹配）：降级禁用文件 sink。
+            // 日志只是附属设施，目录的写权限不应有能力终结宿主进程。
+            Console.Error.WriteLine($"[LogHandler] 创建日志目录失败，已禁用文件日志：{logFolderPath}，原因：{e.Message}");
+            return false;
+        }
     }
 
     /// <summary>
