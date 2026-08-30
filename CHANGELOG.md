@@ -1,4 +1,14 @@
-## [4.0.0] - 2026-08-13
+## [4.0.2] - 2026-08-30
+
+### Bug Fixes
+
+- 日志目录创建按 IsWriteToFile 短路，权限不足时降级不崩溃 (#265)
+
+### Ci
+
+- Notify Bluesky on release via reusable workflow
+
+## [4.0.1] - 2026-08-13
 
 ### Bug Fixes
 
