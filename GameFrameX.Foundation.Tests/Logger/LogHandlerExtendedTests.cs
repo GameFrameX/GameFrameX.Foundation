@@ -123,7 +123,7 @@ namespace GameFrameX.Foundation.Tests.Logger
             var logger = LogHandler.Create(options, isDefault: false);
 
             Assert.NotNull(logger);
-            // ResolveLogPath 会在 LogType 子目录下创建文件
+            // ApplyFile 会确保 LogType 子目录存在
             var expectedDir = Path.Combine(logDir, "ext-file");
             Assert.True(Directory.Exists(expectedDir), "文件日志目录应该被创建。");
         }

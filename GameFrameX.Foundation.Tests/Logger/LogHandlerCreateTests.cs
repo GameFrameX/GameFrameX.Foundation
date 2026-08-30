@@ -131,7 +131,28 @@ public sealed class LogHandlerCreateTests : IDisposable
 
         var options = new LogOptions("logs")
         {
-            LogType = "gfx-186-app",
+            LogType = "gfx-725-app",
+            LogSavePath = nested,
+            IsWriteToFile = true,
+            IsConsole = false,
+        };
+
+        var logger = LogHandler.Create(options, isDefault: false);
+
+        Assert.NotNull(logger);
+        Assert.True(Directory.Exists(nested), "ApplyFile should ensure the log folder exists when file logging is enabled.");
+    }
+
+    [Fact]
+    public void Create_WithWriteToFileDisabled_ShouldNotCreateLogDirectory()
+    {
+        // GFX-725: IsWriteToFile=false 时不应触碰日志目录（连目录都不创建）。
+        var nested = Path.Combine(_tempDirectory, "skipped", "logs");
+        Assert.False(Directory.Exists(nested));
+
+        var options = new LogOptions("logs")
+        {
+            LogType = "gfx-725-app",
             LogSavePath = nested,
             IsWriteToFile = false,
             IsConsole = false,
@@ -140,7 +161,55 @@ public sealed class LogHandlerCreateTests : IDisposable
         var logger = LogHandler.Create(options, isDefault: false);
 
         Assert.NotNull(logger);
-        Assert.True(Directory.Exists(nested), "ResolveLogPath should ensure the log folder exists.");
+        Assert.False(Directory.Exists(nested), "File logging disabled — the log directory must not be created.");
+    }
+
+    [Fact]
+    public void Create_WhenLogDirectoryCreationDenied_ShouldDisableFileSinkAndContinue()
+    {
+        // GFX-725: 目录创建抛 UnauthorizedAccessException 时降级（禁用文件 sink、Console 警告、进程继续）。
+        // EACCES 仅在 Unix 非 root 环境可复现；先探测，无法复现（root / Windows）则跳过本用例。
+        if (!OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
+        {
+            return;
+        }
+
+        var lockedRoot = Path.Combine(_tempDirectory, "locked");
+        Directory.CreateDirectory(lockedRoot);
+        var originalMode = File.GetUnixFileMode(lockedRoot);
+        File.SetUnixFileMode(lockedRoot, originalMode & ~(UnixFileMode.UserWrite | UnixFileMode.GroupWrite | UnixFileMode.OtherWrite));
+        try
+        {
+            try
+            {
+                var probe = Path.Combine(lockedRoot, "probe");
+                Directory.CreateDirectory(probe);
+                Directory.Delete(probe);
+                return; // 权限位被环境绕过（如 root 运行），无法复现，跳过。
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // 权限位生效，可复现降级路径。
+            }
+
+            var options = new LogOptions("logs")
+            {
+                LogType = "gfx-725-locked",
+                LogSavePath = lockedRoot,
+                IsWriteToFile = true,
+                IsConsole = false,
+            };
+
+            var logger = LogHandler.Create(options, isDefault: false);
+
+            Assert.NotNull(logger);
+            var expectedDir = Path.Combine(lockedRoot, "gfx-725-locked");
+            Assert.False(Directory.Exists(expectedDir), "Degraded path must not create the log directory.");
+        }
+        finally
+        {
+            File.SetUnixFileMode(lockedRoot, originalMode);
+        }
     }
 }
 
