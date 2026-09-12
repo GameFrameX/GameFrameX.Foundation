@@ -9,6 +9,7 @@
   <Project Path="GameFrameX.Foundation.Hash/GameFrameX.Foundation.Hash.csproj" />
   <Project Path="GameFrameX.Foundation.Http.Extension/GameFrameX.Foundation.Http.Extension.csproj" />
   <Project Path="GameFrameX.Foundation.Http.Normalization/GameFrameX.Foundation.Http.Normalization.csproj" />
+  <Project Path="GameFrameX.Foundation.Idempotency/GameFrameX.Foundation.Idempotency.csproj" />
   <Project Path="GameFrameX.Foundation.Json/GameFrameX.Foundation.Json.csproj" />
   <Project Path="GameFrameX.Foundation.Localization/GameFrameX.Foundation.Localization.csproj" />
   <Project Path="GameFrameX.Foundation.Logger/GameFrameX.Foundation.Logger.csproj" />

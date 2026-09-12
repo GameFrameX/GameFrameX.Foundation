@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Idempotency 模块异常消息 -->
+  <data name="Idempotency.Exceptions.IdempotencyScopeCannotBeBlank" xml:space="preserve">
+    <value>幂等作用域不能为空白。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.IdempotencyKeyCannotBeBlank" xml:space="preserve">
+    <value>幂等键不能为空白。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RequestDigestCannotBeBlank" xml:space="preserve">
+    <value>请求摘要不能为空白。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.IdentifierCannotBeNull" xml:space="preserve">
+    <value>幂等记录标识不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RecordCannotBeNull" xml:space="preserve">
+    <value>待占位的幂等记录不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.BeginRequestCannotBeNull" xml:space="preserve">
+    <value>幂等占位请求不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.CompletionRequestCannotBeNull" xml:space="preserve">
+    <value>幂等完成请求不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.FailureRequestCannotBeNull" xml:space="preserve">
+    <value>幂等失败请求不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RemovalRequestCannotBeNull" xml:space="preserve">
+    <value>过期记录清理请求不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RetentionMillisecondsMustBePositive" xml:space="preserve">
+    <value>保留时长必须大于 0 毫秒。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.ConcurrentWaitTimeoutMustNotBeNegative" xml:space="preserve">
+    <value>并发等待超时必须不小于 0 毫秒。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.StoreCannotBeNull" xml:space="preserve">
+    <value>幂等记录存储不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.ClockCannotBeNull" xml:space="preserve">
+    <value>时间源不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RecordNotFoundForCompletion" xml:space="preserve">
+    <value>幂等记录不存在，无法落为成功：作用域={0}，键={1}。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RecordNotFoundForFailure" xml:space="preserve">
+    <value>幂等记录不存在，无法落为失败：作用域={0}，键={1}。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.FieldsCannotBeNull" xml:space="preserve">
+    <value>字段集合不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.DigestComputationFailed" xml:space="preserve">
+    <value>SHA-256 摘要计算失败。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.EventIdCannotBeBlank" xml:space="preserve">
+    <value>事件标识（EventId）不能为空白。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.EventTypeCannotBeBlank" xml:space="preserve">
+    <value>事件类型（EventType）不能为空白。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.SourceCannotBeBlank" xml:space="preserve">
+    <value>来源模块（Source）不能为空白。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.SchemaVersionMustBeAtLeastOne" xml:space="preserve">
+    <value>结构版本（SchemaVersion）必须不小于 1。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.SubscriberCannotBeNull" xml:space="preserve">
+    <value>事件订阅回调不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.EnvelopeCannotBeNull" xml:space="preserve">
+    <value>事件信封不能为 null。</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.CapacityMustBePositive" xml:space="preserve">
+    <value>去重容量必须大于 0。</value>
+  </data>
+</root>

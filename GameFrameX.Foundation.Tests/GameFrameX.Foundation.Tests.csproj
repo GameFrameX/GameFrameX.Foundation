@@ -30,6 +30,7 @@
     <ProjectReference Include="..\GameFrameX.Foundation.Hash\GameFrameX.Foundation.Hash.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Http.Extension\GameFrameX.Foundation.Http.Extension.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Http.Normalization\GameFrameX.Foundation.Http.Normalization.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Idempotency\GameFrameX.Foundation.Idempotency.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj" />

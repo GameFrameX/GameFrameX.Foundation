@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- Idempotency module exception messages -->
+  <data name="Idempotency.Exceptions.IdempotencyScopeCannotBeBlank" xml:space="preserve">
+    <value>The idempotency scope cannot be blank.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.IdempotencyKeyCannotBeBlank" xml:space="preserve">
+    <value>The idempotency key cannot be blank.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RequestDigestCannotBeBlank" xml:space="preserve">
+    <value>The request digest cannot be blank.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.IdentifierCannotBeNull" xml:space="preserve">
+    <value>The idempotency record identifier cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RecordCannotBeNull" xml:space="preserve">
+    <value>The idempotency record to occupy cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.BeginRequestCannotBeNull" xml:space="preserve">
+    <value>The idempotency begin request cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.CompletionRequestCannotBeNull" xml:space="preserve">
+    <value>The idempotency completion request cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.FailureRequestCannotBeNull" xml:space="preserve">
+    <value>The idempotency failure request cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RemovalRequestCannotBeNull" xml:space="preserve">
+    <value>The expired-record removal request cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RetentionMillisecondsMustBePositive" xml:space="preserve">
+    <value>The retention duration must be greater than 0 milliseconds.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.ConcurrentWaitTimeoutMustNotBeNegative" xml:space="preserve">
+    <value>The concurrent wait timeout must not be less than 0 milliseconds.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.StoreCannotBeNull" xml:space="preserve">
+    <value>The idempotency store cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.ClockCannotBeNull" xml:space="preserve">
+    <value>The time source cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RecordNotFoundForCompletion" xml:space="preserve">
+    <value>No idempotency record found to mark as completed. Scope={0}, Key={1}.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.RecordNotFoundForFailure" xml:space="preserve">
+    <value>No idempotency record found to mark as failed. Scope={0}, Key={1}.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.FieldsCannotBeNull" xml:space="preserve">
+    <value>The field collection cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.DigestComputationFailed" xml:space="preserve">
+    <value>Failed to compute the SHA-256 digest.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.EventIdCannotBeBlank" xml:space="preserve">
+    <value>The event identifier (EventId) cannot be blank.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.EventTypeCannotBeBlank" xml:space="preserve">
+    <value>The event type (EventType) cannot be blank.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.SourceCannotBeBlank" xml:space="preserve">
+    <value>The event source (Source) cannot be blank.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.SchemaVersionMustBeAtLeastOne" xml:space="preserve">
+    <value>The schema version (SchemaVersion) must be at least 1.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.SubscriberCannotBeNull" xml:space="preserve">
+    <value>The event subscriber callback cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.EnvelopeCannotBeNull" xml:space="preserve">
+    <value>The event envelope cannot be null.</value>
+  </data>
+
+  <data name="Idempotency.Exceptions.CapacityMustBePositive" xml:space="preserve">
+    <value>The deduplication capacity must be greater than 0.</value>
+  </data>
+</root>

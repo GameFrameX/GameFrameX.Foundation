@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../Version.props" Label="版本号定义"/>
+    <PropertyGroup>
+        <Description>GameFrameX.Foundation.Idempotency,GameFrameX 框架的基础设施框架库,提供幂等执行与事件信封的通用基础原语.框架文档主页: https://gameframex.doc.alianblank.com</Description>
+        <PackageTags>GameFrameX,Lib,Foundation.Idempotency,Idempotency,Event,Envelope,Server,GameServer</PackageTags>
+        <Nullable>enable</Nullable>
+        <AssemblyOriginatorKeyFile>../gameframex.key.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\bin\app</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="..\logo.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+            <Link>logo.png</Link>
+        </None>
+        <None Include="../README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+</Project>
