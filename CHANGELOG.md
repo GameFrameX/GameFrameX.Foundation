@@ -1,3 +1,9 @@
+## [4.1.0] - 2026-09-12
+
+### Features
+
+- 新增幂等与事件信封基础包 GameFrameX.Foundation.Idempotency (#267)
+
 ## [4.0.2] - 2026-08-30
 
 ### Bug Fixes
