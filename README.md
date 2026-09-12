@@ -36,6 +36,7 @@
 | `GameFrameX.Foundation.Http.Extension`     | HTTP client extensions           | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension)         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension)         |
 | `GameFrameX.Foundation.Http.Normalization` | HTTP response normalization      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization) |
 | `GameFrameX.Foundation.Orm.Entity`         | ORM entity base classes          | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Entity?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Entity?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity)                 |
+| `GameFrameX.Foundation.Idempotency`        | Idempotency and event envelope   | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Idempotency?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Idempotency)               | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Idempotency?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Idempotency)               |
 
 ## Quick Start
 
@@ -85,6 +86,7 @@ var sha256 = ShaHelper.ComputeSha256("Hello World");
 | HTTP Extension     | `GameFrameX.Foundation.Http.Extension`     | HTTP client extension methods                           | → JSON              | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/http-extension)     |
 | HTTP Normalization | `GameFrameX.Foundation.Http.Normalization` | Standardized HTTP JSON response structures              | → Logger            | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/http-normalization) |
 | ORM Entity         | `GameFrameX.Foundation.Orm.Entity`         | ORM entity base classes with enterprise features        | → Utility           | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/orm-entity)         |
+| Idempotency        | `GameFrameX.Foundation.Idempotency`        | Idempotency occupation/replay decisions and universal event envelope | → Utility           | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/idempotency)        |
 
 ## Architecture
 
