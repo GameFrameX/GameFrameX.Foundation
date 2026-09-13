@@ -21,8 +21,11 @@ public class EventEnvelopeTests
         // 安排：合法信封，可选字段取空值
         EventEnvelope envelope = CreateValidEnvelope();
 
-        // 执行 + 断言
-        envelope.EnsureValid();
+        // 执行：校验合法信封
+        Exception? exception = Record.Exception(() => envelope.EnsureValid());
+
+        // 断言：合法信封不抛出任何异常
+        Assert.Null(exception);
     }
 
     [Theory]
