@@ -1,3 +1,18 @@
+## [4.1.1] - 2026-09-13
+
+### Bug Fixes
+
+- 修复协调器 Sonar 违规：删除未读注入字段并拆解 BeginAsync 认知复杂度 (#272)
+
+### Testing
+
+- EventEnvelope 合法信封测试补充 Record.Exception 显式断言 (#271)
+- 无订阅者发布测试补充 Record.ExceptionAsync 显式断言 (#273)
+
+### Ci
+
+- 发布改为 workflow_dispatch 手动触发 (#274)
+
 ## [4.1.0] - 2026-09-12
 
 ### Features
