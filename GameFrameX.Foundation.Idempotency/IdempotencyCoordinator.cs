@@ -40,7 +40,7 @@ namespace GameFrameX.Foundation.Idempotency;
 /// 幂等协调器：副作用调用方的唯一入口，编排占位、判定与回放 / The idempotency coordinator: the single entry point for side-effect callers, orchestrating occupation, judgement and replay.
 /// </summary>
 /// <remarks>
-/// 组合全部幂等协作点（存储、时钟、选项、键生成器、摘要器），对一次占位请求给出最终裁决。
+/// 组合幂等协作点（存储、时钟、选项），对一次占位请求给出最终裁决；幂等键与请求摘要是调用方侧工具的产物，由请求对象携带传入。
 /// <para>
 /// <b>判定语义表（<see cref="BeginAsync"/> 的全部分支）：</b>
 /// <list type="table">
@@ -63,8 +63,9 @@ namespace GameFrameX.Foundation.Idempotency;
 /// 执行结束必须调用 <see cref="CompleteAsync"/> 或 <see cref="FailAsync"/> 落定记录，否则记录将保持执行中直至过期。
 /// </para>
 /// <para>
-/// Composes every idempotency collaboration point (store, clock, options, key generator, digester) and delivers
-/// the final verdict for one occupation request.
+/// Composes the idempotency collaboration points (store, clock, options) and delivers the final verdict for one
+/// occupation request; the idempotency key and request digest are products of caller-side tools and arrive
+/// carried by the request object.
 /// <b>Decision-semantics table (all branches of <see cref="BeginAsync"/>):</b>
 /// <list type="table">
 /// <item><term>No existing record</term><description><see cref="IdempotencyDecisionKind.Execute"/>: occupy as processing.</description></item>
@@ -94,25 +95,28 @@ public sealed class IdempotencyCoordinator
     private readonly IIdempotencyStore _idempotencyStore;
     private readonly IClock _clock;
     private readonly IdempotencyOptions _idempotencyOptions;
-    private readonly IIdempotencyKeyGenerator _idempotencyKeyGenerator;
-    private readonly IRequestDigester _requestDigester;
 
     /// <summary>
     /// 初始化 <see cref="IdempotencyCoordinator"/> / Initializes <see cref="IdempotencyCoordinator"/>.
     /// </summary>
+    /// <remarks>
+    /// 幂等键与请求摘要由调用方在构造 <see cref="IdempotencyBeginRequest"/> 前生成（可用 <see cref="IIdempotencyKeyGenerator"/>
+    /// 与 <see cref="IRequestDigester"/> 等调用方侧工具），协调器只消费请求对象携带的现值。
+    /// <para>
+    /// The idempotency key and request digest are produced by the caller before constructing
+    /// <see cref="IdempotencyBeginRequest"/> (optionally via caller-side tools such as <see cref="IIdempotencyKeyGenerator"/>
+    /// and <see cref="IRequestDigester"/>); the coordinator only consumes the values carried by the request object.
+    /// </para>
+    /// </remarks>
     /// <param name="idempotencyStore">幂等记录存储 / The idempotency record store.</param>
     /// <param name="clock">时间源 / The time source.</param>
     /// <param name="idempotencyOptions">幂等选项，<see langword="null"/> 时使用全部默认值 / The idempotency options; <see langword="null"/> uses all defaults.</param>
-    /// <param name="idempotencyKeyGenerator">幂等键生成器，<see langword="null"/> 时使用 <see cref="GuidIdempotencyKeyGenerator.Instance"/> / The idempotency key generator; <see langword="null"/> uses <see cref="GuidIdempotencyKeyGenerator.Instance"/>.</param>
-    /// <param name="requestDigester">请求摘要器，<see langword="null"/> 时使用 <see cref="Sha256RequestDigester.Instance"/> / The request digester; <see langword="null"/> uses <see cref="Sha256RequestDigester.Instance"/>.</param>
     /// <exception cref="ArgumentNullException"><paramref name="idempotencyStore"/> 或 <paramref name="clock"/> 为 <see langword="null"/> / <paramref name="idempotencyStore"/> or <paramref name="clock"/> is <see langword="null"/>.</exception>
-    public IdempotencyCoordinator(IIdempotencyStore idempotencyStore, IClock clock, IdempotencyOptions? idempotencyOptions = null, IIdempotencyKeyGenerator? idempotencyKeyGenerator = null, IRequestDigester? requestDigester = null)
+    public IdempotencyCoordinator(IIdempotencyStore idempotencyStore, IClock clock, IdempotencyOptions? idempotencyOptions = null)
     {
         _idempotencyStore = idempotencyStore ?? throw new ArgumentNullException(nameof(idempotencyStore), LocalizationService.GetString(LocalizationKeys.Exceptions.StoreCannotBeNull));
         _clock = clock ?? throw new ArgumentNullException(nameof(clock), LocalizationService.GetString(LocalizationKeys.Exceptions.ClockCannotBeNull));
         _idempotencyOptions = idempotencyOptions ?? new IdempotencyOptions();
-        _idempotencyKeyGenerator = idempotencyKeyGenerator ?? GuidIdempotencyKeyGenerator.Instance;
-        _requestDigester = requestDigester ?? Sha256RequestDigester.Instance;
     }
 
     /// <summary>
@@ -151,118 +155,143 @@ public sealed class IdempotencyCoordinator
         {
             long nowTime = _clock.UtcNowTime;
             IdempotencyRecord? existingRecord = await _idempotencyStore.TryGetRecordAsync(identifier, cancellationToken);
-            if (existingRecord == null)
+            if (existingRecord != null)
             {
-                if (await TryOccupyAsync(identifier, request.RequestDigest, nowTime, cancellationToken))
-                {
-                    return new IdempotencyDecision(IdempotencyDecisionKind.Execute);
-                }
-
-                continue;
+                lastSeenRecord = existingRecord;
             }
 
-            lastSeenRecord = existingRecord;
-
-            // 已过期（当前时刻晚于过期时刻）：视为无记录，新占位覆盖。
-            // Expired (current time later than the expiration time): treat as no record and overwrite with a new occupation.
-            if (nowTime > existingRecord.ExpiredTime)
+            // 无记录 / 已过期 / 已完结：直接按语义落定；执行中：等待并发占位方落定后重判。
+            // Absent / expired / finished: settle directly by the semantics; processing: wait for the concurrent
+            // occupant to settle and re-judge.
+            IdempotencyDecision? decision;
+            if (existingRecord == null || nowTime > existingRecord.ExpiredTime || existingRecord.Status != IdempotencyStatus.Processing)
             {
-                if (await TryOccupyAsync(identifier, request.RequestDigest, nowTime, cancellationToken))
-                {
-                    return new IdempotencyDecision(IdempotencyDecisionKind.Execute);
-                }
-
-                continue;
+                decision = await TryJudgeSettledOrVacantAsync(identifier, request.RequestDigest, nowTime, existingRecord, cancellationToken);
+            }
+            else
+            {
+                ConcurrentWaitResult waitResult = await WaitForConcurrentSettlementAsync(identifier, request.RequestDigest, existingRecord, nowTime, cancellationToken);
+                lastSeenRecord = waitResult.LastSeenRecord;
+                decision = waitResult.Decision;
             }
 
-            if (existingRecord.Status != IdempotencyStatus.Processing)
+            if (decision != null)
             {
-                IdempotencyDecision? judgedDecision = JudgeFinishedRecord(existingRecord, request.RequestDigest);
-                if (judgedDecision != null)
-                {
-                    return judgedDecision;
-                }
-
-                // 失败重放策略为重新执行：覆盖占位。
-                // Failed-replay policy is re-execute: overwrite-occupy.
-                if (await TryOccupyAsync(identifier, request.RequestDigest, nowTime, cancellationToken))
-                {
-                    return new IdempotencyDecision(IdempotencyDecisionKind.Execute);
-                }
-
-                continue;
+                return decision;
             }
 
-            // 执行中：在并发等待超时内周期性重读记录，状态变化即按语义重判。
-            // Processing: within the concurrent wait timeout, re-read the record periodically and re-judge
-            // by the semantics as soon as the state changes.
-            long waitDeadlineTime = nowTime + _idempotencyOptions.ConcurrentWaitTimeoutMilliseconds;
-            bool preemptedDuringWait = false;
-            while (!preemptedDuringWait)
-            {
-                long currentNowTime = _clock.UtcNowTime;
-                if (currentNowTime >= waitDeadlineTime)
-                {
-                    return new IdempotencyDecision(IdempotencyDecisionKind.Busy, existingRecord);
-                }
-
-                long delayMilliseconds = ConcurrentWaitPollIntervalMilliseconds;
-                long remainingMilliseconds = waitDeadlineTime - currentNowTime;
-                if (delayMilliseconds > remainingMilliseconds)
-                {
-                    delayMilliseconds = remainingMilliseconds;
-                }
-
-                await Task.Delay((int)delayMilliseconds, cancellationToken);
-
-                IdempotencyRecord? recheckedRecord = await _idempotencyStore.TryGetRecordAsync(identifier, cancellationToken);
-                long recheckNowTime = _clock.UtcNowTime;
-
-                if (recheckedRecord == null)
-                {
-                    if (await TryOccupyAsync(identifier, request.RequestDigest, recheckNowTime, cancellationToken))
-                    {
-                        return new IdempotencyDecision(IdempotencyDecisionKind.Execute);
-                    }
-
-                    preemptedDuringWait = true;
-                    continue;
-                }
-
-                lastSeenRecord = recheckedRecord;
-
-                if (recheckNowTime > recheckedRecord.ExpiredTime)
-                {
-                    if (await TryOccupyAsync(identifier, request.RequestDigest, recheckNowTime, cancellationToken))
-                    {
-                        return new IdempotencyDecision(IdempotencyDecisionKind.Execute);
-                    }
-
-                    preemptedDuringWait = true;
-                    continue;
-                }
-
-                if (recheckedRecord.Status == IdempotencyStatus.Processing)
-                {
-                    continue;
-                }
-
-                IdempotencyDecision? judgedAfterWaitDecision = JudgeFinishedRecord(recheckedRecord, request.RequestDigest);
-                if (judgedAfterWaitDecision != null)
-                {
-                    return judgedAfterWaitDecision;
-                }
-
-                if (await TryOccupyAsync(identifier, request.RequestDigest, recheckNowTime, cancellationToken))
-                {
-                    return new IdempotencyDecision(IdempotencyDecisionKind.Execute);
-                }
-
-                preemptedDuringWait = true;
-            }
+            // 占位被并发方抢先：进入下一轮按语义重判。
+            // The occupation was preempted by a concurrent party: proceed to the next round and re-judge by the semantics.
         }
 
         return new IdempotencyDecision(IdempotencyDecisionKind.Busy, lastSeenRecord);
+    }
+
+    /// <summary>
+    /// 对一次「无记录 / 已过期 / 已完结」的可落定读数给出裁决 / Judges one settle-able read that is absent, expired or finished.
+    /// </summary>
+    /// <remarks>
+    /// 前置条件：<paramref name="existingRecord"/> 为 <see langword="null"/>、已过期或状态非执行中（由调用方保证）。
+    /// 已完结记录先按判定语义表裁决（成功回放 / 键冲突 / 失败回放），失败重执行策略与无记录、已过期一样落入覆盖占位；
+    /// 占位被并发方抢先时返回 <see langword="null"/>，由调用方进入下一判定轮次重判。
+    /// <para>
+    /// Precondition: <paramref name="existingRecord"/> is <see langword="null"/>, expired, or not processing (guaranteed by the caller).
+    /// A finished record is judged first by the decision-semantics table (completed-replay / key-conflict / failed-replay);
+    /// the failed re-execute policy falls through to an overwriting occupation just like an absent or expired record.
+    /// When the occupation is preempted by a concurrent party, <see langword="null"/> is returned for the caller to
+    /// re-judge in the next decision round.
+    /// </para>
+    /// </remarks>
+    /// <param name="identifier">幂等记录标识 / The idempotency record identifier.</param>
+    /// <param name="requestDigest">本次请求的摘要 / The digest of the current request.</param>
+    /// <param name="nowTime">读数时刻（UTC 毫秒）/ The time of the read (UTC milliseconds).</param>
+    /// <param name="existingRecord">读到的存量记录，可为 <see langword="null"/> / The read existing record; may be <see langword="null"/>.</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token.</param>
+    /// <returns>最终裁决；占位被并发方抢先时为 <see langword="null"/> / The final verdict; <see langword="null"/> when the occupation is preempted by a concurrent party.</returns>
+    private async Task<IdempotencyDecision?> TryJudgeSettledOrVacantAsync(IdempotencyRecordIdentifier identifier, string requestDigest, long nowTime, IdempotencyRecord? existingRecord, CancellationToken cancellationToken)
+    {
+        // 已完结（前置条件已排除执行中）：成功回放 / 键冲突 / 失败回放在此裁决，失败重执行返回 null 落入覆盖占位。
+        // Finished (processing excluded by the precondition): completed-replay / key-conflict / failed-replay settle here;
+        // failed re-execute returns null and falls through to the overwriting occupation.
+        if (existingRecord != null && nowTime <= existingRecord.ExpiredTime)
+        {
+            IdempotencyDecision? judgedDecision = JudgeFinishedRecord(existingRecord, requestDigest);
+            if (judgedDecision != null)
+            {
+                return judgedDecision;
+            }
+        }
+
+        // 无记录 / 已过期 / 失败重执行：视为可占位，新占位覆盖旧记录。
+        // Absent / expired / failed re-execute: occupy — a new occupation overwrites the old record.
+        if (await TryOccupyAsync(identifier, requestDigest, nowTime, cancellationToken))
+        {
+            return new IdempotencyDecision(IdempotencyDecisionKind.Execute);
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 等待执行中的并发占位方落定，状态变化即重判 / Waits for the processing concurrent occupant to settle and re-judges on any state change.
+    /// </summary>
+    /// <remarks>
+    /// 在并发等待超时内周期性重读记录；一旦读到可落定状态（无记录 / 已过期 / 已完结）即交由
+    /// <see cref="TryJudgeSettledOrVacantAsync"/> 裁决，读数仍为执行中则继续等待下一轮询周期；
+    /// 等待超时返回携带触发等待记录的 <see cref="IdempotencyDecisionKind.Busy"/>（不等待轮询间隙外的额外落定）。
+    /// 等待期间最后见到的非空记录经 <see cref="ConcurrentWaitResult.LastSeenRecord"/> 回传，供调用方维持「最后读数」语义。
+    /// <para>
+    /// Within the concurrent wait timeout the record is re-read periodically; as soon as a settle-able state is re-read
+    /// (absent / expired / finished) the verdict is delegated to <see cref="TryJudgeSettledOrVacantAsync"/>, while a
+    /// still-processing read keeps waiting for the next polling cycle. A wait timeout returns
+    /// <see cref="IdempotencyDecisionKind.Busy"/> carrying the record that triggered the wait. The latest non-null
+    /// record seen during the wait is passed back via <see cref="ConcurrentWaitResult.LastSeenRecord"/> so the caller
+    /// can maintain the last-seen semantics.
+    /// </para>
+    /// </remarks>
+    /// <param name="identifier">幂等记录标识 / The idempotency record identifier.</param>
+    /// <param name="requestDigest">本次请求的摘要 / The digest of the current request.</param>
+    /// <param name="processingRecord">触发等待的执行中存量记录，超时 Busy 决策携带它 / The processing existing record that triggered the wait; carried by the timeout Busy decision.</param>
+    /// <param name="waitStartTime">等待起点时刻（UTC 毫秒），超时截止 = 起点 + 并发等待超时 / The wait start time (UTC milliseconds); the timeout deadline = start + concurrent wait timeout.</param>
+    /// <param name="cancellationToken">取消令牌 / The cancellation token.</param>
+    /// <returns>并发等待结果：裁决与等待期间最后见到的非空记录 / The concurrent-wait result: the verdict and the latest non-null record seen during the wait.</returns>
+    private async Task<ConcurrentWaitResult> WaitForConcurrentSettlementAsync(IdempotencyRecordIdentifier identifier, string requestDigest, IdempotencyRecord processingRecord, long waitStartTime, CancellationToken cancellationToken)
+    {
+        long waitDeadlineTime = waitStartTime + _idempotencyOptions.ConcurrentWaitTimeoutMilliseconds;
+        IdempotencyRecord? lastSeenDuringWaitRecord = processingRecord;
+        while (true)
+        {
+            long currentNowTime = _clock.UtcNowTime;
+            if (currentNowTime >= waitDeadlineTime)
+            {
+                return new ConcurrentWaitResult(new IdempotencyDecision(IdempotencyDecisionKind.Busy, processingRecord), lastSeenDuringWaitRecord);
+            }
+
+            long delayMilliseconds = ConcurrentWaitPollIntervalMilliseconds;
+            long remainingMilliseconds = waitDeadlineTime - currentNowTime;
+            if (delayMilliseconds > remainingMilliseconds)
+            {
+                delayMilliseconds = remainingMilliseconds;
+            }
+
+            await Task.Delay((int)delayMilliseconds, cancellationToken);
+
+            IdempotencyRecord? recheckedRecord = await _idempotencyStore.TryGetRecordAsync(identifier, cancellationToken);
+            long recheckNowTime = _clock.UtcNowTime;
+            if (recheckedRecord != null)
+            {
+                lastSeenDuringWaitRecord = recheckedRecord;
+            }
+
+            // 仍为执行中且未过期：继续等待下一轮询周期；否则（无记录 / 已过期 / 已完结）按语义落定。
+            // Still processing and unexpired: keep waiting for the next polling cycle; otherwise
+            // (absent / expired / finished) settle by the semantics.
+            if (recheckedRecord == null || recheckNowTime > recheckedRecord.ExpiredTime || recheckedRecord.Status != IdempotencyStatus.Processing)
+            {
+                IdempotencyDecision? decision = await TryJudgeSettledOrVacantAsync(identifier, requestDigest, recheckNowTime, recheckedRecord, cancellationToken);
+                return new ConcurrentWaitResult(decision, lastSeenDuringWaitRecord);
+            }
+        }
     }
 
     /// <summary>
@@ -371,5 +400,47 @@ public sealed class IdempotencyCoordinator
     {
         IdempotencyRecord newRecord = new IdempotencyRecord(identifier.IdempotencyScope, identifier.IdempotencyKey, requestDigest, IdempotencyStatus.Processing, null, nowTime, nowTime + _idempotencyOptions.RetentionMilliseconds, null);
         return await _idempotencyStore.TryBeginProcessingAsync(newRecord, cancellationToken);
+    }
+
+    /// <summary>
+    /// 并发等待结果：等待落定的裁决与等待期间最后见到的非空记录 / The concurrent-wait result: the settled verdict and the latest non-null record seen during the wait.
+    /// </summary>
+    /// <remarks>
+    /// 供 <see cref="BeginAsync"/> 维持「最后读数」语义：等待轮询中的非空读数也计入 lastSeenRecord，
+    /// 两轮判定均被抢占时的 Busy 决策携带的是全局最后读数，而非等待触发时的旧记录。
+    /// <para>
+    /// Lets <see cref="BeginAsync"/> maintain the last-seen semantics: non-null reads during the wait polling also
+    /// count toward lastSeenRecord, so the Busy decision after both decision rounds are preempted carries the
+    /// globally latest read, not the stale record from when the wait was triggered.
+    /// </para>
+    /// </remarks>
+    private sealed class ConcurrentWaitResult
+    {
+        /// <summary>
+        /// 初始化 <see cref="ConcurrentWaitResult"/> / Initializes <see cref="ConcurrentWaitResult"/>.
+        /// </summary>
+        /// <param name="decision">等待落定的裁决；占位被并发方抢先时为 <see langword="null"/> / The settled wait verdict; <see langword="null"/> when the occupation was preempted by a concurrent party.</param>
+        /// <param name="lastSeenRecord">等待期间最后见到的非空记录（含触发等待的记录）/ The latest non-null record seen during the wait, including the one that triggered the wait.</param>
+        public ConcurrentWaitResult(IdempotencyDecision? decision, IdempotencyRecord? lastSeenRecord)
+        {
+            Decision = decision;
+            LastSeenRecord = lastSeenRecord;
+        }
+
+        /// <summary>
+        /// 等待落定的裁决；<see langword="null"/> 表示占位被并发方抢先，调用方应进入下一判定轮次 / The settled wait verdict; <see langword="null"/> means the occupation was preempted and the caller should enter the next decision round.
+        /// </summary>
+        public IdempotencyDecision? Decision
+        {
+            get;
+        }
+
+        /// <summary>
+        /// 等待期间最后见到的非空记录（含触发等待的记录）/ The latest non-null record seen during the wait, including the one that triggered the wait.
+        /// </summary>
+        public IdempotencyRecord? LastSeenRecord
+        {
+            get;
+        }
     }
 }
