@@ -1,26 +1,35 @@
 <div align="center">
 
-![GameFrameX Logo](https://download.alianblank.com/gameframex/gameframex_logo_320.png)
+<img src="https://download.alianblank.com/gameframex/gameframex_logo_320.png" alt="GameFrameX Logo" width="160" />
 
 # GameFrameX.Foundation
 
-[![Version](https://img.shields.io/github/v/release/GameFrameX/GameFrameX.Foundation?label=version&color=green)](https://github.com/GameFrameX/GameFrameX.Foundation/releases)
-[![License](https://img.shields.io/badge/license-MIT+Apache%202.0-orange.svg)](LICENSE.md)
-[![Documentation](https://img.shields.io/badge/docs-gameframex-brightgreen.svg)](https://gameframex.doc.alianblank.com)
+[![License](https://img.shields.io/badge/license-blue.svg)](LICENSE)
+[![Version](https://img.shields.io/github/v/release/GameFrameX/GameFrameX.Foundation)](https://github.com/GameFrameX/GameFrameX.Foundation/releases)
+[![Documentation](https://img.shields.io/badge/docs-gameframex-brightgreen.svg)](https://gameframex.doc.alianblank.com/en/server/foundation)
+
+[![Discord](https://img.shields.io/badge/-5865F2?logo=discord&logoColor=white)](https://discord.gg/VDWUjWMDw9)
+[![GitHub](https://img.shields.io/badge/-181717?logo=github&logoColor=white)](https://github.com/GameFrameX/gameframex)
+[![Bilibili](https://img.shields.io/badge/-00A1D6?logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV1yrpeepEn7)
+[![Gitee](https://img.shields.io/badge/-C71D23?logo=gitee&logoColor=white)](https://gitee.com/GameFrameX/gameframex)
 
 **All-in-One Solution for Indie Game Development · Empowering Indie Developers' Dreams**
 
-[📖 Documentation](https://gameframex.doc.alianblank.com/) • [🚀 Quick Start](https://gameframex.doc.alianblank.com/en/server/foundation) • 💬 QQ Group: 467608841 / 233840761
+<br />
 
----
+[Documentation](https://gameframex.doc.alianblank.com/en/server/foundation) · [Quick Start](https://gameframex.doc.alianblank.com/en/server/foundation#getting-started) · QQ Group: 467608841 / 233840761
 
-🌐 **Language**: **English** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
+<br />
 
----
+**English** | [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [日本語](README.ja.md) | [한국어](README.ko.md)
 
 </div>
 
-## Assembly Overview
+## Project Overview
+
+GameFrameX.Foundation is a modular collection of .NET 10 class libraries that deliver cross-cutting infrastructure for GameFrameX server projects — covering localization, JSON, options parsing, ORM attributes, extensions, encryption, hashing, utilities, logging, HTTP helpers, response normalization, ORM base entities, and idempotency.
+
+### Features
 
 | Package                                    | Description                      | Version                                                                                                                                                                                | Downloads                                                                                                                                                                                |
 |--------------------------------------------|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -50,7 +59,7 @@ dotnet add package GameFrameX.Foundation.Encryption
 dotnet add package GameFrameX.Foundation.Logger
 ```
 
-### Basic Usage
+## Usage Examples
 
 ```csharp
 using GameFrameX.Foundation.Extensions;
@@ -70,7 +79,16 @@ var md5 = Md5Helper.ComputeHash("Hello World");
 var sha256 = ShaHelper.ComputeSha256("Hello World");
 ```
 
-## Module Index
+## Architecture
+
+See the full [architecture documentation](https://gameframex.doc.alianblank.com/en/server/foundation) for design principles and dependency graph.
+
+## Platform Support
+
+- .NET 8.0 / 9.0 / 10.0
+- Supported OS: Windows, macOS, Linux
+
+## Dependencies
 
 | Module             | Package                                    | Description                                             | Dependencies        | Docs                                                                                  |
 |--------------------|--------------------------------------------|---------------------------------------------------------|---------------------|---------------------------------------------------------------------------------------|
@@ -88,22 +106,38 @@ var sha256 = ShaHelper.ComputeSha256("Hello World");
 | ORM Entity         | `GameFrameX.Foundation.Orm.Entity`         | ORM entity base classes with enterprise features        | → Utility           | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/orm-entity)         |
 | Idempotency        | `GameFrameX.Foundation.Idempotency`        | Idempotency occupation/replay decisions and universal event envelope | → Utility           | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/idempotency)        |
 
-## Architecture
-
-See the full [architecture documentation](https://gameframex.doc.alianblank.com/en/server/foundation) for design principles and dependency graph.
-
-## System Requirements
-
-- .NET 8.0 / 9.0 / 10.0
-- Supported OS: Windows, macOS, Linux
-
-## License
-
-This project is licensed under [MIT License](LICENSE) + Apache 2.0.
-
-## Related Links
+## Documentation & Resources
 
 - [Documentation](https://gameframex.doc.alianblank.com)
 - [GitHub Repository](https://github.com/GameFrameX/GameFrameX.Foundation)
 - [Issue Tracker](https://github.com/GameFrameX/GameFrameX.Foundation/issues)
 - [GameFrameX Official Site](https://gameframex.doc.alianblank.com)
+
+## Community & Support
+
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/GameFrameX/gameframex)
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/VDWUjWMDw9)
+[<img src="https://cdn.jsdelivr.net/npm/devicon@2/icons/linkedin/linkedin-original.svg" height="28" alt="LinkedIn" />](https://www.linkedin.com/in/alianblank)
+[![Reddit](https://img.shields.io/badge/Reddit-FF4500?style=for-the-badge&logo=reddit&logoColor=white)](https://www.reddit.com/r/GameFrameX/)
+[![X](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/alian_blank)
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UCD9QhSFJ5xZkn5NTSV-DVAw)
+[![Bluesky](https://img.shields.io/badge/Bluesky-0285FF?style=for-the-badge&logo=bluesky&logoColor=white)](https://bsky.app/profile/alianblank.bsky.social)
+[![Bilibili](https://img.shields.io/badge/Bilibili-00A1D6?style=for-the-badge&logo=bilibili&logoColor=white)](https://www.bilibili.com/video/BV1yrpeepEn7)
+[![Gitee](https://img.shields.io/badge/Gitee-C71D23?style=for-the-badge&logo=gitee&logoColor=white)](https://gitee.com/GameFrameX/gameframex)
+![QQ](https://img.shields.io/badge/QQ-467608841%2F233840761-EB1923?style=for-the-badge&logo=qq&logoColor=white)
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the version history of GameFrameX.Foundation.
+
+## License
+
+See [LICENSE.md](LICENSE) for license information.
+
+<!--
+EN: See [LICENSE.md](LICENSE) for license information.
+zh-CN: 详见 [LICENSE.md](LICENSE) 文件。
+zh-TW: 詳見 [LICENSE.md](LICENSE) 檔案。
+ja: 詳しくは [LICENSE.md](LICENSE) をご参照ください。
+ko: 자세한 내용은 [LICENSE.md](LICENSE) 파일을 참조하세요.
+-->
