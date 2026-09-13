@@ -89,7 +89,8 @@ public class InMemoryEventPublisherTests
         // 安排
         InMemoryEventPublisher eventPublisher = new InMemoryEventPublisher();
 
-        // 执行 + 断言：无订阅者时发布成功
-        await eventPublisher.PublishAsync(CreateValidEnvelope("event-1"));
+        // 执行 + 断言：无订阅者时发布成功，不抛异常
+        Exception? exception = await Record.ExceptionAsync(() => eventPublisher.PublishAsync(CreateValidEnvelope("event-1")));
+        Assert.Null(exception);
     }
 }
