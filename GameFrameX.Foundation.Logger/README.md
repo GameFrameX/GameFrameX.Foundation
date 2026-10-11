@@ -5,7 +5,7 @@
 ## 特性
 
 - ✅ **多级别日志支持**: 支持Verbose、Debug、Info、Warn、Error、Fatal六个日志级别
-- ✅ **多输出目标**: 支持文件、控制台、Grafana Loki等多种输出方式
+- ✅ **多输出目标**: 支持文件、控制台等多种输出方式；MongoDB / Grafana Loki 通过外部 Sink 组件包接入
 - ✅ **灵活配置**: 通过LogOptions类提供丰富的配置选项
 - ✅ **文件滚动**: 支持按时间间隔和文件大小进行日志文件滚动
 - ✅ **标签支持**: 支持为日志添加标签，便于分类和过滤
@@ -154,18 +154,7 @@ var logOptions = new LogOptions("logs") // 日志目录名
     RollingInterval = RollingInterval.Day,    // 滚动间隔（天）
     IsFileSizeLimit = true,                   // 是否限制文件大小
     FileSizeLimitBytes = 100 * 1024 * 1024,   // 文件大小限制（100MB）
-    RetainedFileCountLimit = 31,              // 保留文件数量（31个）
-    
-    // Grafana Loki 配置
-    IsGrafanaLoki = false,                    // 是否启用Loki
-    GrafanaLokiUrl = "http://localhost:3100", // Loki服务地址
-    GrafanaLokiLabels = new Dictionary<string, string>
-    {
-        ["app"] = "myapp",
-        ["env"] = "production"
-    },
-    GrafanaLokiUsername = "admin",            // Loki用户名
-    GrafanaLokiPassword = "password"          // Loki密码
+    RetainedFileCountLimit = 31 // 保留文件数量（31个）
 };
 ```
 
@@ -195,27 +184,47 @@ LogEventLevel.Fatal         // 致命错误
 
 ## 高级功能
 
-### Grafana Loki 集成
+### 外部 Sink 组件
 
-支持将日志发送到Grafana Loki进行集中化日志管理：
+自 C77 起，MongoDB 与 Grafana Loki sink 已从核心包拆分为独立的组件包，核心包仅保留 Serilog 控制台与文件输出。如需接入 MongoDB 或 Loki，请安装对应的组件包并通过扩展方法启用：
+
+| 组件包 | 安装 | 启用方式 |
+|--------|------|----------|
+| `GameFrameX.Foundation.Logger.MongoDB` | `dotnet add package GameFrameX.Foundation.Logger.MongoDB` | `new LogOptions().UseMongoDb("mongodb://...")` |
+| `GameFrameX.Foundation.Logger.GrafanaLoki` | `dotnet add package GameFrameX.Foundation.Logger.GrafanaLoki` | `new LogOptions().UseGrafanaLoki("http://loki:3100")` |
+
+**迁移示例（旧 → 新）**：
 
 ```csharp
-var logOptions = new LogOptions()
+// 旧写法（C77 之前，核心包内置 sink）
+var oldOptions = new LogOptions
+{
+    IsWriteToMongoDb = true,
+    MongoDbDatabaseUrl = "mongodb://127.0.0.1:27017/logs"
+};
+var oldLokiOptions = new LogOptions
 {
     IsGrafanaLoki = true,
-    GrafanaLokiUrl = "http://loki.example.com:3100",
-    GrafanaLokiLabels = new Dictionary<string, string>
-    {
-        ["service"] = "user-service",
-        ["environment"] = "production",
-        ["version"] = "1.0.0"
-    },
-    GrafanaLokiUsername = "your-username",
-    GrafanaLokiPassword = "your-password"
+    GrafanaLokiUrl = "http://loki:3100",
+    GrafanaLokiLabels = new Dictionary<string, string> { ["app"] = "myapp" }
 };
 
-var logger = LogHandler.Create(logOptions);
+// 新写法（安装组件包后）
+using GameFrameX.Foundation.Logger.MongoDB;
+using GameFrameX.Foundation.Logger.GrafanaLoki;
+
+var mongoOptions = new LogOptions().UseMongoDb("mongodb://127.0.0.1:27017/logs");
+var lokiOptions = new LogOptions().UseGrafanaLoki("http://loki:3100");
+
+// 或通过选项委托进行完整配置
+var lokiOptions2 = new LogOptions().UseGrafanaLoki(o =>
+{
+    o.Url = "http://loki:3100";
+    o.Labels = new Dictionary<string, string> { ["app"] = "myapp" };
+});
 ```
+
+此外，核心包提供通用注入点 `LogOptions.SinkConfigurators`（`IList<Action<LoggerConfiguration>>`），可用于注册任意的自定义 Serilog sink。
 
 ### 自定义日志配置
 
@@ -357,9 +366,9 @@ var prodLogOptions = new LogOptions("logs")
 {
     LogEventLevel = LogEventLevel.Information,
     IsConsole = false,
-    RollingInterval = RollingInterval.Day,
-    IsGrafanaLoki = true,
-    GrafanaLokiUrl = "http://loki.prod.com:3100"
+    RollingInterval = RollingInterval.Day
+    // 如需将生产日志发送到 Grafana Loki，安装 GameFrameX.Foundation.Logger.GrafanaLoki
+    // 并改为：new LogOptions("logs").UseGrafanaLoki("http://loki.prod.com:3100")
 };
 
 // 根据环境选择配置
@@ -382,9 +391,9 @@ var logOptions = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ==
     - 检查是否有多个Logger实例冲突
 
 3. **Grafana Loki连接失败**
-    - 验证GrafanaLokiUrl地址和端口
+    - 确认已安装 GameFrameX.Foundation.Logger.GrafanaLoki 组件包并通过 UseGrafanaLoki 启用
+    - 验证GrafanaLoki服务地址和端口
     - 检查网络连接和防火墙设置
-    - 确认用户名密码正确
 
 ### 调试信息
 
@@ -400,7 +409,6 @@ var logOptions = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ==
 - **Serilog.AspNetCore** (9.0.0) - 核心日志框架
 - **Serilog.Sinks.Console** (6.0.0) - 控制台输出
 - **Serilog.Sinks.File** (7.0.0) - 文件输出
-- **Serilog.Sinks.Grafana.Loki** (8.3.1) - Grafana Loki集成
 - **GameFrameX.Foundation.Json** - JSON序列化支持
 
 ## 许可证
