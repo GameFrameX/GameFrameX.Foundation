@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../Version.props" Label="版本号定义"/>
+    <PropertyGroup>
+        <Description>GameFrameX.Foundation.Logger.GrafanaLoki,GameFrameX 框架的基础设施框架库,提供日志的 Grafana Loki Sink 组件化外部插入与适配.框架文档主页: https://gameframex.doc.alianblank.com</Description>
+        <PackageTags>GameFrameX,Lib,Foundation.Logger.GrafanaLoki,Server,GameServer</PackageTags>
+        <AssemblyOriginatorKeyFile>../gameframex.key.snk</AssemblyOriginatorKeyFile>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\bin\app</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DocumentationFile>bin\Debug\GameFrameX.Foundation.Logger.GrafanaLoki.xml</DocumentationFile>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Include="..\logo.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+            <Link>logo.png</Link>
+        </None>
+        <None Include="../README.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog.Sinks.Grafana.Loki" Version="9.0.2"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj"/>
+    </ItemGroup>
+
+</Project>

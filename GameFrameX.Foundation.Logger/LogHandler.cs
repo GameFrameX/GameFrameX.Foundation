@@ -31,12 +31,9 @@
 //  Official Documentation: https://gameframex.doc.alianblank.com/
 // ==========================================================================================
 
-using System.IO.Compression;
-using System.Net.Http.Headers;
 using GameFrameX.Foundation.Extensions;
 using Serilog;
 using Serilog.Events;
-using Serilog.Sinks.Grafana.Loki;
 
 namespace GameFrameX.Foundation.Logger;
 
@@ -49,40 +46,6 @@ namespace GameFrameX.Foundation.Logger;
 public static class LogHandler
 {
     private static bool _isInitSerilogDiagnosis;
-
-    private sealed class LokiGzipHandler : DelegatingHandler
-    {
-        private readonly CompressionLevel _compressionLevel;
-
-        public LokiGzipHandler(CompressionLevel compressionLevel) : base(new HttpClientHandler())
-        {
-            _compressionLevel = compressionLevel;
-        }
-
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            if (request.Content != null)
-            {
-                var bytes = await request.Content.ReadAsByteArrayAsync(cancellationToken);
-                using (var stream = new MemoryStream())
-                {
-                    await using (var gzipStream = new GZipStream(stream, _compressionLevel, leaveOpen: true))
-                    {
-                        await gzipStream.WriteAsync(bytes, cancellationToken);
-                    }
-
-                    request.Content = new ByteArrayContent(stream.ToArray());
-                    request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json")
-                    {
-                        CharSet = "utf-8",
-                    };
-                    request.Content.Headers.ContentEncoding.Add("gzip");
-                }
-            }
-
-            return await base.SendAsync(request, cancellationToken);
-        }
-    }
 
     /// <summary>
     /// 启用 Serilog 的自动诊断
@@ -156,7 +119,7 @@ public static class LogHandler
     /// <exception cref="Exception">初始化日志系统过程中发生的其他异常 / Other exceptions that occur during log system initialization</exception>
     /// <returns>配置好的 ILogger 实例 / The configured ILogger instance</returns>
     /// <remarks>
-    /// <para>This method initializes the logging system based on the provided <paramref name="logOptions"/> configuration, supporting multiple output methods such as file, console, MongoDB, and Grafana Loki.</para>
+    /// <para>This method initializes the logging system based on the provided <paramref name="logOptions"/> configuration, supporting multiple output methods such as file, console, Grafana Loki, and externally injected sinks via <see cref="LogOptions.SinkConfigurators"/> (e.g. the Logger.MongoDB component).</para>
     /// <para>The exception types cover parameter validation, directory creation, insufficient permissions, and all possible exceptions during log system initialization.</para>
     /// </remarks>
     /// <example>
@@ -180,11 +143,10 @@ public static class LogHandler
             logger.Enrich.WithProperty("TagName", logOptions.LogTagName);
             logger.Enrich.WithProperty("LogType", logOptions.LogType);
 
-            ApplyLoki(logger, logOptions);
             configurationAction?.Invoke(logger);
 
             var templates = SelectOutputTemplates(logOptions);
-            ApplyMongoDb(logger, logOptions);
+            ApplyExternalSinks(logger, logOptions);
             ApplyFile(logger, logOptions, logPath, templates.File);
             ApplyMinimumLevel(logger, logOptions);
             ApplyConsole(logger, logOptions, templates.Console);
@@ -252,142 +214,18 @@ public static class LogHandler
     }
 
     /// <summary>
-    /// 装配 Grafana Loki sink（按需启用，含 label / property / 凭证 / 压缩）。
+    /// 装配外部组件注册的 sink（按 LogOptions.SinkConfigurators 注册顺序）。
     /// </summary>
     /// <param name="logger">Logger 配置 / Logger configuration</param>
     /// <param name="logOptions">日志配置选项 / Log configuration options</param>
-    private static void ApplyLoki(LoggerConfiguration logger, LogOptions logOptions)
+    private static void ApplyExternalSinks(LoggerConfiguration logger, LogOptions logOptions)
     {
-        if (!logOptions.IsGrafanaLoki || logOptions.GrafanaLokiLabels == null)
+        // 外部 sink 统一装配点（C77 组件化）：位于用户 configurationAction 之后、文件/控制台 sink 之前（原 MongoDB/Loki sink 装配位置）。
+        // 传入完整 LoggerConfiguration（Enrich 与 WriteTo 均可达）；具体 sink 接入见组件包 UseMongoDb / UseGrafanaLoki 扩展方法。
+        foreach (var configurator in logOptions.SinkConfigurators)
         {
-            return;
+            configurator(logger);
         }
-
-        ApplyLokiProperties(logger, logOptions);
-        var labels = BuildLokiLabels(logOptions);
-        WriteLokiSink(logger, logOptions, labels);
-    }
-
-    /// <summary>
-    /// 将 LogOptions.GrafanaLokiLabels 转换为 Serilog Loki 所需的标签数组。
-    /// </summary>
-    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
-    /// <returns>Loki 标签数组 / Loki label array</returns>
-    private static LokiLabel[] BuildLokiLabels(LogOptions logOptions)
-    {
-        var grafanaLokiLabels = new List<LokiLabel>(logOptions.GrafanaLokiLabels.Count);
-        foreach (var kv in logOptions.GrafanaLokiLabels)
-        {
-            grafanaLokiLabels.Add(new LokiLabel
-            {
-                Key = kv.Key,
-                Value = kv.Value,
-            });
-        }
-
-        return grafanaLokiLabels.ToArray();
-    }
-
-    /// <summary>
-    /// 将 LogOptions.GrafanaLokiProperty 中的非空属性 Enrich 到日志事件。
-    /// </summary>
-    /// <param name="logger">Logger 配置 / Logger configuration</param>
-    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
-    private static void ApplyLokiProperties(LoggerConfiguration logger, LogOptions logOptions)
-    {
-        if (logOptions.GrafanaLokiProperty == null)
-        {
-            return;
-        }
-
-        foreach (var property in logOptions.GrafanaLokiProperty)
-        {
-            if (string.IsNullOrWhiteSpace(property.Key))
-            {
-                continue;
-            }
-
-            if (string.IsNullOrWhiteSpace(property.Value))
-            {
-                continue;
-            }
-
-            logger.Enrich.WithProperty(property.Key, property.Value);
-        }
-    }
-
-    /// <summary>
-    /// 写入 Grafana Loki sink；按压缩开关选择是否启用 Gzip 处理器。
-    /// </summary>
-    /// <param name="logger">Logger 配置 / Logger configuration</param>
-    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
-    /// <param name="labels">Loki 标签数组 / Loki label array</param>
-    private static void WriteLokiSink(LoggerConfiguration logger, LogOptions logOptions, LokiLabel[] labels)
-    {
-        var credentials = BuildLokiCredentials(logOptions);
-        if (logOptions.GrafanaLokiCompressionEnabled)
-        {
-            logger.WriteTo.GrafanaLoki(
-                logOptions.GrafanaLokiUrl,
-                labels: labels,
-                credentials: credentials,
-                batchSizeLimit: logOptions.GrafanaLokiBatchSizeLimit,
-                queueLimit: logOptions.GrafanaLokiQueueLimit,
-                period: TimeSpan.FromSeconds(logOptions.GrafanaLokiPeriod),
-                httpMessageHandler: new LokiGzipHandler(CompressionLevel.Optimal),
-                restrictedToMinimumLevel: logOptions.LogEventLevel);
-        }
-        else
-        {
-            logger.WriteTo.GrafanaLoki(
-                logOptions.GrafanaLokiUrl,
-                labels: labels,
-                credentials: credentials,
-                batchSizeLimit: logOptions.GrafanaLokiBatchSizeLimit,
-                queueLimit: logOptions.GrafanaLokiQueueLimit,
-                period: TimeSpan.FromSeconds(logOptions.GrafanaLokiPeriod),
-                restrictedToMinimumLevel: logOptions.LogEventLevel);
-        }
-    }
-
-    /// <summary>
-    /// 根据用户名/密码构造 LokiCredentials；任一为空返回 null。
-    /// </summary>
-    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
-    /// <returns>Loki 凭证或 null / Loki credentials or null</returns>
-    private static LokiCredentials BuildLokiCredentials(LogOptions logOptions)
-    {
-        if (string.IsNullOrWhiteSpace(logOptions.GrafanaLokiUserName) || string.IsNullOrWhiteSpace(logOptions.GrafanaLokiPassword))
-        {
-            return null;
-        }
-
-        return new LokiCredentials
-        {
-            Login = logOptions.GrafanaLokiUserName,
-            Password = logOptions.GrafanaLokiPassword,
-        };
-    }
-
-    /// <summary>
-    /// 装配 MongoDB sink（按 IsWriteToMongoDb 开关）。
-    /// </summary>
-    /// <param name="logger">Logger 配置 / Logger configuration</param>
-    /// <param name="logOptions">日志配置选项 / Log configuration options</param>
-    private static void ApplyMongoDb(LoggerConfiguration logger, LogOptions logOptions)
-    {
-        if (!logOptions.IsWriteToMongoDb)
-        {
-            return;
-        }
-
-        logger.WriteTo.MongoDBBson(
-            logOptions.MongoDbDatabaseUrl,
-            logOptions.LogSavePath,
-            cappedMaxSizeMb: logOptions.MongoDbCappedMaxSizeMb,
-            cappedMaxDocuments: logOptions.MongoDbCappedMaxDocuments,
-            rollingInterval: (Serilog.Sinks.MongoDB.RollingInterval)logOptions.RollingInterval,
-            restrictedToMinimumLevel: logOptions.LogEventLevel);
     }
 
     /// <summary>

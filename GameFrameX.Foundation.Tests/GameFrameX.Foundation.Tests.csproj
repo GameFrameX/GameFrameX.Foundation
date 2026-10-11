@@ -12,13 +12,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.11" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
     <PackageReference Include="xunit.v3" Version="3.2.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="10.0.1">
+    <PackageReference Include="coverlet.collector" Version="10.1.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -33,6 +33,8 @@
     <ProjectReference Include="..\GameFrameX.Foundation.Idempotency\GameFrameX.Foundation.Idempotency.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Json\GameFrameX.Foundation.Json.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Logger\GameFrameX.Foundation.Logger.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Logger.MongoDB\GameFrameX.Foundation.Logger.MongoDB.csproj" />
+    <ProjectReference Include="..\GameFrameX.Foundation.Logger.GrafanaLoki\GameFrameX.Foundation.Logger.GrafanaLoki.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Options\GameFrameX.Foundation.Options.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Utility\GameFrameX.Foundation.Utility.csproj" />
     <ProjectReference Include="..\GameFrameX.Foundation.Localization\GameFrameX.Foundation.Localization.csproj" />

@@ -103,46 +103,14 @@ public sealed class LogOptions
     public string LogTagName { get; set; } = "";
 
     /// <summary>
-    /// 是否写入数据库，默认为 false。 / Whether to write to database, default is false.
-    /// </summary>
-    public bool IsWriteToMongoDb { get; set; } = false;
-
-    /// <summary>
-    /// MongoDB 数据库连接地址，用于保存日志数据 / MongoDB database connection URL for saving log data
+    /// 外部 sink 配置器列表，用于组件包向日志系统插入自定义输出目标（如 Logger.MongoDB / Logger.GrafanaLoki 组件）。 / External sink configurators used by component packages to plug custom sinks (e.g. the Logger.MongoDB / Logger.GrafanaLoki components) into the logging system.
     /// </summary>
     /// <remarks>
-    /// <para>
-    /// When <see cref="IsWriteToMongoDb"/> is set to true, this property must be configured with a valid MongoDB connection string.
-    /// The connection string should include database server address, port, database name, and authentication information.
-    /// </para>
-    /// <para>
-    /// Connection string format: mongodb://[username:password@]host[:port]/database[?options]
-    /// </para>
-    /// <para>
-    /// Common configuration examples:
-    /// <list type="bullet">
-    /// <item><description>Local without authentication: mongodb://localhost:27017/gameserver</description></item>
-    /// <item><description>Local with authentication: mongodb://user:password@localhost:27017/gameserver?authSource=admin</description></item>
-    /// <item><description>Remote server: mongodb://user:password@192.168.1.100:27017/gameserver?authSource=admin</description></item>
-    /// <item><description>Replica set: mongodb://user:password@host1:27017,host2:27017/gameserver?replicaSet=rs0&amp;authSource=admin</description></item>
-    /// </list>
-    /// </para>
-    /// <para>
-    /// Note: Ensure the MongoDB server is started and the network connection is normal, otherwise log writing will fail.
-    /// </para>
+    /// <para>每个元素接收完整的 <see cref="LoggerConfiguration"/>（Enrich 与 WriteTo 均可达），在 <see cref="LogHandler.Create"/> 装配阶段按注册顺序执行。</para>
+    /// <para>组件包通过扩展方法（如 UseMongoDb / UseGrafanaLoki）向该列表注册；核心包不持有任何具体 sink 的包依赖。</para>
+    /// <para>注意：本属性承载委托，请勿直接对 LogOptions 做 JSON 序列化；对外展示一律使用 <see cref="ToString"/> 的安全投影（C77 / lesson P0-1）。</para>
     /// </remarks>
-    /// <value>默认值为本地 MongoDB 实例：mongodb://127.0.0.1:27017/gameserver?authSource=admin / Default value is local MongoDB instance: mongodb://127.0.0.1:27017/gameserver?authSource=admin</value>
-    public string MongoDbDatabaseUrl { get; set; } = "mongodb://127.0.0.1:27017/gameserver?authSource=admin";
-
-    /// <summary>
-    /// mongodb 创建的上限集合的最大总大小（MB） / Maximum total size (MB) of capped collection created by MongoDB
-    /// </summary>
-    public int MongoDbCappedMaxSizeMb { get; set; } = 50;
-
-    /// <summary>
-    /// mongodb 创建的上限集合的最大文档数。 / Maximum number of documents in capped collection created by MongoDB.
-    /// </summary>
-    public int MongoDbCappedMaxDocuments { get; set; } = 50000;
+    public IList<Action<LoggerConfiguration>> SinkConfigurators { get; } = new List<Action<LoggerConfiguration>>();
 
     /// <summary>
     /// 日志存储路径，为 应用程序运行目录下的子目录/logs。 / Log storage path, a subdirectory under the application running directory /logs.
@@ -164,75 +132,6 @@ public sealed class LogOptions
     /// 控制日志是否同时在控制台显示，便于开发调试。 / Controls whether logs are also displayed in the console for development debugging.
     /// </remarks>
     public bool IsConsole { get; set; } = true;
-
-    /// <summary>
-    /// 是否输出到 GrafanaLoki，默认为 false。 / Whether to output to GrafanaLoki, default is false.
-    /// </summary>
-    public bool IsGrafanaLoki { get; set; } = false;
-
-    /// <summary>
-    /// GrafanaLoki 服务地址，默认为 http://localhost:3100。 / GrafanaLoki service address, default is http://localhost:3100.
-    /// </summary>
-    public string GrafanaLokiUrl { get; set; } = "http://localhost:3100";
-
-    /// <summary>
-    /// GrafanaLoki 标签 / GrafanaLoki labels
-    /// </summary>
-    public Dictionary<string, string> GrafanaLokiLabels { get; set; } = new();
-
-    /// <summary>
-    /// GrafanaLoki 其他属性 / GrafanaLoki additional properties
-    /// </summary>
-    public Dictionary<string, string> GrafanaLokiProperty { get; set; } = new();
-
-    /// <summary>
-    /// GrafanaLoki 用户名 / GrafanaLoki username
-    /// </summary>
-    public string GrafanaLokiUserName { get; set; }
-
-    /// <summary>
-    /// GrafanaLoki 密码 / GrafanaLoki password
-    /// </summary>
-    public string GrafanaLokiPassword { get; set; }
-
-    /// <summary>
-    /// 是否启用 GrafanaLoki 数据压缩，默认为 true / Whether to enable GrafanaLoki data compression, default is true
-    /// </summary>
-    /// <remarks>
-    /// 启用压缩可以减少网络传输的数据量，提高传输效率 / Enabling compression can reduce the amount of data transferred over the network and improve transmission efficiency
-    /// </remarks>
-    public bool GrafanaLokiCompressionEnabled { get; set; } = true;
-
-    /// <summary>
-    /// GrafanaLoki 单次批量推送的最大日志条数，默认为 1000。 / Maximum number of log entries per batch push to GrafanaLoki, default is 1000.
-    /// </summary>
-    /// <remarks>
-    /// 攒满该数量即触发一次推送；未攒满时由 <see cref="GrafanaLokiPeriod"/> 周期触发。 / A push is triggered once this count is reached; otherwise it is triggered by the <see cref="GrafanaLokiPeriod"/> timer.
-    /// </remarks>
-    public int GrafanaLokiBatchSizeLimit { get; set; } = 1000;
-
-    /// <summary>
-    /// GrafanaLoki 内存队列最大长度，默认为 100000。 / Maximum length of the GrafanaLoki in-memory queue, default is 100000.
-    /// </summary>
-    /// <remarks>
-    /// 队列写满后新日志将被丢弃，作为背压保护防止内存无限增长。 / When the queue is full, new log entries are dropped as back-pressure to prevent unbounded memory growth.
-    /// </remarks>
-    public int GrafanaLokiQueueLimit { get; set; } = 100000;
-
-    /// <summary>
-    /// GrafanaLoki 批量推送周期（秒），默认为 2。 / GrafanaLoki batch push period in seconds, default is 2.
-    /// </summary>
-    /// <remarks>
-    /// 即使未攒满 <see cref="GrafanaLokiBatchSizeLimit"/>，每到该周期也会强制推送一次。 / A flush is forced at each period even if <see cref="GrafanaLokiBatchSizeLimit"/> is not reached.
-    /// 传入 0 或负值将被视为无效，强制回退为默认 2 秒。 / A value of 0 or negative is treated as invalid and forced back to the default 2 seconds.
-    /// </remarks>
-    public int GrafanaLokiPeriod
-    {
-        get { return _grafanaLokiPeriod; }
-        set { _grafanaLokiPeriod = value > 0 ? value : 2; }
-    }
-
-    private int _grafanaLokiPeriod = 2;
 
     /// <summary>
     /// 日志滚动间隔，默认为每天（Day）。 / Log rolling interval, default is per day (Day).
@@ -285,6 +184,23 @@ public sealed class LogOptions
     /// </remarks>
     public override string ToString()
     {
-        return JsonHelper.SerializeFormat(this);
+        // 安全投影（lesson P0-1）：排除 SinkConfigurators 委托列表；Mongo 连接串与 Loki 密码已随 C77 组件化移出本类型。
+        var safe = new
+        {
+            IsWriteToFile,
+            LogType,
+            LogTagName,
+            LogSavePath,
+            LogFileName,
+            IsConsole,
+            RollingInterval,
+            LogEventLevel,
+            IsFileSizeLimit,
+            FileSizeLimitBytes,
+            RetainedFileCountLimit,
+            ExternalSinkCount = SinkConfigurators.Count,
+        };
+
+        return JsonHelper.SerializeFormat(safe);
     }
 }

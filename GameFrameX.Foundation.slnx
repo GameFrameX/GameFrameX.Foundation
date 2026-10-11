@@ -13,6 +13,8 @@
   <Project Path="GameFrameX.Foundation.Json/GameFrameX.Foundation.Json.csproj" />
   <Project Path="GameFrameX.Foundation.Localization/GameFrameX.Foundation.Localization.csproj" />
   <Project Path="GameFrameX.Foundation.Logger/GameFrameX.Foundation.Logger.csproj" />
+  <Project Path="GameFrameX.Foundation.Logger.GrafanaLoki/GameFrameX.Foundation.Logger.GrafanaLoki.csproj" />
+  <Project Path="GameFrameX.Foundation.Logger.MongoDB/GameFrameX.Foundation.Logger.MongoDB.csproj" />
   <Project Path="GameFrameX.Foundation.Options/GameFrameX.Foundation.Options.csproj" />
   <Project Path="GameFrameX.Foundation.Orm.Attribute/GameFrameX.Foundation.Orm.Attribute.csproj" />
   <Project Path="GameFrameX.Foundation.Orm.Entity/GameFrameX.Foundation.Orm.Entity.csproj" />
