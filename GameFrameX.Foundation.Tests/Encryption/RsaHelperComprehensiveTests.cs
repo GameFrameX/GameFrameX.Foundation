@@ -84,16 +84,20 @@ namespace GameFrameX.Foundation.Tests.Encryption
         }
 
         [Fact]
-        public void Sign_WithPkcs1Key_ShouldProduceSameResultAsPkcs8FromSameKey()
+        public void Sign_WithPkcs1Key_ShouldVerifyLikePkcs8FromSameKey()
         {
             var keys = GenerateAllKeyFormats();
 
-            // 两个格式编码的是同一把密钥，因此验签结果应该一致
+            // 两个格式编码的是同一把密钥，因此各自签名均应被同一公钥验过
             var sigPkcs8 = RsaHelper.Sign(keys.privPkcs8, TestData);
             var sigPkcs1 = RsaHelper.Sign(keys.privPkcs1, TestData);
 
-            // RSA PKCS#1 v1.5 签名是确定性的，结果应相同
-            Assert.Equal(sigPkcs8, sigPkcs1);
+            // C76：RSA-PSS 签名带随机盐，两次签名不再逐字节相同；
+            // 两种编码的签名均被同一公钥验签通过即证明导入的是同一把密钥。
+            // C76: RSA-PSS signatures carry a random salt, so two signatures are no longer
+            // byte-identical; both passing verification under the same public key proves
+            // both encodings imported the same key.
+            Assert.NotEqual(sigPkcs8, sigPkcs1);
 
             // 两种签名都能验过
             Assert.True(RsaHelper.Verify(keys.pubSpki, TestData, sigPkcs8));

@@ -58,12 +58,12 @@ public sealed class RsaHelper : IDisposable
     /// <summary>
     /// 使用私钥对数据进行签名（SHA256 哈希算法）。
     /// 本方法支持 PKCS#8 与 PKCS#1 两种私钥格式，自动识别并导入。
-    /// 签名过程采用 SHA256 哈希算法与 PKCS#1 填充模式，确保数据完整性与不可否认性。
+    /// 签名过程采用 SHA256 哈希算法与 RSA-PSS 填充模式（C76 修复，替代不安全的 PKCS#1 v1.5），确保数据完整性与不可否认性。
     /// </summary>
     /// <remarks>
     /// Signs data using the private key (SHA256 hash algorithm).
     /// This method supports both PKCS#8 and PKCS#1 private key formats, automatically recognizing and importing them.
-    /// The signing process uses SHA256 hash algorithm and PKCS#1 padding mode to ensure data integrity and non-repudiation.
+    /// The signing process uses SHA256 hash algorithm and RSA-PSS padding mode (C76 fix, replacing insecure PKCS#1 v1.5) to ensure data integrity and non-repudiation.
     /// </remarks>
     /// <param name="privateKey">Base64 格式的私钥字符串，支持 PKCS#8 与 PKCS#1 两种编码 / Base64 format private key string, supports both PKCS#8 and PKCS#1 encodings</param>
     /// <param name="content">待签名的明文字符串，将使用 UTF-8 编码转换为字节数组 / Plain text string to sign, will be converted to byte array using UTF-8 encoding</param>
@@ -87,7 +87,7 @@ public sealed class RsaHelper : IDisposable
             }
 
             var data = Encoding.UTF8.GetBytes(content);
-            var signature = rsa.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            var signature = rsa.SignData(data, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
             return Convert.ToBase64String(signature);
         }
     }
@@ -125,7 +125,7 @@ public sealed class RsaHelper : IDisposable
 
             var data = Encoding.UTF8.GetBytes(content);
             var signature = Convert.FromBase64String(sign);
-            return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            return rsa.VerifyData(data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
         }
     }
 
@@ -520,7 +520,7 @@ public sealed class RsaHelper : IDisposable
         using (var rsa = RSA.Create())
         {
             rsa.FromXmlString(privateKey);
-            return rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+            return rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
         }
     }
 
@@ -554,7 +554,7 @@ public sealed class RsaHelper : IDisposable
         ArgumentNullException.ThrowIfNull(dataToSign, nameof(dataToSign));
 
         // C-04 修复：SHA1 → SHA256；C-01(同类) 修复：不再静默返回 null
-        return _rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        return _rsa.SignData(dataToSign, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
     }
 
     /// <summary>
@@ -592,7 +592,7 @@ public sealed class RsaHelper : IDisposable
             using (var rsa = RSA.Create())
             {
                 rsa.FromXmlString(publicKey);
-                return rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+                return rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
             }
         }
         catch (CryptographicException)
@@ -634,7 +634,7 @@ public sealed class RsaHelper : IDisposable
         ArgumentNullException.ThrowIfNull(signedData, nameof(signedData));
 
         // C-04 修复：SHA1 → SHA256
-        return _rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+        return _rsa.VerifyData(dataToVerify, signedData, HashAlgorithmName.SHA256, RSASignaturePadding.Pss);
     }
 
     /// <summary>
