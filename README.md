@@ -17,7 +17,7 @@
 
 <br />
 
-[Documentation](https://gameframex.doc.alianblank.com/en/server/foundation) · [Quick Start](https://gameframex.doc.alianblank.com/en/server/foundation#getting-started) · QQ Group: 467608841 / 233840761
+[Documentation](https://gameframex.doc.alianblank.com/en/server/foundation) · [Quick Start](https://gameframex.doc.alianblank.com/en/server/foundation) · QQ Group: 467608841 / 233840761
 
 <br />
 
@@ -42,6 +42,8 @@ GameFrameX.Foundation is a modular collection of .NET 10 class libraries that de
 | `GameFrameX.Foundation.Hash`               | Hash algorithms                  | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Hash?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash)                             | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Hash?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Hash)                             |
 | `GameFrameX.Foundation.Utility`            | General utilities                | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Utility?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Utility)                       | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Utility?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Utility)                       |
 | `GameFrameX.Foundation.Logger`             | Unified logging                  | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger)                         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger)                         |
+| `GameFrameX.Foundation.Logger.MongoDB`     | MongoDB logging sink              | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.MongoDB?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger.MongoDB)     | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.MongoDB?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger.MongoDB)     |
+| `GameFrameX.Foundation.Logger.GrafanaLoki` | Grafana Loki logging sink         | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Logger.GrafanaLoki?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger.GrafanaLoki) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Logger.GrafanaLoki?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Logger.GrafanaLoki) |
 | `GameFrameX.Foundation.Http.Extension`     | HTTP client extensions           | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Extension?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension)         | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Extension?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Extension)         |
 | `GameFrameX.Foundation.Http.Normalization` | HTTP response normalization      | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Http.Normalization?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization) | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Http.Normalization?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Http.Normalization) |
 | `GameFrameX.Foundation.Orm.Entity`         | ORM entity base classes          | [![NuGet](https://img.shields.io/nuget/v/GameFrameX.Foundation.Orm.Entity?label=version&color=green)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity)                 | [![NuGet](https://img.shields.io/nuget/dt/GameFrameX.Foundation.Orm.Entity?label=downloads&color=blue)](https://www.nuget.org/packages/GameFrameX.Foundation.Orm.Entity)                 |
@@ -57,6 +59,8 @@ Install the packages you need:
 dotnet add package GameFrameX.Foundation.Extensions
 dotnet add package GameFrameX.Foundation.Encryption
 dotnet add package GameFrameX.Foundation.Logger
+dotnet add package GameFrameX.Foundation.Logger.MongoDB
+dotnet add package GameFrameX.Foundation.Logger.GrafanaLoki
 ```
 
 ## Usage Examples
@@ -100,7 +104,9 @@ See the full [architecture documentation](https://gameframex.doc.alianblank.com/
 | Encryption         | `GameFrameX.Foundation.Encryption`         | AES, RSA, DSA, SM2/SM4, XOR encryption                  | → Localization      | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/encryption)         |
 | Hash               | `GameFrameX.Foundation.Hash`               | CRC32/64, MD5, SHA, HMAC, MurmurHash3, xxHash           | → Localization      | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/hash)               |
 | Utility            | `GameFrameX.Foundation.Utility`            | Console, environment, time, Snowflake ID utilities      | → Localization      | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/utility)            |
-| Logger             | `GameFrameX.Foundation.Logger`             | Unified logging with Serilog, Loki, MongoDB sinks       | → Extensions + JSON | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/logger)             |
+| Logger             | `GameFrameX.Foundation.Logger`             | Unified logging with Serilog console and file sinks     | → Extensions + JSON | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/logger)             |
+| Logger.MongoDB     | `GameFrameX.Foundation.Logger.MongoDB`     | MongoDB logging sink for Logger                          | → Logger           | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/logger)             |
+| Logger.GrafanaLoki | `GameFrameX.Foundation.Logger.GrafanaLoki` | Grafana Loki logging sink for Logger                     | → Logger           | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/logger)             |
 | HTTP Extension     | `GameFrameX.Foundation.Http.Extension`     | HTTP client extension methods                           | → JSON              | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/http-extension)     |
 | HTTP Normalization | `GameFrameX.Foundation.Http.Normalization` | Standardized HTTP JSON response structures              | → Logger            | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/http-normalization) |
 | ORM Entity         | `GameFrameX.Foundation.Orm.Entity`         | ORM entity base classes with enterprise features        | → Utility           | [Docs](https://gameframex.doc.alianblank.com/en/server/foundation/orm-entity)         |
