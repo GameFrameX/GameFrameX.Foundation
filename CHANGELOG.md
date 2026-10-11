@@ -1,3 +1,23 @@
+## [5.0.0] - 2026-10-11
+
+### Bug Fixes
+
+- RsaHelper 签名填充改为 RSA-PSS (#278)
+
+### Documentation
+
+- 重构五语言 README 头部徽章、正文结构与 License 章节 (#276)
+- 同步 Logger 包文档描述 sink 组件化拆分
+- 五语言根 README 同步 Logger.MongoDB/Logger.GrafanaLoki
+
+### Features
+
+- MongoDB 与 Loki sink 组件化拆分
+
+### Build
+
+- 升级 NuGet 依赖版本
+
 ## [4.1.1] - 2026-09-13
 
 ### Bug Fixes
