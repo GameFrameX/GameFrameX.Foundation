@@ -150,7 +150,10 @@ public class XorHelperTests
         var keyBytes = Encoding.UTF8.GetBytes(TestKey);
         // 构造超过 220 字节的数据
         var dataBytes = new byte[300];
-        for (int i = 0; i < dataBytes.Length; i++) dataBytes[i] = (byte)(i % 256);
+        for (int i = 0; i < dataBytes.Length; i++)
+        {
+            dataBytes[i] = (byte)(i % 256);
+        }
 
         var encryptedBytes = XorHelper.GetQuickXorBytes(dataBytes, keyBytes);
 
@@ -198,7 +201,11 @@ public class XorHelperTests
     {
         var keyBytes = Encoding.UTF8.GetBytes(TestKey);
         var dataBytes = new byte[300];
-        for (int i = 0; i < dataBytes.Length; i++) dataBytes[i] = (byte)(i % 256);
+        for (int i = 0; i < dataBytes.Length; i++)
+        {
+            dataBytes[i] = (byte)(i % 256);
+        }
+
         var original = (byte[])dataBytes.Clone();
 
         XorHelper.GetQuickSelfXorBytes(dataBytes, keyBytes);
@@ -217,7 +224,11 @@ public class XorHelperTests
     {
         var keyBytes = Encoding.UTF8.GetBytes(TestKey);
         var dataBytes = new byte[300];
-        for (int i = 0; i < dataBytes.Length; i++) dataBytes[i] = (byte)(i % 256);
+        for (int i = 0; i < dataBytes.Length; i++)
+        {
+            dataBytes[i] = (byte)(i % 256);
+        }
+
         var original = (byte[])dataBytes.Clone();
 
         XorHelper.GetQuickSelfXorBytes(dataBytes, keyBytes);
