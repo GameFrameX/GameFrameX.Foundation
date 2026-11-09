@@ -440,12 +440,14 @@ namespace GameFrameX.Foundation.Tests.Encryption
             var dataBytes = Encoding.UTF8.GetBytes(TestData);
 
             using (var helperA = new DsaHelper(keyPairA["privatekey"]))
-            using (var helperB = new DsaHelper(keyPairB["publickey"]))
             {
-                var signature = helperA.SignData(dataBytes);
-                var isValid = helperB.VerifyData(dataBytes, signature);
+                using (var helperB = new DsaHelper(keyPairB["publickey"]))
+                {
+                    var signature = helperA.SignData(dataBytes);
+                    var isValid = helperB.VerifyData(dataBytes, signature);
 
-                Assert.False(isValid);
+                    Assert.False(isValid);
+                }
             }
         }
 
