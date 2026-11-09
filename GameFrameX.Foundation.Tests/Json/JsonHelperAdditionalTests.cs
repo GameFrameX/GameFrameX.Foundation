@@ -111,7 +111,7 @@ namespace GameFrameX.Foundation.Tests.Json
             var options = new JsonSerializerOptions { WriteIndented = true };
             using (var stream = new MemoryStream())
             {
-                await JsonHelper.SerializeAsync(stream, obj, options);
+                await JsonHelper.SerializeAsync(stream, obj, options, cancellationToken: TestContext.Current.CancellationToken);
                 Assert.True(stream.Length > 0);
                 stream.Position = 0;
                 string json = Encoding.UTF8.GetString(stream.ToArray());
@@ -125,7 +125,7 @@ namespace GameFrameX.Foundation.Tests.Json
             var model = new SimpleModel { Id = 3, Name = "asyncInfo" };
             using (var stream = new MemoryStream())
             {
-                await JsonHelper.SerializeAsync(stream, model, AdditionalTestsJsonContext.Default.SimpleModel);
+                await JsonHelper.SerializeAsync(stream, model, AdditionalTestsJsonContext.Default.SimpleModel, cancellationToken: TestContext.Current.CancellationToken);
                 Assert.True(stream.Length > 0);
             }
         }
@@ -134,7 +134,7 @@ namespace GameFrameX.Foundation.Tests.Json
         public async Task SerializeAsync_WithNullStream_ShouldThrowArgumentNullException()
         {
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-                await JsonHelper.SerializeAsync<SimpleModel>(null, new SimpleModel()));
+                await JsonHelper.SerializeAsync<SimpleModel>(null, new SimpleModel(), cancellationToken: TestContext.Current.CancellationToken));
         }
 
         // ============================================================
@@ -249,7 +249,7 @@ namespace GameFrameX.Foundation.Tests.Json
             using (var stream = new MemoryStream(bytes))
             {
                 var options = new JsonSerializerOptions();
-                var result = await JsonHelper.DeserializeAsync<SimpleModel>(stream, options);
+                var result = await JsonHelper.DeserializeAsync<SimpleModel>(stream, options, cancellationToken: TestContext.Current.CancellationToken);
                 Assert.NotNull(result);
                 Assert.Equal(40, result.Id);
                 Assert.Equal("stream", result.Name);
@@ -263,7 +263,7 @@ namespace GameFrameX.Foundation.Tests.Json
             byte[] bytes = Encoding.UTF8.GetBytes(json);
             using (var stream = new MemoryStream(bytes))
             {
-                var result = await JsonHelper.DeserializeAsync(stream, AdditionalTestsJsonContext.Default.SimpleModel);
+                var result = await JsonHelper.DeserializeAsync(stream, AdditionalTestsJsonContext.Default.SimpleModel, cancellationToken: TestContext.Current.CancellationToken);
                 Assert.NotNull(result);
                 Assert.Equal(50, result.Id);
             }
@@ -273,7 +273,7 @@ namespace GameFrameX.Foundation.Tests.Json
         public async Task DeserializeAsync_WithNullStream_ShouldThrowArgumentNullException()
         {
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-                await JsonHelper.DeserializeAsync<SimpleModel>(null));
+                await JsonHelper.DeserializeAsync<SimpleModel>(null, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         // ============================================================

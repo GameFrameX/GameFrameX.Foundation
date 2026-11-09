@@ -354,7 +354,7 @@ namespace GameFrameX.Foundation.Tests.Orm
                 {
                     entity.AddDomainEvent(new TestBoundaryDomainEvent());
                 }
-            }));
+            }, cancellationToken: TestContext.Current.CancellationToken));
 
             tasks.Add(Task.Run(() =>
             {
@@ -362,7 +362,7 @@ namespace GameFrameX.Foundation.Tests.Orm
                 {
                     entity.AddDomainEvent(new TestBoundaryDomainEvent());
                 }
-            }));
+            }, cancellationToken: TestContext.Current.CancellationToken));
 
             tasks.Add(Task.Run(() =>
             {
@@ -370,7 +370,7 @@ namespace GameFrameX.Foundation.Tests.Orm
                 {
                     entity.ClearDomainEvents();
                 }
-            }));
+            }, cancellationToken: TestContext.Current.CancellationToken));
 
             try
             {

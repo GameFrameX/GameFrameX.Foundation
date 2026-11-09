@@ -40,8 +40,8 @@ public sealed class TrackIdMiddlewareTests
         {
             using (var client = host.GetTestClient())
             {
-                var response = await client.GetAsync("/");
-                var body = await response.Content.ReadAsStringAsync();
+                var response = await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken);
+                var body = await response.Content.ReadAsStringAsync(cancellationToken: TestContext.Current.CancellationToken);
 
                 // 中间件为缺失请求头生成 22 字符短 TrackId，并写入异步上下文供业务读取
                 Assert.Equal(22, body.Length);
@@ -65,8 +65,8 @@ public sealed class TrackIdMiddlewareTests
             {
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, "incoming-id");
 
-                var response = await client.GetAsync("/");
-                var body = await response.Content.ReadAsStringAsync();
+                var response = await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken);
+                var body = await response.Content.ReadAsStringAsync(cancellationToken: TestContext.Current.CancellationToken);
 
                 // 异步上下文透传了请求头携带的 TrackId（而非新生成）
                 Assert.Equal("incoming-id", body);

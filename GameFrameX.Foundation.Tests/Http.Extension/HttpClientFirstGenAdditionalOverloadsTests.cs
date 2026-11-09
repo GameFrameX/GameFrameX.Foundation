@@ -28,7 +28,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 await client.PutJsonToStringAsync(
-                    "http://example.com/x", new SamplePayload("Alice", 7), CamelCase, default);
+                    "http://example.com/x", new SamplePayload("Alice", 7), CamelCase, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Contains("\"userName\":\"Alice\"", handler.RequestBodies[0]);
                 Assert.Contains("\"userValue\":7", handler.RequestBodies[0]);
@@ -44,7 +44,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 await client.PutJsonToStringAsync(
-                    "http://example.com/x", new SamplePayload("Bob", 9), headers, CamelCase, 10, default);
+                    "http://example.com/x", new SamplePayload("Bob", 9), headers, CamelCase, 10, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Contains("\"userName\":\"Bob\"", handler.RequestBodies[0]);
                 Assert.Contains("X-Test", handler.Requests[0].Headers.Select(h => h.Key));
@@ -59,7 +59,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 await client.PatchJsonToStringAsync(
-                    "http://example.com/x", new SamplePayload("Carol", 3), CamelCase, default);
+                    "http://example.com/x", new SamplePayload("Carol", 3), CamelCase, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("PATCH", handler.Requests[0].Method.Method);
                 Assert.Contains("\"userName\":\"Carol\"", handler.RequestBodies[0]);
@@ -75,7 +75,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 await client.PatchJsonToStringAsync(
-                    "http://example.com/x", new SamplePayload("Dan", 5), headers, CamelCase, 10, default);
+                    "http://example.com/x", new SamplePayload("Dan", 5), headers, CamelCase, 10, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Contains("\"userName\":\"Dan\"", handler.RequestBodies[0]);
             }
@@ -89,7 +89,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 var bytes = await client.PutJsonToByteArrayAsync(
-                    "http://example.com/x", new SamplePayload("Eve", 1), CamelCase, default);
+                    "http://example.com/x", new SamplePayload("Eve", 1), CamelCase, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Contains("\"userName\":\"Eve\"", handler.RequestBodies[0]);
                 Assert.Contains("ok", Encoding.UTF8.GetString(bytes));
@@ -105,7 +105,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 var bytes = await client.PatchJsonToByteArrayAsync(
-                    "http://example.com/x", new SamplePayload("Fay", 2), headers, CamelCase, 10, default);
+                    "http://example.com/x", new SamplePayload("Fay", 2), headers, CamelCase, 10, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Contains("\"userName\":\"Fay\"", handler.RequestBodies[0]);
                 Assert.NotEmpty(bytes);
@@ -120,11 +120,11 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 using (var stream = await client.PutJsonToStreamAsync(
-                    "http://example.com/x", new SamplePayload("Gus", 4), CamelCase, default))
+                    "http://example.com/x", new SamplePayload("Gus", 4), CamelCase, cancellationToken: TestContext.Current.CancellationToken))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        var text = await reader.ReadToEndAsync();
+                        var text = await reader.ReadToEndAsync(cancellationToken: TestContext.Current.CancellationToken);
                         Assert.Contains("streamed", text);
                     }
                 }
@@ -142,11 +142,11 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 using (var stream = await client.PatchJsonToStreamAsync(
-                    "http://example.com/x", new SamplePayload("Hex", 6), headers, CamelCase, 10, default))
+                    "http://example.com/x", new SamplePayload("Hex", 6), headers, CamelCase, 10, cancellationToken: TestContext.Current.CancellationToken))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        var text = await reader.ReadToEndAsync();
+                        var text = await reader.ReadToEndAsync(cancellationToken: TestContext.Current.CancellationToken);
                         Assert.Contains("streamed", text);
                     }
                 }
@@ -160,11 +160,11 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{\"deleted\":true}");
             using (var client = new HttpClient(handler))
             {
-                using (var stream = await client.DeleteToStreamAsync("http://example.com/x", default))
+                using (var stream = await client.DeleteToStreamAsync("http://example.com/x", cancellationToken: TestContext.Current.CancellationToken))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        var text = await reader.ReadToEndAsync();
+                        var text = await reader.ReadToEndAsync(cancellationToken: TestContext.Current.CancellationToken);
                         Assert.Contains("deleted", text);
                     }
                 }
@@ -182,11 +182,11 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 using (var stream = await client.DeleteToStreamAsync(
-                    "http://example.com/x", headers, 10, default))
+                    "http://example.com/x", headers, 10, cancellationToken: TestContext.Current.CancellationToken))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        var text = await reader.ReadToEndAsync();
+                        var text = await reader.ReadToEndAsync(cancellationToken: TestContext.Current.CancellationToken);
                         Assert.Contains("deleted", text);
                     }
                 }

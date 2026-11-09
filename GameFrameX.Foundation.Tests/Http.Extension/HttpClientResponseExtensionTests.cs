@@ -20,7 +20,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{\"name\":\"ok\",\"value\":7}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data");
+                var response = await client.GetResponseAsync("http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.True(response.IsSuccessStatusCode);
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -38,7 +38,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.Enqueue(HttpStatusCode.NotFound, "{\"err\":\"missing\"}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data");
+                var response = await client.GetResponseAsync("http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.False(response.IsSuccessStatusCode);
                 Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -53,7 +53,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.SendResponseAsync(HttpMethod.Head, "http://example.com/data");
+                var response = await client.SendResponseAsync(HttpMethod.Head, "http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal(HttpMethod.Head, handler.Requests[0].Method);
                 Assert.True(response.IsSuccessStatusCode);
@@ -67,7 +67,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data");
+                var response = await client.GetResponseAsync("http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 var ensured = response.EnsureSuccessStatusCode();
                 Assert.Same(response, ensured);
@@ -81,7 +81,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.Enqueue(HttpStatusCode.Conflict, "{\"err\":\"conflict\"}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data");
+                var response = await client.GetResponseAsync("http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 var ex = Assert.Throws<HttpClientRequestException>(() => response.EnsureSuccessStatusCode());
                 Assert.Equal(HttpStatusCode.Conflict, ex.StatusCode);
@@ -96,7 +96,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{\"name\":\"alice\",\"value\":42}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data");
+                var response = await client.GetResponseAsync("http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 var parsed = response.As<SampleResponse>();
                 Assert.NotNull(parsed);
@@ -112,7 +112,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK(string.Empty);
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data");
+                var response = await client.GetResponseAsync("http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.True(response.IsSuccessStatusCode);
                 var parsed = response.As<SampleResponse>();
@@ -132,7 +132,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             };
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data", options);
+                var response = await client.GetResponseAsync("http://example.com/data", options, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.True(response.IsSuccessStatusCode);
                 Assert.Equal(2, response.Attempt);
@@ -148,7 +148,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.GetResponseAsync("http://example.com/data");
+                var response = await client.GetResponseAsync("http://example.com/data", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Content-Type 来自 content headers，应被合并收集
                 Assert.True(response.Headers.ContainsKey("Content-Type"));
@@ -162,7 +162,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{\"name\":\"echo\",\"value\":5}");
             using (var client = new HttpClient(handler))
             {
-                var response = await client.PostResponseAsync("http://example.com/data", new SamplePayload("payload"));
+                var response = await client.PostResponseAsync("http://example.com/data", new SamplePayload("payload"), cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.True(response.IsSuccessStatusCode);
                 Assert.Equal(HttpMethod.Post, handler.Requests[0].Method);
@@ -182,7 +182,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 var response = await client.PatchResponseAsync(
-                    "http://example.com/data", new SamplePayload("p"), options);
+                    "http://example.com/data", new SamplePayload("p"), options, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.False(response.IsSuccessStatusCode);
                 Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
@@ -204,7 +204,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 var response = await client.PatchResponseAsync(
-                    "http://example.com/data", new SamplePayload("p"), options);
+                    "http://example.com/data", new SamplePayload("p"), options, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.True(response.IsSuccessStatusCode);
                 Assert.Equal(2, response.Attempt);
@@ -225,7 +225,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 var ex = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                    client.GetResponseAsync("http://example.com/data", options));
+                    client.GetResponseAsync("http://example.com/data", options, cancellationToken: TestContext.Current.CancellationToken));
 
                 Assert.Equal(2, handler.SendCount); // 初始 1 + 重试 1
                 Assert.IsType<HttpRequestException>(ex.RawException);

@@ -332,7 +332,7 @@ public class HmacSha512HelperTests
         string hash;
         using (var stream = new MemoryStream(messageBytes))
         {
-            hash = await HmacSha512Helper.HashAsync(stream, keyBytes);
+            hash = await HmacSha512Helper.HashAsync(stream, keyBytes, cancellationToken: TestContext.Current.CancellationToken);
         }
 
         // Assert
@@ -347,7 +347,7 @@ public class HmacSha512HelperTests
         var key = Encoding.UTF8.GetBytes(TestKey);
 
         // Act & Assert
-        await Assert.ThrowsAsync<ArgumentNullException>(() => HmacSha512Helper.HashAsync(message, key));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => HmacSha512Helper.HashAsync(message, key, cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -360,7 +360,7 @@ public class HmacSha512HelperTests
         // Act & Assert
         using (var stream = new MemoryStream(messageBytes))
         {
-            await Assert.ThrowsAsync<ArgumentNullException>(() => HmacSha512Helper.HashAsync(stream, key));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => HmacSha512Helper.HashAsync(stream, key, cancellationToken: TestContext.Current.CancellationToken));
         }
     }
 

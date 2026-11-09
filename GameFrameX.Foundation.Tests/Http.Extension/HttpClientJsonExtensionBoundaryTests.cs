@@ -37,7 +37,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
 
                 // Act & Assert — GetDelay 在重试时检测到 BaseDelay &lt; TimeSpan.Zero 抛 ArgumentOutOfRangeException
                 await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() =>
-                    client.GetJsonAsync<SampleResponse>("http://example.com/api", options));
+                    client.GetJsonAsync<SampleResponse>("http://example.com/api", options, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -61,7 +61,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
 
                 // Act & Assert — GetDelay 在重试时检测到 BackoffFactor &lt; 1 抛 ArgumentOutOfRangeException
                 await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() =>
-                    client.GetJsonAsync<SampleResponse>("http://example.com/api", options));
+                    client.GetJsonAsync<SampleResponse>("http://example.com/api", options, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -90,7 +90,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 };
 
                 // Act
-                var result = await client.GetJsonAsync<SampleResponse>("http://example.com/api", options);
+                var result = await client.GetJsonAsync<SampleResponse>("http://example.com/api", options, cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert — BackoffFactor=1.0 时 1^(n-1)=1，每次延迟 = BaseDelay
                 Assert.NotNull(result);
@@ -126,7 +126,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 };
 
                 // Act
-                var result = await client.GetJsonAsync<SampleResponse>("http://example.com/api", options);
+                var result = await client.GetJsonAsync<SampleResponse>("http://example.com/api", options, cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert — attempt=1: 3^0=1×BaseDelay; attempt=2: 3^1=3×BaseDelay; attempt=3: 3^2=9×BaseDelay
                 Assert.NotNull(result);
@@ -152,7 +152,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 // Act
                 var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                    client.GetJsonAsync<SampleResponse>("http://example.com/api"));
+                    client.GetJsonAsync<SampleResponse>("http://example.com/api", cancellationToken: TestContext.Current.CancellationToken));
 
                 // Assert — Summarize 截断到 ResponseSummaryLimit(1024)
                 Assert.NotNull(exception.ResponseSummary);
@@ -172,7 +172,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 // Act
                 var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                    client.GetJsonAsync<SampleResponse>("http://example.com/api"));
+                    client.GetJsonAsync<SampleResponse>("http://example.com/api", cancellationToken: TestContext.Current.CancellationToken));
 
                 // Assert — 恰好 1024 字符不截断（Length &lt;= ResponseSummaryLimit）
                 Assert.NotNull(exception.ResponseSummary);
@@ -192,7 +192,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 // Act
                 var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                    client.GetJsonAsync<SampleResponse>("http://example.com/api"));
+                    client.GetJsonAsync<SampleResponse>("http://example.com/api", cancellationToken: TestContext.Current.CancellationToken));
 
                 // Assert — CreateStatusException 也通过 Summarize 截断
                 Assert.Equal(HttpStatusCode.InternalServerError, exception.StatusCode);
@@ -212,7 +212,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 // Act
                 var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                    client.GetJsonAsync<SampleResponse>("http://example.com/api"));
+                    client.GetJsonAsync<SampleResponse>("http://example.com/api", cancellationToken: TestContext.Current.CancellationToken));
 
                 // Assert — Summarize 对空字符串直接返回原值
                 Assert.Equal(string.Empty, exception.ResponseSummary);
@@ -237,7 +237,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 };
 
                 // Act
-                var result = await client.GetJsonAsync<SampleResponse>("http://example.com/api", options);
+                var result = await client.GetJsonAsync<SampleResponse>("http://example.com/api", options, cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert — null 不导致 NRE，使用框架默认 options 反序列化成功
                 Assert.NotNull(result);

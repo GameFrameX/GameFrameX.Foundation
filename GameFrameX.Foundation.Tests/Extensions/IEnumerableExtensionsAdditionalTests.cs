@@ -529,7 +529,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
                 {
                     results.Add(x);
                 }
-            });
+            }, cancellationToken: TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(3, results.Count);
@@ -551,7 +551,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
                 {
                     processed.Add(x);
                 }
-            }, 2);
+            }, 2, cancellationToken: TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(5, processed.Count);
@@ -565,7 +565,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                source.ForeachAsync(x => Task.CompletedTask));
+                source.ForeachAsync(x => Task.CompletedTask, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]
@@ -576,7 +576,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                source.ForeachAsync(null));
+                source.ForeachAsync(null, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         // ============================================================
@@ -636,7 +636,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
             {
                 await Task.Delay(1);
                 Interlocked.Add(ref sum, item);
-            });
+            }, cancellationToken: TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(6, sum);
@@ -654,7 +654,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
             {
                 await Task.Delay(1);
                 Interlocked.Increment(ref count);
-            }, 2);
+            }, 2, cancellationToken: TestContext.Current.CancellationToken);
 
             // Assert
             Assert.Equal(5, count);
@@ -668,7 +668,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                source.ForAsync((item, index) => Task.CompletedTask));
+                source.ForAsync((item, index) => Task.CompletedTask, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]
@@ -679,7 +679,7 @@ namespace GameFrameX.Foundation.Tests.Extensions
 
             // Act & Assert
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                source.ForAsync(null));
+                source.ForAsync(null, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         // ============================================================

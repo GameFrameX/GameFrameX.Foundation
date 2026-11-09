@@ -14,7 +14,7 @@ public sealed class AsyncEnumerableExtensionsTests
         {
             results.Add(item);
             return ValueTask.CompletedTask;
-        });
+        }, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(new[] { 1, 2, 3 }, results);
     }
@@ -31,7 +31,7 @@ public sealed class AsyncEnumerableExtensionsTests
             UpdateMaximum(ref maximum, active);
             await Task.Delay(5, token);
             Interlocked.Decrement(ref current);
-        }, 3);
+        }, 3, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.InRange(maximum, 2, 3);
     }
@@ -63,7 +63,7 @@ public sealed class AsyncEnumerableExtensionsTests
         {
             await Task.Delay(item * 5, token);
             return item;
-        }, 3);
+        }, 3, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(new[] { 3, 1, 2 }, results);
     }
@@ -85,7 +85,7 @@ public sealed class AsyncEnumerableExtensionsTests
             started[item].SetResult();
             await release[item].Task.WaitAsync(token);
             return item;
-        }, 3, preserveOrder: false);
+        }, 3, preserveOrder: false, cancellationToken: TestContext.Current.CancellationToken);
 
         await Task.WhenAll(started.Values.Select(source => source.Task));
         release[1].SetResult();
@@ -113,7 +113,7 @@ public sealed class AsyncEnumerableExtensionsTests
 
         var results = await Source().SelectParallelAsync(
             (item, _) => ValueTask.FromResult(item * 2),
-            2);
+            2, cancellationToken: TestContext.Current.CancellationToken);
 
         Assert.Equal(new[] { 2, 4 }, results);
         Assert.Equal(1, enumerationCount);

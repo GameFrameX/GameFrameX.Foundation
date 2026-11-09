@@ -43,13 +43,13 @@ public class IdempotencyCoordinatorTests
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock);
 
         // 执行
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.Equal(IdempotencyDecisionKind.Execute, decision.DecisionKind);
         Assert.Null(decision.ExistingRecord);
 
-        IdempotencyRecord? occupiedRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? occupiedRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(occupiedRecord);
         Assert.Equal(IdempotencyStatus.Processing, occupiedRecord!.Status);
         Assert.Equal(DigestAlpha, occupiedRecord.RequestDigest);
@@ -68,12 +68,12 @@ public class IdempotencyCoordinatorTests
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock);
         byte[] firstResponseBytes = new byte[] { 1, 2, 3 };
 
-        IdempotencyDecision firstDecision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision firstDecision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
         Assert.Equal(IdempotencyDecisionKind.Execute, firstDecision.DecisionKind);
-        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), firstResponseBytes, 0));
+        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), firstResponseBytes, 0), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.Equal(IdempotencyDecisionKind.Replay, decision.DecisionKind);
@@ -92,11 +92,11 @@ public class IdempotencyCoordinatorTests
         InMemoryIdempotencyStore idempotencyStore = CreateStore();
         FakeClock clock = new FakeClock();
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
-        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 1 }, 0));
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
+        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 1 }, 0), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestBeta));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestBeta), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.Equal(IdempotencyDecisionKind.Conflict, decision.DecisionKind);
@@ -113,11 +113,11 @@ public class IdempotencyCoordinatorTests
         InMemoryIdempotencyStore idempotencyStore = CreateStore();
         FakeClock clock = new FakeClock();
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
-        await coordinator.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 0));
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
+        await coordinator.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 0), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.Equal(IdempotencyDecisionKind.Replay, decision.DecisionKind);
@@ -136,17 +136,17 @@ public class IdempotencyCoordinatorTests
         IdempotencyOptions idempotencyOptions = new IdempotencyOptions();
         idempotencyOptions.FailedReplayPolicy = FailedReplayPolicy.ReExecute;
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock, idempotencyOptions);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
-        await coordinator.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 0));
-        IdempotencyRecord? failedRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
+        await coordinator.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 0), cancellationToken: TestContext.Current.CancellationToken);
+        IdempotencyRecord? failedRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(failedRecord);
 
         // 执行
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：覆盖占位为新的执行中记录
         Assert.Equal(IdempotencyDecisionKind.Execute, decision.DecisionKind);
-        IdempotencyRecord? overwrittenRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? overwrittenRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(overwrittenRecord);
         Assert.Equal(IdempotencyStatus.Processing, overwrittenRecord!.Status);
         Assert.True(overwrittenRecord.CreatedTime >= failedRecord!.CreatedTime);
@@ -163,7 +163,7 @@ public class IdempotencyCoordinatorTests
         IdempotencyOptions idempotencyOptions = new IdempotencyOptions();
         idempotencyOptions.ConcurrentWaitTimeoutMilliseconds = 3000;
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock, idempotencyOptions);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行：并发占位方在等待窗口内落定为成功
         IdempotencyRecordIdentifier identifier = CreateIdentifier();
@@ -171,8 +171,8 @@ public class IdempotencyCoordinatorTests
         {
             await Task.Delay(80);
             await coordinator.CompleteAsync(new IdempotencyCompletionRequest(identifier, new byte[] { 9 }, 0));
-        });
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        }, cancellationToken: TestContext.Current.CancellationToken);
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：等待期间状态变化即重判为回放，而不是等待超时判忙碌
         Assert.Equal(IdempotencyDecisionKind.Replay, decision.DecisionKind);
@@ -191,10 +191,10 @@ public class IdempotencyCoordinatorTests
         IdempotencyOptions idempotencyOptions = new IdempotencyOptions();
         idempotencyOptions.ConcurrentWaitTimeoutMilliseconds = 60;
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock, idempotencyOptions);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行：占位方始终不落定
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.Equal(IdempotencyDecisionKind.Busy, decision.DecisionKind);
@@ -213,19 +213,19 @@ public class IdempotencyCoordinatorTests
         IdempotencyOptions idempotencyOptions = new IdempotencyOptions();
         idempotencyOptions.RetentionMilliseconds = 1000;
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock, idempotencyOptions);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
-        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 1 }, 0));
-        IdempotencyRecord? staleRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
+        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 1 }, 0), cancellationToken: TestContext.Current.CancellationToken);
+        IdempotencyRecord? staleRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(staleRecord);
 
         // 执行：快进时钟越过过期时刻
         clock.AdvanceMilliseconds(idempotencyOptions.RetentionMilliseconds + 1);
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：过期视为无记录，重新执行并覆盖旧记录
         Assert.Equal(IdempotencyDecisionKind.Execute, decision.DecisionKind);
         Assert.Null(decision.ExistingRecord);
-        IdempotencyRecord? overwrittenRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? overwrittenRecord = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(overwrittenRecord);
         Assert.Equal(IdempotencyStatus.Processing, overwrittenRecord!.Status);
         Assert.True(overwrittenRecord.CreatedTime > staleRecord!.CreatedTime);
@@ -242,7 +242,7 @@ public class IdempotencyCoordinatorTests
         IdempotencyCoordinator coordinator = new IdempotencyCoordinator(scriptedStore, clock);
 
         // 执行
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：重判一次生效，回放对方的结果
         Assert.Equal(IdempotencyDecisionKind.Replay, decision.DecisionKind);
@@ -258,7 +258,7 @@ public class IdempotencyCoordinatorTests
         IdempotencyCoordinator coordinator = new IdempotencyCoordinator(scriptedStore, clock);
 
         // 执行
-        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        IdempotencyDecision decision = await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：占位被抢占后只重判一次，仍被抢占判忙碌
         Assert.Equal(IdempotencyDecisionKind.Busy, decision.DecisionKind);
@@ -274,15 +274,15 @@ public class IdempotencyCoordinatorTests
         InMemoryIdempotencyStore idempotencyStore = CreateStore();
         FakeClock clock = new FakeClock();
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行：请求中的完成时刻为 0，应由时钟覆盖
         long beforeCompleteTime = clock.UtcNowTime;
-        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 5 }, 0));
+        await coordinator.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 5 }, 0), cancellationToken: TestContext.Current.CancellationToken);
         long afterCompleteTime = clock.UtcNowTime;
 
         // 断言
-        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(record);
         Assert.Equal(IdempotencyStatus.Completed, record!.Status);
         Assert.NotNull(record.FinishedTime);
@@ -296,15 +296,15 @@ public class IdempotencyCoordinatorTests
         InMemoryIdempotencyStore idempotencyStore = CreateStore();
         FakeClock clock = new FakeClock();
         IdempotencyCoordinator coordinator = CreateCoordinator(idempotencyStore, clock);
-        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha));
+        await coordinator.BeginAsync(new IdempotencyBeginRequest(TestScope, TestKey, DigestAlpha), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行
         long beforeFailTime = clock.UtcNowTime;
-        await coordinator.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 0));
+        await coordinator.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 0), cancellationToken: TestContext.Current.CancellationToken);
         long afterFailTime = clock.UtcNowTime;
 
         // 断言
-        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(record);
         Assert.Equal(IdempotencyStatus.Failed, record!.Status);
         Assert.NotNull(record.FinishedTime);
@@ -320,7 +320,7 @@ public class IdempotencyCoordinatorTests
         IdempotencyCoordinator coordinator = CreateCoordinator(CreateStore(), new FakeClock());
 
         // 执行 + 断言
-        await Assert.ThrowsAsync<ArgumentNullException>(() => coordinator.BeginAsync(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => coordinator.BeginAsync(null!, cancellationToken: TestContext.Current.CancellationToken));
     }
 
     /// <summary>

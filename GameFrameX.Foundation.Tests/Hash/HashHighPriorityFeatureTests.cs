@@ -13,16 +13,16 @@ public class HashHighPriorityFeatureTests
     public async Task CryptographicHelpers_StreamAndAsyncStream_ShouldMatchByteArray()
     {
         Assert.Equal(Md5Helper.Hash(Data), Md5Helper.Hash(new MemoryStream(Data)));
-        Assert.Equal(Md5Helper.Hash(Data), await Md5Helper.HashAsync(new MemoryStream(Data)));
+        Assert.Equal(Md5Helper.Hash(Data), await Md5Helper.HashAsync(new MemoryStream(Data), cancellationToken: TestContext.Current.CancellationToken));
 
         Assert.Equal(Sha1Helper.ComputeHash(Data), Sha1Helper.ComputeHash(new MemoryStream(Data)));
-        Assert.Equal(Sha1Helper.ComputeHash(Data), await Sha1Helper.ComputeHashAsync(new MemoryStream(Data)));
+        Assert.Equal(Sha1Helper.ComputeHash(Data), await Sha1Helper.ComputeHashAsync(new MemoryStream(Data), cancellationToken: TestContext.Current.CancellationToken));
 
         Assert.Equal(Sha256Helper.ComputeHash(Data), Sha256Helper.ComputeHash(new MemoryStream(Data)));
-        Assert.Equal(Sha256Helper.ComputeHash(Data), await Sha256Helper.ComputeHashAsync(new MemoryStream(Data)));
+        Assert.Equal(Sha256Helper.ComputeHash(Data), await Sha256Helper.ComputeHashAsync(new MemoryStream(Data), cancellationToken: TestContext.Current.CancellationToken));
 
         Assert.Equal(Sha512Helper.ComputeHash(Data), Sha512Helper.ComputeHash(new MemoryStream(Data)));
-        Assert.Equal(Sha512Helper.ComputeHash(Data), await Sha512Helper.ComputeHashAsync(new MemoryStream(Data)));
+        Assert.Equal(Sha512Helper.ComputeHash(Data), await Sha512Helper.ComputeHashAsync(new MemoryStream(Data), cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -43,8 +43,8 @@ public class HashHighPriorityFeatureTests
         var expectedCrc32 = CrcHelper.GetCrc32(new MemoryStream(Data));
         var expectedCrc64 = CrcHelper.GetCrc64(new MemoryStream(Data));
 
-        Assert.Equal(expectedCrc32, await CrcHelper.GetCrc32Async(new MemoryStream(Data)));
-        Assert.Equal(expectedCrc64, await CrcHelper.GetCrc64Async(new MemoryStream(Data)));
+        Assert.Equal(expectedCrc32, await CrcHelper.GetCrc32Async(new MemoryStream(Data), cancellationToken: TestContext.Current.CancellationToken));
+        Assert.Equal(expectedCrc64, await CrcHelper.GetCrc64Async(new MemoryStream(Data), cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class HashHighPriorityFeatureTests
         Assert.Equal(expected, HashHelper.Compute(algorithm, Data));
         Assert.Equal(expected, HashHelper.Compute(algorithm, Encoding.UTF8.GetString(Data)));
         Assert.Equal(expected, HashHelper.Compute(algorithm, new MemoryStream(Data)));
-        Assert.Equal(expected, await HashHelper.ComputeAsync(algorithm, new MemoryStream(Data)));
+        Assert.Equal(expected, await HashHelper.ComputeAsync(algorithm, new MemoryStream(Data), cancellationToken: TestContext.Current.CancellationToken));
         Assert.Equal(isSecure, HashHelper.IsCryptographicallySecure(algorithm));
     }
 
@@ -111,7 +111,7 @@ public class HashHighPriorityFeatureTests
 
         Assert.Equal(expected, HmacSha256Helper.Hash(messageBytes, keyBytes));
         Assert.Equal(expected, HmacSha256Helper.Hash(new MemoryStream(messageBytes), keyBytes));
-        Assert.Equal(expected, await HmacSha256Helper.HashAsync(new MemoryStream(messageBytes), keyBytes));
+        Assert.Equal(expected, await HmacSha256Helper.HashAsync(new MemoryStream(messageBytes), keyBytes, cancellationToken: TestContext.Current.CancellationToken));
         Assert.True(HmacSha256Helper.Verify(message, key, expected));
         Assert.True(HmacSha256Helper.Verify(messageBytes, keyBytes, expected));
         Assert.True(HmacSha256Helper.Verify(new MemoryStream(messageBytes), keyBytes, expected));
@@ -131,7 +131,7 @@ public class HashHighPriorityFeatureTests
         Assert.Equal(expected, HmacSha512Helper.Hash(message, key));
         Assert.Equal(expected, HmacSha512Helper.Hash(messageBytes, keyBytes));
         Assert.Equal(expected, HmacSha512Helper.Hash(new MemoryStream(messageBytes), keyBytes));
-        Assert.Equal(expected, await HmacSha512Helper.HashAsync(new MemoryStream(messageBytes), keyBytes));
+        Assert.Equal(expected, await HmacSha512Helper.HashAsync(new MemoryStream(messageBytes), keyBytes, cancellationToken: TestContext.Current.CancellationToken));
         Assert.True(HmacSha512Helper.Verify(message, key, expected));
         Assert.True(HmacSha512Helper.Verify(messageBytes, keyBytes, expected));
         Assert.True(HmacSha512Helper.Verify(new MemoryStream(messageBytes), keyBytes, expected));

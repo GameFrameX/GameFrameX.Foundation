@@ -31,7 +31,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 var result = await client.PutJsonAsync<SamplePayload, SampleResponse>(
                     "http://example.com/items/5",
-                    new SamplePayload("payload"));
+                    new SamplePayload("payload"),
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("updated", result!.Name);
@@ -51,7 +52,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 var ex = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
                     client.PutJsonAsync<SamplePayload, SampleResponse>(
                         "http://example.com/items/1",
-                        new SamplePayload("p")));
+                        new SamplePayload("p"),
+                        cancellationToken: TestContext.Current.CancellationToken));
 
                 Assert.Equal(HttpStatusCode.Conflict, ex.StatusCode);
                 Assert.Contains("conflict", ex.ResponseSummary);
@@ -71,7 +73,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 var result = await client.PatchJsonAsync<SamplePayload, SampleResponse>(
                     "http://example.com/items/9",
-                    new SamplePayload("change"));
+                    new SamplePayload("change"),
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("patched", result!.Name);
@@ -91,7 +94,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{\"name\":\"gone\",\"value\":0}");
             using (var client = new HttpClient(handler))
             {
-                var result = await client.DeleteJsonAsync<SampleResponse>("http://example.com/items/3");
+                var result = await client.DeleteJsonAsync<SampleResponse>("http://example.com/items/3", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("gone", result!.Name);
@@ -106,7 +109,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.Enqueue(HttpStatusCode.NoContent, string.Empty);
             using (var client = new HttpClient(handler))
             {
-                var result = await client.DeleteJsonAsync<SampleResponse>("http://example.com/items/3");
+                var result = await client.DeleteJsonAsync<SampleResponse>("http://example.com/items/3", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Null(result);
             }
@@ -123,7 +126,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             handler.EnqueueOK("{\"name\":\"opts\",\"value\":1}");
             using (var client = new HttpClient(handler))
             {
-                var result = await client.OptionsJsonAsync<SampleResponse>("http://example.com/items");
+                var result = await client.OptionsJsonAsync<SampleResponse>("http://example.com/items", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("opts", result!.Name);
@@ -143,7 +146,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 var result = await client.SendJsonAsync<SampleResponse>(
-                    HttpMethod.Get, "http://example.com/api");
+                    HttpMethod.Get, "http://example.com/api",
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("r", result!.Name);
@@ -159,7 +163,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 await client.SendJsonAsync<SampleResponse>(
-                    HttpMethod.Delete, "http://example.com/api");
+                    HttpMethod.Delete, "http://example.com/api",
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal(HttpMethod.Delete, handler.Requests[0].Method);
                 Assert.Null(handler.Requests[0].Content);
@@ -185,7 +190,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                         new HttpClientRequestOptions
                         {
                             Timeout = TimeSpan.FromMilliseconds(50),
-                        }));
+                        },
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -209,7 +215,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     {
                         OnRequest = requestEntries.Add,
                         OnResponse = responseEntries.Add,
-                    });
+                    },
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Single(requestEntries);
                 Assert.Equal(1, requestEntries[0].Attempt);
@@ -231,7 +238,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await Assert.ThrowsAsync<HttpClientRequestException>(() =>
                     client.GetJsonAsync<SampleResponse>(
                         "http://example.com/api",
-                        new HttpClientRequestOptions { OnResponse = responseEntries.Add }));
+                        new HttpClientRequestOptions { OnResponse = responseEntries.Add },
+                        cancellationToken: TestContext.Current.CancellationToken));
 
                 Assert.Single(responseEntries);
                 Assert.Equal(HttpStatusCode.InternalServerError, responseEntries[0].StatusCode);
@@ -260,7 +268,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 var result = await client.GetJsonAsync<SampleResponse>(
                     "http://example.com/maybe",
-                    new HttpClientRequestOptions { Retry = retry });
+                    new HttpClientRequestOptions { Retry = retry },
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("found", result!.Name);
@@ -295,7 +304,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                             BackoffFactor = 3D,
                             OnRetry = retryEntries.Add,
                         },
-                    });
+                    },
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal(2, retryEntries.Count);
@@ -327,7 +337,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                             MaxRetries = 1,
                             BaseDelay = TimeSpan.FromMilliseconds(1),
                         },
-                    });
+                    },
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("recovered", result!.Name);
@@ -344,7 +355,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
         {
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
                 ((HttpClient)null!).SendJsonAsync<SampleResponse>(
-                    HttpMethod.Get, "http://x.com"));
+                    HttpMethod.Get, "http://x.com", cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]
@@ -353,7 +364,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new QueueHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                    client.SendJsonAsync<SampleResponse>(null!, "http://x.com"));
+                    client.SendJsonAsync<SampleResponse>(null!, "http://x.com", cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -365,7 +376,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new QueueHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
-                    client.SendJsonAsync<SampleResponse>(HttpMethod.Get, url));
+                    client.SendJsonAsync<SampleResponse>(HttpMethod.Get, url, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -374,7 +385,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
         {
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
                 ((HttpClient)null!).SendJsonAsync<SamplePayload, SampleResponse>(
-                    HttpMethod.Post, "http://x.com", new SamplePayload("p")));
+                    HttpMethod.Post, "http://x.com", new SamplePayload("p"), cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]
@@ -384,7 +395,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 await Assert.ThrowsAsync<ArgumentNullException>(() =>
                     client.SendJsonAsync<SamplePayload, SampleResponse>(
-                        null!, "http://x.com", new SamplePayload("p")));
+                        null!, "http://x.com", new SamplePayload("p"), cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -397,7 +408,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
                     client.SendJsonAsync<SamplePayload, SampleResponse>(
-                        HttpMethod.Post, url, new SamplePayload("p")));
+                        HttpMethod.Post, url, new SamplePayload("p"), cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -405,7 +416,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
         public async Task GetJsonAsync_NullClient_ThrowsArgumentNullException()
         {
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                ((HttpClient)null!).GetJsonAsync<SampleResponse>("http://x.com"));
+                ((HttpClient)null!).GetJsonAsync<SampleResponse>("http://x.com", cancellationToken: TestContext.Current.CancellationToken));
         }
 
         // ============================================================
@@ -421,7 +432,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 var result = await client.GetJsonAsync<SampleResponse>(
                     "http://example.com/api",
-                    options: null);
+                    options: null,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("default", result!.Name);
@@ -448,7 +460,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                         {
                             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                         },
-                    });
+                    },
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(result);
                 Assert.Equal("camel", result!.Name);

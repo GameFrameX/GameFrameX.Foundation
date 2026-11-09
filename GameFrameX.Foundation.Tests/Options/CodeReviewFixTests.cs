@@ -153,7 +153,7 @@ namespace GameFrameX.Foundation.Tests.Options
                             exceptions.Add(ex);
                         }
                     }
-                });
+                }, cancellationToken: TestContext.Current.CancellationToken);
             }
 
             await Task.WhenAll(tasks);

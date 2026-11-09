@@ -28,7 +28,7 @@ public class InMemoryEventPublisherTests
         eventPublisher.Subscribe(_ => dispatchOrder.Add(3));
 
         // 执行
-        await eventPublisher.PublishAsync(CreateValidEnvelope("event-1"));
+        await eventPublisher.PublishAsync(CreateValidEnvelope("event-1"), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：按订阅顺序同步分发
         Assert.Equal(new List<int> { 1, 2, 3 }, dispatchOrder);
@@ -45,7 +45,7 @@ public class InMemoryEventPublisherTests
         eventPublisher.Subscribe(_ => dispatchOrder.Add(3));
 
         // 执行 + 断言：异常向上传播，后续订阅者不再收到分发
-        await Assert.ThrowsAsync<InvalidOperationException>(() => eventPublisher.PublishAsync(CreateValidEnvelope("event-1")));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => eventPublisher.PublishAsync(CreateValidEnvelope("event-1"), cancellationToken: TestContext.Current.CancellationToken));
         Assert.Equal(new List<int> { 1 }, dispatchOrder);
     }
 
@@ -59,7 +59,7 @@ public class InMemoryEventPublisherTests
         EventEnvelope invalidEnvelope = new EventEnvelope("", "sample.order.placed", 1_700_000_000_000, 1, "order-service", null, new byte[] { 1 }, null);
 
         // 执行 + 断言：先校验后分发
-        await Assert.ThrowsAsync<ArgumentException>(() => eventPublisher.PublishAsync(invalidEnvelope));
+        await Assert.ThrowsAsync<ArgumentException>(() => eventPublisher.PublishAsync(invalidEnvelope, cancellationToken: TestContext.Current.CancellationToken));
         Assert.Equal(0, dispatchCount);
     }
 
@@ -70,7 +70,7 @@ public class InMemoryEventPublisherTests
         InMemoryEventPublisher eventPublisher = new InMemoryEventPublisher();
 
         // 执行 + 断言
-        await Assert.ThrowsAsync<ArgumentNullException>(() => eventPublisher.PublishAsync(null!));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => eventPublisher.PublishAsync(null!, cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -90,7 +90,7 @@ public class InMemoryEventPublisherTests
         InMemoryEventPublisher eventPublisher = new InMemoryEventPublisher();
 
         // 执行 + 断言：无订阅者时发布成功，不抛异常
-        Exception? exception = await Record.ExceptionAsync(() => eventPublisher.PublishAsync(CreateValidEnvelope("event-1")));
+        Exception? exception = await Record.ExceptionAsync(() => eventPublisher.PublishAsync(CreateValidEnvelope("event-1"), cancellationToken: TestContext.Current.CancellationToken));
         Assert.Null(exception);
     }
 }

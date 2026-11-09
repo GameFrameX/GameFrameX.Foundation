@@ -101,8 +101,8 @@ public sealed class TrackIdEdgeTests
             {
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, "   ");
 
-                var response = await client.GetAsync("/");
-                var body = await response.Content.ReadAsStringAsync();
+                var response = await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken);
+                var body = await response.Content.ReadAsStringAsync(cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal(22, body.Length);
                 Assert.Matches("^[A-Za-z0-9_-]{22}$", body);
@@ -121,8 +121,8 @@ public sealed class TrackIdEdgeTests
         {
             using (var client = host.GetTestClient())
             {
-                var id1 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
-                var id2 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
+                var id1 = await (await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(cancellationToken: TestContext.Current.CancellationToken);
+                var id2 = await (await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken)).Content.ReadAsStringAsync(cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotEqual(id1, id2);
                 Assert.Equal(22, id1.Length);
@@ -139,7 +139,7 @@ public sealed class TrackIdEdgeTests
         {
             using (var client = host.GetTestClient())
             {
-                await Assert.ThrowsAsync<InvalidOperationException>(() => client.GetAsync("/"));
+                await Assert.ThrowsAsync<InvalidOperationException>(() => client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken));
             }
         }
     }

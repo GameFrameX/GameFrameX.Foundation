@@ -148,11 +148,11 @@ public class TimerExtensionTests : IDisposable
         timer.Start();
 
         // 等待一段时间后重置
-        await Task.Delay(100); // 增加等待时间
+        await Task.Delay(100, cancellationToken: TestContext.Current.CancellationToken); // 增加等待时间
         timer.Reset();
 
         // 等待Timer触发几次，增加超时时间
-        var waitResult = resetSignal.Wait(TimeSpan.FromSeconds(3));
+        var waitResult = resetSignal.Wait(TimeSpan.FromSeconds(3), cancellationToken: TestContext.Current.CancellationToken);
         timer.Stop();
 
         // Assert
@@ -222,7 +222,7 @@ public class TimerExtensionTests : IDisposable
         timer.Reset();
 
         // 等待事件触发
-        var eventTriggered = eventFired.Wait(TimeSpan.FromSeconds(1));
+        var eventTriggered = eventFired.Wait(TimeSpan.FromSeconds(1), cancellationToken: TestContext.Current.CancellationToken);
         timer.Stop();
 
         // Assert
@@ -289,7 +289,7 @@ public class TimerExtensionTests : IDisposable
                 {
                     exceptions.Add(ex);
                 }
-            }));
+            }, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         await Task.WhenAll(tasks);

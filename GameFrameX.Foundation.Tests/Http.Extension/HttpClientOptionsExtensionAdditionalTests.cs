@@ -26,7 +26,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
                 ((HttpClient)null!).OptionsAsync(
                     "http://test.com",
-                    new Dictionary<string, string>()));
+                    new Dictionary<string, string>(), cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await Assert.ThrowsAsync<ArgumentNullException>(() =>
                     client.OptionsAsync(
                         null!,
-                        new Dictionary<string, string>()));
+                        new Dictionary<string, string>(), cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -55,7 +55,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await Assert.ThrowsAsync<ArgumentException>(() =>
                     client.OptionsAsync(
                         url,
-                        new Dictionary<string, string>()));
+                        new Dictionary<string, string>(), cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -74,7 +74,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 // Act — null headers 不应崩溃（CreateOptionsRequest 用 is { Count: > 0 } 安全匹配）
-                var result = await client.OptionsAsync("http://test.com", null!);
+                var result = await client.OptionsAsync("http://test.com", null!, cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 Assert.Equal(2, result.Count);
@@ -97,7 +97,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 // Act
                 var result = await client.OptionsAsync(
                     "http://test.com",
-                    new Dictionary<string, string>());
+                    new Dictionary<string, string>(), cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 Assert.Single(result);
@@ -122,7 +122,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 // Act
                 var result = await client.OptionsAsync(
                     "http://test.com",
-                    new Dictionary<string, string> { { "Origin", "http://example.com" } });
+                    new Dictionary<string, string> { { "Origin", "http://example.com" } }, cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 Assert.Equal(4, result.Count);
@@ -143,7 +143,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await Assert.ThrowsAsync<HttpRequestException>(() =>
                     client.OptionsAsync(
                         "http://test.com",
-                        new Dictionary<string, string>()));
+                        new Dictionary<string, string>(), cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -162,7 +162,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     client.OptionsAsync(
                         "http://test.com",
                         new Dictionary<string, string>(),
-                        timeout: -1));
+                        timeout: -1, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -188,7 +188,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 };
 
                 // Act
-                await client.OptionsAsync("http://test.com", headers);
+                await client.OptionsAsync("http://test.com", headers, cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 Assert.True(handler.CapturedRequest!.Headers.Contains("X-Custom-1"));

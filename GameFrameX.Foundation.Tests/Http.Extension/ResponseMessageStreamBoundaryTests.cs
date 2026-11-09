@@ -24,7 +24,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 // Act
-                var stream = await client.GetToStreamAsync("http://test.com");
+                var stream = await client.GetToStreamAsync("http://test.com", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert — 流可用
                 Assert.True(stream.CanRead);
@@ -43,7 +43,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             {
                 // Act
-                var stream = await client.GetToStreamAsync("http://test.com");
+                var stream = await client.GetToStreamAsync("http://test.com", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 Assert.True(stream.CanRead);
@@ -61,7 +61,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             var handler = new TrackingContentHandler("dispose-read");
             using (var client = new HttpClient(handler))
             {
-                var stream = await client.GetToStreamAsync("http://test.com");
+                var stream = await client.GetToStreamAsync("http://test.com", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Act
                 stream.Dispose();
@@ -79,7 +79,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             var handler = new TrackingContentHandler("canread");
             using (var client = new HttpClient(handler))
             {
-                var stream = await client.GetToStreamAsync("http://test.com");
+                var stream = await client.GetToStreamAsync("http://test.com", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Act
                 Assert.True(stream.CanRead); // Dispose 前可读
@@ -100,7 +100,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 var headers = new Dictionary<string, string> { { "X-Test", "value" } };
 
                 // Act
-                var stream = await client.GetToStreamAsync("http://test.com", headers);
+                var stream = await client.GetToStreamAsync("http://test.com", headers, cancellationToken: TestContext.Current.CancellationToken);
                 stream.Dispose();
 
                 // Assert — 带 headers 重载的 ResponseMessageStream.Dispose 同时释放 response + owner(CTS) + inner stream
@@ -120,7 +120,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 // Act & Assert — EnsureSuccessStatusCode 抛 HttpRequestException
                 await Assert.ThrowsAsync<HttpRequestException>(() =>
-                    client.GetToStreamAsync("http://test.com"));
+                    client.GetToStreamAsync("http://test.com", cancellationToken: TestContext.Current.CancellationToken));
 
                 // catch 块中 response.Dispose() 已执行 → Content 已释放
                 Assert.True(handler.TrackedContent!.WasDisposed);

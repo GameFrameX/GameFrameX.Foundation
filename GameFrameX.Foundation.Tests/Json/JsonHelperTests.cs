@@ -513,9 +513,9 @@ namespace GameFrameX.Foundation.Tests.Json
 
             using (var stream = new MemoryStream())
             {
-                await JsonHelper.SerializeAsync(stream, model, jsonTypeInfo);
+                await JsonHelper.SerializeAsync(stream, model, jsonTypeInfo, cancellationToken: TestContext.Current.CancellationToken);
                 stream.Position = 0;
-                SourceGeneratedJsonModel fromStream = await JsonHelper.DeserializeAsync(stream, jsonTypeInfo);
+                SourceGeneratedJsonModel fromStream = await JsonHelper.DeserializeAsync(stream, jsonTypeInfo, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal(model.Id, fromString.Id);
                 Assert.Equal(model.Name, fromBytes.Name);

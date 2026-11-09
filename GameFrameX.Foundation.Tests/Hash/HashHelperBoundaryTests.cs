@@ -59,7 +59,7 @@ public class HashHelperBoundaryTests
         using (var stream = new MemoryStream(Encoding.UTF8.GetBytes("x")))
         {
             // Act & Assert — 非异步方法，switch 同步抛出
-            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => HashHelper.ComputeAsync(algorithm, stream));
+            await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => HashHelper.ComputeAsync(algorithm, stream, cancellationToken: TestContext.Current.CancellationToken));
         }
     }
 
@@ -120,7 +120,7 @@ public class HashHelperBoundaryTests
         Stream input = null;
 
         // Act & Assert — 非异步方法，参数检查同步抛出
-        await Assert.ThrowsAsync<ArgumentNullException>(() => HashHelper.ComputeAsync(algorithm, input));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => HashHelper.ComputeAsync(algorithm, input, cancellationToken: TestContext.Current.CancellationToken));
     }
 
     // ==================== ComputeAsync - CancellationToken 取消 ====================

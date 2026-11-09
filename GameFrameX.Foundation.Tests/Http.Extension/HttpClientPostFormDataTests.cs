@@ -21,7 +21,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
                 ((HttpClient)null!).PostFormToStringAsync(
                     "http://test.com",
-                    new List<KeyValuePair<string, string>>()));
+                    new List<KeyValuePair<string, string>>(),
+                    cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Theory]
@@ -32,7 +33,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new CapturingHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
-                    client.PostFormToStringAsync(url, new List<KeyValuePair<string, string>>()));
+                    client.PostFormToStringAsync(url, new List<KeyValuePair<string, string>>(), cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -52,7 +53,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     new KeyValuePair<string, string>("key", "val2"),
                 };
 
-                var result = await client.PostFormToStringAsync("http://test.com", formData);
+                var result = await client.PostFormToStringAsync("http://test.com", formData, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("form-received", result);
             }
@@ -66,7 +67,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 await client.PostFormToStringAsync(
                     "http://test.com",
-                    new List<KeyValuePair<string, string>>());
+                    new List<KeyValuePair<string, string>>(),
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal(HttpMethod.Post, handler.CapturedRequest!.Method);
             }
@@ -83,7 +85,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     new KeyValuePair<string, string>("a", "1"),
                 };
 
-                await client.PostFormToStringAsync("http://test.com", formData);
+                await client.PostFormToStringAsync("http://test.com", formData, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(handler.CapturedRequest!.Content);
                 Assert.Equal("application/x-www-form-urlencoded",
@@ -102,7 +104,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     new KeyValuePair<string, string>("name", "value"),
                 };
 
-                await client.PostFormToStringAsync("http://test.com", formData);
+                await client.PostFormToStringAsync("http://test.com", formData, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(handler.CapturedBody);
                 Assert.Contains("name=value", handler.CapturedBody);
@@ -118,7 +120,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await Assert.ThrowsAsync<HttpRequestException>(() =>
                     client.PostFormToStringAsync(
                         "http://test.com",
-                        new List<KeyValuePair<string, string>>()));
+                        new List<KeyValuePair<string, string>>(),
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -136,7 +139,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await client.PostFormToStringAsync(
                     "http://test.com",
                     formData,
-                    new Dictionary<string, string> { { "X-Custom", "hdr" } });
+                    new Dictionary<string, string> { { "X-Custom", "hdr" } },
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.True(handler.CapturedRequest!.Headers.Contains("X-Custom"));
             }
@@ -152,7 +156,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var tempFile = new TempFile("file-content"))
             {
                 await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                    ((HttpClient)null!).PostFileToStringAsync("http://test.com", tempFile.Path));
+                    ((HttpClient)null!).PostFileToStringAsync("http://test.com", tempFile.Path, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -165,7 +169,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new CapturingHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
-                    client.PostFileToStringAsync(url, tempFile.Path));
+                    client.PostFileToStringAsync(url, tempFile.Path, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -175,7 +179,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new CapturingHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
-                    client.PostFileToStringAsync("http://test.com", "   "));
+                    client.PostFileToStringAsync("http://test.com", "   ", cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -190,7 +194,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             using (var tempFile = new TempFile("file-body-data"))
             {
-                var result = await client.PostFileToStringAsync("http://test.com", tempFile.Path);
+                var result = await client.PostFileToStringAsync("http://test.com", tempFile.Path, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("file-ok", result);
                 Assert.Equal("file-body-data", handler.CapturedBody);
@@ -204,7 +208,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(handler))
             using (var tempFile = new TempFile("payload"))
             {
-                await client.PostFileToStringAsync("http://test.com", tempFile.Path);
+                await client.PostFileToStringAsync("http://test.com", tempFile.Path, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(handler.CapturedRequest!.Content);
                 Assert.Equal("application/octet-stream",
@@ -220,7 +224,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var tempFile = new TempFile("x"))
             {
                 await Assert.ThrowsAsync<HttpRequestException>(() =>
-                    client.PostFileToStringAsync("http://test.com", tempFile.Path));
+                    client.PostFileToStringAsync("http://test.com", tempFile.Path, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -234,7 +238,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await client.PostFileToStringAsync(
                     "http://test.com",
                     tempFile.Path,
-                    new Dictionary<string, string> { { "X-Trace-Id", "tid" } });
+                    new Dictionary<string, string> { { "X-Trace-Id", "tid" } },
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("tid", handler.CapturedRequest!.Headers.GetValues("X-Trace-Id").Single());
             }
@@ -251,7 +256,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 await Assert.ThrowsAsync<ArgumentNullException>(() =>
                     ((HttpClient)null!).PostMultipartFileToStringAsync(
-                        "http://test.com", "file", tempFile.Path));
+                        "http://test.com", "file", tempFile.Path,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -264,7 +270,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new CapturingHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
-                    client.PostMultipartFileToStringAsync(url, "file", tempFile.Path));
+                    client.PostMultipartFileToStringAsync(url, "file", tempFile.Path, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -277,7 +283,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new CapturingHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
-                    client.PostMultipartFileToStringAsync("http://test.com", field, tempFile.Path));
+                    client.PostMultipartFileToStringAsync("http://test.com", field, tempFile.Path, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -289,7 +295,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var client = new HttpClient(new CapturingHandler()))
             {
                 await Assert.ThrowsAsync<ArgumentException>(() =>
-                    client.PostMultipartFileToStringAsync("http://test.com", "file", path));
+                    client.PostMultipartFileToStringAsync("http://test.com", "file", path, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -305,7 +311,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var tempFile = new TempFile("multipart-body"))
             {
                 var result = await client.PostMultipartFileToStringAsync(
-                    "http://test.com", "uploadFile", tempFile.Path);
+                    "http://test.com", "uploadFile", tempFile.Path,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("uploaded", result);
             }
@@ -319,7 +326,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var tempFile = new TempFile("data"))
             {
                 await client.PostMultipartFileToStringAsync(
-                    "http://test.com", "fileField", tempFile.Path);
+                    "http://test.com", "fileField", tempFile.Path,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(handler.CapturedRequest!.Content);
                 Assert.IsType<MultipartFormDataContent>(handler.CapturedRequest.Content);
@@ -340,7 +348,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 };
 
                 await client.PostMultipartFileToStringAsync(
-                    "http://test.com", "upload", tempFile.Path, formData);
+                    "http://test.com", "upload", tempFile.Path, formData,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(handler.CapturedBody);
                 Assert.Contains("my-file", handler.CapturedBody);
@@ -356,7 +365,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             using (var tempFile = new TempFile("x"))
             {
                 await Assert.ThrowsAsync<HttpRequestException>(() =>
-                    client.PostMultipartFileToStringAsync("http://test.com", "file", tempFile.Path));
+                    client.PostMultipartFileToStringAsync("http://test.com", "file", tempFile.Path, cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 

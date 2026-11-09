@@ -31,7 +31,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 };
 
-                await client.PostJsonToStringAsync("http://test.com", new SamplePayload("alpha"), options);
+                await client.PostJsonToStringAsync("http://test.com", new SamplePayload("alpha"), options, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(handler.CapturedBody);
                 Assert.Contains("\"name\":\"alpha\"", handler.CapturedBody);
@@ -50,7 +50,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 };
 
                 var result = await client.PostJsonToByteArrayAsync(
-                    "http://test.com", new SamplePayload("p"), options);
+                    "http://test.com", new SamplePayload("p"), options,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("byte-out", Encoding.UTF8.GetString(result));
             }
@@ -68,11 +69,12 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 };
 
                 await using (var stream = await client.PostJsonToStreamAsync(
-                    "http://test.com", new SamplePayload("s"), options))
+                    "http://test.com", new SamplePayload("s"), options,
+                    cancellationToken: TestContext.Current.CancellationToken))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        Assert.Equal("json-stream", await reader.ReadToEndAsync());
+                        Assert.Equal("json-stream", await reader.ReadToEndAsync(cancellationToken: TestContext.Current.CancellationToken));
                     }
                 }
             }
@@ -93,7 +95,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     "http://test.com",
                     new SamplePayload("dual"),
                     new Dictionary<string, string> { { "X-Mode", "custom-options" } },
-                    options);
+                    options,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Contains("\"name\":\"dual\"", handler.CapturedBody);
                 Assert.True(handler.CapturedRequest!.Headers.Contains("X-Mode"));
@@ -115,7 +118,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     "http://test.com",
                     new SamplePayload("h"),
                     new Dictionary<string, string> { { "X-Hdr", "v" } },
-                    options);
+                    options,
+                    cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("ok", Encoding.UTF8.GetString(result));
                 Assert.True(handler.CapturedRequest!.Headers.Contains("X-Hdr"));
@@ -137,11 +141,12 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     "http://test.com",
                     new SamplePayload("h"),
                     new Dictionary<string, string> { { "X-S", "1" } },
-                    options))
+                    options,
+                    cancellationToken: TestContext.Current.CancellationToken))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        Assert.Equal("s-out", await reader.ReadToEndAsync());
+                        Assert.Equal("s-out", await reader.ReadToEndAsync(cancellationToken: TestContext.Current.CancellationToken));
                     }
                 }
 
@@ -159,7 +164,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             var handler = new BodyCapturingHandler();
             using (var client = new HttpClient(handler))
             {
-                await client.PostJsonToStringAsync("http://test.com", new SamplePayload("ct"));
+                await client.PostJsonToStringAsync("http://test.com", new SamplePayload("ct"), cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.NotNull(handler.CapturedRequest!.Content);
                 Assert.Equal("application/json",
@@ -173,7 +178,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             var handler = new BodyCapturingHandler();
             using (var client = new HttpClient(handler))
             {
-                await client.PutJsonToStringAsync("http://test.com", new SamplePayload("put-ct"));
+                await client.PutJsonToStringAsync("http://test.com", new SamplePayload("put-ct"), cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("application/json",
                     handler.CapturedRequest!.Content!.Headers.ContentType!.MediaType);
@@ -186,7 +191,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             var handler = new BodyCapturingHandler();
             using (var client = new HttpClient(handler))
             {
-                await client.PatchJsonToStringAsync("http://test.com", new SamplePayload("patch-ct"));
+                await client.PatchJsonToStringAsync("http://test.com", new SamplePayload("patch-ct"), cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("application/json",
                     handler.CapturedRequest!.Content!.Headers.ContentType!.MediaType);
@@ -203,7 +208,7 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             var handler = new BodyCapturingHandler();
             using (var client = new HttpClient(handler))
             {
-                await client.GetToStringAsync("http://example.org/api/items?page=1&size=10");
+                await client.GetToStringAsync("http://example.org/api/items?page=1&size=10", cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.Equal("http://example.org/api/items?page=1&size=10",
                     handler.CapturedRequest!.RequestUri!.ToString());
@@ -222,11 +227,12 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
             {
                 await using (var stream = await client.GetToStreamAsync(
                     "http://test.com",
-                    new Dictionary<string, string> { { "X-Range", "0-100" } }))
+                    new Dictionary<string, string> { { "X-Range", "0-100" } },
+                    cancellationToken: TestContext.Current.CancellationToken))
                 {
                     using (var reader = new StreamReader(stream))
                     {
-                        Assert.Equal("gh-stream", await reader.ReadToEndAsync());
+                        Assert.Equal("gh-stream", await reader.ReadToEndAsync(cancellationToken: TestContext.Current.CancellationToken));
                     }
                 }
 
@@ -243,7 +249,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await using (var stream = await client.PostJsonToStreamAsync(
                     "http://test.com",
                     new SamplePayload("p"),
-                    new Dictionary<string, string> { { "Authorization", "Bearer t" } }))
+                    new Dictionary<string, string> { { "Authorization", "Bearer t" } },
+                    cancellationToken: TestContext.Current.CancellationToken))
                 {
                     Assert.Equal(HttpMethod.Post, handler.CapturedRequest!.Method);
                 }
@@ -261,7 +268,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await using (var stream = await client.PutJsonToStreamAsync(
                     "http://test.com",
                     new SamplePayload("p"),
-                    new Dictionary<string, string> { { "X-Put", "1" } }))
+                    new Dictionary<string, string> { { "X-Put", "1" } },
+                    cancellationToken: TestContext.Current.CancellationToken))
                 {
                     Assert.Equal(HttpMethod.Put, handler.CapturedRequest!.Method);
                 }
@@ -279,7 +287,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                 await using (var stream = await client.PatchJsonToStreamAsync(
                     "http://test.com",
                     new SamplePayload("p"),
-                    new Dictionary<string, string> { { "X-Patch", "1" } }))
+                    new Dictionary<string, string> { { "X-Patch", "1" } },
+                    cancellationToken: TestContext.Current.CancellationToken))
                 {
                     Assert.Equal(HttpMethod.Patch, handler.CapturedRequest!.Method);
                 }
@@ -301,7 +310,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     client.GetToStringAsync(
                         "http://test.com",
                         new Dictionary<string, string>(),
-                        timeout: 0));
+                        timeout: 0,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -314,7 +324,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     client.GetToStringAsync(
                         "http://test.com",
                         new Dictionary<string, string>(),
-                        timeout: -5));
+                        timeout: -5,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -328,7 +339,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                         "http://test.com",
                         new SamplePayload("x"),
                         new Dictionary<string, string>(),
-                        timeout: 0));
+                        timeout: 0,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -342,7 +354,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                         "http://test.com",
                         new SamplePayload("x"),
                         new Dictionary<string, string>(),
-                        timeout: -1));
+                        timeout: -1,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -355,7 +368,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     client.DeleteToStringAsync(
                         "http://test.com",
                         new Dictionary<string, string>(),
-                        timeout: 0));
+                        timeout: 0,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -368,7 +382,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     client.HeadAsync(
                         "http://test.com",
                         new Dictionary<string, string>(),
-                        timeout: -3));
+                        timeout: -3,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 
@@ -381,7 +396,8 @@ namespace GameFrameX.Foundation.Tests.Http.Extension
                     client.OptionsAsync(
                         "http://test.com",
                         new Dictionary<string, string>(),
-                        timeout: 0));
+                        timeout: 0,
+                        cancellationToken: TestContext.Current.CancellationToken));
             }
         }
 

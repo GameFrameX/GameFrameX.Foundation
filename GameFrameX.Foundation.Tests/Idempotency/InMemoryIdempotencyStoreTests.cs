@@ -49,10 +49,10 @@ public class InMemoryIdempotencyStoreTests
     {
         // 安排
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000)));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000), cancellationToken: TestContext.Current.CancellationToken));
 
         // 执行：新占位的时间基准未越过过期时刻
-        bool occupied = await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-beta", 1500, 2500));
+        bool occupied = await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-beta", 1500, 2500), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.False(occupied);
@@ -63,14 +63,14 @@ public class InMemoryIdempotencyStoreTests
     {
         // 安排
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000)));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000), cancellationToken: TestContext.Current.CancellationToken));
 
         // 执行：新占位的时间基准越过过期时刻
-        bool occupied = await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-beta", 2001, 3001));
+        bool occupied = await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-beta", 2001, 3001), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：过期记录被覆盖
         Assert.True(occupied);
-        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(record);
         Assert.Equal("digest-beta", record!.RequestDigest);
         Assert.Equal(2001, record.CreatedTime);
@@ -81,15 +81,15 @@ public class InMemoryIdempotencyStoreTests
     {
         // 安排：占位后落为失败（未过期）
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 9000)));
-        await idempotencyStore.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 1200));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 9000), cancellationToken: TestContext.Current.CancellationToken));
+        await idempotencyStore.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 1200), cancellationToken: TestContext.Current.CancellationToken);
 
         // 执行：失败重执行策略下的新占位（时间基准未过期）
-        bool occupied = await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1500, 9500));
+        bool occupied = await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1500, 9500), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：失败记录被覆盖为新的执行中记录
         Assert.True(occupied);
-        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(record);
         Assert.Equal(IdempotencyStatus.Processing, record!.Status);
         Assert.Equal(1500, record.CreatedTime);
@@ -100,14 +100,14 @@ public class InMemoryIdempotencyStoreTests
     {
         // 安排
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000)));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000), cancellationToken: TestContext.Current.CancellationToken));
         byte[] firstResponseBytes = new byte[] { 1, 2, 3, 4 };
 
         // 执行
-        await idempotencyStore.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), firstResponseBytes, 1800));
+        await idempotencyStore.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), firstResponseBytes, 1800), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言：完结回读
-        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(record);
         Assert.Equal(IdempotencyStatus.Completed, record!.Status);
         Assert.NotNull(record.FirstResponse);
@@ -124,7 +124,7 @@ public class InMemoryIdempotencyStoreTests
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
 
         // 执行 + 断言
-        await Assert.ThrowsAsync<InvalidOperationException>(() => idempotencyStore.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 1 }, 1000)));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => idempotencyStore.CompleteAsync(new IdempotencyCompletionRequest(CreateIdentifier(), new byte[] { 1 }, 1000), cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -132,13 +132,13 @@ public class InMemoryIdempotencyStoreTests
     {
         // 安排
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000)));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(CreateRecord("digest-alpha", 1000, 2000), cancellationToken: TestContext.Current.CancellationToken));
 
         // 执行
-        await idempotencyStore.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 1700));
+        await idempotencyStore.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 1700), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
-        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
         Assert.NotNull(record);
         Assert.Equal(IdempotencyStatus.Failed, record!.Status);
         Assert.Equal(1700, record.FinishedTime);
@@ -151,7 +151,7 @@ public class InMemoryIdempotencyStoreTests
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
 
         // 执行 + 断言
-        await Assert.ThrowsAsync<InvalidOperationException>(() => idempotencyStore.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 1000)));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => idempotencyStore.FailAsync(new IdempotencyFailureRequest(CreateIdentifier(), 1000), cancellationToken: TestContext.Current.CancellationToken));
     }
 
     [Fact]
@@ -161,7 +161,7 @@ public class InMemoryIdempotencyStoreTests
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
 
         // 执行
-        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier());
+        IdempotencyRecord? record = await idempotencyStore.TryGetRecordAsync(CreateIdentifier(), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.Null(record);
@@ -172,22 +172,22 @@ public class InMemoryIdempotencyStoreTests
     {
         // 安排：三条记录，两条过期（不同键）、一条未过期
         InMemoryIdempotencyStore idempotencyStore = new InMemoryIdempotencyStore();
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(new IdempotencyRecord(TestScope, "key-expired-1", "digest", IdempotencyStatus.Completed, null, 1000, 1500, 1200)));
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(new IdempotencyRecord(TestScope, "key-expired-2", "digest", IdempotencyStatus.Failed, null, 1000, 1600, 1300)));
-        Assert.True(await idempotencyStore.TryBeginProcessingAsync(new IdempotencyRecord(TestScope, "key-alive", "digest", IdempotencyStatus.Completed, null, 1000, 5000, 1200)));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(new IdempotencyRecord(TestScope, "key-expired-1", "digest", IdempotencyStatus.Completed, null, 1000, 1500, 1200), cancellationToken: TestContext.Current.CancellationToken));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(new IdempotencyRecord(TestScope, "key-expired-2", "digest", IdempotencyStatus.Failed, null, 1000, 1600, 1300), cancellationToken: TestContext.Current.CancellationToken));
+        Assert.True(await idempotencyStore.TryBeginProcessingAsync(new IdempotencyRecord(TestScope, "key-alive", "digest", IdempotencyStatus.Completed, null, 1000, 5000, 1200), cancellationToken: TestContext.Current.CancellationToken));
 
         // 执行：当前时刻为 1550，仅第一条过期
-        int removedCount = await idempotencyStore.RemoveExpiredRecordsAsync(new ExpiredRecordRemovalRequest(1550));
+        int removedCount = await idempotencyStore.RemoveExpiredRecordsAsync(new ExpiredRecordRemovalRequest(1550), cancellationToken: TestContext.Current.CancellationToken);
 
         // 断言
         Assert.Equal(1, removedCount);
-        Assert.Null(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-expired-1")));
-        Assert.NotNull(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-expired-2")));
-        Assert.NotNull(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-alive")));
+        Assert.Null(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-expired-1"), cancellationToken: TestContext.Current.CancellationToken));
+        Assert.NotNull(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-expired-2"), cancellationToken: TestContext.Current.CancellationToken));
+        Assert.NotNull(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-alive"), cancellationToken: TestContext.Current.CancellationToken));
 
         // 再推进到 1700：第二条也过期，未过期记录保留
-        int secondRemovedCount = await idempotencyStore.RemoveExpiredRecordsAsync(new ExpiredRecordRemovalRequest(1700));
+        int secondRemovedCount = await idempotencyStore.RemoveExpiredRecordsAsync(new ExpiredRecordRemovalRequest(1700), cancellationToken: TestContext.Current.CancellationToken);
         Assert.Equal(1, secondRemovedCount);
-        Assert.NotNull(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-alive")));
+        Assert.NotNull(await idempotencyStore.TryGetRecordAsync(new IdempotencyRecordIdentifier(TestScope, "key-alive"), cancellationToken: TestContext.Current.CancellationToken));
     }
 }

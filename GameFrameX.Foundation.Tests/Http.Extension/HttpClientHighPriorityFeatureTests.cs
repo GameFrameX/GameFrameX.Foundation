@@ -57,7 +57,7 @@ public sealed class HttpClientHighPriorityFeatureTests
         handler.Enqueue(HttpStatusCode.OK, "{\"name\":\"ok\",\"value\":42}");
         using (var client = new HttpClient(handler))
         {
-            var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items");
+            var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items", cancellationToken: TestContext.Current.CancellationToken);
 
             Assert.Equal(new ResponseDto("ok", 42), result);
             Assert.Equal(HttpMethod.Get, handler.Requests.Single().Method);
@@ -73,7 +73,7 @@ public sealed class HttpClientHighPriorityFeatureTests
         {
             var result = await client.PostJsonAsync<RequestDto, ResponseDto>(
                              "http://example.com/items",
-                             new RequestDto("input"));
+                             new RequestDto("input"), cancellationToken: TestContext.Current.CancellationToken);
 
             Assert.Equal(new ResponseDto("created", 7), result);
             Assert.Equal(HttpMethod.Post, handler.Requests.Single().Method);
@@ -92,7 +92,8 @@ public sealed class HttpClientHighPriorityFeatureTests
                                 client.SendJsonAsync<RequestDto, ResponseDto>(
                                     HttpMethod.Post,
                                     "http://example.com/items",
-                                    new RequestDto("input")));
+                                    new RequestDto("input"),
+                                    cancellationToken: TestContext.Current.CancellationToken));
 
             Assert.Equal(HttpStatusCode.BadGateway, exception.StatusCode);
             Assert.Equal(new Uri("http://example.com/items"), exception.RequestUri);
@@ -107,7 +108,7 @@ public sealed class HttpClientHighPriorityFeatureTests
         handler.Enqueue(HttpStatusCode.NoContent, "");
         using (var client = new HttpClient(handler))
         {
-            var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items");
+            var result = await client.GetJsonAsync<ResponseDto>("http://example.com/items", cancellationToken: TestContext.Current.CancellationToken);
 
             Assert.Null(result);
         }
@@ -121,7 +122,7 @@ public sealed class HttpClientHighPriorityFeatureTests
         using (var client = new HttpClient(handler))
         {
             var exception = await Assert.ThrowsAsync<HttpClientRequestException>(() =>
-                                client.GetJsonAsync<ResponseDto>("http://example.com/items"));
+                                client.GetJsonAsync<ResponseDto>("http://example.com/items", cancellationToken: TestContext.Current.CancellationToken));
 
             Assert.IsType<System.Text.Json.JsonException>(exception.RawException);
             Assert.Contains("not json", exception.ResponseSummary);
@@ -148,7 +149,7 @@ public sealed class HttpClientHighPriorityFeatureTests
                                      BackoffFactor = 2,
                                      OnRetry = retry => retryDelays.Add(retry.Delay)
                                  }
-                             });
+                             }, cancellationToken: TestContext.Current.CancellationToken);
 
             Assert.Equal(new ResponseDto("retried", 2), result);
             Assert.Equal(2, handler.SendCount);
@@ -176,7 +177,7 @@ public sealed class HttpClientHighPriorityFeatureTests
                             MaxRetries = 1,
                             BaseDelay = TimeSpan.FromMilliseconds(1)
                         }
-                    }));
+                    }, cancellationToken: TestContext.Current.CancellationToken));
 
             Assert.Equal(1, handler.SendCount);
         }
@@ -201,7 +202,7 @@ public sealed class HttpClientHighPriorityFeatureTests
                                      BaseDelay = TimeSpan.FromMilliseconds(1),
                                      AllowNonIdempotentRetry = true
                                  }
-                             });
+                             }, cancellationToken: TestContext.Current.CancellationToken);
 
             Assert.Equal(new ResponseDto("retried", 2), result);
             Assert.Equal(2, handler.SendCount);
@@ -253,7 +254,7 @@ public sealed class HttpClientHighPriorityFeatureTests
                 {
                     Headers = { ["Content-Type"] = "application/json" },
                     OnHeader = headerResults.Add
-                });
+                }, cancellationToken: TestContext.Current.CancellationToken);
 
             var result = Assert.Single(headerResults);
             Assert.Equal("Content-Type", result.Name);

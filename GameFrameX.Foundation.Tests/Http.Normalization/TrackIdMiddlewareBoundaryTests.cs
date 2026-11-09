@@ -75,8 +75,8 @@ public sealed class TrackIdMiddlewareBoundaryTests
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, trackId);
 
                 // Act
-                var response = await client.GetAsync("/");
-                var body = await response.Content.ReadAsStringAsync();
+                var response = await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken);
+                var body = await response.Content.ReadAsStringAsync(cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 Assert.Equal(trackId, body);
@@ -104,7 +104,7 @@ public sealed class TrackIdMiddlewareBoundaryTests
             using (var client = host.GetTestClient())
             {
                 // Act
-                var response = await client.GetAsync("/");
+                var response = await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 Assert.Equal(
@@ -129,7 +129,7 @@ public sealed class TrackIdMiddlewareBoundaryTests
             using (var client = host.GetTestClient())
             {
                 // Act
-                var response = await client.GetAsync("/");
+                var response = await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 var values = response.Headers.GetValues(TrackIdMiddleware.HeaderName).ToArray();
@@ -158,7 +158,7 @@ public sealed class TrackIdMiddlewareBoundaryTests
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, incoming);
 
                 // Act
-                var response = await client.GetAsync("/");
+                var response = await client.GetAsync("/", cancellationToken: TestContext.Current.CancellationToken);
 
                 // Assert
                 var responseValue = response.Headers.GetValues(TrackIdMiddleware.HeaderName).First();
