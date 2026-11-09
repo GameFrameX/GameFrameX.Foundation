@@ -119,29 +119,24 @@ SM4是中国国家标准的分组密码算法：
 ```csharp
 using GameFrameX.Foundation.Encryption;
 
-// 生成SM4密钥
-byte[] key = Sm4Helper.GenerateKey();
-
-// ECB模式加密解密（不推荐用于生产环境）
+string key = "0123456789ABCDEF0123456789ABCDEF"; // hex模式：32个hex字符；非hex模式：16字节ASCII
 string plainText = "SM4加密测试";
-string encryptedECB = Sm4Helper.EncryptECB(plainText, key);
-string decryptedECB = Sm4Helper.DecryptECB(encryptedECB, key);
 
-// CBC模式加密解密（推荐）
-byte[] iv = Sm4Helper.GenerateIV();
-string encryptedCBC = Sm4Helper.EncryptCBC(plainText, key, iv);
-string decryptedCBC = Sm4Helper.DecryptCBC(encryptedCBC, key, iv);
+// CBC模式加密解密（推荐）：每次调用生成随机IV，输出为 hex(IV + 密文)
+string encrypted = Sm4Helper.EncryptCbcWithRandomIv(key, plainText, hexString: true);
+string decrypted = Sm4Helper.DecryptCbcWithRandomIv(key, encrypted, hexString: true);
 
-// 字节数组操作
-byte[] data = Encoding.UTF8.GetBytes("国密SM4算法");
-byte[] encryptedBytes = Sm4Helper.EncryptCBC(data, key, iv);
-byte[] decryptedBytes = Sm4Helper.DecryptCBC(encryptedBytes, key, iv);
+// CBC模式（显式IV，兼容存量数据）：IV必须与加密时一致
+string iv = "FEDCBA9876543210FEDCBA9876543210"; // 32个hex字符
+string encryptedWithIv = Sm4Helper.EncryptCbc(key, plainText, iv, hexString: true);
+string decryptedWithIv = Sm4Helper.DecryptCbc(key, encryptedWithIv, iv, hexString: true);
 
-// 流式加密（适用于大文件）
-using var inputStream = new MemoryStream(data);
-using var outputStream = new MemoryStream();
-Sm4Helper.EncryptStream(inputStream, outputStream, key, iv);
+// ECB模式（已标记[Obsolete]，仅用于解密存量数据，不推荐用于新数据）
+string encryptedEcb = Sm4Helper.EncryptEcb(key, plainText, hexString: true);
+string decryptedEcb = Sm4Helper.DecryptEcb(key, encryptedEcb, hexString: true);
 ```
+
+> **安全提示**：`EncryptCbc` 在省略 IV 时使用历史固定 IV，同一密钥下加密结果是确定性的，会泄露首块明文相等性，已标记 `[Obsolete]`。新代码请使用 `EncryptCbcWithRandomIv` / `DecryptCbcWithRandomIv`（随机 IV 随密文携带，无需单独传输）；存量固定 IV 密文仍可用 `DecryptCbc` 解密迁移。
 
 ### 5. DSA数字签名算法 (DsaHelper)
 
