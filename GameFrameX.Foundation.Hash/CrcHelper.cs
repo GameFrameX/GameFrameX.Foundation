@@ -315,7 +315,7 @@ public static partial class CrcHelper
     /// </summary>
     /// <param name="buffer">目标缓冲区 / The target buffer to XOR into</param>
     /// <param name="bytesRead">本次从流读到的字节数 / Bytes read from the stream in this iteration</param>
-    /// <param name="length">剩余可异或字节数（<= 0 时调用方应跳过） / Remaining bytes available to XOR</param>
+    /// <param name="length">剩余可异或字节数（&lt;= 0 时调用方应跳过） / Remaining bytes available to XOR</param>
     /// <param name="code">用于异或的字节码 / The code byte array to XOR with</param>
     /// <param name="codeLength"><paramref name="code"/> 的长度 / Length of the code</param>
     /// <param name="codeIndex">循环异或的当前游标（按引用传递，调用方负责初始化为 0） / Current rotation index, passed by ref</param>

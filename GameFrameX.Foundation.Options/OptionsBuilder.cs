@@ -894,7 +894,7 @@ public sealed class OptionsBuilder<T> where T : class, new()
     /// </summary>
     /// <remarks>
     /// Converts and writes a single option value to the target property. 5 exception
-    /// types raised by <see cref="ConvertOptionValue"/> or <see cref="PropertyInfo.SetValue"/>
+    /// types raised by <see cref="ConvertOptionValue"/> or <see cref="PropertyInfo.SetValue(object,object)"/>
     /// (<c>ArgumentException</c>, <c>TargetInvocationException</c>, <c>FormatException</c>,
     /// <c>InvalidCastException</c>, <c>OverflowException</c>) are aggregated via a single
     /// <c>catch (Exception)</c> and rewrapped by <see cref="WrapOptionValueException"/>.
@@ -1012,10 +1012,10 @@ public sealed class OptionsBuilder<T> where T : class, new()
     }
 
     /// <summary>
-    /// 将字符串值转换为目标类型。按枚举、<see cref="Guid"/> 顺序优先匹配，兜底走 <see cref="Convert.ChangeType(string,System.Type,System.IFormatProvider)"/>。
+    /// 将字符串值转换为目标类型。按枚举、<see cref="Guid"/> 顺序优先匹配，兜底走 <see cref="Convert.ChangeType(object,System.Type,System.IFormatProvider)"/>。
     /// </summary>
     /// <remarks>
-    /// Converts a string value to the target type. Matches <see cref="Enum"/> and <see cref="Guid"/> first, falling back to <see cref="Convert.ChangeType(string,System.Type,System.IFormatProvider)"/>.
+    /// Converts a string value to the target type. Matches <see cref="Enum"/> and <see cref="Guid"/> first, falling back to <see cref="Convert.ChangeType(object,System.Type,System.IFormatProvider)"/>.
     /// </remarks>
     /// <param name="targetType">目标类型 / Target type</param>
     /// <param name="stringValue">字符串值 / String value</param>

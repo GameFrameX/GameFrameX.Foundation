@@ -38,10 +38,10 @@ using Serilog.Events;
 namespace GameFrameX.Foundation.Logger.MongoDB;
 
 /// <summary>
-/// MongoDB 日志 sink 的组件配置选项，由 <see cref="LogOptionsMongoDbExtensions.UseMongoDb"/> 注册到日志系统。
+/// MongoDB 日志 sink 的组件配置选项，由 <see cref="LogOptionsMongoDbExtensions.UseMongoDb(GameFrameX.Foundation.Logger.LogOptions,System.Action{MongoDbSinkOptions})"/> 注册到日志系统。
 /// </summary>
 /// <remarks>
-/// Component configuration for the MongoDB logging sink, registered into the logging system via <see cref="LogOptionsMongoDbExtensions.UseMongoDb"/>.
+/// Component configuration for the MongoDB logging sink, registered into the logging system via <see cref="LogOptionsMongoDbExtensions.UseMongoDb(GameFrameX.Foundation.Logger.LogOptions,System.Action{MongoDbSinkOptions})"/>.
 /// 自 C77 起 Mongo 接入参数从核心包 <c>LogOptions</c> 迁入本组件包，核心包不再依赖 MongoDB.Driver / Serilog.Sinks.MongoDB。
 /// </remarks>
 public sealed class MongoDbSinkOptions

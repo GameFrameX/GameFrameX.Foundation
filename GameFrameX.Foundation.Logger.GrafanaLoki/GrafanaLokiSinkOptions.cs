@@ -37,10 +37,10 @@ using Serilog.Events;
 namespace GameFrameX.Foundation.Logger.GrafanaLoki;
 
 /// <summary>
-/// Grafana Loki 日志 sink 的组件配置选项，由 <see cref="LogOptionsGrafanaLokiExtensions.UseGrafanaLoki"/> 注册到日志系统。
+/// Grafana Loki 日志 sink 的组件配置选项，由 <see cref="LogOptionsGrafanaLokiExtensions.UseGrafanaLoki(GameFrameX.Foundation.Logger.LogOptions,System.Action{GrafanaLokiSinkOptions})"/> 注册到日志系统。
 /// </summary>
 /// <remarks>
-/// Component configuration for the Grafana Loki logging sink, registered into the logging system via <see cref="LogOptionsGrafanaLokiExtensions.UseGrafanaLoki"/>.
+/// Component configuration for the Grafana Loki logging sink, registered into the logging system via <see cref="LogOptionsGrafanaLokiExtensions.UseGrafanaLoki(GameFrameX.Foundation.Logger.LogOptions,System.Action{GrafanaLokiSinkOptions})"/>.
 /// 自 C77 起 Loki 接入参数从核心包 <c>LogOptions</c> 迁入本组件包，核心包不再依赖 Serilog.Sinks.Grafana.Loki。
 /// </remarks>
 public sealed class GrafanaLokiSinkOptions

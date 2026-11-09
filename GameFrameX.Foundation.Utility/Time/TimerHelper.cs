@@ -353,7 +353,7 @@ public static partial class TimerHelper
     /// Console.WriteLine($"历史时间毫秒数: {historicalMillis}"); // 负值
     /// </code>
     /// </example>
-    /// <seealso cref="DateTimeToSeconds"/>
+    /// <seealso cref="DateTimeToSeconds(DateTime,bool)"/>
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="EpochLocal"/>
     public static long DateTimeToMilliseconds(DateTime time, bool utc = false)
@@ -403,7 +403,7 @@ public static partial class TimerHelper
     /// Console.WriteLine($"精度差异: {millis - localSeconds * 1000} 毫秒");
     /// </code>
     /// </example>
-    /// <seealso cref="DateTimeToMilliseconds"/>
+    /// <seealso cref="DateTimeToMilliseconds(DateTime,bool)"/>
     /// <seealso cref="EpochUtc"/>
     /// <seealso cref="EpochLocal"/>
     public static long DateTimeToSeconds(DateTime time, bool utc = false)

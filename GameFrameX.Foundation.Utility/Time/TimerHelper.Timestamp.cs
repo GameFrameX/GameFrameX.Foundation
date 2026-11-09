@@ -222,7 +222,7 @@ public static partial class TimerHelper
     /// </summary>
     /// <remarks>
     /// Converts a Unix timestamp (seconds) to a <see cref="TimeSpan"/> object.
-    /// This method validates the timestamp range and then converts it to a TimeSpan using <see cref="TimeSpan.FromSeconds"/>.
+    /// This method validates the timestamp range and then converts it to a TimeSpan using <see cref="TimeSpan.FromSeconds(double)"/>.
     /// The conversion is timezone-independent: the TimeSpan represents the raw interval from epoch.
     /// </remarks>
     /// <param name="timestamp">自1970年1月1日午夜以来经过的秒数 / Number of seconds elapsed since midnight on January 1, 1970</param>
@@ -244,7 +244,7 @@ public static partial class TimerHelper
     /// </summary>
     /// <remarks>
     /// Converts a Unix timestamp (milliseconds) to a <see cref="TimeSpan"/> object.
-    /// This method validates the millisecond timestamp range and then converts it to a TimeSpan using <see cref="TimeSpan.FromMilliseconds"/>.
+    /// This method validates the millisecond timestamp range and then converts it to a TimeSpan using <see cref="TimeSpan.FromMilliseconds(double)"/>.
     /// The conversion is timezone-independent: the TimeSpan represents the raw interval from epoch.
     /// </remarks>
     /// <param name="timestampMilliseconds">自1970年1月1日午夜以来经过的毫秒数 / Number of milliseconds elapsed since midnight on January 1, 1970</param>
