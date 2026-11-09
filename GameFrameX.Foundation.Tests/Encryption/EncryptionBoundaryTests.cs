@@ -3,6 +3,10 @@ using System.Text;
 using GameFrameX.Foundation.Encryption;
 using Xunit;
 
+// SM4 存量数据兼容性测试需调用已 [Obsolete] 的固定 IV CBC 重载（EncryptCbc/DecryptCbc），
+// 验证旧密文可继续解密，故屏蔽 CS0618。
+#pragma warning disable CS0618
+
 namespace GameFrameX.Foundation.Tests.Encryption;
 
 /// <summary>
@@ -189,13 +193,13 @@ public class EncryptionBoundaryTests
         // Arrange
         var key = "0123456789ABCDEF0123456789ABCDEF";
         var plainText = "SM4 ECB tampered ciphertext test with enough padding blocks!!";
-#pragma warning disable CS0618
+
         var encryptedHex = Sm4Helper.EncryptEcb(key, plainText, hexString: true);
         var tamperedHex = TamperLastByte(encryptedHex);
 
         // Act & Assert
         Assert.Throws<CryptographicException>(() => Sm4Helper.DecryptEcb(key, tamperedHex, hexString: true));
-#pragma warning restore CS0618
+
     }
 
     /// <summary>
@@ -245,10 +249,10 @@ public class EncryptionBoundaryTests
         var plainText = "SM4-ECB中文往返测试——区块链";
 
         // Act
-#pragma warning disable CS0618
+
         var encrypted = Sm4Helper.EncryptEcb(key, plainText, hexString: true);
         var decrypted = Sm4Helper.DecryptEcb(key, encrypted, hexString: true);
-#pragma warning restore CS0618
+
 
         // Assert
         Assert.Equal(plainText, decrypted);

@@ -3,6 +3,10 @@ using System.Text;
 using Xunit;
 using GameFrameX.Foundation.Encryption;
 
+// 本文件为 SM4 存量数据兼容性测试：固定 IV CBC / ECB 重载已标记 [Obsolete]，
+// 测试必须继续调用它们以验证旧密文可解密，故屏蔽 CS0618。
+#pragma warning disable CS0618
+
 namespace GameFrameX.Foundation.Tests.Encryption;
 
 /// <summary>
