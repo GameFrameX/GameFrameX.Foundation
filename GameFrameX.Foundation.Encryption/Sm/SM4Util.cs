@@ -362,4 +362,122 @@ internal sealed class Sm4Util
         string plainText = Encoding.UTF8.GetString(decrypted);
         return plainText;
     }
+
+    /// <summary>
+    /// 使用CBC模式和调用方提供的随机IV加密字符串，输出格式为十六进制(IV + 密文)。
+    /// </summary>
+    /// <remarks>
+    /// Encrypts a string using CBC mode with a caller-supplied random IV. Output format is hex(IV + cipher text).
+    /// </remarks>
+    /// <param name="plainText">待加密的明文字符串 / Plain text string to encrypt</param>
+    /// <param name="ivBytes">随机初始化向量，长度必须为16字节 / Random initialization vector, must be 16 bytes</param>
+    /// <returns>十六进制(IV + 密文)字符串 / Hex string of (IV + cipher text)</returns>
+    /// <exception cref="ArgumentNullException">当plainText或ivBytes为null时抛出 / Thrown when plainText or ivBytes is null</exception>
+    /// <exception cref="ArgumentException">当密钥或IV长度不正确时抛出 / Thrown when key or IV length is incorrect</exception>
+    public string Encrypt_CBC_WithRandomIv(string plainText, byte[] ivBytes)
+    {
+        ArgumentNullException.ThrowIfNull(plainText);
+        ArgumentNullException.ThrowIfNull(ivBytes);
+
+        if (ivBytes.Length != 16)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.IVMustBe16Characters), nameof(ivBytes));
+        }
+
+        byte[] keyBytes = GetValidatedKeyBytes();
+
+        var ctx = new Sm4Context()
+        {
+            IsPadding = true,
+            Mode = Sm4.Sm4Encrypt
+        };
+
+        var sm4 = new Sm4
+        {
+            ForJavascript = forJavascript,
+        };
+
+        sm4.Sm4SetKeyEnc(ctx, keyBytes);
+        // Sm4_crypt_cbc 会原地更新传入的 IV 数组（链式移位），先快照原始 IV 用于输出前缀
+        // Sm4_crypt_cbc updates the supplied IV array in place (chaining), so snapshot the original IV for the output prefix
+        byte[] ivPrefix = (byte[])ivBytes.Clone();
+        byte[] encrypted = sm4.Sm4_crypt_cbc(ctx, ivBytes, Encoding.UTF8.GetBytes(plainText));
+
+        byte[] combined = new byte[ivPrefix.Length + encrypted.Length];
+        Buffer.BlockCopy(ivPrefix, 0, combined, 0, ivPrefix.Length);
+        Buffer.BlockCopy(encrypted, 0, combined, ivPrefix.Length, encrypted.Length);
+
+        return Encoding.ASCII.GetString(Hex.Encode(combined));
+    }
+
+    /// <summary>
+    /// 解密<see cref="Encrypt_CBC_WithRandomIv"/>生成的密文，从密文前16字节读取IV。
+    /// </summary>
+    /// <remarks>
+    /// Decrypts cipher text produced by <see cref="Encrypt_CBC_WithRandomIv"/>, reading the IV from the first 16 bytes.
+    /// </remarks>
+    /// <param name="cipherText">十六进制(IV + 密文)字符串 / Hex string of (IV + cipher text)</param>
+    /// <returns>解密后的明文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentNullException">当cipherText为null时抛出 / Thrown when cipherText is null</exception>
+    /// <exception cref="ArgumentException">当密钥长度不正确或密文格式非法时抛出 / Thrown when key length is incorrect or cipher text format is invalid</exception>
+    public string Decrypt_CBC_WithIvPrefix(string cipherText)
+    {
+        ArgumentNullException.ThrowIfNull(cipherText);
+
+        byte[] raw = Hex.Decode(cipherText);
+        if (raw.Length < 32 || raw.Length % 16 != 0)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm4InvalidDataFormat), nameof(cipherText));
+        }
+
+        byte[] ivBytes = new byte[16];
+        byte[] body = new byte[raw.Length - 16];
+        Buffer.BlockCopy(raw, 0, ivBytes, 0, 16);
+        Buffer.BlockCopy(raw, 16, body, 0, body.Length);
+
+        byte[] keyBytes = GetValidatedKeyBytes();
+
+        var ctx = new Sm4Context()
+        {
+            IsPadding = true,
+            Mode = Sm4.Sm4Decrypt
+        };
+
+        var sm4 = new Sm4
+        {
+            ForJavascript = forJavascript,
+        };
+
+        sm4.Sm4SetKeyDec(ctx, keyBytes);
+        byte[] decrypted = sm4.Sm4_crypt_cbc(ctx, ivBytes, body);
+
+        return Encoding.UTF8.GetString(decrypted);
+    }
+
+    /// <summary>
+    /// 校验密钥长度并返回密钥字节数组。
+    /// </summary>
+    /// <remarks>
+    /// Validates key length and returns key bytes.
+    /// </remarks>
+    /// <returns>密钥字节数组 / Key bytes</returns>
+    private byte[] GetValidatedKeyBytes()
+    {
+        if (hexString)
+        {
+            if (secretKey?.Length != 32)
+            {
+                throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(secretKey));
+            }
+
+            return Hex.Decode(secretKey);
+        }
+
+        if (secretKey?.Length != 16)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(secretKey));
+        }
+
+        return Encoding.ASCII.GetBytes(secretKey);
+    }
 }

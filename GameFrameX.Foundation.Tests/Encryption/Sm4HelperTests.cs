@@ -301,6 +301,76 @@ public class Sm4HelperTests
         Assert.Throws<ArgumentException>(() => Sm4Helper.EncryptEcb(invalidKey, TestData, hexString: false));
     }
 
+    [Fact]
+    public void EncryptCbcWithRandomIv_Roundtrip_ShouldReturnOriginalText()
+    {
+        // Act
+        var encryptedHex = Sm4Helper.EncryptCbcWithRandomIv(TestKey, TestData, hexString: true);
+        var decryptedText = Sm4Helper.DecryptCbcWithRandomIv(TestKey, encryptedHex, hexString: true);
+
+        // Assert
+        Assert.Equal(TestData, decryptedText);
+    }
+
+    [Fact]
+    public void EncryptCbcWithRandomIv_NonHexKey_Roundtrip_ShouldReturnOriginalText()
+    {
+        // Arrange
+        var nonHexKey = "0123456789abcdef"; // 16 ASCII characters
+
+        // Act
+        var encryptedHex = Sm4Helper.EncryptCbcWithRandomIv(nonHexKey, TestData, hexString: false);
+        var decryptedText = Sm4Helper.DecryptCbcWithRandomIv(nonHexKey, encryptedHex, hexString: false);
+
+        // Assert
+        Assert.Equal(TestData, decryptedText);
+    }
+
+    [Fact]
+    public void EncryptCbcWithRandomIv_SamePlaintextTwice_ShouldProduceDifferentCipherText()
+    {
+        // Act
+        var encrypted1 = Sm4Helper.EncryptCbcWithRandomIv(TestKey, ShortTestData, hexString: true);
+        var encrypted2 = Sm4Helper.EncryptCbcWithRandomIv(TestKey, ShortTestData, hexString: true);
+
+        // Assert
+        Assert.NotEqual(encrypted1, encrypted2);
+        Assert.Equal(ShortTestData, Sm4Helper.DecryptCbcWithRandomIv(TestKey, encrypted1, hexString: true));
+        Assert.Equal(ShortTestData, Sm4Helper.DecryptCbcWithRandomIv(TestKey, encrypted2, hexString: true));
+    }
+
+    [Fact]
+    public void EncryptCbcWithRandomIv_Output_ShouldCarry16ByteIvPrefix()
+    {
+        // Act
+        var encryptedHex = Sm4Helper.EncryptCbcWithRandomIv(TestKey, ShortTestData, hexString: true);
+
+        // Assert: hex(IV(16 bytes) + at least one cipher block(16 bytes)) >= 64 hex chars, block aligned
+        Assert.True(IsValidHexString(encryptedHex));
+        Assert.True(encryptedHex.Length >= 64);
+        Assert.Equal(0, encryptedHex.Length % 32);
+    }
+
+    [Fact]
+    public void DecryptCbcWithRandomIv_WithTruncatedCipherText_ShouldThrow()
+    {
+        // Arrange: only a 16-byte IV, no cipher body
+        var ivOnlyHex = "0123456789ABCDEF0123456789ABCDEF";
+
+        // Act & Assert
+        Assert.ThrowsAny<ArgumentException>(() => Sm4Helper.DecryptCbcWithRandomIv(TestKey, ivOnlyHex, hexString: true));
+    }
+
+    [Fact]
+    public void EncryptCbcWithRandomIv_WithInvalidKey_ShouldThrowException()
+    {
+        // Arrange
+        var invalidKey = "invalid_key";
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Sm4Helper.EncryptCbcWithRandomIv(invalidKey, TestData, hexString: false));
+    }
+
     /// <summary>
     /// 验证字符串是否为有效的十六进制字符串
     /// </summary>

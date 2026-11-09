@@ -55,12 +55,12 @@ public static class Sm4Helper
     /// </remarks>
     /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
     /// <param name="dataString">待加密的原文字符串 / Plain text string to encrypt</param>
-    /// <param name="iv">初始化向量，可选，默认为全0 / Initialization vector, optional, defaults to all zeros</param>
+    /// <param name="iv">初始化向量，可选；省略或传固定值时，同一密钥下加密结果是确定性的 / Initialization vector, optional; when omitted or fixed, encryption is deterministic under the same key</param>
     /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
     /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
     /// <returns>加密后的密文字符串 / Encrypted cipher text string</returns>
     /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
-    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
+    [Obsolete("使用固定或省略的IV时，同一密钥下的CBC加密是确定性的，会泄露首块明文相等性。请改用 EncryptCbcWithRandomIv（每次生成随机IV并随密文携带）。此方法仅为兼容存量数据保留。/ CBC with a fixed or omitted IV is deterministic under the same key and leaks equality of the first plaintext block. Use EncryptCbcWithRandomIv instead, which generates a fresh random IV carried with the cipher text. Retained only for compatibility with existing data.")]
     public static string EncryptCbc(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);
@@ -112,12 +112,12 @@ public static class Sm4Helper
     /// </remarks>
     /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
     /// <param name="dataString">待解密的密文字符串 / Cipher text string to decrypt</param>
-    /// <param name="iv">初始化向量，可选，默认为全0 / Initialization vector, optional, defaults to all zeros</param>
+    /// <param name="iv">初始化向量，可选；须与加密时使用的IV一致 / Initialization vector, optional; must match the IV used for encryption</param>
     /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
     /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
     /// <returns>解密后的原文字符串 / Decrypted plain text string</returns>
     /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
-    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
+    [Obsolete("EncryptCbcWithRandomIv 生成的密文请用 DecryptCbcWithRandomIv 解密（IV 随密文携带）。此方法仅适用于使用显式IV或历史固定IV加密的存量数据。/ Cipher text from EncryptCbcWithRandomIv should be decrypted with DecryptCbcWithRandomIv (IV is carried with the cipher text). This method is only for existing data encrypted with an explicit or the historical fixed IV.")]
     public static string DecryptCbc(string keyString, string dataString, string iv = null, bool forJavascript = false, bool hexString = false)
     {
         ArgumentNullException.ThrowIfNull(keyString);
@@ -153,6 +153,103 @@ public static class Sm4Helper
         try
         {
             return sm4Util.Decrypt_CBC(dataString);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm4InvalidDataFormat), ex);
+        }
+    }
+
+    /// <summary>
+    /// 使用CBC模式加密字符串数据，每次调用生成随机IV并随密文一起返回。
+    /// </summary>
+    /// <remarks>
+    /// Encrypts string data using CBC mode with a fresh random IV generated per call and carried with the cipher text.
+    /// 输出格式为十六进制(IV(16字节) + 密文)，请使用 <see cref="DecryptCbcWithRandomIv"/> 解密。
+    /// Output format is hex(IV(16 bytes) + cipher text); decrypt with <see cref="DecryptCbcWithRandomIv"/>.
+    /// </remarks>
+    /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
+    /// <param name="dataString">待加密的原文字符串 / Plain text string to encrypt</param>
+    /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
+    /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
+    /// <returns>十六进制(IV + 密文)字符串 / Hex string of (IV + cipher text)</returns>
+    /// <exception cref="ArgumentNullException">当keyString或dataString为null时抛出 / Thrown when keyString or dataString is null</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
+    public static string EncryptCbcWithRandomIv(string keyString, string dataString, bool forJavascript = false, bool hexString = false)
+    {
+        ArgumentNullException.ThrowIfNull(keyString);
+        ArgumentNullException.ThrowIfNull(dataString);
+        ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
+
+        // Validate key length based on hexString flag
+        if (hexString && keyString.Length != 32)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(keyString));
+        }
+        else if (!hexString && keyString.Length != 16)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
+        }
+
+        Sm4Util sm4Util = new Sm4Util
+        {
+            secretKey = keyString,
+            hexString = hexString,
+            forJavascript = forJavascript,
+        };
+
+        byte[] ivBytes = RandomNumberGenerator.GetBytes(16);
+
+        try
+        {
+            return sm4Util.Encrypt_CBC_WithRandomIv(dataString, ivBytes);
+        }
+        catch (IOException ex)
+        {
+            throw new CryptographicException(LocalizationService.GetString(LocalizationKeys.Exceptions.Sm4InvalidDataFormat), ex);
+        }
+    }
+
+    /// <summary>
+    /// 解密<see cref="EncryptCbcWithRandomIv"/>生成的密文，从密文前16字节读取IV。
+    /// </summary>
+    /// <remarks>
+    /// Decrypts cipher text produced by <see cref="EncryptCbcWithRandomIv"/>, reading the IV from the first 16 bytes.
+    /// </remarks>
+    /// <param name="keyString">密钥字符串，长度必须为16字节（非hex模式）或32个hex字符（hex模式） / Key string, must be 16 bytes (non-hex mode) or 32 hex characters (hex mode)</param>
+    /// <param name="cipherText">十六进制(IV + 密文)字符串 / Hex string of (IV + cipher text)</param>
+    /// <param name="forJavascript">是否为JavaScript兼容模式 / Whether to use JavaScript compatibility mode</param>
+    /// <param name="hexString">是否以十六进制字符串形式处理密钥 / Whether to process key as hexadecimal string</param>
+    /// <returns>解密后的原文字符串 / Decrypted plain text string</returns>
+    /// <exception cref="ArgumentNullException">当keyString或cipherText为null时抛出 / Thrown when keyString or cipherText is null</exception>
+    /// <exception cref="ArgumentException">当keyString为空字符串或长度不正确时抛出 / Thrown when keyString is empty or has incorrect length</exception>
+    /// <exception cref="CryptographicException">当密文格式非法时抛出 / Thrown when cipher text format is invalid</exception>
+    public static string DecryptCbcWithRandomIv(string keyString, string cipherText, bool forJavascript = false, bool hexString = false)
+    {
+        ArgumentNullException.ThrowIfNull(keyString);
+        ArgumentNullException.ThrowIfNull(cipherText);
+        ArgumentException.ThrowIfNullOrWhiteSpace(keyString, nameof(keyString));
+
+        // Validate key length based on hexString flag
+        if (hexString && keyString.Length != 32)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe32Characters), nameof(keyString));
+        }
+        else if (!hexString && keyString.Length != 16)
+        {
+            throw new ArgumentException(LocalizationService.GetString(LocalizationKeys.Exceptions.KeyMustBe16Characters), nameof(keyString));
+        }
+
+        Sm4Util sm4Util = new Sm4Util
+        {
+            secretKey = keyString,
+            hexString = hexString,
+            forJavascript = forJavascript,
+        };
+
+        try
+        {
+            return sm4Util.Decrypt_CBC_WithIvPrefix(cipherText);
         }
         catch (IOException ex)
         {
