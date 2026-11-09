@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Http.Normalization;
@@ -17,14 +18,22 @@ namespace GameFrameX.Foundation.Tests.Http.Normalization;
 /// </remarks>
 public sealed class TrackIdMiddlewareBoundaryTests
 {
-    private static TestServer CreateServer(RequestDelegate handler)
+    private static async Task<IHost> CreateServerAsync(RequestDelegate handler)
     {
-        var builder = new WebHostBuilder().Configure(app =>
-        {
-            app.UseTrackId();
-            app.Run(handler);
-        });
-        return new TestServer(builder);
+        var host = new HostBuilder()
+            .ConfigureWebHost(webBuilder =>
+            {
+                webBuilder.UseTestServer();
+                webBuilder.Configure(app =>
+                {
+                    app.UseTrackId();
+                    app.Run(handler);
+                });
+            })
+            .Build();
+
+        await host.StartAsync();
+        return host;
     }
 
     // === 超长 header：中间件不做长度处理，原样透传 ===
@@ -55,13 +64,13 @@ public sealed class TrackIdMiddlewareBoundaryTests
         // 4KB header 通过 TestServer 完整往返，进一步证明中间件不截断、传输层默认允许。
         // Arrange
         var trackId = new string('a', 4 * 1024);
-        using (var server = CreateServer(async ctx =>
+        using (var host = await CreateServerAsync(async ctx =>
         {
             ctx.Response.StatusCode = StatusCodes.Status200OK;
             await ctx.Response.WriteAsync(TrackIdContext.Current ?? string.Empty);
         }))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, trackId);
 
@@ -86,13 +95,13 @@ public sealed class TrackIdMiddlewareBoundaryTests
         // 行为含义：中间件对下游覆盖"不强制"，消费者可自由覆盖，但意外覆盖也不会被阻止。
         // Arrange
         const string downstreamValue = "downstream-trace-id";
-        using (var server = CreateServer(ctx =>
+        using (var host = await CreateServerAsync(ctx =>
         {
             ctx.Response.Headers[TrackIdMiddleware.HeaderName] = downstreamValue;
             return Task.CompletedTask;
         }))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 // Act
                 var response = await client.GetAsync("/");
@@ -111,13 +120,13 @@ public sealed class TrackIdMiddlewareBoundaryTests
         // 中间件用赋值（=）写入 header，下游用 Append 追加 —— Response header 变成多值。
         // 验证 Append 语义：保留中间件原值 + 追加下游值，而非覆盖。
         // Arrange
-        using (var server = CreateServer(ctx =>
+        using (var host = await CreateServerAsync(ctx =>
         {
             ctx.Response.Headers.Append(TrackIdMiddleware.HeaderName, "downstream-extra");
             return Task.CompletedTask;
         }))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 // Act
                 var response = await client.GetAsync("/");
@@ -142,9 +151,9 @@ public sealed class TrackIdMiddlewareBoundaryTests
         // 此处补充严格断言：响应头值与请求头值完全相等（而非新生成的 22 字符短 ID）。
         // Arrange
         const string incoming = "req-id-boundary-1234567890";
-        using (var server = CreateServer(_ => Task.CompletedTask))
+        using (var host = await CreateServerAsync(_ => Task.CompletedTask))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, incoming);
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Http.Normalization;
@@ -69,26 +70,34 @@ public sealed class TrackIdEdgeTests
 
     // === Middleware 边界 ===
 
-    private static TestServer CreateServer(RequestDelegate handler)
+    private static async Task<IHost> CreateServerAsync(RequestDelegate handler)
     {
-        var builder = new WebHostBuilder().Configure(app =>
-        {
-            app.UseTrackId();
-            app.Run(handler);
-        });
-        return new TestServer(builder);
+        var host = new HostBuilder()
+            .ConfigureWebHost(webBuilder =>
+            {
+                webBuilder.UseTestServer();
+                webBuilder.Configure(app =>
+                {
+                    app.UseTrackId();
+                    app.Run(handler);
+                });
+            })
+            .Build();
+
+        await host.StartAsync();
+        return host;
     }
 
     [Fact]
     public async Task Middleware_BlankHeader_GeneratesNewId()
     {
         // 逆向：空白 header 值应视为无，生成新 ID（而非透传空白）
-        using (var server = CreateServer(async ctx =>
+        using (var host = await CreateServerAsync(async ctx =>
         {
             await ctx.Response.WriteAsync(TrackIdContext.Current ?? string.Empty);
         }))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, "   ");
 
@@ -104,13 +113,13 @@ public sealed class TrackIdEdgeTests
     [Fact]
     public async Task Middleware_DistinctRequests_GetDistinctTrackIds()
     {
-        using (var server = CreateServer(async ctx =>
+        using (var host = await CreateServerAsync(async ctx =>
         {
             ctx.Response.StatusCode = 200;
             await ctx.Response.WriteAsync(TrackIdContext.Current ?? string.Empty);
         }))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 var id1 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
                 var id2 = await (await client.GetAsync("/")).Content.ReadAsStringAsync();
@@ -126,9 +135,9 @@ public sealed class TrackIdEdgeTests
     public async Task Middleware_NextThrows_ExceptionPropagates_NotSwallowed()
     {
         // 逆向：下游抛异常时，中间件不得吞掉异常
-        using (var server = CreateServer(ctx => throw new InvalidOperationException("boom")))
+        using (var host = await CreateServerAsync(ctx => throw new InvalidOperationException("boom")))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 await Assert.ThrowsAsync<InvalidOperationException>(() => client.GetAsync("/"));
             }

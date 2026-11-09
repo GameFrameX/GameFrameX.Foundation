@@ -4,33 +4,41 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 using Xunit;
 
 namespace GameFrameX.Foundation.Tests.Http.Normalization;
 
 public sealed class TrackIdMiddlewareTests
 {
-    private static TestServer CreateServer(RequestDelegate handler)
+    private static async Task<IHost> CreateServerAsync(RequestDelegate handler)
     {
-        var builder = new WebHostBuilder().Configure(app =>
-        {
-            app.UseTrackId();
-            app.Run(handler);
-        });
+        var host = new HostBuilder()
+            .ConfigureWebHost(webBuilder =>
+            {
+                webBuilder.UseTestServer();
+                webBuilder.Configure(app =>
+                {
+                    app.UseTrackId();
+                    app.Run(handler);
+                });
+            })
+            .Build();
 
-        return new TestServer(builder);
+        await host.StartAsync();
+        return host;
     }
 
     [Fact]
     public async Task UseTrackId_GeneratesIdAndEchoesInResponseHeader_WhenAbsent()
     {
-        using (var server = CreateServer(async ctx =>
+        using (var host = await CreateServerAsync(async ctx =>
         {
             ctx.Response.StatusCode = StatusCodes.Status200OK;
             await ctx.Response.WriteAsync(TrackIdContext.Current ?? string.Empty);
         }))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 var response = await client.GetAsync("/");
                 var body = await response.Content.ReadAsStringAsync();
@@ -47,13 +55,13 @@ public sealed class TrackIdMiddlewareTests
     [Fact]
     public async Task UseTrackId_PreservesIncomingHeader_InContextAndResponse()
     {
-        using (var server = CreateServer(async ctx =>
+        using (var host = await CreateServerAsync(async ctx =>
         {
             ctx.Response.StatusCode = StatusCodes.Status200OK;
             await ctx.Response.WriteAsync(TrackIdContext.Current ?? string.Empty);
         }))
         {
-            using (var client = server.CreateClient())
+            using (var client = host.GetTestClient())
             {
                 client.DefaultRequestHeaders.Add(TrackIdMiddleware.HeaderName, "incoming-id");
 
