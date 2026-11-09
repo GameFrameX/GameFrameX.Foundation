@@ -1,3 +1,34 @@
+## [5.1.0] - 2026-11-09
+
+### Bug Fixes
+
+- 补齐 RemoveWhiteSpace 控制流大括号
+- 补齐 XorHelper 测试控制流大括号
+- 修复 SM4-CBC 默认固定 IV 问题
+- SM4 测试 CS0618 屏蔽上移至文件级
+- 补齐 null 参数测试的可空注解
+- TrackId 测试改用 HostBuilder 承载 TestServer
+- 修复 xUnit 用法与阻塞等待
+- 异步调用统一补传测试取消令牌
+- 堆叠 using 改为嵌套大括号
+- 修正存量代码空白格式
+
+### Documentation
+
+- 更新 README SM4 示例
+- 修复 XML 注释歧义 cref 与非法转义
+- 示例代码 using 声明改块形式
+
+### Features
+
+- Using 语句块体纳入规则强制
+
+### Build
+
+- 构建期强制 C# 控制流大括号
+- 测试项目启用可空注解上下文
+- Editorconfig 显式关闭与规则冲突的 IDE0063
+
 ## [5.0.0] - 2026-10-11
 
 ### Bug Fixes
