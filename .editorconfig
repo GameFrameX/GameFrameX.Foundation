@@ -4,3 +4,4 @@ root = true
 [*.cs]
 csharp_prefer_braces = true:error
 dotnet_diagnostic.IDE0011.severity = error
+# using 语句不被 IDE0011 覆盖，由 GameFrameX.Foundation.Tests/CodeStyle/UsingBracesEnforcementTests.cs 在测试期强制
