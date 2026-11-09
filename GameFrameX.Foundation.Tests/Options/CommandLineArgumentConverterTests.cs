@@ -88,7 +88,7 @@ public class CommandLineArgumentConverterTests
 
         // Assert
         Assert.Contains("--debug", result);
-        Assert.Equal(1, result.Count); // 不应该添加值
+        Assert.Single(result); // 不应该添加值
     }
 
     /// <summary>

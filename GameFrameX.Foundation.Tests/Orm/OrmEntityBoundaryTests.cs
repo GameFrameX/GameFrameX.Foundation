@@ -341,7 +341,7 @@ namespace GameFrameX.Foundation.Tests.Orm
         }
 
         [Fact]
-        public void AddDomainEvent_ConcurrentAddsAndClear_ShouldNotCorruptState()
+        public async Task AddDomainEvent_ConcurrentAddsAndClear_ShouldNotCorruptState()
         {
             // 并发 Add + Clear 不应导致崩溃或状态损坏
             var entity = new RobustDomainEventEntity();
@@ -374,10 +374,12 @@ namespace GameFrameX.Foundation.Tests.Orm
 
             try
             {
-                Task.WaitAll(tasks.ToArray());
+                await Task.WhenAll(tasks.ToArray());
             }
-            catch (AggregateException ex)
+            catch (Exception ex)
             {
+                // 原实现捕获 AggregateException；WhenAll 抛首个内部异常，此处放宽为 Exception，
+                // 断言仍为 capturedException 为 null（并发不应出错），失败判定等价。
                 capturedException = ex;
             }
 

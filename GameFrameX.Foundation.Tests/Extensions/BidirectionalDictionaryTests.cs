@@ -176,7 +176,7 @@ public class BidirectionalDictionaryTests
         Assert.False(dictionary.TryUpdateByKey("key1", "value2"));
         Assert.False(dictionary.TryUpdateByValue("value1", "key2"));
 
-        Assert.Equal("value1", Assert.Single(dictionary.Where(x => x.Key == "key1")).Value);
+        Assert.Equal("value1", Assert.Single(dictionary, x => x.Key == "key1").Value);
         Assert.Equal(2, dictionary.Count);
     }
 

@@ -221,7 +221,7 @@ public class LocalizationServiceTests
     }
 
     [Fact]
-    public void GetString_ConcurrentCalls_ShouldBeThreadSafe()
+    public async Task GetString_ConcurrentCalls_ShouldBeThreadSafe()
     {
         // Arrange
         const string key = "ArgumentNull";
@@ -248,12 +248,12 @@ public class LocalizationServiceTests
             tasks.Add(task);
         }
 
-        Task.WaitAll(tasks.ToArray());
+        await Task.WhenAll(tasks.ToArray());
 
         // Collect all results
         foreach (var task in tasks)
         {
-            foreach (var result in task.Result)
+            foreach (var result in await task)
             {
                 results.Add(result);
             }

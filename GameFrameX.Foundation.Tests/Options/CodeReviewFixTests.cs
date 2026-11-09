@@ -120,7 +120,7 @@ namespace GameFrameX.Foundation.Tests.Options
         /// [H-004] 测试 Initialize 和 GetOptions 并发调用
         /// </summary>
         [Fact]
-        public void OptionsProvider_ConcurrentInitializeAndGetOptions_ShouldNotThrow()
+        public async Task OptionsProvider_ConcurrentInitializeAndGetOptions_ShouldNotThrow()
         {
             var exceptions = new List<Exception>();
             var lockObj = new object();
@@ -156,7 +156,7 @@ namespace GameFrameX.Foundation.Tests.Options
                 });
             }
 
-            Task.WaitAll(tasks);
+            await Task.WhenAll(tasks);
 
             // 不应该有异常（线程安全）
             Assert.Empty(exceptions);
@@ -382,7 +382,7 @@ namespace GameFrameX.Foundation.Tests.Options
         /// 测试所有修复的集成场景
         /// </summary>
         [Fact]
-        public void CodeReviewFixes_IntegrationTest_ShouldWorkCorrectly()
+        public async Task CodeReviewFixes_IntegrationTest_ShouldWorkCorrectly()
         {
             // 准备测试数据
             var args = new[] { "--host", "integration.example.com", "--port", "8888", "--debug", "yes" };
@@ -398,12 +398,12 @@ namespace GameFrameX.Foundation.Tests.Options
                 tasks[i] = Task.Run(() => OptionsProvider.GetOptions<BasicConfig>(enableDebugOutput: false));
             }
 
-            Task.WaitAll(tasks);
+            await Task.WhenAll(tasks);
 
             // 验证所有任务返回相同的结果
             foreach (var task in tasks)
             {
-                var config = task.Result;
+                var config = await task;
                 Assert.Equal("integration.example.com", config.Host);
                 Assert.Equal(8888, config.Port);
                 Assert.True(config.Debug);

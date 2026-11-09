@@ -166,10 +166,10 @@ public class AssemblyResourceProviderTests : IDisposable
     }
 
     [Theory]
-    [InlineData("Module.Category.Key", "Category")]
-    [InlineData("A.B.C.D", "B")]
-    [InlineData("Test.Message", "Message")]
-    public void TryGetResourceManager_WithValidKey_ShouldExtractCategory(string key, string expectedCategory)
+    [InlineData("Module.Category.Key")]
+    [InlineData("A.B.C.D")]
+    [InlineData("Test.Message")]
+    public void TryGetResourceManager_WithValidKey_ShouldNotThrow(string key)
     {
         // Act
         // This is testing internal behavior through public interface
