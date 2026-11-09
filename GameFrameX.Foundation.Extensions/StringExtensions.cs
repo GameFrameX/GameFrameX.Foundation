@@ -356,11 +356,18 @@ public static partial class StringExtensions
     /// <returns>移除所有空白字符后的字符串。如果输入为 null 或空，则返回原字符串 / The string with all whitespace characters removed. Returns the original string if input is null or empty.</returns>
     public static string RemoveWhiteSpace(this string self)
     {
-        if (self.IsNullOrEmpty()) return self;
+        if (self.IsNullOrEmpty())
+        {
+            return self;
+        }
+
         var sb = new StringBuilder(self.Length);
         foreach (var c in self)
         {
-            if (!char.IsWhiteSpace(c)) sb.Append(c);
+            if (!char.IsWhiteSpace(c))
+            {
+                sb.Append(c);
+            }
         }
 
         return sb.ToString();
