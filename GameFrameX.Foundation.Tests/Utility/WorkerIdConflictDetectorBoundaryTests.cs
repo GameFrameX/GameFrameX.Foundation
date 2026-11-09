@@ -17,7 +17,7 @@ public sealed class WorkerIdConflictDetectorBoundaryTests
     [InlineData("")]
     [InlineData("   ")]
     [InlineData("\t")]
-    public void Check_NodeIdNullOrWhitespace_ShouldThrowArgumentException(string nodeId)
+    public void Check_NodeIdNullOrWhitespace_ShouldThrowArgumentException(string? nodeId)
     {
         // Arrange
         var detector = new WorkerIdConflictDetector();
@@ -197,7 +197,7 @@ public sealed class WorkerIdConflictDetectorBoundaryTests
         });
 
         // Assert - 注册表中应只有 1 个条目（首个成功注册者）
-        Assert.Equal(1, detector.GetRegistrations().Count);
+        Assert.Single(detector.GetRegistrations());
         Assert.Equal(1, successCount);
     }
 

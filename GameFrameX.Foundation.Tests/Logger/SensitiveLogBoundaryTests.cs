@@ -70,7 +70,7 @@ public sealed class SensitiveLogBoundaryTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData("   ")]
-    public void ShouldRedact_WithNullOrWhitespaceName_ShouldReturnFalse(string propertyName)
+    public void ShouldRedact_WithNullOrWhitespaceName_ShouldReturnFalse(string? propertyName)
     {
         // Arrange
         var policy = new SensitiveLogPropertyPolicy(new[] { "password" });
@@ -107,7 +107,7 @@ public sealed class SensitiveLogBoundaryTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void Constructor_WithNullOrEmptyReplacement_ShouldFallbackToDefault(string replacement)
+    public void Constructor_WithNullOrEmptyReplacement_ShouldFallbackToDefault(string? replacement)
     {
         // Arrange & Act
         var policy = new SensitiveLogPropertyPolicy(new[] { "password" }, replacement);

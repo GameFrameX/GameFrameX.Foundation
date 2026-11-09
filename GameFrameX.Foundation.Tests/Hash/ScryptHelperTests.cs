@@ -146,7 +146,7 @@ namespace GameFrameX.Foundation.Tests.Hash
 
         [Theory]
         [InlineData(null)]
-        public void Verify_NullStoredHash_Throws(string stored)
+        public void Verify_NullStoredHash_Throws(string? stored)
         {
             Assert.Throws<ArgumentNullException>(() => ScryptHelper.Verify(Password, stored!));
         }
