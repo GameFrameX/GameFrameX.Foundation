@@ -4,6 +4,8 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <!-- 测试项目仅开放注解上下文：使 ? 注解合法（消 CS8632），不开启完整流分析（避免对存量测试引入 CS86xx 噪音） -->
+    <Nullable>annotations</Nullable>
     <!-- 测试项目需要签名以访问被测项目的 internal 成员 -->
     <PublicSign>true</PublicSign>
     <SignAssembly>true</SignAssembly>
