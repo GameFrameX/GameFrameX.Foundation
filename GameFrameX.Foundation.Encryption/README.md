@@ -231,12 +231,13 @@ string decryptedData = AesHelper.Decrypt(encryptedData, decryptedAesKey, decrypt
 // 文件加密示例
 public static void EncryptFile(string inputFile, string outputFile, byte[] key, byte[] iv)
 {
-    using var inputStream = File.OpenRead(inputFile);
-    using var outputStream = File.Create(outputFile);
-    
-    // 使用AES加密文件流
-    using var cryptoStream = AesHelper.CreateEncryptStream(outputStream, key, iv);
-    inputStream.CopyTo(cryptoStream);
+    using (var inputStream = File.OpenRead(inputFile))
+    using (var outputStream = File.Create(outputFile))
+    using (var cryptoStream = AesHelper.CreateEncryptStream(outputStream, key, iv))
+    {
+        // 使用AES加密文件流
+        inputStream.CopyTo(cryptoStream);
+    }
 }
 
 // 大文件快速加密（只加密文件头）
@@ -246,8 +247,10 @@ public static void QuickEncryptFile(string filePath, byte[] key)
     byte[] encryptedHeader = XorHelper.GetQuickXorBytes(fileHeader, key);
     
     // 将加密后的头部写回文件
-    using var stream = File.OpenWrite(filePath);
-    stream.Write(encryptedHeader, 0, encryptedHeader.Length);
+    using (var stream = File.OpenWrite(filePath))
+    {
+        stream.Write(encryptedHeader, 0, encryptedHeader.Length);
+    }
 }
 ```
 
@@ -313,11 +316,12 @@ public class EncryptionService
 public static void EncryptLargeFile(string inputFile, string outputFile, byte[] key, byte[] iv)
 {
     const int bufferSize = 64 * 1024; // 64KB缓冲区
-    using var input = File.OpenRead(inputFile);
-    using var output = File.Create(outputFile);
-    using var cryptoStream = AesHelper.CreateEncryptStream(output, key, iv);
-    
-    input.CopyTo(cryptoStream, bufferSize);
+    using (var input = File.OpenRead(inputFile))
+    using (var output = File.Create(outputFile))
+    using (var cryptoStream = AesHelper.CreateEncryptStream(output, key, iv))
+    {
+        input.CopyTo(cryptoStream, bufferSize);
+    }
 }
 
 // 避免：一次性加载整个文件到内存
@@ -387,10 +391,12 @@ public class SecureKeyManager
 // 好的做法：使用密码学安全的随机数生成器
 public static byte[] GenerateSecureRandom(int length)
 {
-    using var rng = RandomNumberGenerator.Create();
-    byte[] randomBytes = new byte[length];
-    rng.GetBytes(randomBytes);
-    return randomBytes;
+    using (var rng = RandomNumberGenerator.Create())
+    {
+        byte[] randomBytes = new byte[length];
+        rng.GetBytes(randomBytes);
+        return randomBytes;
+    }
 }
 
 // 避免：使用普通Random类生成密钥

@@ -34,16 +34,17 @@ dotnet add package GameFrameX.Foundation.Http.Extension
 using GameFrameX.Foundation.Http.Extension;
 
 // 创建HttpClient实例
-using var httpClient = new HttpClient();
+using (var httpClient = new HttpClient())
+{
+    // GET请求获取字符串
+    string response = await httpClient.GetToStringAsync("https://api.example.com/users");
+    Console.WriteLine(response);
 
-// GET请求获取字符串
-string response = await httpClient.GetToStringAsync("https://api.example.com/users");
-Console.WriteLine(response);
-
-// POST JSON数据
-var userData = new { Name = "张三", Age = 25 };
-string postResponse = await httpClient.PostJsonToStringAsync("https://api.example.com/users", userData);
-Console.WriteLine(postResponse);
+    // POST JSON数据
+    var userData = new { Name = "张三", Age = 25 };
+    string postResponse = await httpClient.PostJsonToStringAsync("https://api.example.com/users", userData);
+    Console.WriteLine(postResponse);
+}
 ```
 
 ### 带请求头和超时的请求
@@ -668,7 +669,10 @@ string response = await httpClient.GetWithRetryAsync(url, maxRetries: 3);
 services.AddHttpClient<ApiService>();
 
 // 或者：正确使用using语句
-using var httpClient = new HttpClient();
+using (var httpClient = new HttpClient())
+{
+    // 在此作用域内使用 httpClient，离开块时自动释放
+}
 ```
 
 #### 3. 序列化问题

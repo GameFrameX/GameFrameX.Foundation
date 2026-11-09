@@ -191,8 +191,10 @@ byte[] data = Encoding.UTF8.GetBytes("input text");
 string hash = Md5Helper.Hash(data);
 
 // 流哈希
-using var stream = new MemoryStream(data);
-string hash = Md5Helper.Hash(stream);
+using (var stream = new MemoryStream(data))
+{
+    string hash = Md5Helper.Hash(stream);
+}
 
 // 加盐哈希（字符串盐）
 string saltedHash = Md5Helper.HashWithSalt("input", "salt");
@@ -297,8 +299,10 @@ byte[] data = Encoding.UTF8.GetBytes("input text");
 uint crc32FromBytes = CrcHelper.Crc32(data);
 
 // 流CRC32
-using var stream = new MemoryStream(data);
-uint crc32FromStream = CrcHelper.Crc32(stream);
+using (var stream = new MemoryStream(data))
+{
+    uint crc32FromStream = CrcHelper.Crc32(stream);
+}
 ```
 
 #### CRC64
@@ -477,8 +481,10 @@ string md5Hash = Md5Helper.Hash(data);
 string sha256Hash = Sha256Helper.ComputeHash(data);
 
 // ✅ 对于大文件，使用流式处理
-using var fileStream = File.OpenRead(largeFilePath);
-string hash = Md5Helper.Hash(fileStream);
+using (var fileStream = File.OpenRead(largeFilePath))
+{
+    string hash = Md5Helper.Hash(fileStream);
+}
 
 // ✅ 批量操作时考虑并行处理
 var hashes = inputs.AsParallel()
@@ -571,8 +577,10 @@ catch (UnauthorizedAccessException)
 
 ```csharp
 // 使用流式处理而不是一次性读取整个文件
-using var fileStream = File.OpenRead(largeFilePath);
-string hash = Md5Helper.Hash(fileStream);
+using (var fileStream = File.OpenRead(largeFilePath))
+{
+    string hash = Md5Helper.Hash(fileStream);
+}
 ```
 
 ### 调试技巧
