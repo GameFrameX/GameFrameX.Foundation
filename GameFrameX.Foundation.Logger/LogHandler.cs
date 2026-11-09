@@ -313,34 +313,34 @@ public static class LogHandler
         switch (logOptions.LogEventLevel)
         {
             case LogEventLevel.Verbose:
-            {
-                logger.MinimumLevel.Verbose();
-            }
+                {
+                    logger.MinimumLevel.Verbose();
+                }
                 break;
             case LogEventLevel.Debug:
-            {
-                logger.MinimumLevel.Debug();
-            }
+                {
+                    logger.MinimumLevel.Debug();
+                }
                 break;
             case LogEventLevel.Information:
-            {
-                logger.MinimumLevel.Information();
-            }
+                {
+                    logger.MinimumLevel.Information();
+                }
                 break;
             case LogEventLevel.Warning:
-            {
-                logger.MinimumLevel.Warning();
-            }
+                {
+                    logger.MinimumLevel.Warning();
+                }
                 break;
             case LogEventLevel.Error:
-            {
-                logger.MinimumLevel.Error();
-            }
+                {
+                    logger.MinimumLevel.Error();
+                }
                 break;
             case LogEventLevel.Fatal:
-            {
-                logger.MinimumLevel.Fatal();
-            }
+                {
+                    logger.MinimumLevel.Fatal();
+                }
                 break;
         }
     }
