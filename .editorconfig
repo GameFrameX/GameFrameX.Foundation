@@ -5,3 +5,5 @@ root = true
 csharp_prefer_braces = true:error
 dotnet_diagnostic.IDE0011.severity = error
 # using 语句不被 IDE0011 覆盖，由 GameFrameX.Foundation.Tests/CodeStyle/UsingBracesEnforcementTests.cs 在测试期强制
+# IDE0063 反向建议把 using 块简化为 using 声明，与 csharp-braces 规则冲突，显式关闭
+dotnet_diagnostic.IDE0063.severity = none
